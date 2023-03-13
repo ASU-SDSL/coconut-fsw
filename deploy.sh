@@ -11,7 +11,7 @@
 # GLOBALS
 timeout=30
 do_build=0
-rpi_path="/media/dylan/RPI-RP2"
+rpi_path="/media/${USER}/RPI-RP2"       # NOTE: This path may be different for you
 uf2_path="UNDEFINED"
 cmake_path="$PWD/CMakeLists.txt"
 
@@ -52,7 +52,7 @@ for arg in "$@"; do
     elif [[ "$check_arg" = "--build" || "$check_arg" = "-b" ]]; then
         do_build=1
     else
-        uf2_path="$arg"
+        uf2_path="build/$arg/TEMPLATE.uf2"      # NOTE from Dylan: I changed this from 'uf2_path="$arg"'
     fi
 done
 

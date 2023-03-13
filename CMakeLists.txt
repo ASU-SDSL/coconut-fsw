@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.14)
 
 # Set project data
-set(PROJECT_NAME "RP2040_FREERTOS_PROJECT")
-set(BUILD_NUMBER "5")
+set(PROJECT_NAME "COCONUT_FREERTOS_PROJECT")
+set(BUILD_NUMBER "20")
 
 # Set app name(s) and version(s)
 set(APP_1_NAME "TEMPLATE")
@@ -33,13 +33,13 @@ set(DO_DEBUG "ON")
 # Set env variable 'PICO_SDK_PATH' to the local Pico SDK
 # Comment out the set() if you have a global copy of the
 # SDK set and $PICO_SDK_PATH defined in your $PATH
-set(ENV{PICO_SDK_PATH} "${CMAKE_SOURCE_DIR}/pico-sdk")
+#set(ENV{PICO_SDK_PATH} "${CMAKE_SOURCE_DIR}/pico-sdk")     - edit by Dylan, set this yourself
 
 # Set flags and directory variables
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DTSDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTSDEBUG")
 set(FREERTOS_CFG_DIRECTORY "${CMAKE_SOURCE_DIR}/Config")
-set(FREERTOS_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/FreeRTOS-Kernel")
+set(FREERTOS_SRC_DIRECTORY $ENV{FREERTOS_KERNEL_PATH})
 
 # Include the Pico SDK
 include(pico_sdk_import.cmake)
