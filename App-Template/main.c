@@ -1,13 +1,4 @@
-/**
- * RP2040 FreeRTOS Template
- * 
- * @copyright 2022, Tony Smith (@smittytone)
- * @version   1.4.1
- * @licence   MIT
- *
- */
 #include "main.h"
-
 
 /*
  * GLOBALS
