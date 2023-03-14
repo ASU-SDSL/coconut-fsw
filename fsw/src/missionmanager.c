@@ -1,3 +1,4 @@
+#include "include/missionmanager.h"
 
 /**
  * @brief Schedule and execute tasks
