@@ -1,2 +1,2 @@
 
-void taskmanager_task();
+void missionmanager_task(void* unused_arg);

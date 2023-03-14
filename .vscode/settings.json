@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "stdlib.h": "c",
-        "pico.h": "c"
+        "pico.h": "c",
+        "main.h": "c"
     }
 }

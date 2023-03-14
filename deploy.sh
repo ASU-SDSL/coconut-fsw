@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
 
-#
-# Deploy RP2040 application code
-#
-# @copyright 2022, Tony Smith @smittytone
-# @version   1.1.0
-# @license   MIT
-#
+############# YOU CAN CHANGE THESE ##################
+
+rpi_path="/media/${USER}/RPI-RP2"       # The path of the RPI's file system when mounted
+
+#####################################################
 
 # GLOBALS
 timeout=30
-do_build=0
-rpi_path="/media/${USER}/RPI-RP2"       # NOTE: This path may be different for you
+do_build=1
+do_flash=1
 uf2_path="UNDEFINED"
 cmake_path="$PWD/CMakeLists.txt"
 
@@ -20,14 +18,16 @@ set -e
 # FUNCTIONS
 show_help() {
     echo -e "Usage:\n"
-    echo -e "  deploy [-b][-h] /path/to/compiled/uf2/file\n"
+    echo -e "   deploy [-b] [-u]"
     echo -e "Options:\n"
-    echo "  -b / --build    Build the app first."
-    echo "                  Default: use a pre-built version of the app"
+    echo "  -b / --build    Do NOT build the app."
+    echo "  -f / --flash    Do NOT flash the binary to the pico"
     echo "  -h / --help     Show this help screen"
     echo
 }
 
+# I don't think that this is really needed
+<<comment  
 update_build_number() {
     build_val=$(grep 'set(BUILD_NUMBER "' ${cmake_path})
     old_num=$(echo "${build_val}" | cut -d '"' -s -f 2)
@@ -42,37 +42,29 @@ update_build_number() {
         echo "[ERROR] Unknown OS... build number not incremented"
     fi
 }
+comment
+
+uf2_path="build/fsw/COCONUTFSW.uf2"
 
 # RUNTIME START
 for arg in "$@"; do
     check_arg=${arg,,}
+    echo "check: $check_arg"
     if [[ "$check_arg" = "--help" || "$check_arg" = "-h" ]]; then
         show_help
         exit 0
     elif [[ "$check_arg" = "--build" || "$check_arg" = "-b" ]]; then
-        do_build=1
-    else
-        uf2_path="build/$arg/TEMPLATE.uf2"      # NOTE from Dylan: I changed this from 'uf2_path="$arg"'
+        do_build=0
+    elif [[ "$check_arg" = "-upload" || "$check_arg" = "-u" ]]; then
+        do_flash=0
     fi
 done
 
-if [[ "${uf2_path}" == "UNDEFINED" ]]; then
-    show_help
-    exit 0
-fi
-
-# Check we have what looks like a UF2
-extension="${uf2_path##*.}"
-if [[ "${extension}" != "uf2" ]]; then
-    echo "[ERROR] ${uf2_path} does not indicate a .uf2 file"
-    exit 1
-fi
-
-# Do we build first?
+# Do we build?
 err=0
 if [[ ${do_build} -eq 1 ]]; then
     # FROM 1.1.0 -- auto-update the build number
-    update_build_number
+    #update_build_number
     
     if [[ ! -e "./build" ]]; then
         # No build folder? Then create it
@@ -91,36 +83,39 @@ if [[ ${err} -ne 0 ]]; then
     exit 1
 fi
 
-# Wait for the RPI_R2 mount
-count=0
-if [ ! -d "${rpi_path}" ]; then
-    echo "Waiting for RP2040 device to mount"
-    while [ ! -d "${rpi_path}" ]; do
-        sleep 1
-        ((count+=1))
-        if [[ $count -eq $timeout ]]; then
-            echo "[ERROR] RP2040 device not mounted after ${timeout}s... exiting"
-            exit 1
-        fi
-    done
-fi
+# Do we flash?
+if [ ${do_flash} -eq 1 ]; then
+    # Wait for the RPI_R2 mount
+    count=0
+    if [ ! -d "${rpi_path}" ]; then
+        echo "Waiting for RP2040 device to mount"
+        while [ ! -d "${rpi_path}" ]; do
+            sleep 1
+            ((count+=1))
+            if [[ $count -eq $timeout ]]; then
+                echo "[ERROR] RP2040 device not mounted after ${timeout}s... exiting"
+                exit 1
+            fi
+        done
+    fi
 
-echo "RP2040 device mounted..."
+    echo "RP2040 device mounted..."
 
-# Check for available app file
-if [ ! -f "${uf2_path}" ]; then
-    echo "[ERROR] Cannot find file ${uf2_path}... exiting"
-    exit 1
-fi
+    # Check for available app file
+    if [ ! -f "${uf2_path}" ]; then
+        echo "[ERROR] Cannot find file ${uf2_path}... exiting"
+        exit 1
+    fi
 
-echo "Copying ${uf2_path} to ${rpi_path}/${uf2_path##*/}"
+    echo "Copying ${uf2_path} to ${rpi_path}/${uf2_path##*/}"
 
-# Copy file
-if cp -f "${uf2_path}" "${rpi_path}/${uf2_path##*/}"; then
-    echo "${uf2_path##*/} copied to ${rpi_path}"
-else
-    echo "[ERROR] Could not copy ${uf2_path##*/} to ${rpi_path}/${uf2_path##*/}"
-    exit 1
+    # Copy file
+    if cp -f "${uf2_path}" "${rpi_path}/${uf2_path##*/}"; then
+        echo "${uf2_path##*/} copied to ${rpi_path}"
+    else
+        echo "[ERROR] Could not copy ${uf2_path##*/} to ${rpi_path}/${uf2_path##*/}"
+        exit 1
+    fi
 fi
 
 exit 0

@@ -2,27 +2,16 @@ cmake_minimum_required(VERSION 3.14)
 
 # Set project data
 set(PROJECT_NAME "COCONUT_FREERTOS_PROJECT")
-set(BUILD_NUMBER "20")
+set(BUILD_NUMBER "1")
 
-# Set app name(s) and version(s)
-set(APP_1_NAME "TEMPLATE")
-set(APP_1_VERSION_NUMBER "1.4.1")
+set(PROJECT_NAME "COCONUTFSW")
 
-set(APP_2_NAME "SCHEDULING_DEMO")
-set(APP_2_VERSION_NUMBER "1.4.1")
-
-set(APP_3_NAME "IRQS_DEMO")
-set(APP_3_VERSION_NUMBER "1.4.1")
-
-set(APP_4_NAME "TIMERS_DEMO")
-set(APP_4_VERSION_NUMBER "1.4.1")
+# Include the Pico SDK
+include(pico_sdk_import.cmake)
+pico_sdk_init() # Initialise the Pico SDK
 
 # Specify the app(s) source code
 set(FSW_DIRECTORY "${CMAKE_SOURCE_DIR}/fsw")
-# do not include these
-#set(APP_2_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/App-Scheduling")
-#set(APP_3_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/App-IRQs")
-#set(APP_4_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/App-Timers")
 
 # FROM 1.3.0 -- Move common source code to a separate directory
 set(COMMON_CODE_DIRECTORY "${CMAKE_SOURCE_DIR}/Common")
@@ -41,17 +30,13 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTSDEBUG")
 set(FREERTOS_CFG_DIRECTORY "${CMAKE_SOURCE_DIR}/Config")
 set(FREERTOS_SRC_DIRECTORY $ENV{FREERTOS_KERNEL_PATH})
 
-# Include the Pico SDK
-include(pico_sdk_import.cmake)
-
 # Name the project
 project(${PROJECT_NAME}
         LANGUAGES C CXX ASM
         DESCRIPTION "FreeRTOS-based RP2040 applications"
 )
 
-# Initialise the Pico SDK
-pico_sdk_init()
+
 
 # Add FreeRTOS as a library
 add_library(FreeRTOS STATIC
@@ -72,8 +57,5 @@ target_include_directories(FreeRTOS PUBLIC
     ${FREERTOS_SRC_DIRECTORY}/portable/GCC/ARM_CM0
 )
 
-# Include the apps' source code
+# Include the app's source code
 add_subdirectory(${FSW_DIRECTORY})
-#add_subdirectory(${APP_2_SRC_DIRECTORY})
-#add_subdirectory(${APP_3_SRC_DIRECTORY})
-#add_subdirectory(${APP_4_SRC_DIRECTORY})

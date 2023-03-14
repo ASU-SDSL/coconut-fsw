@@ -16,10 +16,11 @@ These tools must be installed to compile and upload the code in this repo. Follo
 ## Usage
 
 1. Connect your device so it’s ready for file transfer.
-2. Transfer the file to the Raspberry Pi Pico: `./deploy.sh {name of app}`.
-    * Ex. ```./deploy.sh App-Template```
-3. However, most of the time, you will want to build it first, which you can do with the ```-b``` flag:
-    * ```./deploy.sh -b App-Template```
+2. Build the project and transfer it to the Raspberry Pi Pico: `./deploy.sh -b -u`.
+    * Just build the project: `./deploy.sh -b`
+    * Just transfer the project: `./deploy.sh -u`
+
+NOTE: if you get an error that the directory does not exist, change the `rpi_path` variable in the `deploy.sh` to your RPI's mounted file location.
 
 ## Project Structure
 
@@ -46,25 +47,3 @@ These tools must be installed to compile and upload the code in this repo. Follo
 |
 |___README.md
 ```
-
-## The Apps
-
-This repo includes a number of deployable apps. The project builds them all, sequentially. Exclude apps from the build process by commenting out their `add_subdirectory()` lines in the top-level `CMakeLists.txt`.
-
-### App One: Template
-
-This C app provides a simple flip-flop using an on-board LED and an LED wired between GPIO 20 and GND. The board LED flashes every 500ms under one task. When its state changes, a message containing its state is added to a FreeRTOS inter-task xQueue. A second task checks for an enqueued message: if one is present, it reads the message and sets the LED it controls — the GPIO LED — accordingly to the inverse of the board LED’s state.
-
-The code demonstrates a basic FreeRTOS setup, but you can replace it entirely with your own code if you’re using this repo’s contents as a template for your own projects.
-
-### App Two: Scheduling
-
-This C++ app builds on the first by adding an MCP9808 temperature sensor and an HT16K33-based LED display. It is used in [this blog post](https://blog.smittytone.net/2022/03/04/further-fun-with-freertos-scheduling/).
-
-### App Three: IRQs
-
-This C++ app builds on the second by using the MCP9808 temperature sensor to trigger an interrupt. It is used in [this blog post](https://blog.smittytone.net/2022/03/20/fun-with-freertos-and-pi-pico-interrupts-semaphores-notifications/).
-
-### App Four: Timers
-
-This C++ app provides an introduction to FreeRTOS’ software timers. No extra hardware is required. It is used in [this blog post](https://blog.smittytone.net/2022/06/14/fun-with-freertos-and-the-pi-pico-timers/).

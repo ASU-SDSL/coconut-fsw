@@ -5,7 +5,6 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${env:FREERTOS_KERNEL_PATH}/include/*",
-                "${env:PICO_SDK_PATH}/lib/btstack/port/stm32-wb55xx-nucleo-freertos/Inc/*",
                 "${env:PICO_SDK_PATH}/lib/btstack/port/stm32-wb55xx-nucleo-freertos/Drivers/STM32WBxx_HAL_Driver/Inc/*",
                 "${env:PICO_SDK_PATH}/lib/btstack/port/stm32-wb55xx-nucleo-freertos/Drivers/CMSIS/Device/ST/STM32WBxx/Include",
                 "${env:FREERTOS_KERNEL_PATH}/portable/ThirdParty/GCC/RP2040/include/*",
