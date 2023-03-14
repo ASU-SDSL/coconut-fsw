@@ -18,7 +18,7 @@ set(APP_4_NAME "TIMERS_DEMO")
 set(APP_4_VERSION_NUMBER "1.4.1")
 
 # Specify the app(s) source code
-set(APP_1_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/App-Template")
+set(FSW_DIRECTORY "${CMAKE_SOURCE_DIR}/fsw")
 # do not include these
 #set(APP_2_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/App-Scheduling")
 #set(APP_3_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/App-IRQs")
@@ -73,7 +73,7 @@ target_include_directories(FreeRTOS PUBLIC
 )
 
 # Include the apps' source code
-add_subdirectory(${APP_1_SRC_DIRECTORY})
+add_subdirectory(${FSW_DIRECTORY})
 #add_subdirectory(${APP_2_SRC_DIRECTORY})
 #add_subdirectory(${APP_3_SRC_DIRECTORY})
 #add_subdirectory(${APP_4_SRC_DIRECTORY})

@@ -26,18 +26,12 @@ These tools must be installed to compile and upload the code in this repo. Follo
 ```
 /RP2040-FreeRTOS
 |
-|___/App-Template           // Application 1 (FreeRTOS template) source code (C)
+|___/fsw                    // The main folder/application that conatins the flight software
 |   |___CMakeLists.txt      // Application-level CMake config file
-|
-|___/App-Scheduling         // Application 2 (scheduling demo) source code (C++)
-|   |___CMakeLists.txt      // Application-level CMake config file
-|
-|___/App-IRQs               // Application 3 (IRQs demo) source code (C++)
-|   |___CMakeLists.txt      // Application-level CMake config file
-|
-|___/App-Timers             // Application 4 (timers demo) source code (C++)
-|   |___CMakeLists.txt      // Application-level CMake config file
-|
+|   |___include             // All of the header files for the project
+|   |___src                 // All of the .c files for the project
+|   |___.vscode             // vscode settings for the project in case you open the project with the fsw folder
+|   
 |___/Common                 // Source code common to applications 2-4 (C++)
 |
 |___/Config
@@ -51,7 +45,6 @@ These tools must be installed to compile and upload the code in this repo. Follo
 |___rp2040.xcworkspace      // Xcode workspace - I don't think we really need this
 |
 |___README.md
-|___LICENSE.md
 ```
 
 ## The Apps
