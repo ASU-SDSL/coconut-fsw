@@ -20,8 +20,8 @@ show_help() {
     echo -e "Usage:\n"
     echo -e "   deploy [-b] [-u]"
     echo -e "Options:\n"
-    echo "  -b / --build    Do NOT build the app."
-    echo "  -f / --flash    Do NOT flash the binary to the pico"
+    echo "  -b / --build    ONLY build the project."
+    echo "  -f / --flash    ONLY flash the project"
     echo "  -h / --help     Show this help screen"
     echo
 }
@@ -44,7 +44,7 @@ update_build_number() {
 }
 comment
 
-uf2_path="build/fsw/COCONUTFSW.uf2"
+uf2_path="build/main/COCONUTFSW.uf2"
 
 # RUNTIME START
 for arg in "$@"; do
@@ -53,10 +53,10 @@ for arg in "$@"; do
     if [[ "$check_arg" = "--help" || "$check_arg" = "-h" ]]; then
         show_help
         exit 0
-    elif [[ "$check_arg" = "--build" || "$check_arg" = "-b" ]]; then
-        do_build=0
-    elif [[ "$check_arg" = "-upload" || "$check_arg" = "-u" ]]; then
+    elif [[ "$check_arg" = "--build" || "$check_arg" = "-b" ]]; then # only build
         do_flash=0
+    elif [[ "$check_arg" = "-flash" || "$check_arg" = "-f" ]]; then # only flash
+        do_build=0 
     fi
 done
 

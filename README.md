@@ -27,11 +27,11 @@ NOTE: if you get an error that the directory does not exist, change the `rpi_pat
 ```
 /RP2040-FreeRTOS
 |
-|___/fsw                    // The main folder/application that conatins the flight software
+|___/main                   // The main folder/application that conatins the flight software
 |   |___CMakeLists.txt      // Application-level CMake config file
 |   |___include             // All of the header files for the project
 |   |___src                 // All of the .c files for the project
-|   |___.vscode             // vscode settings for the project in case you open the project with the fsw folder
+|   |___.vscode             // vscode settings for the project in case you open the project with the main folder
 |   
 |___/Common                 // Source code common to applications 2-4 (C++)
 |

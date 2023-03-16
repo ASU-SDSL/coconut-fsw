@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
 
-# Should we set app-level debugging?
 # NOTE Equivalent of `#define DEBUG 1`
 if(${DO_DEBUG})
     add_compile_definitions(DEBUG=1)
@@ -14,10 +13,10 @@ add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
 
 # Create a sources variable with a link to all cpp files to compile
 set(SOURCES
-    ${FSW_DIRECTORY}/src/main.c
-    ${FSW_DIRECTORY}/src/gse.c
-    ${FSW_DIRECTORY}/src/missionmanager.c
-    ${FSW_DIRECTORY}/src/radio.c
+    ${MAIN_DIRECTORY}/src/main.c
+    ${MAIN_DIRECTORY}/src/gse.c
+    ${MAIN_DIRECTORY}/src/missionmanager.c
+    ${MAIN_DIRECTORY}/src/radio.c
 )
 
 add_executable(${PROJECT_NAME}
@@ -27,10 +26,12 @@ add_executable(${PROJECT_NAME}
 # Link to built libraries
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC
     pico_stdlib
-    FreeRTOS)
+    FreeRTOS
+    hardware_spi
+)
 
 target_include_directories(${PROJECT_NAME} 
-    PRIVATE ${FSW_DIRECTORY}/include
+    PRIVATE ${MAIN_DIRECTORY}/include
 )
 
 # Enable/disable STDIO via USB and UART

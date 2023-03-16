@@ -11,7 +11,7 @@
                 "${env:PICO_SDK_PATH}/src/common/pico_base/include/*",
                 "${env:PICO_SDK_PATH}/src/common/pico_stdlib/include/pico/*",
                 "${env:PICO_SDK_PATH}/src/common/pico_stdlib/include/pico",
-                "${workspaceFolder}/fsw/include"
+                "${workspaceFolder}/main/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

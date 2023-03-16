@@ -11,7 +11,7 @@ include(pico_sdk_import.cmake)
 pico_sdk_init() # Initialise the Pico SDK
 
 # Specify the app(s) source code
-set(FSW_DIRECTORY "${CMAKE_SOURCE_DIR}/fsw")
+set(MAIN_DIRECTORY "${CMAKE_SOURCE_DIR}/main")
 
 # FROM 1.3.0 -- Move common source code to a separate directory
 set(COMMON_CODE_DIRECTORY "${CMAKE_SOURCE_DIR}/Common")
@@ -19,14 +19,9 @@ set(COMMON_CODE_DIRECTORY "${CMAKE_SOURCE_DIR}/Common")
 # Set app-side debugging "ON" or "OFF"
 set(DO_DEBUG "ON")
 
-# Set env variable 'PICO_SDK_PATH' to the local Pico SDK
-# Comment out the set() if you have a global copy of the
-# SDK set and $PICO_SDK_PATH defined in your $PATH
-#set(ENV{PICO_SDK_PATH} "${CMAKE_SOURCE_DIR}/pico-sdk")     - edit by Dylan, set this yourself
-
 # Set flags and directory variables
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DTSDEBUG")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTSDEBUG")
+#set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DTSDEBUG")
+#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTSDEBUG")
 set(FREERTOS_CFG_DIRECTORY "${CMAKE_SOURCE_DIR}/Config")
 set(FREERTOS_SRC_DIRECTORY $ENV{FREERTOS_KERNEL_PATH})
 
@@ -35,8 +30,6 @@ project(${PROJECT_NAME}
         LANGUAGES C CXX ASM
         DESCRIPTION "FreeRTOS-based RP2040 applications"
 )
-
-
 
 # Add FreeRTOS as a library
 add_library(FreeRTOS STATIC
@@ -58,4 +51,4 @@ target_include_directories(FreeRTOS PUBLIC
 )
 
 # Include the app's source code
-add_subdirectory(${FSW_DIRECTORY})
+add_subdirectory(${MAIN_DIRECTORY})

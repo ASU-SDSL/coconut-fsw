@@ -13,11 +13,16 @@
 uint8_t out_buf [BUF_LEN], in_buf [BUF_LEN];
 
 void radio_task(void* unused_arg) {
-// Enable USB serial so we can print
-  stdio_init_all();
+  // Enable USB serial so we can print
+  //stdio_init_all();
+
+  while (true) {
+    vTaskDelay(1000);
+  }
+  
   vTaskDelay(100);
   printf ("SPI Radio Reading\n");
-
+  
   // Enable SPI0 at 1 MHz
   spi_init (spi_default, 1 * 1000000);
 
@@ -55,4 +60,5 @@ void radio_task(void* unused_arg) {
     i++;
     vTaskDelay(1000);
   }
+  
 }

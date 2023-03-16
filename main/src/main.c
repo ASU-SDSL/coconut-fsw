@@ -1,5 +1,4 @@
 #include "main.h"
-
 #include "gse.h"
 #include "radio.h"
 #include "missionmanager.h"
