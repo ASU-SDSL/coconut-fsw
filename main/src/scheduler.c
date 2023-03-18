@@ -48,7 +48,7 @@ void schedule_delayed_routine_ms(const char* routine_name, void* routine_func_pt
     struct delayed_routine_params* drp = pvPortMalloc(sizeof(struct delayed_routine_params));
     drp->delayed_routine_func_ptr = routine_func_ptr;
     drp->ticks_delay = delay;
-    // Schedule reccuring task
+    // Schedule delayed task
     xTaskCreate((void (*)(void *))delayed_task_routine, routine_name, 128, NULL, 1, (void *)drp); 
 }
 
