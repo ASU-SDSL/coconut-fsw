@@ -1,6 +1,6 @@
-# RP2040-FreeRTOS Template 1.4.1
+# Coconut Flight Software
 
-This repo contains the flight software for the Coconut CubeSat. It uses FreeRTOS on the Raspberry Pi Pico. This repo is based on [this repo](https://github.com/smittytone/RP2040-FreeRTOS) so check it out for reference.
+This repo contains the flight software for the SDSL Coconut CubeSat. It uses FreeRTOS on the Raspberry Pi Pico. This repo is based on [this repo](https://github.com/smittytone/RP2040-FreeRTOS) so check it out for reference.
 
 ## Instalation Instructions
 
