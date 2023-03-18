@@ -15,7 +15,7 @@ add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
 set(SOURCES
     ${MAIN_DIRECTORY}/src/main.c
     ${MAIN_DIRECTORY}/src/gse.c
-    ${MAIN_DIRECTORY}/src/missionmanager.c
+    ${MAIN_DIRECTORY}/src/scheduler.c
     ${MAIN_DIRECTORY}/src/radio.c
 )
 

@@ -92,15 +92,9 @@ void setup_uart() {
 
 
 
-
-
-
-
-
 #include "pico/stdlib.h"
 #include "hardware/uart.h"
 #include "hardware/irq.h"
-
 
 /// \tag::uart_advanced[]
 

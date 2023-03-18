@@ -1,7 +1,7 @@
 #include "main.h"
 #include "gse.h"
 #include "radio.h"
-#include "missionmanager.h"
+#include "scheduler.h"
 
 /*
  * GLOBALS
@@ -42,16 +42,17 @@ void log_device_info(void) {
 int main() {
 
     // Enable STDIO
-    stdio_init_all();   // I was not able to read anything out from the serial port
+    stdio_init_all();
     
     // Set up the tasks/threads
-    // NOTE Arg 3 is the stack depth -- in words, not bytes
-    BaseType_t missionmanager_task_status = xTaskCreate(missionmanager_task, 
-                                         "PICO_LED_TASK", 
-                                         128, 
-                                         NULL, 
-                                         1,
-                                         NULL); // this last parameter is the parameter to the function of the task
+    // Arg 3 is the stack depth -- in words, not bytes
+    // Arg 5+ are arguments to the function of the task
+    // BaseType_t scheduler_task_status = xTaskCreate(scheduler_task, 
+    //                                      "PICO_LED_TASK", 
+    //                                      512, 
+    //                                      NULL, 
+    //                                      1,
+    //                                      NULL); 
     BaseType_t gse_task_status = xTaskCreate(gse_task, 
                                          "GPIO_LED_TASK", 
                                          128, 
@@ -69,13 +70,10 @@ int main() {
     log_device_info();
     
     // Start the FreeRTOS scheduler
-    // FROM 1.0.1: Only proceed with valid tasks
-    if (missionmanager_task_status == pdPASS || gse_task_status == pdPASS || radio_task_status == pdPASS) {
+    if (/*scheduler_task_status == pdPASS || */ gse_task_status == pdPASS || radio_task_status == pdPASS) {
         vTaskStartScheduler();
     }
     
     // We should never get here, but just in case...
-    while(true) {
-        // NOP
-    };
+    while(true){};
 }

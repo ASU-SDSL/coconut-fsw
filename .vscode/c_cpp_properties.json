@@ -4,14 +4,17 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${env:FREERTOS_KERNEL_PATH}/include/*",
-                "${env:PICO_SDK_PATH}/lib/btstack/port/stm32-wb55xx-nucleo-freertos/Drivers/STM32WBxx_HAL_Driver/Inc/*",
-                "${env:PICO_SDK_PATH}/lib/btstack/port/stm32-wb55xx-nucleo-freertos/Drivers/CMSIS/Device/ST/STM32WBxx/Include",
-                "${env:FREERTOS_KERNEL_PATH}/portable/ThirdParty/GCC/RP2040/include/*",
-                "${env:PICO_SDK_PATH}/src/common/pico_base/include/*",
-                "${env:PICO_SDK_PATH}/src/common/pico_stdlib/include/pico/*",
-                "${env:PICO_SDK_PATH}/src/common/pico_stdlib/include/pico",
-                "${workspaceFolder}/main/include"
+                "${env:PICO_SDK_PATH}/**",
+                "${env:FREERTOS_KERNEL_PATH}/**",
+                "/usr/include/**"
+                // "${env:FREERTOS_KERNEL_PATH}/include/*",
+                // "${env:PICO_SDK_PATH}/lib/btstack/port/stm32-wb55xx-nucleo-freertos/Drivers/STM32WBxx_HAL_Driver/Inc/*",
+                // "${env:PICO_SDK_PATH}/lib/btstack/port/stm32-wb55xx-nucleo-freertos/Drivers/CMSIS/Device/ST/STM32WBxx/Include",
+                // "${env:FREERTOS_KERNEL_PATH}/portable/ThirdParty/GCC/RP2040/include/*",
+                // "${env:PICO_SDK_PATH}/src/common/pico_base/include/*",
+                // "${env:PICO_SDK_PATH}/src/common/pico_stdlib/include/pico/*",
+                // "${env:PICO_SDK_PATH}/src/common/pico_stdlib/include/pico",
+                // "${workspaceFolder}/main/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
