@@ -1,0 +1,7 @@
+void write() {
+
+}
+
+void read() {
+
+}
