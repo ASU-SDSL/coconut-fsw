@@ -38,11 +38,6 @@ TickType_t ms_to_ticks(unsigned long ms);
 unsigned long secs_to_ms(unsigned long secs);
 unsigned long mins_to_secs(unsigned long mins);
 
-// Internal scheduler functions
-void create_scheduler_routine(const char* routine_name, TickType_t execute_time, TickType_t recur_time, routine_func routine_func_ptr);
-void run_scheduler_routine(scheduler_routine* routine);
-void delete_scheduler_routine(scheduler_routine* routine);
-
 // Recurring Routine Helper Functions
 void schedule_recurring_task_ms(const char* routine_name, void* routine_func_ptr, unsigned int ms_until_recur);
 void schedule_recurring_task_sec(const char* routine_name, void* routine_func_ptr, unsigned int ss_until_recur);
@@ -52,6 +47,11 @@ void schedule_recurring_task_mins(const char* routine_name, void* routine_func_p
 void schedule_delayed_task_ms(const char* routine_name, void* routine_func_ptr, unsigned int ms_delay);
 void schedule_delayed_task_sec(const char* routine_name, void* routine_func_ptr, unsigned int ss_delay);
 void schedule_delayed_task_mins(const char* routine_name, void* routine_func_ptr, unsigned int ss_delay);
+
+// Internal Scheduler Functions
+void create_scheduler_routine(const char* routine_name, TickType_t execute_time, TickType_t recur_time, routine_func routine_func_ptr);
+bool run_scheduler_routine(scheduler_routine* routine);
+void delete_scheduler_routine(scheduler_routine* routine);
 
 // Main Task
 void scheduler_task(void* unused_arg);
