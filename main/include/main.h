@@ -6,8 +6,8 @@
  * @license   MIT
  *
  */
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef MAIN_FILE_DEFINED
+#define MAIN_FILE_DEFINED
 
 
 // FreeRTOS
@@ -50,4 +50,4 @@ void log_device_info(void);
 #endif
 
 
-#endif      // MAIN_H
+#endif  /* !MAIN_FILE_DEFINED */

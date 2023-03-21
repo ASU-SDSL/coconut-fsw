@@ -4,6 +4,7 @@
         "pico.h": "c",
         "main.h": "c",
         "stdio.h": "c",
-        "gse.h": "c"
+        "gse.h": "c",
+        "scheduler.h": "c"
     }
 }
