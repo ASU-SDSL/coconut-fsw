@@ -35,6 +35,7 @@ void create_scheduler_routine(const char* routine_name, TickType_t execute_time,
     xSemaphoreGive(g_scheduler_context.mutex);
 }
 
+// Internal scheduler functions
 void run_scheduler_routine(scheduler_routine* routine) {
     // Run the routine function
     routine->routine_func_ptr();
