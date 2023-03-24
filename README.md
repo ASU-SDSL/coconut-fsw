@@ -10,7 +10,7 @@ These tools must be installed to compile and upload the code in this repo. Follo
 3. To map these directories to the appropriate envirnment variables, add these lines to your ```~/.bashrc``` file (note: the .bashrc file only runs when you login, so you will have to run these commands in your command line the first time):
     * ```export PICO_SDK_PATH="$HOME/Documents/coconut/freertos/pico-sdk"```
     * ```export FREERTOS_KERNEL_PATH="$HOME/Documents/coconut/freertos/FreeRTOS-Kernel"```
-4. Clone this repository - ```git clone https://github.com/ASU-SDSL/coconut-fsw```
+4. Clone this repository and include submodules (libraries) - ```git clone --recurse-submodules https://github.com/ASU-SDSL/coconut-fsw```
 5. Install extra tools: ```sudo apt install cmake gcc-arm-none-eabi build-essential```
 
 ## Usage
