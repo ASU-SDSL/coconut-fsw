@@ -16,7 +16,7 @@ These tools must be installed to compile and upload the code in this repo. Follo
 ## Usage
 
 1. Connect your device so it’s ready for file transfer.
-2. Build the project and transfer it to the Raspberry Pi Pico: `./deploy.sh -b -u`.
+2. Build the project and transfer it to the Raspberry Pi Pico: `./deploy.sh`.
     * Just build the project: `./deploy.sh -b`
     * Just flash the project to the pico: `./deploy.sh -f`
 
