@@ -35,7 +35,6 @@ void log_device_info(void) {
     printf("Project: %s", PROJECT_NAME);
 }
 
-
 /*
  * RUNTIME START
  */
@@ -47,20 +46,21 @@ int main() {
     // Set up the tasks/threads
     // Arg 3 is the stack depth -- in words, not bytes
     // Arg 5+ are arguments to the function of the task
-    // BaseType_t scheduler_task_status = xTaskCreate(scheduler_task, 
-    //                                      "PICO_LED_TASK", 
-    //                                      512, 
-    //                                      NULL, 
-    //                                      1,
-    //                                      NULL); 
+    BaseType_t scheduler_task_status = xTaskCreate(scheduler_task, 
+                                         "SCHEDULER_TASK", 
+                                         512, 
+                                         NULL, 
+                                         1,
+                                         NULL); 
+    
     BaseType_t gse_task_status = xTaskCreate(gse_task, 
-                                         "GPIO_LED_TASK", 
+                                         "GSE_TASK", 
                                          128, 
                                          NULL, 
                                          1,
                                          NULL);
     BaseType_t radio_task_status = xTaskCreate(radio_task, 
-                                         "GPIO_LED_TASK", 
+                                         "RADIO_TASK", 
                                          128, 
                                          NULL, 
                                          1,
@@ -70,7 +70,7 @@ int main() {
     log_device_info();
     
     // Start the FreeRTOS scheduler
-    if (/*scheduler_task_status == pdPASS || */ gse_task_status == pdPASS || radio_task_status == pdPASS) {
+    if (scheduler_task_status == pdPASS || gse_task_status == pdPASS || radio_task_status == pdPASS) {
         vTaskStartScheduler();
     }
     

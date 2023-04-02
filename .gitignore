@@ -1,1 +1,8 @@
 build
+pico-sdk/*
+CMakeFiles/*
+main/CMakeFiles/*
+main/elf2uf2/*
+generated/*
+*.cmake
+Makefile

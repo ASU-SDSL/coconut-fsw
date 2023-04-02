@@ -1,4 +1,5 @@
 #include "scheduler.h"
+#include "hardware/uart.h"
 
 // Utility Functions
 TickType_t ms_to_ticks(unsigned long ms) {
@@ -13,6 +14,45 @@ unsigned long mins_to_secs(unsigned long mins) {
     return mins * SECS_IN_MIN;
 }
 
+// Recurring Routine Helper Functions
+// These routines will wait a specified time, run, wait a specified time, run, etc.
+void schedule_recurring_routine_ms(const char* routine_name, routine_func routine_func_ptr, unsigned long ms_until_recur) {
+    // Convert ms to ticks
+    TickType_t recur_time = ms_to_ticks(ms_until_recur);
+    // Calculate first run time 
+    TickType_t execute_time = xTaskGetTickCount() + recur_time;
+    // Create routine
+    create_scheduler_routine(routine_name, execute_time, recur_time, routine_func_ptr);
+}
+
+void schedule_recurring_routine_secs(const char* routine_name, routine_func routine_func_ptr, unsigned long secs_until_recur) {
+    schedule_recurring_routine_ms(routine_name, routine_func_ptr, secs_to_ms(secs_until_recur));
+}
+
+void schedule_recurring_routine_mins(const char* routine_name, routine_func routine_func_ptr, unsigned long mins_until_recur) {
+    schedule_recurring_routine_secs(routine_name, routine_func_ptr, mins_to_secs(mins_until_recur));
+}
+
+// Delayed Routine Helper Functions
+// These tasks will wait a specified time, run, then never run again
+void schedule_delayed_routine_ms(const char* routine_name, routine_func routine_func_ptr, unsigned long ms_delay) {
+    // Convert ms to ticks
+    TickType_t tick_delay = ms_to_ticks(ms_delay);
+    // Calculate first run time 
+    TickType_t execute_time = xTaskGetTickCount() + tick_delay;
+    // Create routine
+    create_scheduler_routine(routine_name, execute_time, 0, routine_func_ptr);
+}
+
+void schedule_delayed_routine_secs(const char* routine_name, routine_func routine_func_ptr, unsigned long secs_delay) {
+    schedule_delayed_routine_ms(routine_name, routine_func_ptr, secs_to_ms(secs_delay));
+}
+
+void schedule_delayed_routine_mins(const char* routine_name, routine_func routine_func_ptr, unsigned long mins_delay) {
+    schedule_delayed_routine_secs(routine_name, routine_func_ptr, mins_to_secs(mins_delay));
+}
+
+// Internal Scheduler Functions
 void create_scheduler_routine(const char* routine_name, TickType_t execute_time, TickType_t recur_time, routine_func routine_func_ptr) {
     // Allocate memory
     scheduler_routine* sr = pvPortMalloc(sizeof(scheduler_routine));
@@ -27,53 +67,18 @@ void create_scheduler_routine(const char* routine_name, TickType_t execute_time,
     sr->execute_time = execute_time;
     sr->recur_time = recur_time;
     sr->routine_func_ptr = routine_func_ptr;
+    // Spinlock until scheduler is initialized
+    while (g_scheduler_context.mutex == NULL) {
+        vTaskDelay(ms_to_ticks(SCHEDULER_CHECK_DELAY_MS));
+    }
     // Acquire mutex
     xSemaphoreTake(g_scheduler_context.mutex, portMAX_DELAY);
     // Add routine to list
-    g_scheduler_context.routines[g_scheduler_context.routine_count] = sr;
+    g_scheduler_context.routines[g_scheduler_context.routine_count++] = sr;
     // Release mutex
     xSemaphoreGive(g_scheduler_context.mutex);
 }
 
-// Recurring Routine Helper Functions
-// These routines will wait a specified time, run, wait a specified time, run, etc.
-void schedule_recurring_routine_ms(const char* routine_name, unsigned long ms_until_recur, void* routine_func_ptr) {
-    // Convert ms to ticks
-    TickType_t recur_time = ms_to_ticks(ms_until_recur);
-    // Calculate first run time 
-    TickType_t execute_time = xTaskGetTickCount() + recur_time;
-    // Create routine
-    create_scheduler_routine(routine_name, execute_time, recur_time, routine_func_ptr);
-}
-
-void schedule_recurring_routine_secs(const char* routine_name, unsigned long secs_until_recur, void* routine_func_ptr) {
-    schedule_recurring_routine_ms(routine_name, secs_to_ms(secs_until_recur), routine_func_ptr);
-}
-
-void schedule_recurring_routine_mins(const char* routine_name, unsigned long mins_until_recur, void* routine_func_ptr) {
-    schedule_recurring_routine_secs(routine_name, mins_to_secs(mins_until_recur), routine_func_ptr);
-}
-
-// Delayed Routine Helper Functions
-// These tasks will wait a specified time, run, then never run again
-void schedule_delayed_routine_ms(const char* routine_name, unsigned long ms_delay, void* routine_func_ptr) {
-    // Convert ms to ticks
-    TickType_t tick_delay = ms_to_ticks(ms_delay);
-    // Calculate first run time 
-    TickType_t execute_time = xTaskGetTickCount() + tick_delay;
-    // Create routine
-    create_scheduler_routine(routine_name, execute_time, 0, routine_func_ptr);
-}
-
-void schedule_delayed_routine_secs(const char* routine_name, unsigned int secs_delay, void* routine_func_ptr) {
-    schedule_delayed_routine_ms(routine_name, secs_to_ms(secs_delay), routine_func_ptr);
-}
-
-void schedule_delayed_routine_mins(const char* routine_name, void* routine_func_ptr, unsigned int mins_delay) {
-    schedule_delayed_routine_secs(routine_name, mins_to_secs(mins_delay), routine_func_ptr);
-}
-
-// Internal Scheduler Functions
 bool run_scheduler_routine(scheduler_routine* routine) {
     // Run the routine function
     routine->routine_func_ptr();
@@ -121,12 +126,19 @@ void cleanup_scheduler_routines_list() {
     }
 }
 
+void initialize_scheduler_context() {
+    // Set up semaphore
+    g_scheduler_context.mutex = xSemaphoreCreateMutex();
+    // Initialize scheduler routine memory
+    memset(g_scheduler_context.routines, 0, sizeof(g_scheduler_context.routines));
+    // Set routine count to zero
+    g_scheduler_context.routine_count = 0;
+}
+
 // Main thread routine for scheduler task
 void scheduler_task(void* unused_arg) {
     // Setup context struct
-    g_scheduler_context.mutex = xSemaphoreCreateMutex();
-    memset(g_scheduler_context.routines, 0, sizeof(g_scheduler_context.routines));
-    g_scheduler_context.routine_count = 0;
+    initialize_scheduler_context();
     // Run main task loop
     while (true) {
         // Acquire mutex
