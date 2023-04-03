@@ -17,21 +17,33 @@ set(SOURCES
     ${MAIN_DIRECTORY}/src/gse.c
     ${MAIN_DIRECTORY}/src/scheduler.c
     ${MAIN_DIRECTORY}/src/radio.c
+    ${RADIOLIB_SRC}
 )
 
 add_executable(${PROJECT_NAME}
     ${SOURCES}
 )
 
+
+#add_library(RadioLib STATIC
+#    ${RADIOLIB_SRC_DIRECTORY}/src/RadioLib.h
+#)
+#target_include_directories(RadioLib PUBLIC
+#    ${RADIOLIB_SRC_DIRECTORY}/
+#)
+
+
 # Link to built libraries
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC
     pico_stdlib
     FreeRTOS
     hardware_spi
+    ${MAIN_DIRECTORY}../libraries/RadioLib
 )
 
 target_include_directories(${PROJECT_NAME} 
     PRIVATE ${MAIN_DIRECTORY}/include
+    PUBLIC ${RADIOLIB_DIRECTORY}/src
 )
 
 # Enable/disable STDIO via USB and UART
