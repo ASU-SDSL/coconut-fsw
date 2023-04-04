@@ -25,7 +25,7 @@ set(DO_DEBUG "ON")
 set(FREERTOS_CFG_DIRECTORY "${CMAKE_SOURCE_DIR}/Config")
 set(FREERTOS_SRC_DIRECTORY $ENV{FREERTOS_KERNEL_PATH})
 
-set(RADIOLIB_DIRECTORY "${CMAKE_SOURCE_DIR}/libraries/RadioLib")
+# set(RADIOLIB_DIRECTORY "${CMAKE_SOURCE_DIR}/libraries/RadioLib")
 
 # Name the project
 project(${PROJECT_NAME}
@@ -55,6 +55,6 @@ target_include_directories(FreeRTOS PUBLIC
 # Include the app's source code
 add_subdirectory(${MAIN_DIRECTORY})
 
-set(RADIOLIB_SRC
-    ${RADIOLIB_DIRECTORY}/src/modules/RFM9x/RFM96.cpp
-)
+# set(RADIOLIB_SRC
+#     ${RADIOLIB_DIRECTORY}/src/modules/RFM9x/RFM96.cpp
+# )
