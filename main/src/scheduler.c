@@ -1,5 +1,5 @@
 #include "scheduler.h"
-#include "hardware/uart.h"
+#include "gse.h"
 
 // Utility Functions
 TickType_t ms_to_ticks(unsigned long ms) {
@@ -135,10 +135,16 @@ void initialize_scheduler_context() {
     g_scheduler_context.routine_count = 0;
 }
 
+void test_routine() {
+    uart_queue_message("LOL\n");
+}
+
 // Main thread routine for scheduler task
 void scheduler_task(void* unused_arg) {
     // Setup context struct
     initialize_scheduler_context();
+    // Create test task
+    schedule_delayed_routine_secs("TEST", test_routine, 1);
     // Run main task loop
     while (true) {
         // Acquire mutex
