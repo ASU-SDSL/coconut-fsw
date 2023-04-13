@@ -144,7 +144,7 @@ void scheduler_task(void* unused_arg) {
     // Setup context struct
     initialize_scheduler_context();
     // Create test task
-    schedule_delayed_routine_secs("TEST", test_routine, 1);
+    schedule_recurring_routine_secs("TEST", test_routine, 1);
     // Run main task loop
     while (true) {
         // Acquire mutex

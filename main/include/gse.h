@@ -18,7 +18,7 @@
 #define UART0_RX_PIN   1
 
 #define UART_MAX_QUEUE_ITEMS  64
-#define UART_QUEUE_CHECK_TIME 500
+#define UART_QUEUE_CHECK_TIME portMAX_DELAY
 typedef char* uart_message_type;
 
 QueueHandle_t uart0_queue;

@@ -1,19 +1,19 @@
 #include "gse.h"
+#include "command.h"
 
 void uart_queue_message(uart_message_type message) {
     // Wait for queue to become available
-    while (!uart0_queue) {
-        vTaskDelay(5000);
+    while (uart0_queue == NULL) {
+        vTaskDelay(500);
     }
-    xQueueSendToBack(uart0_queue, message, portMAX_DELAY);
+    xQueueSendToBack(uart0_queue, &message, portMAX_DELAY);
 }
 
 void uart_on_rx() {
     while (uart_is_readable(UART0_INSTANCE)) {
         uint8_t ch = uart_getc(UART0_INSTANCE);
-        // Can we send it back?
         if (uart_is_writable(UART0_INSTANCE)) {
-            uart_putc(UART0_INSTANCE, ch);
+            // uart_putc(UART0_INSTANCE, ch);
         }
     }
 }
@@ -60,14 +60,14 @@ void gse_task() {
     uart_message_type message = NULL;
     while (true) {
         // Wait on a message in the queue
-        xQueueReceive(uart0_queue, message, UART_QUEUE_CHECK_TIME);
+        xQueueReceive(uart0_queue, &message, UART_QUEUE_CHECK_TIME);
         // Check valid message
         if (message != NULL) {
             // Enable write LED
             gpio_put(LED_PIN, 1);
             // Write bytes to UART
             if (uart_is_writable(UART0_INSTANCE)) {
-                uart_puts(UART0_INSTANCE, (char*)message);
+                uart_puts(UART0_INSTANCE, message);
             }
             // Disable write LED
             gpio_put(LED_PIN, 0);
