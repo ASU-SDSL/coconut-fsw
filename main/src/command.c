@@ -1,6 +1,6 @@
 #include "command.h"
 
-void queue_inbound_command
+
 
 void command_task(void* unused_arg) {
     // Initialize command queue

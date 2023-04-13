@@ -15,7 +15,7 @@
 typedef char* command_message_type;
 QueueHandle_t command_queue;
 
-void parse_inbound_command(command_message_type command);
+void queue_inbound_command(command_message_type command);
 
 // Main Task
 void command_task(void* unused_arg);
