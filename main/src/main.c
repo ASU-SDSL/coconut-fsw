@@ -2,6 +2,7 @@
 #include "gse.h"
 #include "radio.h"
 #include "scheduler.h"
+#include "command.h"
 
 /*
  * GLOBALS
@@ -46,19 +47,27 @@ int main() {
     // Set up the tasks/threads
     // Arg 3 is the stack depth -- in words, not bytes
     // Arg 5+ are arguments to the function of the task
-    BaseType_t scheduler_task_status = xTaskCreate(scheduler_task, 
-                                         "SCHEDULER_TASK", 
-                                         512, 
-                                         NULL, 
-                                         1,
-                                         NULL); 
-    
     BaseType_t gse_task_status = xTaskCreate(gse_task, 
                                          "GSE_TASK", 
                                          128, 
                                          NULL, 
                                          1,
                                          NULL);
+                                         
+    BaseType_t scheduler_task_status = xTaskCreate(scheduler_task, 
+                                         "SCHEDULER_TASK", 
+                                         512, 
+                                         NULL, 
+                                         1,
+                                         NULL); 
+
+    BaseType_t command_task_status = xTaskCreate(command_task,
+                                            "COMMAND_TASK",
+                                            128,
+                                            NULL,
+                                            1,
+                                            NULL);
+
     BaseType_t radio_task_status = xTaskCreate(radio_task, 
                                          "RADIO_TASK", 
                                          128, 
@@ -70,7 +79,7 @@ int main() {
     log_device_info();
     
     // Start the FreeRTOS scheduler
-    if (scheduler_task_status == pdPASS || gse_task_status == pdPASS || radio_task_status == pdPASS) {
+    if (/*scheduler_task_status == pdPASS || */ command_task_status == pdPASS || gse_task_status == pdPASS || radio_task_status == pdPASS) {
         vTaskStartScheduler();
     }
     

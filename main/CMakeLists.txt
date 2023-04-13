@@ -17,6 +17,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/src/gse.c
     ${MAIN_DIRECTORY}/src/scheduler.c
     ${MAIN_DIRECTORY}/src/radio.c
+    ${MAIN_DIRECTORY}/src/command.c
     ${RADIOLIB_SRC}
 )
 
