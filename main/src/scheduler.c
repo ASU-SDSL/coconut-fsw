@@ -136,7 +136,8 @@ void initialize_scheduler_context() {
 }
 
 void test_routine() {
-    uart_queue_message("LOL\n");
+    char test_bytes[] = {0x53, 0x53, 0x13, 0x43};
+    uart_queue_message(test_bytes, sizeof(test_bytes));
 }
 
 // Main thread routine for scheduler task
