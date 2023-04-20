@@ -19,11 +19,15 @@
 
 #define UART_MAX_QUEUE_ITEMS  64
 #define UART_QUEUE_CHECK_TIME portMAX_DELAY
-typedef char* uart_message_type;
+
+typedef struct transmission_buffer {
+    char* buffer;
+    size_t size;
+} transmission_buffer;
 
 QueueHandle_t uart0_queue;
 
-void uart_queue_message(uart_message_type message);
+void uart_queue_message(char* buffer, size_t size);
 
 void uart_on_rx();
 

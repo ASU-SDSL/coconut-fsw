@@ -1,12 +1,19 @@
 #include "gse.h"
 #include "command.h"
 
-void uart_queue_message(uart_message_type message) {
+void uart_queue_message(char* buffer, size_t size) {
+    // Create new transmission structure
+    transmission_buffer new_buffer;
+    new_buffer.size = size;
+    // Allocate chunk on heap to copy buffer contents
+    char* heap_buf = pvPortMalloc(size);
+    memcpy(heap_buf, buffer, size);
+    new_buffer.buffer = heap_buf;
     // Wait for queue to become available
     while (uart0_queue == NULL) {
         vTaskDelay(500);
     }
-    xQueueSendToBack(uart0_queue, &message, portMAX_DELAY);
+    xQueueSendToBack(uart0_queue, &new_buffer, portMAX_DELAY);
 }
 
 void uart_on_rx() {
@@ -49,7 +56,7 @@ void gse_task() {
     
     // Create UART0 queue
     // TODO: Change this to a struct instead of char ptr for sending actual command data
-    uart0_queue = xQueueCreate(UART_MAX_QUEUE_ITEMS, sizeof(uart_message_type));
+    uart0_queue = xQueueCreate(UART_MAX_QUEUE_ITEMS, sizeof(transmission_buffer));
 
     // Initialize write LED
     const uint LED_PIN = PICO_DEFAULT_LED_PIN;
@@ -57,20 +64,22 @@ void gse_task() {
     gpio_set_dir(LED_PIN, GPIO_OUT);
 
     // Start listening for UART queue messages
-    uart_message_type message = NULL;
+    transmission_buffer rec;
     while (true) {
         // Wait on a message in the queue
-        xQueueReceive(uart0_queue, &message, UART_QUEUE_CHECK_TIME);
-        // Check valid message
-        if (message != NULL) {
-            // Enable write LED
-            gpio_put(LED_PIN, 1);
-            // Write bytes to UART
-            if (uart_is_writable(UART0_INSTANCE)) {
-                uart_puts(UART0_INSTANCE, message);
+        xQueueReceive(uart0_queue, &rec, UART_QUEUE_CHECK_TIME);
+        // Enable write LED
+        gpio_put(LED_PIN, 1);
+        // Write bytes to UART
+        if (uart_is_writable(UART0_INSTANCE)) {
+            // Send bytes to UART port one-by-one
+            for (int i = 0; i < rec.size; i++) {
+                uart_putc_raw(UART0_INSTANCE, rec.buffer[i]);
             }
-            // Disable write LED
-            gpio_put(LED_PIN, 0);
         }
+        // Free buffer allocated in uart_queue_message
+        vPortFree(rec.buffer);
+        // Disable write LED
+        gpio_put(LED_PIN, 0);
     }
 }
