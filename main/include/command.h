@@ -12,10 +12,11 @@
 
 #define COMMAND_MAX_QUEUE_ITEMS 64
 
-typedef char* command_message_type;
 QueueHandle_t command_queue;
 
-void queue_inbound_command(command_message_type command);
+void receive_byte_from_transmission(char byte);
+
+void queue_inbound_command(transmission_buffer command);
 
 // Main Task
 void command_task(void* unused_arg);
