@@ -136,7 +136,10 @@ void initialize_scheduler_context() {
 }
 
 void test_routine() {
-    char test_bytes[] = {0x53, 0x53, 0x13, 0x43};
+    // 000 0 0 00000000000 00 00000000000000 0000000000000000
+    // space packet header template ^
+    char test_bytes[] = {0x35, 0x2E, 0xF8, 0x53, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x68, 0x65, 0x6c, 0x6c, 0x6f};
+    //                  |       sync bytes      |           space packet            |       "hello" string       |
     uart_queue_message(test_bytes, sizeof(test_bytes));
 }
 
