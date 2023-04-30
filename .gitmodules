@@ -1,3 +1,6 @@
 [submodule "libraries/RadioLib"]
 	path = libraries/RadioLib
 	url = https://github.com/jgromes/RadioLib
+[submodule "lib/spacepacket"]
+	path = lib/spacepacket
+	url = https://github.com/yuasatakayuki/CCSDSLibrary
