@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${env:FREERTOS_KERNEL_PATH}/**",
-                "${env:PICO_SDK_PATH}/**"
+                "${env:PICO_SDK_PATH}/**",
+                "${workspaceFolder}/../lib/RadioLib/src"
                 
             ],
             "defines": [],

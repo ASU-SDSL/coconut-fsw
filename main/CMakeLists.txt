@@ -39,7 +39,7 @@ target_link_libraries(${PROJECT_NAME} LINK_PUBLIC
     pico_stdlib
     FreeRTOS
     hardware_spi
-    # ${MAIN_DIRECTORY}../libraries/RadioLib
+    ${MAIN_DIRECTORY}../libraries/RadioLib
 )
 
 target_include_directories(${PROJECT_NAME} 
