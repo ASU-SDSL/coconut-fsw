@@ -18,33 +18,28 @@ set(SOURCES
     ${MAIN_DIRECTORY}/src/scheduler.c
     ${MAIN_DIRECTORY}/src/radio.c
     ${MAIN_DIRECTORY}/src/command.c
-    ${RADIOLIB_SRC}
 )
 
 add_executable(${PROJECT_NAME}
     ${SOURCES}
 )
 
-
-#add_library(RadioLib STATIC
-#    ${RADIOLIB_SRC_DIRECTORY}/src/RadioLib.h
-#)
-#target_include_directories(RadioLib PUBLIC
-#    ${RADIOLIB_SRC_DIRECTORY}/
-#)
-
+#include_directories(${MAIN_DIRECTORY}../lib/RadioLib)
+#include_directories(${MAIN_DIRECTORY}../lib/spacepacket/includes)
+#link_directories(${MAIN_DIRECTORY}../lib/spacepacket/includes)
 
 # Link to built libraries
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC
     pico_stdlib
     FreeRTOS
     hardware_spi
-    ${MAIN_DIRECTORY}../libraries/RadioLib
+    RadioLib
+    #spacepacket - note: for now, just include spacepacket as an executable if its needed, otherwise we will probably have to make it a library through its
+    #               cmakelists file
 )
 
 target_include_directories(${PROJECT_NAME} 
     PRIVATE ${MAIN_DIRECTORY}/include
-    PUBLIC ${RADIOLIB_DIRECTORY}/src
 )
 
 # Enable/disable STDIO via USB and UART

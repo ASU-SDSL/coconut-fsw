@@ -6,6 +6,7 @@
         "stdio.h": "c",
         "gse.h": "c",
         "scheduler.h": "c",
-        "radiolib.h": "c"
+        "radiolib.h": "c",
+        "spi.h": "c"
     }
 }

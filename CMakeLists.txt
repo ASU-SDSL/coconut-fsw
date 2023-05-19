@@ -31,8 +31,8 @@ set(FREERTOS_SRC_DIRECTORY $ENV{FREERTOS_KERNEL_PATH})
 
 # Name the project
 project(${PROJECT_NAME}
-        LANGUAGES C CXX ASM
-        DESCRIPTION "Coconut Flight Software"
+    LANGUAGES C CXX ASM
+    DESCRIPTION "Coconut Flight Software"
 )
 
 # Add FreeRTOS as a library
@@ -57,10 +57,5 @@ target_include_directories(FreeRTOS PUBLIC
 # Include the app's source code
 add_subdirectory(${MAIN_DIRECTORY})
 
-# set(RADIOLIB_SRC
-#     ${RADIOLIB_DIRECTORY}/src/modules/RFM9x/RFM96.cpp
-# )
-
-add_library(SpacePacket STATIC
-    ${CMAKE_SOURCE_DIR}/lib/spacepacket # this is the location of the CMakeLists.txt
-)
+# add libraries here (and in target_link_libraries under the main cmakelists)
+add_subdirectory(${CMAKE_SOURCE_DIR}/lib/RadioLib)
