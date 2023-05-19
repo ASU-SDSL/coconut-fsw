@@ -12,6 +12,9 @@
         "string_view": "cpp",
         "initializer_list": "cpp",
         "ranges": "cpp",
-        "scheduler.h": "c"
+        "scheduler.h": "c",
+        "radiolib.h": "c",
+        "typedef.h": "c",
+        "buildopt.h": "c"
     }
 }
