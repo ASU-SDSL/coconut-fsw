@@ -7,7 +7,7 @@ set(BUILD_NUMBER "1")
 set(PROJECT_NAME "COCONUTFSW")
 
 # Include the Pico SDK
-include(pico_sdk_import.cmake)
+include(pico_sdk_import.cmake) # - uses environment variable PICO_SDK_PATH
 pico_sdk_init() # Initialise the Pico SDK
 
 # Specify the app(s) source code
@@ -25,9 +25,7 @@ set(DO_DEBUG "ON")
 set(CMAKE_C_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
 set(CMAKE_CXX_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
 set(FREERTOS_CFG_DIRECTORY "${CMAKE_SOURCE_DIR}/Config")
-set(FREERTOS_SRC_DIRECTORY $ENV{FREERTOS_KERNEL_PATH})
-
-# set(RADIOLIB_DIRECTORY "${CMAKE_SOURCE_DIR}/libraries/RadioLib")
+set(FREERTOS_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/FreeRTOS-Kernel")
 
 # Name the project
 project(${PROJECT_NAME}

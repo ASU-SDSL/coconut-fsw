@@ -46,11 +46,11 @@ class PiHal : public RadioLibHal {
         }
 
         uint32_t digitalRead(uint32_t pin) override {
-            if (ping == RADIOLIB_NC) {
+            if (pin == RADIOLIB_NC) {
                 return(0);
             }
 
-            return(gpio_get(pin))
+            return(gpio_get(pin));
         }
 
         void attachInterrupt(uint32_t interruptNum, void (*interruptCb)(void), uint32_t mode) override {
@@ -76,7 +76,7 @@ class PiHal : public RadioLibHal {
         }
 
         void delayMicroseconds(unsigned long us) override {
-            sleep_ms(ms / 1000);
+            sleep_ms(us / 1000);
         }
 
         unsigned long millis() override {
@@ -99,8 +99,8 @@ class PiHal : public RadioLibHal {
             
             uint32_t start = time_us_64();
 
-            while(gpioRead(pin) == state) {
-                if((time_us_64() - curtick) > timeout) {
+            while(gpio_get(pin) == state) {
+                if((time_us_64() - start) > timeout) {
                     return(0);
                 }
             }
@@ -120,6 +120,8 @@ class PiHal : public RadioLibHal {
             char ret;
             const uint8_t* outputBuffer = &b;
             spi_write_blocking(spi_default, outputBuffer, 1);
+            
+            return(b);
         }
 
         void spiEndTransaction() {}

@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 3.14)
 # NOTE Equivalent of `#define DEBUG 1`
 if(${DO_DEBUG})
     add_compile_definitions(DEBUG=1)
-    message(STATUS "App-side debugging enabled for ${PROJECT_NAME}")
+    message(STATUS "Debugging enabled for ${PROJECT_NAME}")
 else()
-    message(STATUS "App-side debugging disabled for ${PROJECT_NAME}")
+    message(STATUS "Debugging disabled for ${PROJECT_NAME}")
 endif()
 
 # Make project data accessible to compiler
@@ -16,7 +16,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/src/main.c
     ${MAIN_DIRECTORY}/src/gse.c
     ${MAIN_DIRECTORY}/src/scheduler.c
-    ${MAIN_DIRECTORY}/src/radio.c
+    ${MAIN_DIRECTORY}/src/radio.cpp
     ${MAIN_DIRECTORY}/src/command.c
 )
 
@@ -33,6 +33,8 @@ target_link_libraries(${PROJECT_NAME} LINK_PUBLIC
     pico_stdlib
     FreeRTOS
     hardware_spi
+    hardware_adc
+    hardware_i2c
     RadioLib
     #spacepacket - note: for now, just include spacepacket as an executable if its needed, otherwise we will probably have to make it a library through its
     #               cmakelists file

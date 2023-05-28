@@ -68,18 +68,18 @@ int main() {
                                             1,
                                             NULL);
 
-    BaseType_t radio_task_status = xTaskCreate(radio_task, 
+    /*BaseType_t radio_task_status = xTaskCreate(radio_task, 
                                          "RADIO_TASK", 
                                          128, 
                                          NULL, 
                                          1,
-                                         NULL);
+                                         NULL);*/
     
     // Log app info
     log_device_info();
     
     // Start the FreeRTOS scheduler
-    if (/*scheduler_task_status == pdPASS || */ command_task_status == pdPASS || gse_task_status == pdPASS || radio_task_status == pdPASS) {
+    if (/*scheduler_task_status == pdPASS || */ command_task_status == pdPASS || gse_task_status == pdPASS /*|| radio_task_status == pdPASS*/) {
         vTaskStartScheduler();
     }
     
