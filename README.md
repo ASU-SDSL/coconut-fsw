@@ -7,7 +7,7 @@ This repo contains the flight software for the SDSL Coconut CubeSat. It uses Fre
 1. Setup GitHub SSH and install git - https://docs.github.com/en/authentication/connecting-to-github-with-ssh
 2. In a directory of your choice, run the following command (it may take awhile to install all of the libraries) - ```git clone --recurse-submodules git@github.com:ASU-SDSL/coconut-fsw.git```
 3. To map the pico-sdk directory to the appropriate envirnment variable, add this line to your ~/.bashrc file (note: the .bashrc file only runs when you login, so you will have to run this command in your command line the first time):
-    * ```export PICO_SDK_PATH="$HOME/Documents/coconut/coconut-fsw/lib/pico-sdk"```
+    * ```export PICO_SDK_PATH="${path to coconut-fsw}/coconut-fsw/lib/pico-sdk"```
 4. Install extra tools: ```sudo apt install cmake gcc-arm-none-eabi build-essential```
 
 ## Usage
