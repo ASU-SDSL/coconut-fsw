@@ -18,6 +18,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/src/scheduler.c
     ${MAIN_DIRECTORY}/src/radio.cpp
     ${MAIN_DIRECTORY}/src/command.c
+    ${MAIN_DIRECTORY}/src/EpsSensor.c
 )
 
 add_executable(${PROJECT_NAME}
