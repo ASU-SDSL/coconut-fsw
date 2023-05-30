@@ -12,14 +12,24 @@
 #include "gse.h"
 
 #define COMMAND_MAX_QUEUE_ITEMS 64
+#define COMMAND_CHECK_DELAY_MS 500
 
-QueueHandle_t command_queue;
+QueueHandle_t command_byte_queue;
+
+typedef enum command_source {
+    UART,
+    RADIO
+} command_source_t;
+
+typedef struct command_byte {
+    command_source_t source;
+    char value;
+} command_byte_t;
 
 /* USER FUNCTIONS */
-void receive_command_from_isr(transmission_buffer command);
+void receive_command_byte_from_isr(char ch, command_source_t source);
 
 /* INTERNAL FUNCTIONS */
-void receive_byte_from_transmission(char byte);
 
 // Main Task
 void command_task(void* unused_arg);

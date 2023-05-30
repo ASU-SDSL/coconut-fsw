@@ -9,29 +9,33 @@
 #include <semphr.h>
 #include "pico/stdlib.h"
 
+#include "telemetry.h"
+
 // Constants
 #define MAX_ROUTINES 256
 #define MAX_ROUTINE_NAME_LEN 100
 #define SCHEDULER_CHECK_DELAY_MS 500
 #define MS_IN_SEC 1000
 #define SECS_IN_MIN 60
+#define ROUTINE_CREATION_MAX_QUEUE_ITEMS 16
 
 // Structs and Types
-typedef void (*routine_func)();
+typedef void (*routine_func)(void*);
 typedef struct scheduler_routine {
-    char routine_name[MAX_ROUTINE_NAME_LEN + 1]; // routine name for logging purposes
+    char name[MAX_ROUTINE_NAME_LEN + 1]; // routine name for logging purposes
     TickType_t execute_time; // exact tick when the routine will be ran
     TickType_t recur_time; // how many ticks until the routine will recur after execution, null for non-recurring routines
-    routine_func routine_func_ptr; // function ptr that will run recurrently
+    routine_func func_ptr; // function ptr that will be called when the routine is ran
+    void* arg_data; // data that will be passed to the first argument of the function routine
 } scheduler_routine;
 typedef struct scheduler_context {
-    // SemaphoreHandle_t mutex; // mutex for thread-safety
     scheduler_routine* routines[MAX_ROUTINES]; // global storage for scheduler routines
     size_t routine_count; // amount of routines currently allocated
 } scheduler_context;
 
 // Global Scheduler Context
 scheduler_context g_scheduler_context;
+QueueHandle_t routine_creation_queue;
 
 /* USER FUNCTIONS */
 
@@ -53,7 +57,8 @@ void schedule_delayed_routine_mins(const char* routine_name, routine_func routin
 /* INTERNAL FUNCTIONS */
 
 // Internal Scheduler Functions
-void create_scheduler_routine(const char* routine_name, TickType_t execute_time, TickType_t recur_time, routine_func routine_func_ptr);
+void queue_scheduler_routine_creation(const char* routine_name, TickType_t execute_time, TickType_t recur_time, routine_func routine_func_ptr);
+void create_scheduler_routine(scheduler_routine* sr);
 bool run_scheduler_routine(scheduler_routine* routine);
 void delete_scheduler_routine(scheduler_routine* routine);
 void cleanup_scheduler_routines_list();
