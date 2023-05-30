@@ -25,13 +25,15 @@ typedef struct scheduler_routine {
     routine_func routine_func_ptr; // function ptr that will run recurrently
 } scheduler_routine;
 typedef struct scheduler_context {
-    SemaphoreHandle_t mutex; // mutex for thread-safety
+    // SemaphoreHandle_t mutex; // mutex for thread-safety
     scheduler_routine* routines[MAX_ROUTINES]; // global storage for scheduler routines
     size_t routine_count; // amount of routines currently allocated
 } scheduler_context;
 
 // Global Scheduler Context
 scheduler_context g_scheduler_context;
+
+/* USER FUNCTIONS */
 
 // Utility Functions
 TickType_t ms_to_ticks(unsigned long ms);
@@ -47,6 +49,8 @@ void schedule_recurring_routine_mins(const char* routine_name, routine_func rout
 void schedule_delayed_routine_ms(const char* routine_name, routine_func routine_func_ptr, unsigned long ms_delay);
 void schedule_delayed_routine_secs(const char* routine_name, routine_func routine_func_ptr, unsigned long secs_delay);
 void schedule_delayed_routine_mins(const char* routine_name, routine_func routine_func_ptr, unsigned long mins_delay);
+
+/* INTERNAL FUNCTIONS */
 
 // Internal Scheduler Functions
 void create_scheduler_routine(const char* routine_name, TickType_t execute_time, TickType_t recur_time, routine_func routine_func_ptr);

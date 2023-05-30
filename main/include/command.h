@@ -8,15 +8,18 @@
 #include <task.h>
 #include <semphr.h>
 #include "pico/stdlib.h"
+#include "queue.h"
 #include "gse.h"
 
 #define COMMAND_MAX_QUEUE_ITEMS 64
 
 QueueHandle_t command_queue;
 
-void receive_byte_from_transmission(char byte);
+/* USER FUNCTIONS */
+void receive_command_from_isr(transmission_buffer command);
 
-void queue_inbound_command(transmission_buffer command);
+/* INTERNAL FUNCTIONS */
+void receive_byte_from_transmission(char byte);
 
 // Main Task
 void command_task(void* unused_arg);

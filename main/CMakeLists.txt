@@ -18,6 +18,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/src/scheduler.c
     ${MAIN_DIRECTORY}/src/radio.c
     ${MAIN_DIRECTORY}/src/command.c
+    ${MAIN_DIRECTORY}/src/telemetry.c
 )
 
 add_executable(${PROJECT_NAME}

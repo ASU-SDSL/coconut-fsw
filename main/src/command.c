@@ -4,11 +4,13 @@ void receive_byte_from_transmission(char byte) {
     
 }
 
-// void queue_inbound_command_from_isr(transmission_buffer command) {
-//     // NOTICE: ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING TASKS FROM TASKS
-//     // Queue buffer to command queue
-//     xQueueSendToBack(command_queue, &new_buffer, portMAX_DELAY);
-// }
+void receive_command_from_isr(transmission_buffer command) {
+    // NOTICE: ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING TASKS FROM TASKS
+    // Allocate buffer
+    transmission_buffer* allocated_buffer = malloc(sizeof(transmission_buffer));
+    // Queue buffer to command queue
+    xQueueSendToBack(command_queue, &allocated_buffer, portMAX_DELAY);
+}
 
 void command_task(void* unused_arg) {
     // Initialize command queue

@@ -67,16 +67,16 @@ void create_scheduler_routine(const char* routine_name, TickType_t execute_time,
     sr->execute_time = execute_time;
     sr->recur_time = recur_time;
     sr->routine_func_ptr = routine_func_ptr;
-    // Spinlock until scheduler is initialized
-    while (g_scheduler_context.mutex == NULL) {
-        vTaskDelay(ms_to_ticks(SCHEDULER_CHECK_DELAY_MS));
-    }
+    // // Spinlock until scheduler is initialized
+    // while (g_scheduler_context.mutex == NULL) {
+    //     vTaskDelay(ms_to_ticks(SCHEDULER_CHECK_DELAY_MS));
+    // }
     // Acquire mutex
-    xSemaphoreTake(g_scheduler_context.mutex, portMAX_DELAY);
+    // xSemaphoreTake(g_scheduler_context.mutex, portMAX_DELAY);
     // Add routine to list
     g_scheduler_context.routines[g_scheduler_context.routine_count++] = sr;
-    // Release mutex
-    xSemaphoreGive(g_scheduler_context.mutex);
+    // // Release mutex
+    // xSemaphoreGive(g_scheduler_context.mutex);
 }
 
 bool run_scheduler_routine(scheduler_routine* routine) {
@@ -147,12 +147,13 @@ void test_routine() {
 void scheduler_task(void* unused_arg) {
     // Setup context struct
     initialize_scheduler_context();
-    // Create test task
+    // Create test routine
     schedule_recurring_routine_secs("TEST", test_routine, 1);
     // Run main task loop
     while (true) {
         // Acquire mutex
-        xSemaphoreTake(g_scheduler_context.mutex, portMAX_DELAY);
+        // xSemaphoreTake(g_scheduler_context.mutex, portMAX_DELAY);
+        // Check if we have any routines to schedule
         // Check each routine to see if it needs to be executed
         bool needs_cleanup = false;
         for (int i = 0; i < g_scheduler_context.routine_count; i++) {
@@ -173,7 +174,7 @@ void scheduler_task(void* unused_arg) {
             cleanup_scheduler_routines_list();
         }
         // Release mutex
-        xSemaphoreGive(g_scheduler_context.mutex);
+        // xSemaphoreGive(g_scheduler_context.mutex);
         // Sleep for a bit before checking again
         vTaskDelay(ms_to_ticks(SCHEDULER_CHECK_DELAY_MS));
     }

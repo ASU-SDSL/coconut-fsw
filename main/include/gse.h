@@ -5,8 +5,8 @@
 #include "hardware/uart.h"
 #include "hardware/irq.h"
 
-#include <FreeRTOS.h>
-#include <queue.h>
+#include "FreeRTOS.h"
+#include "queue.h"
 
 #define BAUD_RATE 115200
 #define DATA_BITS 8
