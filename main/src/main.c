@@ -1,8 +1,4 @@
 #include "main.h"
-#include "gse.h"
-#include "radio.h"
-#include "scheduler.h"
-#include "command.h"
 
 /*
  * GLOBALS
@@ -10,24 +6,6 @@
 // we may need to make globals (like queues, mutexs, etc) here and then pass them as arguments to the tasks
 
 const TickType_t ms_delay = 1000 / portTICK_PERIOD_MS; // 500 ms
-
-
-/**
- * @brief Generate and print a debug message from a supplied string.
- *
- * @param msg: The base message to which `[DEBUG]` will be prefixed.
- */
-/*
-void log_debug(const char* msg) {
-    uint msg_length = 9 + strlen(msg);
-    char* sprintf_buffer = malloc(msg_length);
-    sprintf(sprintf_buffer, "[DEBUG] %s\n", msg);
-    #ifdef DEBUG
-    printf("%s", sprintf_buffer);
-    #endif
-    free(sprintf_buffer);
-}*/
-
 
 /**
  * @brief Show basic device info.
@@ -63,6 +41,13 @@ int main() {
 
     BaseType_t command_task_status = xTaskCreate(command_task,
                                             "COMMAND_TASK",
+                                            128,
+                                            NULL,
+                                            1,
+                                            NULL);
+    
+    BaseType_t telemetry_task_status = xTaskCreate(telemetry_task,
+                                            "TELEMETRY_TASK",
                                             128,
                                             NULL,
                                             1,

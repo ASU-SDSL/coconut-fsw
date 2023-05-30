@@ -1,5 +1,4 @@
 #include "scheduler.h"
-#include "gse.h"
 
 // Utility Functions
 TickType_t ms_to_ticks(unsigned long ms) {
@@ -22,7 +21,7 @@ void schedule_recurring_routine_ms(const char* routine_name, routine_func routin
     // Calculate first run time 
     TickType_t execute_time = xTaskGetTickCount() + recur_time;
     // Create routine
-    create_scheduler_routine(routine_name, execute_time, recur_time, routine_func_ptr);
+    queue_scheduler_routine_creation(routine_name, execute_time, recur_time, routine_func_ptr);
 }
 
 void schedule_recurring_routine_secs(const char* routine_name, routine_func routine_func_ptr, unsigned long secs_until_recur) {
@@ -41,7 +40,7 @@ void schedule_delayed_routine_ms(const char* routine_name, routine_func routine_
     // Calculate first run time 
     TickType_t execute_time = xTaskGetTickCount() + tick_delay;
     // Create routine
-    create_scheduler_routine(routine_name, execute_time, 0, routine_func_ptr);
+    queue_scheduler_routine_creation(routine_name, execute_time, 0, routine_func_ptr);
 }
 
 void schedule_delayed_routine_secs(const char* routine_name, routine_func routine_func_ptr, unsigned long secs_delay) {
@@ -53,35 +52,34 @@ void schedule_delayed_routine_mins(const char* routine_name, routine_func routin
 }
 
 // Internal Scheduler Functions
-void create_scheduler_routine(const char* routine_name, TickType_t execute_time, TickType_t recur_time, routine_func routine_func_ptr) {
+void queue_scheduler_routine_creation(const char* routine_name, TickType_t execute_time, TickType_t recur_time, routine_func routine_func_ptr) {
     // Allocate memory
     scheduler_routine* sr = pvPortMalloc(sizeof(scheduler_routine));
     // Check name and copy
     size_t routine_name_len = strlen(routine_name);
-    if (routine_name_len > MAX_ROUTINE_NAME_LEN) {
+    if (routine_name_len + 1 > MAX_ROUTINE_NAME_LEN) {
         // TODO: Log error
         return;
     }
-    strncpy(sr->routine_name, routine_name, routine_name_len);
+    strncpy(sr->name, routine_name, routine_name_len);
     // Copy other fields
     sr->execute_time = execute_time;
     sr->recur_time = recur_time;
-    sr->routine_func_ptr = routine_func_ptr;
-    // // Spinlock until scheduler is initialized
-    // while (g_scheduler_context.mutex == NULL) {
-    //     vTaskDelay(ms_to_ticks(SCHEDULER_CHECK_DELAY_MS));
-    // }
-    // Acquire mutex
-    // xSemaphoreTake(g_scheduler_context.mutex, portMAX_DELAY);
+    sr->func_ptr = routine_func_ptr;
+    while (!routine_creation_queue) {
+        vTaskDelay(SCHEDULER_CHECK_DELAY_MS);
+    }
+    xQueueSendToBack(routine_creation_queue, &sr, portMAX_DELAY);
+}
+
+void create_scheduler_routine(scheduler_routine* sr) {
     // Add routine to list
     g_scheduler_context.routines[g_scheduler_context.routine_count++] = sr;
-    // // Release mutex
-    // xSemaphoreGive(g_scheduler_context.mutex);
 }
 
 bool run_scheduler_routine(scheduler_routine* routine) {
     // Run the routine function
-    routine->routine_func_ptr();
+    routine->func_ptr(routine->arg_data);
     // Check if it needs to be rescheduled (recurring routine)
     if (routine->recur_time > 0) {
         routine->execute_time = xTaskGetTickCount() + routine->recur_time;
@@ -95,10 +93,11 @@ bool run_scheduler_routine(scheduler_routine* routine) {
 }
 
 void delete_scheduler_routine(scheduler_routine* routine) {
+    // TODO: Do more testing on this and the cleanup code
     // Find routine in list and set routine ptr to null to prevent UAF's
     bool found_ptr = false;
     for (int i = 0; i < g_scheduler_context.routine_count; i++) {
-        if (g_scheduler_context.routines[i] == routine) {
+        if (g_scheduler_context.routines[i] == NULL) {
             found_ptr = true;
             g_scheduler_context.routines[i] = NULL;
             break;
@@ -127,33 +126,35 @@ void cleanup_scheduler_routines_list() {
 }
 
 void initialize_scheduler_context() {
-    // Set up semaphore
-    g_scheduler_context.mutex = xSemaphoreCreateMutex();
     // Initialize scheduler routine memory
     memset(g_scheduler_context.routines, 0, sizeof(g_scheduler_context.routines));
     // Set routine count to zero
     g_scheduler_context.routine_count = 0;
 }
 
-void test_routine() {
+void test_routine(void* unused) {
     // 000 0 0 00000000000 00 00000000000000 0000000000000000
     // space packet header template ^
     char test_bytes[] = {0x35, 0x2E, 0xF8, 0x53, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x68, 0x65, 0x6c, 0x6c, 0x6f};
     //                  |       sync bytes      |           space packet            |       "hello" string       |
-    uart_queue_message(test_bytes, sizeof(test_bytes));
+    send_telemetry(test_bytes, sizeof(test_bytes));
 }
 
 // Main thread routine for scheduler task
 void scheduler_task(void* unused_arg) {
     // Setup context struct
     initialize_scheduler_context();
+    // Initialize telemetry queue
+    routine_creation_queue = xQueueCreate(ROUTINE_CREATION_MAX_QUEUE_ITEMS, sizeof(scheduler_routine*));
     // Create test routine
     schedule_recurring_routine_secs("TEST", test_routine, 1);
     // Run main task loop
     while (true) {
-        // Acquire mutex
-        // xSemaphoreTake(g_scheduler_context.mutex, portMAX_DELAY);
         // Check if we have any routines to schedule
+        scheduler_routine* sd;
+        if (xQueueReceive(routine_creation_queue, &sd, 0)) {
+            create_scheduler_routine(sd);
+        }
         // Check each routine to see if it needs to be executed
         bool needs_cleanup = false;
         for (int i = 0; i < g_scheduler_context.routine_count; i++) {
@@ -173,8 +174,6 @@ void scheduler_task(void* unused_arg) {
         if (needs_cleanup) {
             cleanup_scheduler_routines_list();
         }
-        // Release mutex
-        // xSemaphoreGive(g_scheduler_context.mutex);
         // Sleep for a bit before checking again
         vTaskDelay(ms_to_ticks(SCHEDULER_CHECK_DELAY_MS));
     }

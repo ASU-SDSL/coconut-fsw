@@ -11,11 +11,12 @@
 #include "gse.h"
 
 #define TELEMETRY_MAX_QUEUE_ITEMS 64
+#define TELEMETRY_CHECK_DELAY_MS 500
 
 QueueHandle_t telemetry_queue;
 
 /* USER FUNCTIONS */
-void send_telemtry(transmission_buffer command);
+void send_telemetry(const char* buffer, size_t size);
 
 /* INTERNAL FUNCTIONS */
 // Main Task
