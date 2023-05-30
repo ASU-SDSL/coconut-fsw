@@ -21,8 +21,14 @@
 #include <string.h>
 #include <time.h>
 // Pico SDK
-#include "pico/stdlib.h"            // Includes `hardware_gpio.h`
+#include "pico/stdlib.h"
 #include "pico/binary_info.h"
+// Project headers
+#include "gse.h"
+#include "radio.h"
+#include "scheduler.h"
+#include "command.h"
+#include "telemetry.h"
 
 
 #ifdef __cplusplus
