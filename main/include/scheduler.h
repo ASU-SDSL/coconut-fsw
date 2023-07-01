@@ -10,10 +10,11 @@
 #include "pico/stdlib.h"
 
 #include "telemetry.h"
+#include "log.h"
 
 // Constants
 #define MAX_ROUTINES 256
-#define MAX_ROUTINE_NAME_LEN 100
+#define MAX_ROUTINE_NAME_LEN 32
 #define SCHEDULER_CHECK_DELAY_MS 500
 #define MS_IN_SEC 1000
 #define SECS_IN_MIN 60

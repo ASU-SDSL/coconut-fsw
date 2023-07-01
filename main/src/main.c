@@ -17,41 +17,46 @@ void log_device_info(void) {
 /*
  * RUNTIME START
  */
+
 int main() {
 
-    // Enable STDIO
-    stdio_init_all();
+    // Initialize debug logging
+    init_debug_log();
+
+    // Print cool banner
+    print_banner();
     
     // Set up the tasks/threads
     // Arg 3 is the stack depth -- in words, not bytes
     // Arg 5+ are arguments to the function of the task
+    log_info("Initializing FreeRTOS Tasks...");
     BaseType_t gse_task_status = xTaskCreate(gse_task, 
-                                         "GSE_TASK", 
-                                         128, 
-                                         NULL, 
-                                         1,
-                                         NULL);
+                                        "GSE_TASK", 
+                                        128, 
+                                        NULL, 
+                                        1,
+                                        NULL);
                                          
     BaseType_t scheduler_task_status = xTaskCreate(scheduler_task, 
-                                         "SCHEDULER_TASK", 
-                                         512, 
-                                         NULL, 
-                                         1,
-                                         NULL); 
+                                        "SCHEDULER_TASK", 
+                                        512, 
+                                        NULL, 
+                                        1,
+                                        NULL); 
 
     BaseType_t command_task_status = xTaskCreate(command_task,
-                                            "COMMAND_TASK",
-                                            128,
-                                            NULL,
-                                            1,
-                                            NULL);
+                                        "COMMAND_TASK",
+                                        128,
+                                        NULL,
+                                        1,
+                                        NULL);
     
     BaseType_t telemetry_task_status = xTaskCreate(telemetry_task,
-                                            "TELEMETRY_TASK",
-                                            128,
-                                            NULL,
-                                            1,
-                                            NULL);
+                                        "TELEMETRY_TASK",
+                                        128,
+                                        NULL,
+                                        1,
+                                        NULL);
 
     /*BaseType_t radio_task_status = xTaskCreate(radio_task, 
                                          "RADIO_TASK", 

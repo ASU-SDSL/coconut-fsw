@@ -58,7 +58,7 @@ void queue_scheduler_routine_creation(const char* routine_name, TickType_t execu
     // Check name and copy
     size_t routine_name_len = strlen(routine_name);
     if (routine_name_len + 1 > MAX_ROUTINE_NAME_LEN) {
-        // TODO: Log error
+        log_error("Name of routine is too large, reduce to less chars!!!");
         return;
     }
     strncpy(sr->name, routine_name, routine_name_len);
@@ -105,7 +105,7 @@ void delete_scheduler_routine(scheduler_routine* routine) {
     }
     // If it couldn't find the pointer, something is wrong
     if (!found_ptr) {
-        // TODO: Log error
+        log_error("Couldn't find scheduler routine to delete!!!");
         return;
     }
     // Free the struct memory
@@ -138,6 +138,7 @@ void test_routine(void* unused) {
     char test_bytes[] = {0x35, 0x2E, 0xF8, 0x53, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x68, 0x65, 0x6c, 0x6c, 0x6f};
     //                  |       sync bytes      |           space packet            |       "hello" string       |
     send_telemetry(test_bytes, sizeof(test_bytes));
+    // log_info("Testing debug log");
 }
 
 // Main thread routine for scheduler task
