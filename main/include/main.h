@@ -29,6 +29,7 @@
 #include "scheduler.h"
 #include "command.h"
 #include "telemetry.h"
+#include "log.h"
 
 
 #ifdef __cplusplus
