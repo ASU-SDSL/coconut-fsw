@@ -1,4 +1,5 @@
 build
+docker_build
 pico-sdk/*
 CMakeFiles/*
 main/CMakeFiles/*
