@@ -9,7 +9,7 @@ This repo contains the flight software for the SDSL Coconut CubeSat. It uses Fre
    1. If you don't want to keep disconnecting and reconnecting the USB cable while testing code, the `RESET` button helps
 3. Run `docker_deploy.sh` to build the firmware in Docker and deploy it to your board
    1. Run `docker_build.sh` if you'd just like to build your firmware without flashing it
-   2. This may be the only way to build it on Windows. Then you can manually copy the firmware binary from the `docker_build` directory onto the RPI file system which will flash the firmware
+   2. If you're getting this error when building on Windows: `env: bash\r: No such file or directory`, run `git config --global core.autocrlf false` then delete the repo, clone the repo again, then try building again
 
 ## Debugging
 
@@ -23,6 +23,6 @@ For debugging, you have two options:
    4. Select the `serial` option and use these options:
       1. Serial line
          1. `/dev/ttyACM0` on Linux
-         2. Probably some `COM` port on Windows, may need to check Device Manager or Google
+         2. `COM3` on Windows, may be different on your system so you should check the `Ports (COM & LPT)` tab in Device Manager
       2. Speed
-         1. 115200
+         1. `115200`
