@@ -10,6 +10,7 @@ This repo contains the flight software for the SDSL Coconut CubeSat. It uses Fre
 3. Run `docker_deploy.sh` to build the firmware in Docker and deploy it to your board
    1. Run `docker_build.sh` if you'd just like to build your firmware without flashing it
    2. If you're getting this error when building on Windows: `env: bash\r: No such file or directory`, run `git config --global core.autocrlf false` then delete the repo, clone the repo again, then try building again
+   3. If you're having issues flashing 
 
 ## Debugging
 
