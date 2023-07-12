@@ -36,6 +36,11 @@
 extern "C" {
 #endif
 
+/*
+ * GLOBALS
+ */
+
+const TickType_t ms_delay = 1000 / portTICK_PERIOD_MS;
 
 /**
  * CONSTANTS

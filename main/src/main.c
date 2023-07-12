@@ -1,21 +1,7 @@
 #include "main.h"
 
 /*
- * GLOBALS
- */
-// we may need to make globals (like queues, mutexs, etc) here and then pass them as arguments to the tasks
-
-const TickType_t ms_delay = 1000 / portTICK_PERIOD_MS; // 500 ms
-
-/**
- * @brief Show basic device info.
- */
-void log_device_info(void) {
-    printf("Project: %s", PROJECT_NAME);
-}
-
-/*
- * RUNTIME START
+ * FREERTOS RUNTIME START
  */
 
 int main() {
@@ -64,9 +50,6 @@ int main() {
                                          NULL, 
                                          1,
                                          NULL);*/
-    
-    // Log app info
-    log_device_info();
     
     // Start the FreeRTOS scheduler
     if (/*scheduler_task_status == pdPASS || */ command_task_status == pdPASS || gse_task_status == pdPASS /*|| radio_task_status == pdPASS*/) {
