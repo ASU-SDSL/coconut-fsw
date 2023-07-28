@@ -5,9 +5,10 @@
         "main.h": "c",
         "stdio.h": "c",
         "gse.h": "c",
-        "scheduler.h": "c",
+        "steve.h": "c",
         "radiolib.h": "c",
         "spi.h": "c",
-        "radio.h": "c"
+        "radio.h": "c",
+        "sstream": "c"
     }
 }
