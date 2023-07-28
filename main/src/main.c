@@ -17,35 +17,35 @@ int main() {
     // Arg 5+ are arguments to the function of the task
     log_info("Initializing FreeRTOS Tasks...");
     BaseType_t gse_task_status = xTaskCreate(gse_task, 
-                                        "GSE_TASK", 
+                                        "GSE", 
                                         128, 
                                         NULL, 
                                         1,
                                         NULL);
                                          
-    BaseType_t scheduler_task_status = xTaskCreate(scheduler_task, 
-                                        "SCHEDULER_TASK", 
+    BaseType_t scheduler_task_status = xTaskCreate(steve_task, 
+                                        "STEVE", 
                                         512, 
                                         NULL, 
                                         1,
                                         NULL); 
 
     BaseType_t command_task_status = xTaskCreate(command_task,
-                                        "COMMAND_TASK",
+                                        "COMMAND",
                                         128,
                                         NULL,
                                         1,
                                         NULL);
     
     BaseType_t telemetry_task_status = xTaskCreate(telemetry_task,
-                                        "TELEMETRY_TASK",
+                                        "TELEMETRY",
                                         128,
                                         NULL,
                                         1,
                                         NULL);
 
     /*BaseType_t radio_task_status = xTaskCreate(radio_task, 
-                                         "RADIO_TASK", 
+                                         "RADIO", 
                                          128, 
                                          NULL, 
                                          1,

@@ -26,7 +26,7 @@
 // Project headers
 #include "gse.h"
 #include "radio.h"
-#include "scheduler.h"
+#include "steve.h"
 #include "command.h"
 #include "telemetry.h"
 #include "log.h"
