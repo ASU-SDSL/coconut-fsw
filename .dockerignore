@@ -1,2 +1,5 @@
 Dockerfile
 build
+docker_build
+lib
+.vscode
