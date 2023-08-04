@@ -3,25 +3,23 @@
 
 void uart_queue_message(char* buffer, size_t size) {
     // Create new transmission structure
-    transmission_buffer new_buffer;
+    transmission_buffer_t new_buffer;
     new_buffer.size = size;
     // Allocate chunk on heap to copy buffer contents
     char* heap_buf = pvPortMalloc(size);
     memcpy(heap_buf, buffer, size);
     new_buffer.buffer = heap_buf;
     // Wait for queue to become available
-    while (uart0_queue == NULL) {
-        vTaskDelay(500);
+    while (!uart0_queue) {
+        vTaskDelay(GSE_CHECK_DELAY_MS);
     }
     xQueueSendToBack(uart0_queue, &new_buffer, portMAX_DELAY);
 }
 
 void uart_on_rx() {
     while (uart_is_readable(UART0_INSTANCE)) {
-        uint8_t ch = uart_getc(UART0_INSTANCE);
-        if (uart_is_writable(UART0_INSTANCE)) {
-            // uart_putc(UART0_INSTANCE, ch);
-        }
+        char ch = uart_getc(UART0_INSTANCE);
+        receive_command_byte_from_isr(ch, UART);
     }
 }
 
@@ -56,15 +54,14 @@ void gse_task() {
     
     // Create UART0 queue
     // TODO: Change this to a struct instead of char ptr for sending actual command data
-    uart0_queue = xQueueCreate(UART_MAX_QUEUE_ITEMS, sizeof(transmission_buffer));
+    uart0_queue = xQueueCreate(UART_MAX_QUEUE_ITEMS, sizeof(transmission_buffer_t));
 
     // Initialize write LED
-    const uint LED_PIN = PICO_DEFAULT_LED_PIN;
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
 
     // Start listening for UART queue messages
-    transmission_buffer rec;
+    transmission_buffer_t rec;
     while (true) {
         // Wait on a message in the queue
         xQueueReceive(uart0_queue, &rec, UART_QUEUE_CHECK_TIME);

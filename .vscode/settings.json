@@ -5,9 +5,15 @@
         "main.h": "c",
         "stdio.h": "c",
         "gse.h": "c",
-        "scheduler.h": "c",
+        "steve.h": "c",
         "radiolib.h": "c",
         "spi.h": "c",
-        "radio.h": "c"
+        "radio.h": "c",
+        "freertos.h": "c",
+        "freertosconfig.h": "c",
+        "debug.h": "c",
+        "arch.h": "c",
+        "opt.h": "c",
+        "command.h": "c"
     }
 }

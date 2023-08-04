@@ -15,10 +15,15 @@ add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
 set(SOURCES
     ${MAIN_DIRECTORY}/src/main.c
     ${MAIN_DIRECTORY}/src/gse.c
-    ${MAIN_DIRECTORY}/src/scheduler.c
+    ${MAIN_DIRECTORY}/src/steve.c
     ${MAIN_DIRECTORY}/src/radio.cpp
     ${MAIN_DIRECTORY}/src/command.c
+<<<<<<< HEAD
     ${MAIN_DIRECTORY}/src/EpsSensor.c
+=======
+    ${MAIN_DIRECTORY}/src/telemetry.c
+    ${MAIN_DIRECTORY}/src/log.c
+>>>>>>> 1fca684a5d677feeabb697931cd15ed2190cebd7
 )
 
 add_executable(${PROJECT_NAME}

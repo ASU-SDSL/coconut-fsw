@@ -19,16 +19,16 @@ static const float SHUNT_LSB = 0.00001;
 static const float BUS_LSB = 0.004;
 
 int reg_write(	i2c_inst_t *i2c,
-		const uint8_t addr,
-		const uint8_t reg,
-		uint8_t *buf,
-		const uint8_t nbytes);
+				const uint8_t addr,
+				const uint8_t reg,
+				uint8_t *buf,
+				const uint8_t nbytes);
 
 int reg_read(	i2c_inst_t *i2c,
-		const uint8_t addr,
-		const uint8_t reg,
-		uint8_t *buf,
-		const uint8_t nbytes);
+				const uint8_t addr,
+				const uint8_t reg,
+				uint8_t *buf,
+				const uint8_t nbytes);
 
 int reg_write(	i2c_inst_t *i2c,
                 const uint8_t addr,
@@ -54,10 +54,10 @@ int reg_write(	i2c_inst_t *i2c,
 }
 
 int reg_read(	i2c_inst_t *i2c,
-		const uint8_t addr,
-		const uint8_t reg,
-		uint8_t *buf,
-		const uint8_t nbytes) {
+				const uint8_t addr,
+				const uint8_t reg,
+				uint8_t *buf,
+				const uint8_t nbytes) {
 
 	int num_bytes_read = 0;
 
@@ -74,49 +74,61 @@ int reg_read(	i2c_inst_t *i2c,
 float getVShunt(        i2c_inst_t *i2c,
                         const uint8_t addr,
                         const uint8_t reg_vs,
-                        uint16_t *buf) {
+                        float *output_buf) {
 
-        float vshunt;
+		uint16_t buf;
 
-        reg_read(i2c, addr, reg_vs, buf, 2);
-        vshunt = (buf >> 3)*(SHUNT_LSB);
-        return vshunt;
+		if (reg_read(i2c, addr, reg_vs, &buf, 2) < 0) {
+			return 0;
+		}
+
+		*output_buf = (buf >> 3)*(SHUNT_LSB);
+        return 1;
 }
 
 float getVBus(          i2c_inst_t *i2c,
                         const uint8_t addr,
                         const uint8_t reg_vb,
-                        uint16_t *buf) {
+                        float *output_buf) {
 
-        float vbus;
+        uint16_t buf;
 
-        reg_read(i2c, addr, reg_vb, buf, 2);
-        vbus = (buf >> 3)*(BUS_LSB);
-        return vbus;
+        if (reg_read(i2c, addr, reg_vb, &buf, 2) < 0) {
+			return 0;
+		}
+
+        *output_buf = (buf >> 3)*(BUS_LSB);
+        return 1;
 }
 
 double getPower(	i2c_inst_t *i2c,
-          	 	const uint8_t addr,
+          	 		const uint8_t addr,
 	                const uint8_t reg_p,
-         	        uint16_t *buf) {
+         	        float *output_buf) {
 
-	double power;
+	uint16_t buf;
 
-	reg_read(i2c, addr, reg_p, buf, 2);
-        power = (buf)*(POWER_LSB);
-	return power;
+	if (reg_read(i2c, addr, reg_p, &buf, 2) < 0) {
+		return 0;
+	}
+        
+	*output_buf = (buf)*(POWER_LSB);
+	return 1;
 }
 
 double getCurrent(      i2c_inst_t *i2c,
                         const uint8_t addr,
                         const uint8_t reg_c,
-                        uint8_t *buf) {
+                        float *output_buf) {
 
-        double current;
+        uint16_t buf;
 
-        reg_read(i2c, addr, reg_c, buf, 2);
-        current = (buf)*(CURRENT_LSB);
-        return current;
+        if (reg_read(i2c, addr, reg_c, buf, 2) < 0) {
+			return 0;
+		}
+
+        *output_buf = (buf)*(CURRENT_LSB);
+        return 1;
 }
 
 int main() {
@@ -130,6 +142,7 @@ int main() {
 
 	// Buffer to store raw reads
 	uint16_t data;
+	float buf;
 
 	// Floats for measurements
 	float v_shunt;
@@ -152,7 +165,7 @@ int main() {
 	reg_write(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 
 	// Test: read Calibration register
-	reg_read(i2c, INA219_ADDR, REG_CALIB, data, 2);
+	reg_read(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 	printf("0x%02x\r\n", data);
 
 	// Wait
@@ -162,17 +175,33 @@ int main() {
 	while (true) {
 
 		// Read registers (16 bits each)
-		v_shunt = getVShunt(i2c, INA219_ADDR, REG_SHUNT, data);
-		printf("Shunt voltage: %.2f V\r\n", v_shunt);
+		if (getVShunt(i2c, INA219_ADDR, REG_SHUNT, &buf) = 0) {
+			printf("Shunt voltage error\n");
+		}
+		else {
+			printf("Shunt voltage: %.2f V\r\n", buf);
+		}
 
-		v_bus = getVBus(i2c, INA219_ADDR, REG_BUS, data);
-                printf("Bus voltage: %.2f V\r\n", v_bus);
+		if (getVBus(i2c, INA219_ADDR, REG_BUS, &buf) = 0) {
+			printf("Bus voltage error\n");
+		}
+		else {
+			printf("Bus voltage: %.2f V\r\n", buf);
+		}
 
-		power = getPower(i2c, INA219_ADDR, REG_POWER, data);
-                printf("Power: %.2d W\r\n", power);
+		if (getPower(i2c, INA219_ADDR, REG_POWER, &buf) = 0) {
+			printf("Power error\n");
+		}
+		else {
+			printf("Power: %.2f W\r\n", buf);
+		}
 
-		current = getCurrent(i2c, INA219_ADDR, REG_CURRENT, data);
-                printf("Current: %.2d A\r\n", current);
+		if (getCurrent(i2c, INA219_ADDR, REG_CURRENT, &buf) = 0) {
+			printf("Current error\n");
+		}
+		else {
+			printf("Current: %.2f A\r\n", buf);
+		}
 
 		sleep_ms(100);
 	}

@@ -21,14 +21,26 @@
 #include <string.h>
 #include <time.h>
 // Pico SDK
-#include "pico/stdlib.h"            // Includes `hardware_gpio.h`
+#include "pico/stdlib.h"
 #include "pico/binary_info.h"
+// Project headers
+#include "gse.h"
+#include "radio.h"
+#include "steve.h"
+#include "command.h"
+#include "telemetry.h"
+#include "log.h"
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+/*
+ * GLOBALS
+ */
+
+const TickType_t ms_delay = 1000 / portTICK_PERIOD_MS;
 
 /**
  * CONSTANTS

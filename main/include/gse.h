@@ -5,8 +5,9 @@
 #include "hardware/uart.h"
 #include "hardware/irq.h"
 
-#include <FreeRTOS.h>
-#include <queue.h>
+#include "FreeRTOS.h"
+#include "queue.h"
+#include "command.h"
 
 #define BAUD_RATE 115200
 #define DATA_BITS 8
@@ -17,13 +18,16 @@
 #define UART0_TX_PIN   0
 #define UART0_RX_PIN   1
 
-#define UART_MAX_QUEUE_ITEMS  64
+#define LED_PIN 13
+
+#define UART_MAX_QUEUE_ITEMS 64
+#define GSE_CHECK_DELAY_MS 500
 #define UART_QUEUE_CHECK_TIME portMAX_DELAY
 
 typedef struct transmission_buffer {
     char* buffer;
     size_t size;
-} transmission_buffer;
+} transmission_buffer_t;
 
 QueueHandle_t uart0_queue;
 
