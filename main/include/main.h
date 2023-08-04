@@ -26,7 +26,7 @@
 // Project headers
 #include "gse.h"
 #include "radio.h"
-#include "scheduler.h"
+#include "steve.h"
 #include "command.h"
 #include "telemetry.h"
 #include "log.h"
@@ -36,6 +36,11 @@
 extern "C" {
 #endif
 
+/*
+ * GLOBALS
+ */
+
+const TickType_t ms_delay = 1000 / portTICK_PERIOD_MS;
 
 /**
  * CONSTANTS

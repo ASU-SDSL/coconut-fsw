@@ -11,9 +11,6 @@ RUN apt install -y python3 cmake gcc-arm-none-eabi build-essential git
 COPY . /coconut-fsw
 WORKDIR /coconut-fsw
 
-# Remove build folder or CMake complains
-RUN rm -rf ./build
-
 # Update submodules if needed
 RUN git submodule update --init --recursive
 
