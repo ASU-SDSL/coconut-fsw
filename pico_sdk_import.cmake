@@ -3,10 +3,10 @@
 # This can be dropped into an external project to help locate this SDK
 # It should be include()ed prior to project()
 
-if (DEFINED ENV{PICO_SDK_PATH} AND (NOT PICO_SDK_PATH))
-    set(PICO_SDK_PATH $ENV{PICO_SDK_PATH})
-    message("Using PICO_SDK_PATH from environment ('${PICO_SDK_PATH}')")
-endif ()
+#if (DEFINED ENV{PICO_SDK_PATH} AND (NOT PICO_SDK_PATH))
+#    set(PICO_SDK_PATH $ENV{PICO_SDK_PATH})
+#    message("Using PICO_SDK_PATH from environment ('${PICO_SDK_PATH}')")
+#endif ()
 
 if (DEFINED ENV{PICO_SDK_FETCH_FROM_GIT} AND (NOT PICO_SDK_FETCH_FROM_GIT))
     set(PICO_SDK_FETCH_FROM_GIT $ENV{PICO_SDK_FETCH_FROM_GIT})
@@ -17,6 +17,8 @@ if (DEFINED ENV{PICO_SDK_FETCH_FROM_GIT_PATH} AND (NOT PICO_SDK_FETCH_FROM_GIT_P
     set(PICO_SDK_FETCH_FROM_GIT_PATH $ENV{PICO_SDK_FETCH_FROM_GIT_PATH})
     message("Using PICO_SDK_FETCH_FROM_GIT_PATH from environment ('${PICO_SDK_FETCH_FROM_GIT_PATH}')")
 endif ()
+
+set(PICO_SDK_PATH "${CMAKE_SOURCE_DIR}/lib/pico-sdk/")
 
 set(PICO_SDK_PATH "${PICO_SDK_PATH}" CACHE PATH "Path to the Raspberry Pi Pico SDK")
 set(PICO_SDK_FETCH_FROM_GIT "${PICO_SDK_FETCH_FROM_GIT}" CACHE BOOL "Set to ON to fetch copy of SDK from git if not otherwise locatable")
