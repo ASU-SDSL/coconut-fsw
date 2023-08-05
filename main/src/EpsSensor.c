@@ -1,5 +1,5 @@
 #include "EpsSensor.h"
-
+/*
 // I2C address
 static const uint8_t INA219_ADDR = 0x40;
 
@@ -206,3 +206,4 @@ int test() {
 		sleep_ms(100);
 	}
 }
+*/

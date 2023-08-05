@@ -18,12 +18,9 @@ set(SOURCES
     ${MAIN_DIRECTORY}/src/steve.c
     ${MAIN_DIRECTORY}/src/radio.cpp
     ${MAIN_DIRECTORY}/src/command.c
-<<<<<<< HEAD
     ${MAIN_DIRECTORY}/src/EpsSensor.c
-=======
     ${MAIN_DIRECTORY}/src/telemetry.c
     ${MAIN_DIRECTORY}/src/log.c
->>>>>>> 1fca684a5d677feeabb697931cd15ed2190cebd7
 )
 
 add_executable(${PROJECT_NAME}
