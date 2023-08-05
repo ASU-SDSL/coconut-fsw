@@ -71,7 +71,7 @@ int reg_read(	i2c_inst_t *i2c,
 	return num_bytes_read;
 }
 
-float getVShunt(        i2c_inst_t *i2c,
+int getVShunt(        i2c_inst_t *i2c,
                         const uint8_t addr,
                         const uint8_t reg_vs,
                         float *output_buf) {
@@ -86,7 +86,7 @@ float getVShunt(        i2c_inst_t *i2c,
         return 1;
 }
 
-float getVBus(          i2c_inst_t *i2c,
+int getVBus(          i2c_inst_t *i2c,
                         const uint8_t addr,
                         const uint8_t reg_vb,
                         float *output_buf) {
@@ -101,10 +101,10 @@ float getVBus(          i2c_inst_t *i2c,
         return 1;
 }
 
-double getPower(	i2c_inst_t *i2c,
+int getPower(	i2c_inst_t *i2c,
           	 		const uint8_t addr,
 	                const uint8_t reg_p,
-         	        float *output_buf) {
+         	        double *output_buf) {
 
 	uint16_t buf;
 
@@ -116,10 +116,10 @@ double getPower(	i2c_inst_t *i2c,
 	return 1;
 }
 
-double getCurrent(      i2c_inst_t *i2c,
+int getCurrent(      i2c_inst_t *i2c,
                         const uint8_t addr,
                         const uint8_t reg_c,
-                        float *output_buf) {
+                        double *output_buf) {
 
         uint16_t buf;
 
@@ -131,7 +131,7 @@ double getCurrent(      i2c_inst_t *i2c,
         return 1;
 }
 
-int main() {
+int test() {
 
 	// Pins
 	const uint sda_pin = 6;
@@ -175,28 +175,28 @@ int main() {
 	while (true) {
 
 		// Read registers (16 bits each)
-		if (getVShunt(i2c, INA219_ADDR, REG_SHUNT, &buf) = 0) {
+		if (getVShunt(i2c, INA219_ADDR, REG_SHUNT, &buf) == 0) {
 			printf("Shunt voltage error\n");
 		}
 		else {
 			printf("Shunt voltage: %.2f V\r\n", buf);
 		}
 
-		if (getVBus(i2c, INA219_ADDR, REG_BUS, &buf) = 0) {
+		if (getVBus(i2c, INA219_ADDR, REG_BUS, &buf) == 0) {
 			printf("Bus voltage error\n");
 		}
 		else {
 			printf("Bus voltage: %.2f V\r\n", buf);
 		}
 
-		if (getPower(i2c, INA219_ADDR, REG_POWER, &buf) = 0) {
+		if (getPower(i2c, INA219_ADDR, REG_POWER, &buf) == 0) {
 			printf("Power error\n");
 		}
 		else {
 			printf("Power: %.2f W\r\n", buf);
 		}
 
-		if (getCurrent(i2c, INA219_ADDR, REG_CURRENT, &buf) = 0) {
+		if (getCurrent(i2c, INA219_ADDR, REG_CURRENT, &buf) == 0) {
 			printf("Current error\n");
 		}
 		else {
