@@ -14,6 +14,9 @@
         "debug.h": "c",
         "arch.h": "c",
         "opt.h": "c",
-        "command.h": "c"
+        "command.h": "c",
+        "epssensor.h": "c",
+        "i2c.h": "c",
+        "gpio.h": "c"
     }
 }

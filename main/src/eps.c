@@ -1,4 +1,4 @@
-#include "EpsSensor.h"
+#include "eps.h"
 
 // I2C address
 static const uint8_t INA219_ADDR = 0x40;
@@ -13,7 +13,7 @@ static const uint8_t REG_CALIB = 0x05;
 
 // Other constants
 static const double CURRENT_LSB = 0.00001525879;
-static const unsigned int CAL = 26843;
+static const uint8_t CAL[] = {0x68, 0xDB}; // this is 26843, but needs to be input as an array of uint8_t
 static const double POWER_LSB = 0.00030517578;
 static const float SHUNT_LSB = 0.00001;
 static const float BUS_LSB = 0.004;
@@ -50,13 +50,14 @@ int reg_write(	i2c_inst_t *i2c,
 
 	num_bytes_written = i2c_write_blocking(i2c, addr, msg, (nbytes + 1), false);
 
+	// this could be an error code as well
 	return num_bytes_written;
 }
 
 int reg_read(	i2c_inst_t *i2c,
 				const uint8_t addr,
 				const uint8_t reg,
-				uint8_t *buf,
+				uint8_t *output_buf,
 				const uint8_t nbytes) {
 
 	int num_bytes_read = 0;
@@ -66,7 +67,7 @@ int reg_read(	i2c_inst_t *i2c,
 	}
 
 	i2c_write_blocking(i2c, addr, &reg, 1, true);
-	num_bytes_read = i2c_read_blocking(i2c, addr, buf, nbytes, false);
+	num_bytes_read = i2c_read_blocking(i2c, addr, output_buf, nbytes, false);
 
 	return num_bytes_read;
 }
@@ -76,7 +77,7 @@ int getVShunt(        i2c_inst_t *i2c,
                         const uint8_t reg_vs,
                         float *output_buf) {
 
-		uint16_t buf;
+		uint8_t buf;
 
 		if (reg_read(i2c, addr, reg_vs, &buf, 2) < 0) {
 			return 0;
@@ -91,7 +92,7 @@ int getVBus(          i2c_inst_t *i2c,
                         const uint8_t reg_vb,
                         float *output_buf) {
 
-        uint16_t buf;
+        uint8_t buf;
 
         if (reg_read(i2c, addr, reg_vb, &buf, 2) < 0) {
 			return 0;
@@ -106,8 +107,9 @@ int getPower(	i2c_inst_t *i2c,
 	                const uint8_t reg_p,
          	        double *output_buf) {
 
-	uint16_t buf;
+	uint8_t buf;
 
+	// error codes are < 0
 	if (reg_read(i2c, addr, reg_p, &buf, 2) < 0) {
 		return 0;
 	}
@@ -121,9 +123,9 @@ int getCurrent(      i2c_inst_t *i2c,
                         const uint8_t reg_c,
                         double *output_buf) {
 
-        uint16_t buf;
+        uint8_t buf;
 
-        if (reg_read(i2c, addr, reg_c, buf, 2) < 0) {
+        if (reg_read(i2c, addr, reg_c, &buf, 2) < 0) {
 			return 0;
 		}
 
@@ -141,7 +143,7 @@ int test() {
 	i2c_inst_t *i2c = i2c0;
 
 	// Buffer to store raw reads
-	uint16_t data;
+	uint8_t data;
 	float buf;
 
 	// Floats for measurements
@@ -149,9 +151,6 @@ int test() {
 	float v_bus;
 	double power;
 	double current;
-
-	// Initialize chosen serial port
-	stdio_init_all();
 
 	// Initialize I2C port at 400 kHz
 	i2c_init(i2c, 400 * 1000);
@@ -161,7 +160,7 @@ int test() {
 	gpio_set_function(scl_pin, GPIO_FUNC_I2C);
 
 	// Program Calibration register
-	data = CAL;
+	data = CAL[0]; // point to start of array
 	reg_write(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 
 	// Test: read Calibration register
@@ -175,32 +174,36 @@ int test() {
 	while (true) {
 
 		// Read registers (16 bits each)
-		if (getVShunt(i2c, INA219_ADDR, REG_SHUNT, &buf) == 0) {
+		float shunt;
+		if (getVShunt(i2c, INA219_ADDR, REG_SHUNT, &shunt) == 0) {
 			printf("Shunt voltage error\n");
 		}
 		else {
-			printf("Shunt voltage: %.2f V\r\n", buf);
+			printf("Shunt voltage: %.2f V\r\n", shunt);
 		}
 
-		if (getVBus(i2c, INA219_ADDR, REG_BUS, &buf) == 0) {
+		float vbus;
+		if (getVBus(i2c, INA219_ADDR, REG_BUS, &vbus) == 0) {
 			printf("Bus voltage error\n");
 		}
 		else {
-			printf("Bus voltage: %.2f V\r\n", buf);
+			printf("Bus voltage: %.2f V\r\n", vbus);
 		}
 
-		if (getPower(i2c, INA219_ADDR, REG_POWER, &buf) == 0) {
+		double power;
+		if (getPower(i2c, INA219_ADDR, REG_POWER, &power) == 0) {
 			printf("Power error\n");
 		}
 		else {
-			printf("Power: %.2f W\r\n", buf);
+			printf("Power: %.2f W\r\n", power);
 		}
-
-		if (getCurrent(i2c, INA219_ADDR, REG_CURRENT, &buf) == 0) {
+		
+		double current;
+		if (getCurrent(i2c, INA219_ADDR, REG_CURRENT, &current) == 0) {
 			printf("Current error\n");
 		}
 		else {
-			printf("Current: %.2f A\r\n", buf);
+			printf("Current: %.2f A\r\n", current);
 		}
 
 		sleep_ms(100);

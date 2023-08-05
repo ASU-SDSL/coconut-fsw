@@ -18,7 +18,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/src/steve.c
     ${MAIN_DIRECTORY}/src/radio.cpp
     ${MAIN_DIRECTORY}/src/command.c
-    ${MAIN_DIRECTORY}/src/EpsSensor.c
+    ${MAIN_DIRECTORY}/src/eps.c
     ${MAIN_DIRECTORY}/src/telemetry.c
     ${MAIN_DIRECTORY}/src/log.c
 )
