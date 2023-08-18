@@ -13,23 +13,27 @@
 
 #define COMMAND_MAX_QUEUE_ITEMS 64
 #define COMMAND_CHECK_DELAY_MS 500
+#define COMMAND_SYNC_BYTES "\x35\x2E\xF8\x53"
+#define STARTING_COMMAND_BUF_SIZE 32
 
 QueueHandle_t command_byte_queue;
 
-typedef enum command_source {
-    UART,
-    RADIO
-} command_source_t;
+// typedef enum command_source {
+//     UART,
+//     RADIO
+// } command_source_t;
 
 typedef struct command_byte {
-    command_source_t source;
+    // command_source_t source;
     char value;
 } command_byte_t;
 
 /* USER FUNCTIONS */
-void receive_command_byte_from_isr(char ch, command_source_t source);
+void receive_command_byte_from_isr(char ch);
 
 /* INTERNAL FUNCTIONS */
+
+void parse_command(void* cmd, uint32_t size);
 
 // Main Task
 void command_task(void* unused_arg);
