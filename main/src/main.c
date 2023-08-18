@@ -16,13 +16,15 @@ int main() {
     // Arg 3 is the stack depth -- in words, not bytes
     // Arg 5+ are arguments to the function of the task
     log_info("Initializing FreeRTOS Tasks...");
+
+#ifdef GSE_ENABLED
     BaseType_t gse_task_status = xTaskCreate(gse_task, 
                                         "GSE", 
                                         128, 
                                         NULL, 
                                         1,
                                         NULL);
-                                         
+#endif                       
     BaseType_t scheduler_task_status = xTaskCreate(steve_task, 
                                         "STEVE", 
                                         512, 
@@ -43,18 +45,16 @@ int main() {
                                         NULL,
                                         1,
                                         NULL);
-
+#ifndef GSE_ENABLED
     /*BaseType_t radio_task_status = xTaskCreate(radio_task, 
                                          "RADIO", 
                                          128, 
                                          NULL, 
                                          1,
                                          NULL);*/
-    
+#endif
     // Start the FreeRTOS scheduler
-    if (/*scheduler_task_status == pdPASS || */ command_task_status == pdPASS || gse_task_status == pdPASS /*|| radio_task_status == pdPASS*/) {
-        vTaskStartScheduler();
-    }
+    vTaskStartScheduler();
     
     // We should never get here, but just in case...
     while(true){};
