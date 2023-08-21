@@ -6,6 +6,8 @@
 
 int main() {
 
+    //test comment
+
     // Initialize debug logging
     init_debug_log();
 
