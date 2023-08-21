@@ -33,7 +33,7 @@ void receive_command_byte_from_isr(char ch);
 
 /* INTERNAL FUNCTIONS */
 
-void parse_command(void* cmd, uint32_t size);
+void parse_command_packet(void* cmd, uint32_t size);
 
 // Main Task
 void command_task(void* unused_arg);

@@ -12,7 +12,7 @@ void receive_command_byte_from_isr(char ch) {
     }
 }
 
-void parse_command(void* cmd, uint32_t size) {
+void parse_command_packet(void* cmd, uint32_t size) {
     // TODO: Parse command packet
 }
 
@@ -65,6 +65,6 @@ void command_task(void* unused_arg) {
             sync_index += 1;
         }
         // Parse commands
-        parse_command(buf, buf_size);
+        parse_command_packet(buf, buf_size);
     }
 }
