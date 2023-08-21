@@ -48,6 +48,8 @@ void command_task(void* unused_arg) {
                     /* TODO: possibly add max buffer size */
                     // copy data from old buffer
                     memcpy(new_buf, buf, buf_size);
+                    // free old buffer
+                    vPortFree(buf);
                     // replace old buffer with new buffer
                     buf = new_buf;
                     buf_size = new_buf_size;
