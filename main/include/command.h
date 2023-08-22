@@ -10,6 +10,8 @@
 #include "pico/stdlib.h"
 #include "queue.h"
 #include "gse.h"
+#include "ccsds.h"
+#include "log.h"
 
 #define COMMAND_MAX_QUEUE_ITEMS 64
 #define COMMAND_CHECK_DELAY_MS 500
@@ -23,17 +25,19 @@ QueueHandle_t command_byte_queue;
 //     RADIO
 // } command_source_t;
 
-typedef struct command_byte {
-    // command_source_t source;
-    char value;
-} command_byte_t;
+typedef char command_byte_t;
+
+// typedef struct command_byte {
+//     // command_source_t source;
+//     char value;
+// } command_byte_t;
 
 /* USER FUNCTIONS */
 void receive_command_byte_from_isr(char ch);
 
 /* INTERNAL FUNCTIONS */
 
-void parse_command_packet(void* cmd, uint32_t size);
+void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t payload_size);
 
 // Main Task
 void command_task(void* unused_arg);
