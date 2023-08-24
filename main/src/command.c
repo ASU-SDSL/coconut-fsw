@@ -13,7 +13,14 @@ void receive_command_byte_from_isr(char ch) {
 }
 
 void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
-    // TODO: Parse command packet
+    // Log apid
+    char log_str[256];
+    sprintf(log_str, "APID: 0x%x", header.apid);
+    log_info(log_str);
+
+    // Log payload
+    sprintf(log_str, "Payload: %s", payload_buf);
+    log_info(log_str);
 }
 
 void command_task(void* unused_arg) {
@@ -54,7 +61,7 @@ void command_task(void* unused_arg) {
         ccsds_header_t header = parse_ccsds_header(spacepacket_header_bytes);
         // Allocate correct size buffer
         size_t payload_size = header.packet_length;
-        uint8_t* payload_buf = malloc(payload_size);
+        uint8_t* payload_buf = pvPortMalloc(payload_size);
         if (payload_buf == 0) {
             log_error("Failed to allocate payload buf!");
             continue;
@@ -65,5 +72,7 @@ void command_task(void* unused_arg) {
         }
         // Parse packet payload
         parse_command_packet(header, payload_buf, payload_size);
+        // Free payload buffer
+        pPortFree(payload_buf);
     }
 }
