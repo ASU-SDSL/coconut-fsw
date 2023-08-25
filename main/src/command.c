@@ -1,7 +1,7 @@
 #include "command.h"
 
 void receive_command_byte_from_isr(char ch) {
-    // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING TASKS FROM TASKS
+    // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
     // // Build command_char struct
     // command_byte_t command_byte;
     // command_byte.value = ch;
@@ -13,6 +13,7 @@ void receive_command_byte_from_isr(char ch) {
 }
 
 void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
+    // TODO: Replace this test logging with an actual command dispatch
     // Log apid
     char log_str[256];
     sprintf(log_str, "APID: 0x%x", header.apid);
@@ -26,16 +27,20 @@ void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t 
 void command_task(void* unused_arg) {
     // Initialize byte queue
     command_byte_queue = xQueueCreate(COMMAND_MAX_QUEUE_ITEMS, sizeof(command_byte_t));
-    command_byte_t command_byte;
     while (true) {
-        // Check queue
-        xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
         // Keep gathering bytes until we get the sync bytes
         uint32_t sync_index = 0;
         while (true) {
             // stall thread until we get a byte
-            uint8_t command_byte = 0;
+            command_byte_t command_byte = 0;
             xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
+            
+            // char log_str[256];
+            // sprintf(log_str, "Byte Received: 0x%x", command_byte);
+            // log_info(log_str);
+            // sprintf(log_str, "Checking Sync Byte: 0x%x", COMMAND_SYNC_BYTES[sync_index]);
+            // log_info(log_str);
+
             // check if current sync index byte matches
             if (command_byte != COMMAND_SYNC_BYTES[sync_index]) {
                 // match unsuccessful
@@ -44,12 +49,13 @@ void command_task(void* unused_arg) {
             }
             // match successful
             // see if we've hit all sync bytes and can start parsing the packet
-            if (sync_index == (sizeof(COMMAND_SYNC_BYTES) - 1)) {
+            if (sync_index >= (sizeof(COMMAND_SYNC_BYTES) - 2)) {
                 break;
             }
             // otherwise keep checking bytes
             sync_index += 1;
         }
+        log_info("Received sync bytes!");
         // We've succesfully received all sync bytes if we've reached here
         // TODO: Add better error checks and handling here
         // Gather spacepacket header bytes
@@ -73,6 +79,6 @@ void command_task(void* unused_arg) {
         // Parse packet payload
         parse_command_packet(header, payload_buf, payload_size);
         // Free payload buffer
-        pPortFree(payload_buf);
+        vPortFree(payload_buf);
     }
 }
