@@ -4,6 +4,8 @@
  * FREERTOS RUNTIME START
  */
 
+#define GSE_ENABLED
+
 int main() {
 
     // Initialize debug logging
