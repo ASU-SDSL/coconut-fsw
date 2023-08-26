@@ -13,9 +13,9 @@
 
 // The Pysquared board has an RFM98PW radio
 
-PiHal* hal = new PiHal(); // can specify the speed here as an argument if desired
+//PiHal* hal = new PiHal(); // can specify the speed here as an argument if desired
 
-RFM98 radio = new Module(hal, 7, 17, 22, RADIOLIB_NC);
+//RFM98 radio = new Module(hal, 7, 17, 22, RADIOLIB_NC);
 
 /**
  * @brief Monitor radio, write to SD card, and send stuff when needed

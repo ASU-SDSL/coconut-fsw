@@ -29,9 +29,9 @@ add_executable(${PROJECT_NAME}
     ${SOURCES}
 )
 
-#include_directories(${MAIN_DIRECTORY}../lib/RadioLib)
-#include_directories(${MAIN_DIRECTORY}../lib/spacepacket/includes)
-#link_directories(${MAIN_DIRECTORY}../lib/spacepacket/includes)
+#include_directories(${MAIN_DIRECTORY}../deps/RadioLib)
+#include_directories(${MAIN_DIRECTORY}../deps/spacepacket/includes)
+#link_directories(${MAIN_DIRECTORY}../deps/spacepacket/includes)
 
 # Link to built libraries
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC

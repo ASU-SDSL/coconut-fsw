@@ -1,4 +1,4 @@
-#include <RadioLib.h>
+/*#include <RadioLib.h>
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/adc.h"
@@ -138,4 +138,6 @@ class PiHal : public RadioLibHal {
         const unsigned int _spiSpeed;
         //const uint8_t _spiChannel; - for now just use spi0
         int _spiHandle = -1;
-};
+};*/
+
+// Needs to be updated with new version of RadioLib
