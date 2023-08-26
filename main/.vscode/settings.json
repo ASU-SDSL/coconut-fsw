@@ -15,6 +15,10 @@
         "scheduler.h": "c",
         "radiolib.h": "c",
         "typedef.h": "c",
-        "buildopt.h": "c"
+        "buildopt.h": "c",
+        "cstdio": "c",
+        "epssensor.h": "c",
+        "i2c.h": "c",
+        "dreq.h": "c"
     }
 }

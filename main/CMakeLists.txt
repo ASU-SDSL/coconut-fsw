@@ -19,6 +19,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/src/radio.cpp
     ${MAIN_DIRECTORY}/src/command.c
     ${MAIN_DIRECTORY}/src/ccsds.c
+    ${MAIN_DIRECTORY}/src/eps.c
     ${MAIN_DIRECTORY}/src/telemetry.c
     ${MAIN_DIRECTORY}/src/log.c
 )
