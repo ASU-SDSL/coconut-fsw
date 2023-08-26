@@ -19,7 +19,7 @@ void telemetry_task(void* unused_arg) {
     while (true) {
         // Wait on a message in the queue
         xQueueReceive(telemetry_queue, &telemetry, UART_QUEUE_CHECK_TIME);
-         // TODO: Wrap contents in spacepacket
+        // TODO: Wrap contents in spacepacket
         // Send telemetry through UART
         uart_queue_message(telemetry.buffer, telemetry.size);
         // TODO: Send telemetry through radio

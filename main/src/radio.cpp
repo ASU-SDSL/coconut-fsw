@@ -21,8 +21,6 @@ RFM98 radio = new Module(hal, 7, 17, 22, RADIOLIB_NC);
  * @brief Monitor radio, write to SD card, and send stuff when needed
  */
 void radio_task(void* unused_arg) {
-  // Enable USB serial so we can print
-  //stdio_init_all();
 
 
 }

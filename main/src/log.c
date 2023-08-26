@@ -1,5 +1,7 @@
 #include "log.h"
 
+// TODO: Add ability to use format strings with these log messages
+
 void init_debug_log() {
     // Enable UART over USB
     stdio_init_all();

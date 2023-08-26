@@ -19,7 +19,7 @@ void uart_queue_message(char* buffer, size_t size) {
 void uart_on_rx() {
     while (uart_is_readable(UART0_INSTANCE)) {
         char ch = uart_getc(UART0_INSTANCE);
-        receive_command_byte_from_isr(ch, UART);
+        receive_command_byte_from_isr(ch);
     }
 }
 
