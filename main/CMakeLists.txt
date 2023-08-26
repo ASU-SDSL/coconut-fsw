@@ -13,15 +13,16 @@ add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
 
 # Create a sources variable with a link to all cpp files to compile
 set(SOURCES
-    ${MAIN_DIRECTORY}/src/main.c
-    ${MAIN_DIRECTORY}/src/gse.c
-    ${MAIN_DIRECTORY}/src/steve.c
-    ${MAIN_DIRECTORY}/src/radio.cpp
-    ${MAIN_DIRECTORY}/src/command.c
-    ${MAIN_DIRECTORY}/src/ccsds.c
-    ${MAIN_DIRECTORY}/src/eps.c
-    ${MAIN_DIRECTORY}/src/telemetry.c
-    ${MAIN_DIRECTORY}/src/log.c
+    ${MAIN_DIRECTORY}/tasks/src/main.c
+    ${MAIN_DIRECTORY}/tasks/src/gse.c
+    ${MAIN_DIRECTORY}/tasks/src/steve.c
+    ${MAIN_DIRECTORY}/tasks/src/radio.cpp
+    ${MAIN_DIRECTORY}/tasks/src/command.c
+    ${MAIN_DIRECTORY}/tasks/src/telemetry.c
+
+    ${MAIN_DIRECTORY}/libraries/src/ccsds.c
+    ${MAIN_DIRECTORY}/libraries/src/eps.c
+    ${MAIN_DIRECTORY}/libraries/src/log.c
 )
 
 add_executable(${PROJECT_NAME}
@@ -45,7 +46,8 @@ target_link_libraries(${PROJECT_NAME} LINK_PUBLIC
 )
 
 target_include_directories(${PROJECT_NAME} 
-    PRIVATE ${MAIN_DIRECTORY}/include
+    PRIVATE ${MAIN_DIRECTORY}/tasks/include
+    PRIVATE ${MAIN_DIRECTORY}/libraries/include
 )
 
 # Enable/disable STDIO via USB and UART

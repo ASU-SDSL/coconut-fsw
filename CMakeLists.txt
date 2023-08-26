@@ -14,7 +14,7 @@ pico_sdk_init() # Initialise the Pico SDK
 set(MAIN_DIRECTORY "${CMAKE_SOURCE_DIR}/main")
 
 # FROM 1.3.0 -- Move common source code to a separate directory
-set(COMMON_CODE_DIRECTORY "${CMAKE_SOURCE_DIR}/Common")
+set(COMMON_CODE_DIRECTORY "${CMAKE_SOURCE_DIR}/freertos/Common")
 
 # Set app-side debugging "ON" or "OFF"
 set(DO_DEBUG "ON")
@@ -24,7 +24,7 @@ set(DO_DEBUG "ON")
 #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTSDEBUG")
 set(CMAKE_C_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
 set(CMAKE_CXX_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
-set(FREERTOS_CFG_DIRECTORY "${CMAKE_SOURCE_DIR}/Config")
+set(FREERTOS_CFG_DIRECTORY "${CMAKE_SOURCE_DIR}/freertos")
 set(FREERTOS_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/FreeRTOS-Kernel")
 
 # Name the project
