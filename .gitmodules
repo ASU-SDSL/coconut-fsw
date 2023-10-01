@@ -7,12 +7,15 @@
 [submodule "deps/FreeRTOS-Kernel"]
 	path = deps/FreeRTOS-Kernel
 	url = https://github.com/FreeRTOS/FreeRTOS-Kernel
-[submodule "deps/RadioLib"]
-	path = deps/RadioLib
-	url = https://github.com/jgromes/RadioLib
 [submodule "deps/pico-sdk"]
 	path = deps/pico-sdk
 	url = https://github.com/raspberrypi/pico-sdk
 [submodule "deps/spacepacket"]
 	path = deps/spacepacket
 	url = https://github.com/yuasatakayuki/CCSDSLibrary
+[submodule "RadioLib"]
+	path = RadioLib
+	url = https://github.com/jgromes/RadioLib
+[submodule "deps/RadioLib"]
+	path = deps/RadioLib
+	url = https://github.com/jgromes/RadioLib
