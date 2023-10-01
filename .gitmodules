@@ -16,3 +16,6 @@
 [submodule "RadioLib"]
 	path = RadioLib
 	url = https://github.com/jgromes/RadioLib
+[submodule "deps/RadioLib"]
+	path = deps/RadioLib
+	url = https://github.com/jgromes/RadioLib
