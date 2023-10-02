@@ -13,6 +13,6 @@
 [submodule "deps/spacepacket"]
 	path = deps/spacepacket
 	url = https://github.com/yuasatakayuki/CCSDSLibrary
-[submodule "deps/RadioLibupdated"]
-	path = deps/RadioLibupdated
+[submodule "deps/RadioLib"]
+	path = deps/RadioLib
 	url = https://github.com/jgromes/RadioLib
