@@ -59,7 +59,7 @@ void schedule_delayed_job_mins(const char* job_name, job_func job_func_ptr, unsi
 // Internal Scheduler Functions
 void queue_steve_job_creation(const char* job_name, TickType_t execute_time, TickType_t recur_time, job_func job_func_ptr) {
     // Allocate memory
-    steve_job* sr = pvPortMalloc(sizeof(steve_job));
+    steve_job_t* sr = pvPortMalloc(sizeof(steve_job_t));
     // Check name and copy
     size_t job_name_len = strlen(job_name);
     if (job_name_len + 1 > MAX_JOB_NAME_LEN) {
@@ -72,17 +72,17 @@ void queue_steve_job_creation(const char* job_name, TickType_t execute_time, Tic
     sr->recur_time = recur_time;
     sr->func_ptr = job_func_ptr;
     while (!job_creation_queue) {
-        vTaskDelay(SCHEDULER_CHECK_DELAY_MS);
+        vTaskDelay(ms_to_ticks(SCHEDULER_CHECK_DELAY_MS));
     }
     xQueueSendToBack(job_creation_queue, &sr, portMAX_DELAY);
 }
 
-void create_steve_job(steve_job* sr) {
+void create_steve_job(steve_job_t* sr) {
     // Add job to list
     g_steve_context.jobs[g_steve_context.job_count++] = sr;
 }
 
-bool run_steve_job(steve_job* job) {
+bool run_steve_job(steve_job_t* job) {
     // Run the job function
     job->func_ptr(job->arg_data);
     // Check if it needs to be rescheduled (recurring job)
@@ -97,7 +97,7 @@ bool run_steve_job(steve_job* job) {
     }
 }
 
-void delete_steve_job(steve_job* job) {
+void delete_steve_job(steve_job_t* job) {
     // TODO: Do more testing on this and the cleanup code
     // Find job in list and set job ptr to null to prevent UAF's
     bool found_ptr = false;
@@ -130,13 +130,6 @@ void cleanup_steve_jobs_list() {
     }
 }
 
-void initialize_steve_context() {
-    // Initialize scheduler job memory
-    memset(g_steve_context.jobs, 0, sizeof(g_steve_context.jobs));
-    // Set job count to zero
-    g_steve_context.job_count = 0;
-}
-
 void test_job(void* unused) {
     // 000 0 0 00000000000 00 00000000000000 0000000000000000
     // space packet header template ^
@@ -146,18 +139,21 @@ void test_job(void* unused) {
     // log_info("Testing debug log");
 }
 
-// Main thread job for scheduling and executing STEVE jobs
-void steve_task(void* unused_arg) {
-    // Setup context struct
-    initialize_steve_context();
+void initialize_steve() {
     // Initialize telemetry queue
-    job_creation_queue = xQueueCreate(JOB_CREATION_MAX_QUEUE_ITEMS, sizeof(steve_job*));
+    job_creation_queue = xQueueCreate(JOB_CREATION_MAX_QUEUE_ITEMS, sizeof(steve_job_t*));
     // Create test job
     schedule_recurring_job_secs("TEST", test_job, 1);
+}
+
+// Main thread job for scheduling and executing STEVE jobs
+void steve_task(void* unused_arg) {
+    // Setup STEVE jobs and state
+    initialize_steve();
     // Run main task loop
     while (true) {
         // Check if we have any jobs to schedule
-        steve_job* sd;
+        steve_job_t* sd;
         if (xQueueReceive(job_creation_queue, &sd, 0)) {
             create_steve_job(sd);
         }
@@ -165,7 +161,7 @@ void steve_task(void* unused_arg) {
         bool needs_cleanup = false;
         for (int i = 0; i < g_steve_context.job_count; i++) {
             // Get indexed job
-            steve_job* indexed_job = g_steve_context.jobs[i];
+            steve_job_t* indexed_job = g_steve_context.jobs[i];
             // Check if job is valid
             if (indexed_job == NULL) {
                 continue;
