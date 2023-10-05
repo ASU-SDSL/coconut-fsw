@@ -32,10 +32,21 @@ void telemetry_task(void* unused_arg) {
         header.sequence_flag = 3; // no segmentation
         header.packet_sequence_count = g_packet_sequence_number++;
         header.packet_length = telemetry.payload_size - 1; // 4.1.3.5.3 in spacepacket standard says packet_length - 1
+        // Encode spacepacket header into bytes
+        char* header_and_payload_buffer = pvPortMalloc(CCSDS_ENCODED_HEADER_SIZE + telemetry.payload_size);
+        if (!ccsds_header_to_bytes(header, header_and_payload_buffer)) {
+            logln_error("Failed to encode SpacePacket header!");
+            continue;
+        }
+        // Append payload to header
+        memcpy(header_and_payload_buffer + CCSDS_ENCODED_HEADER_SIZE, telemetry.payload_buffer, telemetry.payload_size);
         // Send telemetry through UART
-        uart_queue_message(telemetry.payload_buffer, telemetry.payload_size);
+        uart_queue_message(header_and_payload_buffer, telemetry.payload_size);
+
         // TODO: Send telemetry through radio
-        // Free transmission buffer
+
+        // Free buffers
+        vPortFree(header_and_payload_buffer);
         vPortFree(telemetry.payload_buffer);
     }
 }

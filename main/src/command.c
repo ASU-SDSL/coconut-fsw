@@ -13,15 +13,12 @@ void receive_command_byte_from_isr(char ch) {
 }
 
 void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
-    // TODO: Replace this test logging with an actual command dispatch
-    // Log apid
-    char log_str[256];
-    sprintf(log_str, "APID: 0x%x", header.apid);
-    log_info(log_str);
-
-    // Log payload
-    sprintf(log_str, "Payload: %s", payload_buf);
-    log_info(log_str);
+    switch (header.apid) {
+        case CHANGE_HEARTBEAT_TELEM_RATE:
+            break;
+        default:
+            logln_error("Received command with unknown APID: %hu", header.apid);
+    }
 }
 
 void command_task(void* unused_arg) {
@@ -55,21 +52,21 @@ void command_task(void* unused_arg) {
             // otherwise keep checking bytes
             sync_index += 1;
         }
-        log_info("Received sync bytes!");
+        logln_info("Received sync bytes!");
         // We've succesfully received all sync bytes if we've reached here
         // TODO: Add better error checks and handling here
         // Gather spacepacket header bytes
         uint8_t spacepacket_header_bytes[6];
-        for (int i = 0; i < CCSDS_HEADER_SIZE; i++) {
+        for (int i = 0; i < CCSDS_ENCODED_HEADER_SIZE; i++) {
             xQueueReceive(command_byte_queue, &spacepacket_header_bytes[i], portMAX_DELAY);
         }
         // Parse spacepacket header
         ccsds_header_t header = parse_ccsds_header(spacepacket_header_bytes);
         // Allocate correct size buffer
-        size_t payload_size = header.packet_length;
+        size_t payload_size = header.packet_length + 1; // 4.1.3.5.3 transmits data size field as payload_length - 1
         uint8_t* payload_buf = pvPortMalloc(payload_size);
         if (payload_buf == 0) {
-            log_error("Failed to allocate payload buf!");
+            logln_error("Failed to allocate payload buf of size 0x%x!", payload_size);
             continue;
         }
         // Read payload
