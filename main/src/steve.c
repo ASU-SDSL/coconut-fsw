@@ -63,7 +63,7 @@ void queue_steve_job_creation(const char* job_name, TickType_t execute_time, Tic
     // Check name and copy
     size_t job_name_len = strlen(job_name);
     if (job_name_len + 1 > MAX_JOB_NAME_LEN) {
-        log_error("Name of job is too large, reduce to less chars!!!");
+        logln_error("Name of job %s is too large, reduce to less than %u chars!!!", job_name, MAX_JOB_NAME_LEN);
         return;
     }
     strncpy(sr->name, job_name, job_name_len);
@@ -110,7 +110,7 @@ void delete_steve_job(steve_job_t* job) {
     }
     // If it couldn't find the pointer, something is wrong
     if (!found_ptr) {
-        log_error("Couldn't find scheduler job to delete!!!");
+        logln_error("Couldn't find scheduler job to delete: %s", job->name);
         return;
     }
     // Free the struct memory
@@ -130,20 +130,27 @@ void cleanup_steve_jobs_list() {
     }
 }
 
-void test_job(void* unused) {
-    // 000 0 0 00000000000 00 00000000000000 0000000000000000
-    // space packet header template ^
-    char test_bytes[] = {0x35, 0x2E, 0xF8, 0x53, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x68, 0x65, 0x6c, 0x6c, 0x6f};
-    //                  |       sync bytes      |           space packet            |       "hello" string       |
-    send_telemetry(test_bytes, sizeof(test_bytes));
-    // log_info("Testing debug log");
+void heartbeat_telemetry_job(void* unused) {
+    // Create heartbeat struct
+    heartbeat_telemetry_t payload;
+    payload.state = g_payload_state;
+    payload.uptime = get_uptime();
+    // Send it
+    send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
+}
+
+TickType_t get_uptime() {
+    // TODO: Maybe get an RTC instead of using CPU ticks
+    return xTaskGetTickCount();
 }
 
 void initialize_steve() {
     // Initialize telemetry queue
     job_creation_queue = xQueueCreate(JOB_CREATION_MAX_QUEUE_ITEMS, sizeof(steve_job_t*));
-    // Create test job
-    schedule_recurring_job_secs("TEST", test_job, 1);
+    // Initialize state
+    g_payload_state = INIT;
+    // Create jobs
+    schedule_recurring_job_secs(HEARTBEAT_JOB_NAME, heartbeat_telemetry_job, HEARTBEAT_TELEMETRY_DEFAULT_INTERVAL);
 }
 
 // Main thread job for scheduling and executing STEVE jobs

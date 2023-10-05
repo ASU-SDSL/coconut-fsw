@@ -1,5 +1,4 @@
-#ifndef STEVE_FILE_DEFINED
-#define STEVE_FILE_DEFINED
+#pragma once
 
 #include <stdio.h>
 #include <string.h>
@@ -12,6 +11,7 @@
 
 #include "telemetry.h"
 #include "log.h"
+#include "state.h"
 
 // Constants
 #define MAX_JOBS 256
@@ -21,8 +21,9 @@
 #define SECS_IN_MIN 60
 #define JOB_CREATION_MAX_QUEUE_ITEMS 16
 
-// Structs and Types
+// Job Structs and Types
 typedef void (*job_func)(void*);
+
 typedef struct steve_job {
     char name[MAX_JOB_NAME_LEN + 1]; // job name for logging purposes
     TickType_t execute_time; // exact tick when the job will be ran
@@ -30,6 +31,7 @@ typedef struct steve_job {
     job_func func_ptr; // function ptr that will be called when the job is ran
     void* arg_data; // data that will be passed to the first argument of the function job
 } steve_job_t;
+
 typedef struct steve_context {
     steve_job_t* jobs[MAX_JOBS]; // global storage for scheduler jobs
     size_t job_count; // amount of jobs currently allocated
@@ -58,6 +60,14 @@ void schedule_delayed_job_mins(const char* job_name, job_func job_func_ptr, unsi
 
 /* INTERNAL FUNCTIONS */
 
+// Defined Jobs
+#define HEARTBEAT_JOB_NAME "HEARTBEAT_TELEMETRY"
+#define HEARTBEAT_TELEMETRY_DEFAULT_INTERVAL 5
+void heartbeat_telemetry_job(void*);
+
+// Helper functions
+TickType_t get_uptime();
+
 // Internal Scheduler Functions
 void queue_steve_job_creation(const char* job_name, TickType_t execute_time, TickType_t recur_time, job_func job_func_ptr);
 void create_steve_job(steve_job_t* sr);
@@ -68,5 +78,3 @@ void initialize_steve();
 
 // Main Task
 void steve_task(void* unused_arg);
-
-#endif /* !STEVE_FILE_DEFINED */
