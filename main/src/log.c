@@ -1,4 +1,5 @@
 #include "log.h"
+#include <stdio.h>
 
 // TODO: Add ability to use format strings with these log messages
 
@@ -21,29 +22,34 @@ void print_banner() {
     );
 }
 
-void log_info(char* str) {
-    _log("[INFO] ");
-    _logln(str);
-}
+// void logln_info(char* str, ...) {
+//     _log("[INFO] ");
+//     _logln(str);
+// }
 
-void log_warn(char* str) {
-    _log("[WARN] ");
-    _logln(str);
-}
+// void logln_warn(char* str, ...) {
+//     _log("[WARN] ");
+//     _logln(str);
+// }
 
-void log_error(char* str) {
-    _log("[ERROR] ");
-    _logln(str);
-}
+// void logln_error(char* str, ...) {
+//     _log("[ERROR] ");
+//     _logln(str);
+// }
 
-void _logln(char* str) {
-    // Writes a line to the debug log
-    _log(str);
-    _log("\n");
-}
+// void _logln(char* str, ...) {
+//     // Writes a line to the debug log
+//     _log(str);
+//     _log("\n");
+// }
 
-void _log(char* str) {
+void _log(char* str, ...) {
+    va_list args;
+    va_start(args, str);
+
     // Writes to the debug log
     // Currently just printf's to the USB UART port but we can make it send telemetry in the future
-    printf("%s", str);
+    printf(str, args);
+
+    va_end(args);
 }
