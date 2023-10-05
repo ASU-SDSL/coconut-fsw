@@ -19,6 +19,6 @@ struct ccsds_header {
 ccsds_header_t parse_ccsds_header(uint8_t* header_buf);
 
 // TODO: Needs implementation
-void ccsds_header_to_bytes(ccsds_header_t header);
+bool encode_ccsds_header(ccsds_header_t header, uint8_t* out_buf);
 
 #endif /* !CCSDS_FILE_DEFINED */
