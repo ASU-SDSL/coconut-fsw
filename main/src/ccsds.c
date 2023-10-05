@@ -3,8 +3,6 @@
 // modified from https://github.com/altillimity/libccsds/blob/master/src/ccsds.cpp
 ccsds_header_t parse_ccsds_header(uint8_t *header_buf) {
     ccsds_header_t header;
-    // copy raw bytes
-    memcpy(header.raw, header_buf, CCSDS_HEADER_SIZE);
     // set struct fields using bitwise operations
     header.version = (header_buf[0] >> 5) & 0x07;
     header.type = (header_buf[0] >> 4) & 0x01;

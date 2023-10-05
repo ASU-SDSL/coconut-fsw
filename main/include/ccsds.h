@@ -4,10 +4,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define CCSDS_HEADER_SIZE 6
+#define CCSDS_ENCODED_HEADER_SIZE 6
 
 struct ccsds_header {
-    uint8_t raw[CCSDS_HEADER_SIZE];
     uint8_t version;
     bool type;
     bool secondary_header_flag;
