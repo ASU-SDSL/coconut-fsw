@@ -9,6 +9,14 @@
         "radiolib.h": "c",
         "spi.h": "c",
         "radio.h": "c",
-        "sstream": "c"
+        "freertos.h": "c",
+        "freertosconfig.h": "c",
+        "debug.h": "c",
+        "arch.h": "c",
+        "opt.h": "c",
+        "command.h": "c",
+        "epssensor.h": "c",
+        "i2c.h": "c",
+        "gpio.h": "c"
     }
 }

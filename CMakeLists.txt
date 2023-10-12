@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
 # Set project data
-set(PROJECT_NAME "COCONUT_FREERTOS_PROJECT")
 set(BUILD_NUMBER "1")
 
 set(PROJECT_NAME "COCONUTFSW")
@@ -14,7 +13,7 @@ pico_sdk_init() # Initialise the Pico SDK
 set(MAIN_DIRECTORY "${CMAKE_SOURCE_DIR}/main")
 
 # FROM 1.3.0 -- Move common source code to a separate directory
-set(COMMON_CODE_DIRECTORY "${CMAKE_SOURCE_DIR}/Common")
+set(COMMON_CODE_DIRECTORY "${CMAKE_SOURCE_DIR}/freertos/Common")
 
 # Set app-side debugging "ON" or "OFF"
 set(DO_DEBUG "ON")
@@ -24,8 +23,8 @@ set(DO_DEBUG "ON")
 #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTSDEBUG")
 set(CMAKE_C_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
 set(CMAKE_CXX_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
-set(FREERTOS_CFG_DIRECTORY "${CMAKE_SOURCE_DIR}/Config")
-set(FREERTOS_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/FreeRTOS-Kernel")
+set(FREERTOS_CFG_DIRECTORY "${CMAKE_SOURCE_DIR}/freertos")
+set(FREERTOS_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/deps/FreeRTOS-Kernel")
 
 # Name the project
 project(${PROJECT_NAME}
@@ -56,4 +55,4 @@ target_include_directories(FreeRTOS PUBLIC
 add_subdirectory(${MAIN_DIRECTORY})
 
 # add libraries here (and in target_link_libraries under the main cmakelists)
-add_subdirectory(${CMAKE_SOURCE_DIR}/lib/RadioLib)
+add_subdirectory(${CMAKE_SOURCE_DIR}/deps/RadioLib)
