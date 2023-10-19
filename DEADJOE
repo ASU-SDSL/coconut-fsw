@@ -1,0 +1,35 @@
+
+*** These modified files were found in JOE when it aborted on Thu Oct 19 16:56:41 2023
+*** JOE was aborted by UNIX signal 1
+
+*** File '/home/iplab/Documents/coconut/coconut-fsw/.git/COMMIT_EDITMSG'
+updated submodules
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch radiotest
+# Your branch is up to date with 'origin/radiotest'.
+#
+# Changes to be committed:
+#	modified:   deps/FreeRTOS-Kernel
+#	modified:   deps/RadioLib
+#
+
+*** File '(Unnamed)'
+Makefile
+Makefile
+Makefile
+board.c
+board.h
+/home/iplab/openlst/.git/MERGE_MSG
+board.h
+radios/dora_iaru/board.h
+open-lst/Build.m
+open-lst/Build.mk
+/home/iplab/Documents/coconut/coconut-fsw/.git/COMMIT_EDITMSG
+
+*** File '* Startup Log *'
+Processing '/etc/joe/editorrc'...
+Processing '/etc/joe/ftyperc'...
+Finished processing /etc/joe/ftyperc
+Finished processing /etc/joe/editorrc
