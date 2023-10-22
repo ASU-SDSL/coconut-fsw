@@ -1,9 +1,9 @@
 #include <RadioLib.h>
 #include "RadioLibPiHal.h"
 #define ERR_NONE 0
-//#include <SX1278.h>
+#include <SX1278.h>
 
-PiPicoHal* hal = new PiPicoHal(); // can specify the speed here as an argument if desired
+PiPicoHal* hal = new PiPicoHal(spi0, 2000000); // can specify the speed here as an argument if desired
 RFM98 radio = new Module(hal, 7, 17, 22, RADIOLIB_NC);
 
 // having issues initializing hal for some reason? 
