@@ -3,6 +3,7 @@
 #include "pico/stdlib.h"
 #include "hardware/adc.h"
 #include "hardware/spi.h"
+#include <SX1278.h>
 
 
 class PiPicoHal : public RadioLibHal {
@@ -114,6 +115,7 @@ public:
     }
 
     void spiBeginTransaction() {}
+    void spiEndTransaction() {}
 
     void spiTransfer(uint8_t *out, size_t len, uint8_t *in) {
         spi_write_blocking(_spi, out, len);
@@ -122,6 +124,10 @@ public:
 
     void spiEnd() {
         spi_deinit(_spi);
+    }
+
+    void transmit() {
+
     }
 
 private:
