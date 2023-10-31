@@ -33,20 +33,25 @@ void telemetry_task(void* unused_arg) {
         header.packet_sequence_count = g_packet_sequence_number++;
         header.packet_length = telemetry.payload_size - 1; // 4.1.3.5.3 in spacepacket standard says packet_length - 1
         // Encode spacepacket header into bytes
-        char* header_and_payload_buffer = pvPortMalloc(CCSDS_ENCODED_HEADER_SIZE + telemetry.payload_size);
-        if (!ccsds_header_to_bytes(header, header_and_payload_buffer)) {
+        size_t header_size = sizeof(TELEMETRY_SYNC_BYTES) + CCSDS_ENCODED_HEADER_SIZE;
+        size_t total_payload_size = header_size + telemetry.payload_size;
+        char* payload_buffer = pvPortMalloc(total_payload_size);
+        // Write sync bytes first
+        memcpy(payload_buffer, TELEMETRY_SYNC_BYTES, sizeof(TELEMETRY_SYNC_BYTES));
+        // Write spacepacket header after sync bytes
+        if (!encode_ccsds_header(header, payload_buffer + sizeof(TELEMETRY_SYNC_BYTES))) {
             logln_error("Failed to encode SpacePacket header!");
             continue;
         }
-        // Append payload to header
-        memcpy(header_and_payload_buffer + CCSDS_ENCODED_HEADER_SIZE, telemetry.payload_buffer, telemetry.payload_size);
+        // Append payload to sync bytes and header
+        memcpy(payload_buffer + header_size, telemetry.payload_buffer, telemetry.payload_size);
         // Send telemetry through UART
-        uart_queue_message(header_and_payload_buffer, telemetry.payload_size);
+        uart_queue_message(payload_buffer, total_payload_size);
 
-        // TODO: Send telemetry through radio
+        // TODO: Send payload through radio
 
         // Free buffers
-        vPortFree(header_and_payload_buffer);
+        vPortFree(payload_buffer);
         vPortFree(telemetry.payload_buffer);
     }
 }

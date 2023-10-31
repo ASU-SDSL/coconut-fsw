@@ -11,6 +11,8 @@
 #include "gse.h"
 #include "state.h"
 
+
+#define TELEMETRY_SYNC_BYTES "\x35\x2E\xF8\x53"
 #define TELEMETRY_MAX_QUEUE_ITEMS 64
 #define TELEMETRY_CHECK_DELAY_MS 500
 
