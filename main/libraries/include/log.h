@@ -26,12 +26,6 @@ void print_banner();
 #define _logln(...) \
     _log(__VA_ARGS__); _log("\n");
 
-// void log_info(char* str);
-
-// void log_warn(char* str);
-
-// void log_error(char* str);
-
 /* INTERNAL FUNCTIONS */
 
 void _log(char* str, ...);

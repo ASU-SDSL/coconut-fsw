@@ -22,27 +22,6 @@ void print_banner() {
     );
 }
 
-// void logln_info(char* str, ...) {
-//     _log("[INFO] ");
-//     _logln(str);
-// }
-
-// void logln_warn(char* str, ...) {
-//     _log("[WARN] ");
-//     _logln(str);
-// }
-
-// void logln_error(char* str, ...) {
-//     _log("[ERROR] ");
-//     _logln(str);
-// }
-
-// void _logln(char* str, ...) {
-//     // Writes a line to the debug log
-//     _log(str);
-//     _log("\n");
-// }
-
 void _log(char* str, ...) {
     va_list args;
     va_start(args, str);
