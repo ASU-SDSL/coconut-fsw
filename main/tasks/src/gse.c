@@ -28,6 +28,7 @@ void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq
     uart_init(uart_instance, BAUD_RATE);
 
     // Set the TX and RX pins
+    // TODO: This currently crashes on the feather I think, pins currently setup for the standard Pi Pico
     gpio_set_function(tx_pin, GPIO_FUNC_UART);
     gpio_set_function(rx_pin, GPIO_FUNC_UART);
 
