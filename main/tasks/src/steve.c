@@ -137,6 +137,7 @@ void heartbeat_telemetry_job(void* unused) {
     payload.uptime = get_uptime();
     // Send it
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
+    logln_info("Lol");
 }
 
 TickType_t get_uptime() {
