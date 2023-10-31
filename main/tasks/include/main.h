@@ -26,10 +26,10 @@
 // Project headers
 #include "gse.h"
 #include "radio.h"
-#include "steve.h"
 #include "command.h"
 #include "telemetry.h"
 #include "log.h"
+#include "steve.h"
 
 
 #ifdef __cplusplus
