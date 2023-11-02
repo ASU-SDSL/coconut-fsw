@@ -25,22 +25,26 @@ static const uint8_t INT_SRC = 0x31;
 static const uint8_t INT_THIS_L = 0x32;
 static const uint8_t INT_THIS_H = 0x33;
 
-int reg_read(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg, uint8_t *output_buf, const uint8_t nbytes) 
+int reg_read_m(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg, uint8_t *output_buf, const uint8_t nbytes) 
 {
 	int num_bytes_read = 0;
 
 	if (nbytes < 1) 
 	{
+        logln_info("too little bytes");
 		return 0;
 	}
 
-	i2c_write_blocking(i2c, addr, &reg, 1, true);
-	num_bytes_read = i2c_read_blocking(i2c, addr, output_buf, nbytes, false);
+    logln_info("read");
+	i2c_write_blocking(i2c, addr, &reg, 1, true); //1000000);
+	num_bytes_read = i2c_read_timeout_us(i2c, addr, output_buf, nbytes, false, 1000000);
+
+    logln_info("here");
 
 	return num_bytes_read;
 }
 
-int reg_write(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg, uint8_t *buf, const uint8_t nbytes) 
+int reg_write_m(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg, uint8_t *buf, const uint8_t nbytes) 
 {
 	if (nbytes < 1) 
 	{
@@ -60,13 +64,13 @@ int reg_write(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg, uint8_t *b
 	return num_bytes_written;
 }
 
-int get_x_output() { //defines function
+int get_x_output(i2c_inst_t *i2c) { //defines function
 
-    uint8_t buf_low; //buf means buffer, allocates space for data to be entered in an 8 bit number (uint8_t)
-    reg_read(i2c, buf_low, address, 0x28); // taken from eps library, 0x28 is the location
+    uint8_t* buf_low; //buf means buffer, allocates space for data to be entered in an 8 bit number (uint8_t)
+    reg_read_m(i2c, SAD, (uint8_t) 0x28, buf_low, 1); // taken from eps library, 0x28 is the location
 
-    uint8_t buf_high;
-    reg_read(i2c, buf_low, address, 0x29);
+    uint8_t* buf_high;
+    reg_read_m(i2c, SAD, (uint8_t) 0x29, buf_high, 1);
 
     //high =   00000010
     //low =    00000001
@@ -85,40 +89,41 @@ int get_x_output() { //defines function
     return x_out;
 }
 
-int get_y_output() { //Y output
+/*
+int get_y_output(i2c_inst_t *i2c) { //Y output
 
     uint8_t buf_low;
-    reg_read(i2c, buf_low, address, 0x2A);
+    reg_read(i2c, buf_low, SAD, (uint8_t) 0x2A);
 
     uint8_t buf_high;
-    reg_read(i2c, buf_high, address, 0x2B);
+    reg_read(i2c, buf_high, SAD, (uint8_t) 0x2B);
 
     int y_out = (int) buf_low | ((int) buf_high << 8);
     return y_out;
 }
 
-int get_z_output(){ //Z output
+int get_z_output(i2c_inst_t *i2c){ //Z output
 
     uint8_t buf_low;
-    reg_read(i2c, buf_low, address, 0x2C);
+    reg_read(i2c, buf_low, SAD, (uint8_t) 0x2C);
 
     uint8_t buf_high;
-    reg_read(i2c, buf_high, address, 0x2D);
+    reg_read(i2c, buf_high, SAD, (uint8_t) 0x2D);
 
     int z_out = (int) buf_low | ((int) buf_high << 8);
     return z_out;
 
 }
 
-int get_temp_output(){ //Temperature output
+int get_temp_output(i2c_inst_t *i2c){ //Temperature output
 
     uint8_t buf_low;
-    reg_read(i2c, buf_low, address, 0x2E);
+    reg_read(i2c, buf_low, SAD, (uint8_t) 0x2E);
 
     uint8_t buf_high;
-    reg_read(i2c, buf_high, address, 0x2F);
+    reg_read(i2c, buf_high, SAD, (uint8_t) 0x2F);
 
     int temp_out = (int) buf_low | ((int) buf_high << 8);
     return temp_out;
 
-}
+}*/

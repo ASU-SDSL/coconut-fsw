@@ -52,7 +52,7 @@ void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq
 void gse_task() {
     // Initialize UART0
     uart_initialize(UART0_INSTANCE, UART0_TX_PIN, UART0_RX_PIN, UART0_IRQ);
-    
+
     // Create UART0 queue
     // TODO: Change this to a struct instead of char ptr for sending actual command data
     uart0_queue = xQueueCreate(UART_MAX_QUEUE_ITEMS, sizeof(telemetry_queue_transmission_t));

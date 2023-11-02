@@ -12,6 +12,7 @@
 #include "telemetry.h"
 #include "log.h"
 #include "state.h"
+#include "mag.h"
 
 // Constants
 #define MAX_JOBS 256
