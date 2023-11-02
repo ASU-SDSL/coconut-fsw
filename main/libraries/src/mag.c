@@ -89,14 +89,14 @@ int get_x_output(i2c_inst_t *i2c) { //defines function
     return x_out;
 }
 
-/*
+
 int get_y_output(i2c_inst_t *i2c) { //Y output
 
     uint8_t buf_low;
-    reg_read(i2c, buf_low, SAD, (uint8_t) 0x2A);
+    reg_read(i2c, SAD, (uint8_t) 0x2A, buf_low, 1);
 
     uint8_t buf_high;
-    reg_read(i2c, buf_high, SAD, (uint8_t) 0x2B);
+    reg_read(i2c, SAD, (uint8_t) 0x2B, buf_high, 1);
 
     int y_out = (int) buf_low | ((int) buf_high << 8);
     return y_out;
@@ -105,10 +105,10 @@ int get_y_output(i2c_inst_t *i2c) { //Y output
 int get_z_output(i2c_inst_t *i2c){ //Z output
 
     uint8_t buf_low;
-    reg_read(i2c, buf_low, SAD, (uint8_t) 0x2C);
+    reg_read(i2c, SAD, (uint8_t) 0x2C, buf_low, 1);
 
     uint8_t buf_high;
-    reg_read(i2c, buf_high, SAD, (uint8_t) 0x2D);
+    reg_read(i2c, SAD, (uint8_t) 0x2D, buf_high, 1);
 
     int z_out = (int) buf_low | ((int) buf_high << 8);
     return z_out;
@@ -118,12 +118,12 @@ int get_z_output(i2c_inst_t *i2c){ //Z output
 int get_temp_output(i2c_inst_t *i2c){ //Temperature output
 
     uint8_t buf_low;
-    reg_read(i2c, buf_low, SAD, (uint8_t) 0x2E);
+    reg_read(i2c, SAD, (uint8_t) 0x2E, buf_low, 1);
 
     uint8_t buf_high;
-    reg_read(i2c, buf_high, SAD, (uint8_t) 0x2F);
+    reg_read(i2c, SAD, (uint8_t) 0x2F, buf_high, 1);
 
     int temp_out = (int) buf_low | ((int) buf_high << 8);
     return temp_out;
 
-}*/
+}
