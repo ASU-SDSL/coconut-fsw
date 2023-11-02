@@ -60,3 +60,65 @@ int reg_write(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg, uint8_t *b
 	return num_bytes_written;
 }
 
+int get_x_output() { //defines function
+
+    uint8_t buf_low; //buf means buffer, allocates space for data to be entered in an 8 bit number (uint8_t)
+    reg_read(i2c, buf_low, address, 0x28); // taken from eps library, 0x28 is the location
+
+    uint8_t buf_high;
+    reg_read(i2c, buf_low, address, 0x29);
+
+    //high =   00000010
+    //low =    00000001
+    //high is just the higher register, probably just the higher value
+
+    int x_out = (int) buf_low | ((int) buf_high << 8); // or logic operator, basically makes 0 or 1 = 1
+    //0 | 1 = 1
+    //01 | 10 = 11
+    // 0 | 0 = 0
+
+    //<< 8 pushes values 8 to the left
+    //0000000 00000000 00000000 00000001
+    //0000000 00000000 00000010 <<<<<<<<
+    //or operator
+    //0000000 00000000 00000010 00000001
+    return x_out;
+}
+
+int get_y_output() { //Y output
+
+    uint8_t buf_low;
+    reg_read(i2c, buf_low, address, 0x2A);
+
+    uint8_t buf_high;
+    reg_read(i2c, buf_high, address, 0x2B);
+
+    int y_out = (int) buf_low | ((int) buf_high << 8);
+    return y_out;
+}
+
+int get_z_output(){ //Z output
+
+    uint8_t buf_low;
+    reg_read(i2c, buf_low, address, 0x2C);
+
+    uint8_t buf_high;
+    reg_read(i2c, buf_high, address, 0x2D);
+
+    int z_out = (int) buf_low | ((int) buf_high << 8);
+    return z_out;
+
+}
+
+int get_temp_output(){ //Temperature output
+
+    uint8_t buf_low;
+    reg_read(i2c, buf_low, address, 0x2E);
+
+    uint8_t buf_high;
+    reg_read(i2c, buf_high, address, 0x2F);
+
+    int temp_out = (int) buf_low | ((int) buf_high << 8);
+    return temp_out;
+
+}
