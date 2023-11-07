@@ -1,10 +1,10 @@
 #include "mag.h"
 
-// Slave Address, depends on SDO/SA1 pin connection
-static uint8_t SAD = 0x1E; 
-//static uint8_t SAD = 0x1C;
+//Slave Address
+//static uint8_t SAD = 0x1E; Use if SDO/SA1 is connected to high
+static uint8_t SAD = 0x1C;
 
-// Registers
+//Registers
 static const uint8_t WHO_AM_I = 0x0F;
 static const uint8_t CTRL_REG1 = 0x20;
 static const uint8_t CTRL_REG2 = 0x21;
@@ -67,10 +67,10 @@ int reg_write_m(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg, uint8_t 
 int get_x_output(i2c_inst_t *i2c) { //defines function
 
     uint8_t* buf_low; //buf means buffer, allocates space for data to be entered in an 8 bit number (uint8_t)
-    reg_read_m(i2c, SAD, (uint8_t) 0x28, buf_low, 1); // taken from eps library, 0x28 is the location
+    reg_read_m(i2c, SAD, (uint8_t) OUT_X_L, buf_low, 1); // taken from eps library, 0x28 is the location
 
     uint8_t* buf_high;
-    reg_read_m(i2c, SAD, (uint8_t) 0x29, buf_high, 1);
+    reg_read_m(i2c, SAD, (uint8_t) OUT_X_H, buf_high, 1);
 
     //high =   00000010
     //low =    00000001
@@ -93,10 +93,10 @@ int get_x_output(i2c_inst_t *i2c) { //defines function
 int get_y_output(i2c_inst_t *i2c) { //Y output
 
     uint8_t buf_low;
-    reg_read(i2c, SAD, (uint8_t) 0x2A, buf_low, 1);
+    reg_read(i2c, SAD, (uint8_t) OUT_Y_L, buf_low, 1);
 
     uint8_t buf_high;
-    reg_read(i2c, SAD, (uint8_t) 0x2B, buf_high, 1);
+    reg_read(i2c, SAD, (uint8_t) OUT_Y_H, buf_high, 1);
 
     int y_out = (int) buf_low | ((int) buf_high << 8);
     return y_out;
@@ -105,10 +105,10 @@ int get_y_output(i2c_inst_t *i2c) { //Y output
 int get_z_output(i2c_inst_t *i2c){ //Z output
 
     uint8_t buf_low;
-    reg_read(i2c, SAD, (uint8_t) 0x2C, buf_low, 1);
+    reg_read(i2c, SAD, (uint8_t) OUT_Z_L, buf_low, 1);
 
     uint8_t buf_high;
-    reg_read(i2c, SAD, (uint8_t) 0x2D, buf_high, 1);
+    reg_read(i2c, SAD, (uint8_t) OUT_Z_H, buf_high, 1);
 
     int z_out = (int) buf_low | ((int) buf_high << 8);
     return z_out;
@@ -118,12 +118,20 @@ int get_z_output(i2c_inst_t *i2c){ //Z output
 int get_temp_output(i2c_inst_t *i2c){ //Temperature output
 
     uint8_t buf_low;
-    reg_read(i2c, SAD, (uint8_t) 0x2E, buf_low, 1);
+    reg_read(i2c, SAD, (uint8_t) TEMP_OUT_L, buf_low, 1);
 
     uint8_t buf_high;
-    reg_read(i2c, SAD, (uint8_t) 0x2F, buf_high, 1);
+    reg_read(i2c, SAD, (uint8_t) TEMP_OUT_H, buf_high, 1);
 
     int temp_out = (int) buf_low | ((int) buf_high << 8);
     return temp_out;
 
+}
+
+int get_status(i2c_inst_t *i2c) { //Indicates if data is available/overrun
+
+	uint8_t status;
+	reg_read(i2c, SAD, STATUS_REG, status, 1);
+	
+	return status;
 }
