@@ -130,8 +130,9 @@ int get_temp_output(i2c_inst_t *i2c){ //Temperature output
 
 int get_status(i2c_inst_t *i2c) { //Indicates if data is available/overrun
 
-	uint8_t status;
-	reg_read(i2c, SAD, STATUS_REG, status, 1);
-	
+	uint8_t buf;
+	reg_read(i2c, SAD, STATUS_REG, buf, 1);
+
+	int status = (int) buf;
 	return status;
 }
