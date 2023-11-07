@@ -1,7 +1,11 @@
 #include <RadioLib.h>
 #include "RadioLibPiHal.h"
 #define ERR_NONE 0
-#include <SX1278.h>
+//#include <SX1278.h>
+#include <radio.h>
+#include <FreeRTOS.h>
+
+
 
 PiPicoHal* hal = new PiPicoHal(spi0, 2000000); // can specify the speed here as an argument if desired
 RFM98 radio = new Module(hal, 7, 17, 22, RADIOLIB_NC);
@@ -24,11 +28,11 @@ int main() {
     hal.init();
 
     while(true) {
-        printf("[RFM98] Transmitting packet ...");\
-        int state = hal.transmit("Hello World!");
+        printf("[RFM98] Transmitting packet ...");      
+        int state = radio.transmit("Hello World!");
         if (state == 0) {
             printf("success!\n");
-            hal.delay(1000);
+            vTaskDelay(1000);
         } else {
             printf("failed, code %d/n", state);
 

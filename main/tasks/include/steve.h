@@ -76,5 +76,6 @@ void delete_steve_job(steve_job_t* job);
 void cleanup_steve_jobs_list();
 void initialize_steve();
 
+void radio_transmission(void*);
 // Main Task
 void steve_task(void* unused_arg);

@@ -3,8 +3,7 @@
 #include "pico/stdlib.h"
 #include "hardware/adc.h"
 #include "hardware/spi.h"
-#include <SX1278.h>
-
+//#include <SX1278.h>
 
 class PiPicoHal : public RadioLibHal {
 public:
