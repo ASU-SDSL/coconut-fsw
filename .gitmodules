@@ -16,3 +16,9 @@
 [submodule "deps/spacepacket"]
 	path = deps/spacepacket
 	url = https://github.com/yuasatakayuki/CCSDSLibrary
+[submodule "no-OS-FatFS-SD-SPI-RPi-Pico"]
+	path = no-OS-FatFS-SD-SPI-RPi-Pico
+	url = https://github.com/carlk3/no-OS-FatFS-SD-SPI-RPi-Pico
+[submodule "deps/no-OS-FatFS-SD-SPI-RPi-Pico"]
+	path = deps/no-OS-FatFS-SD-SPI-RPi-Pico
+	url = https://github.com/carlk3/no-OS-FatFS-SD-SPI-RPi-Pico

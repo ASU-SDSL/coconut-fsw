@@ -23,7 +23,11 @@ set(SOURCES
     ${MAIN_DIRECTORY}/libraries/src/ccsds.c
     ${MAIN_DIRECTORY}/libraries/src/eps.c
     ${MAIN_DIRECTORY}/libraries/src/log.c
+<<<<<<< Updated upstream
     ${MAIN_DIRECTORY}/libraries/src/mag.c
+=======
+    ${MAIN_DIRECTORY}/hw_config.c
+>>>>>>> Stashed changes
 )
 
 add_executable(${PROJECT_NAME}
@@ -42,6 +46,7 @@ target_link_libraries(${PROJECT_NAME} LINK_PUBLIC
     hardware_adc
     hardware_i2c
     RadioLib
+    FatFs_SPI
     #spacepacket - note: for now, just include spacepacket as an executable if its needed, otherwise we will probably have to make it a library through its
     #               cmakelists file
 )
@@ -57,3 +62,4 @@ pico_enable_stdio_uart(${PROJECT_NAME} 0)
 
 # Enable extra build products
 pico_add_extra_outputs(${PROJECT_NAME})
+
