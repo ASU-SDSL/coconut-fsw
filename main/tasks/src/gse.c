@@ -5,11 +5,7 @@
 #include "gse.h"
 #include "command.h"
 
-
-
-
-
-void sd() {
+void sdcard_write() {
     FRESULT fr;
     FATFS fs;
     FIL fil;
@@ -17,18 +13,10 @@ void sd() {
     char buf[100];
     char filename[] = "test01.txt";
 
-    // Initialize chosen serial port
-    stdio_init_all();
 
     // Wait for user to press 'enter' to continue
     printf("\r\nSD card test. Press 'enter' to start.\r\n");
-    while (true) {
-        buf[0] = getchar();
-        if ((buf[0] == '\r') || (buf[0] == '\n')) {
-            break;
-        }
-    }
-
+    
     // Initialize SD card
     if (!sd_init_driver()) {
         printf("ERROR: Could not initialize SD card\r\n");
@@ -70,27 +58,7 @@ void sd() {
         while (true);
     }
 
-    // Open file for reading
-    fr = f_open(&fil, filename, FA_READ);
-    if (fr != FR_OK) {
-        printf("ERROR: Could not open file (%d)\r\n", fr);
-        while (true);
-    }
 
-    // Print every line in file over serial
-    printf("Reading from file '%s':\r\n", filename);
-    printf("---\r\n");
-    while (f_gets(buf, sizeof(buf), &fil)) {
-        printf(buf);
-    }
-    printf("\r\n---\r\n");
-
-    // Close file
-    fr = f_close(&fil);
-    if (fr != FR_OK) {
-        printf("ERROR: Could not close file (%d)\r\n", fr);
-        while (true);
-    }
 
     // Unmount drive
     f_unmount("0:");
@@ -150,7 +118,13 @@ void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq
 }
 
 void gse_task() {
-    sd();
+    vTaskDelay(2000);
+    sdcard_write();
+    while (1) {
+        
+        vTaskDelay(2000);
+        printf("SD card\n");
+    }
     // Initialize UART0
     uart_initialize(UART0_INSTANCE, UART0_TX_PIN, UART0_RX_PIN, UART0_IRQ);
 
