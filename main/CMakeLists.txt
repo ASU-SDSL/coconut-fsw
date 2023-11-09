@@ -23,11 +23,8 @@ set(SOURCES
     ${MAIN_DIRECTORY}/libraries/src/ccsds.c
     ${MAIN_DIRECTORY}/libraries/src/eps.c
     ${MAIN_DIRECTORY}/libraries/src/log.c
-<<<<<<< Updated upstream
     ${MAIN_DIRECTORY}/libraries/src/mag.c
-=======
-    ${MAIN_DIRECTORY}/hw_config.c
->>>>>>> Stashed changes
+    ${MAIN_DIRECTORY}/libraries/src/hw_config.c
 )
 
 add_executable(${PROJECT_NAME}
