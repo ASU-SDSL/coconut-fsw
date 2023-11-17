@@ -5,7 +5,7 @@
 #include "gse.h"
 #include "command.h"
 
-void sdcard_write() {
+void sdcard_write(SemaphoreHandle_t* mutex) {
     FRESULT fr;
     FATFS fs;
     FIL fil;
@@ -16,57 +16,61 @@ void sdcard_write() {
 
     // Wait for user to press 'enter' to continue
     printf("\r\nSD card test. Press 'enter' to start.\r\n");
-    
-    // Initialize SD card
-    if (!sd_init_driver()) {
-        printf("ERROR: Could not initialize SD card\r\n");
-        while (true);
+
+    // xSemaphoreTake(mutex, portMAX_DELAY);
+    {
+        // Initialize SD card
+        if (!sd_init_driver()) {
+            printf("ERROR: Could not initialize SD card\r\n");
+            while (true);
+        }
+
+        // Mount drive
+        fr = f_mount(&fs, "0:", 1);
+        if (fr != FR_OK) {
+            printf("ERROR: Could not mount filesystem (%d)\r\n", fr);
+            while (true);
+        }
+
+        // Open file for writing ()
+        fr = f_open(&fil, filename, FA_WRITE | FA_CREATE_ALWAYS);
+        if (fr != FR_OK) {
+            printf("ERROR: Could not open file (%d)\r\n", fr);
+            while (true);
+        }
+
+        // Write something to file
+        ret = f_printf(&fil, "This is another test\r\n");
+        if (ret < 0) {
+            printf("ERROR: Could not write to file (%d)\r\n", ret);
+            f_close(&fil);
+            while (true);
+        }
+        ret = f_printf(&fil, "of writing to an SD card.\r\n");
+        if (ret < 0) {
+            printf("ERROR: Could not write to file (%d)\r\n", ret);
+            f_close(&fil);
+            while (true);
+        }
+
+        // Close file
+        fr = f_close(&fil);
+        if (fr != FR_OK) {
+            printf("ERROR: Could not close file (%d)\r\n", fr);
+            while (true);
+        }
+
+
+
+        // Unmount drive
+        f_unmount("0:");
+
+        // Loop forever doing nothing
+        while (true) {
+            sleep_ms(1000);
+        }
     }
-
-    // Mount drive
-    fr = f_mount(&fs, "0:", 1);
-    if (fr != FR_OK) {
-        printf("ERROR: Could not mount filesystem (%d)\r\n", fr);
-        while (true);
-    }
-
-    // Open file for writing ()
-    fr = f_open(&fil, filename, FA_WRITE | FA_CREATE_ALWAYS);
-    if (fr != FR_OK) {
-        printf("ERROR: Could not open file (%d)\r\n", fr);
-        while (true);
-    }
-
-    // Write something to file
-    ret = f_printf(&fil, "This is another test\r\n");
-    if (ret < 0) {
-        printf("ERROR: Could not write to file (%d)\r\n", ret);
-        f_close(&fil);
-        while (true);
-    }
-    ret = f_printf(&fil, "of writing to an SD card.\r\n");
-    if (ret < 0) {
-        printf("ERROR: Could not write to file (%d)\r\n", ret);
-        f_close(&fil);
-        while (true);
-    }
-
-    // Close file
-    fr = f_close(&fil);
-    if (fr != FR_OK) {
-        printf("ERROR: Could not close file (%d)\r\n", fr);
-        while (true);
-    }
-
-
-
-    // Unmount drive
-    f_unmount("0:");
-
-    // Loop forever doing nothing
-    while (true) {
-        sleep_ms(1000);
-    }
+    // xSemaphoreGive(mutex);
 }
 
 void uart_queue_message(char* buffer, size_t size) {
@@ -117,9 +121,12 @@ void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq
     uart_set_irq_enables(uart_instance, true, false);
 }
 
-void gse_task() {
+void gse_task(void *pvParameters) {
     vTaskDelay(2000);
-    sdcard_write();
+
+    SemaphoreHandle_t* mutex = (SemaphoreHandle_t *) pvParameters;
+    sdcard_write(mutex);
+
     while (1) {
         
         vTaskDelay(2000);
