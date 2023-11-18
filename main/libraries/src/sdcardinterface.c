@@ -1,3 +1,5 @@
+#include "ff.h"
+
 void write(SemaphoreHandle_t* mutex) {
     FRESULT fr;
     FATFS fs;
@@ -67,5 +69,5 @@ void write(SemaphoreHandle_t* mutex) {
 }
 
 void read() {
-    
+
 }
