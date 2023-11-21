@@ -1,33 +1,5 @@
 // look at eps.c
 // copy reg_write and reg_read
-#include "rtc.h"
-#include "hardware/i2c.h"
-
-
-
-void set_time(i2c_inst_t *i2c, const uint8_t addr,const uint8_t reg, 
-uint8_t hour, uint8_t minute, uint8_t second) {
-    uint8_t time_data[3];
-    time_data[0] = second;
-    time_data[1] = minute;
-    time_data[2] = hour;
-    i2c_write_blocking(i2c, addr, time_data, 3, false);
-    
-    
-}
-int test(){
-    const uint sda_pin = 6;
-	const uint scl_pin = 7;
-
-	// Ports
-	i2c_inst_t *i2c = i2c0;
-    i2c_init(i2c, 400 * 1000);
-    
-    set_time(i2c, INA219_ADDR, REG_CALIB, 5, 6, 50);
-}
-
-
-
 
 /////other code 
 
@@ -56,7 +28,7 @@ void set_time(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg,
     i2c_write_blocking(i2c, addr, time_data, 3, false);
 }
 
-int test() {
+int rtc_test() {
    
 
     // Ports
@@ -68,6 +40,7 @@ int test() {
 
     // Close the I2C communication
     i2c_deinit(i2c);
+    return 1;
 }
 
 

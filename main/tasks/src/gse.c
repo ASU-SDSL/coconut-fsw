@@ -1,5 +1,6 @@
 #include "gse.h"
 #include "command.h"
+#include "rtc.h"
 
 void uart_queue_message(char* buffer, size_t size) {
     // Create new transmission structure
@@ -59,6 +60,8 @@ void gse_task() {
     // Initialize write LED
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
+
+    // rtc_test();
 
     // Start listening for UART queue messages
     transmission_buffer_t rec;

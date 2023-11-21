@@ -23,6 +23,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/libraries/src/ccsds.c
     ${MAIN_DIRECTORY}/libraries/src/eps.c
     ${MAIN_DIRECTORY}/libraries/src/log.c
+    ${MAIN_DIRECTORY}/libraries/src/rtc.c
 )
 
 add_executable(${PROJECT_NAME}
