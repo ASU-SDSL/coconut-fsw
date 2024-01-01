@@ -9,6 +9,7 @@
 #include "pico/stdlib.h"
 
 #include "gse.h"
+#include "radio.h"
 #include "state.h"
 
 

@@ -3,8 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
-                "/home/denssumesh/Documents/coconut-fsw/deps/**",
+                "/home/denssumesh/Documents/coconut-fsw/**",
+                "/home/denssumesh/Documents/coconut-fsw/deps/pico-sdk",
+                "/home/denssumesh/Documents/coconut-fsw/deps/FreeRTOS-Kernel",
                 "/home/denssumesh/Documents/coconut-fsw/libraries/RadioLib/src"
             ],
             "defines": [],

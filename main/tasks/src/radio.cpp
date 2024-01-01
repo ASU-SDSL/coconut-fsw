@@ -12,7 +12,9 @@ volatile bool packet_recieved = false;
 
 // having issues initializing hal for some reason?
 // I assume it's because of some sort of included path problem to the RadioLib files?
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 void radio_queue_message(char* buffer, size_t size) {
     // Create new transmission structure
     telemetry_queue_transmission_t new_buffer;
@@ -27,6 +29,9 @@ void radio_queue_message(char* buffer, size_t size) {
     }
     xQueueSendToBack(radio_queue, &new_buffer, portMAX_DELAY);
 }
+#ifdef __cplusplus
+}
+#endif
 
 void radio_packet_recieve(void)
 {

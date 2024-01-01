@@ -15,7 +15,15 @@
 
 QueueHandle_t radio_queue;
 
-void radio_queue_message(char* buffer, size_t size);
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    void radio_queue_message(char *buffer, size_t size);
+#ifdef __cplusplus
+}
+#endif
+
 void radio_packet_recieve();
 void init_radio();
 void radio_task();
