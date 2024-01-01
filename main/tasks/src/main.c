@@ -50,12 +50,12 @@ int main() {
                                         1,
                                         NULL);
 #ifndef GSE_ENABLED
-    /*BaseType_t radio_task_status = xTaskCreate(radio_task, 
+    BaseType_t radio_task_status = xTaskCreate(radio_task, 
                                          "RADIO", 
                                          128, 
                                          NULL, 
                                          1,
-                                         NULL);*/
+                                         NULL);
 #endif
     // Start the FreeRTOS scheduler
     vTaskStartScheduler();
