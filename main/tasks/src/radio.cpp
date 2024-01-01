@@ -18,7 +18,7 @@ void radio_queue_message(char* buffer, size_t size) {
     telemetry_queue_transmission_t new_buffer;
     new_buffer.payload_size = size;
     // Allocate chunk on heap to copy buffer contents
-    char* heap_buf = pvPortMalloc(size);
+    char* heap_buf = (char*)pvPortMalloc(size);
     memcpy(heap_buf, buffer, size);
     new_buffer.payload_buffer = heap_buf;
     // Wait for queue to become available
@@ -91,8 +91,8 @@ void radio_task(void *unused_arg)
     xQueueReceive(radio_queue, &rec, 0);
     //should maybe move to interrupt based transmit but may cause UB when combined with recieve interrupts
     if (sizeof(rec.payload_buffer) > 0){
-    radio.transmit(rec.payload_buffer);
-    vPortFree(rec.payload_buffer);
+        radio.transmit(rec.payload_buffer);
+        vPortFree(rec.payload_buffer);
     }
 
     radio.startReceive();
