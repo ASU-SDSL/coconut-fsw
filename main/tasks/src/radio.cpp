@@ -7,11 +7,26 @@
 
 PiPicoHal *hal = new PiPicoHal(spi0); // can specify the speed here as an argument if desired
 // Add interupt pin
-RFM98 radio = new Module(hal, 7, 17, 22, RADIOLIB_NC);
+RFM98 radio = new Module(hal, RADIO_NSS_PIN, RADIO_IRQ_PIN, RADIO_NRST_PIN, RADIOLIB_NC);
 volatile bool packet_recieved = false;
 
 // having issues initializing hal for some reason?
 // I assume it's because of some sort of included path problem to the RadioLib files?
+
+void radio_queue_message(char* buffer, size_t size) {
+    // Create new transmission structure
+    telemetry_queue_transmission_t new_buffer;
+    new_buffer.payload_size = size;
+    // Allocate chunk on heap to copy buffer contents
+    char* heap_buf = pvPortMalloc(size);
+    memcpy(heap_buf, buffer, size);
+    new_buffer.payload_buffer = heap_buf;
+    // Wait for queue to become available
+    while (!radio_queue) {
+        vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
+    }
+    xQueueSendToBack(radio_queue, &new_buffer, portMAX_DELAY);
+}
 
 void radio_packet_recieve(void)
 {
@@ -54,17 +69,34 @@ void init_radio()
 void radio_task(void *unused_arg)
 {
     init_radio();
+    radio_queue = xQueueCreate(RADIO_MAX_QUEUE_ITEMS, sizeof(telemetry_queue_transmission_t));
+       telemetry_queue_transmission_t rec;
+
+    while(true) {
     if (packet_recieved){
         uint8_t* packet;
         size_t packet_size = radio.getPacketLength();
         int packet_state = radio.readData(packet, packet_size);
         if(packet_state == RADIOLIB_ERR_NONE){
+            //parse out sync bytes and grab packet with header
+            //create command.c function to read packet
             printf("Recieved packet");
         } else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH) {
             printf("CRC Error!!");
         } else {
             printf("Packet Reading failed");
         }
+    }
+
+    xQueueReceive(radio_queue, &rec, 0);
+    //should maybe move to interrupt based transmit but may cause UB when combined with recieve interrupts
+    if (sizeof(rec.payload_buffer) > 0){
+    radio.transmit(rec.payload_buffer);
+    vPortFree(rec.payload_buffer);
+    }
+
+    radio.startReceive();
+    
     }
 }
 
