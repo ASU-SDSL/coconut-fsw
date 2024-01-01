@@ -4,10 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${env:FREERTOS_KERNEL_PATH}/**",
-                "${env:PICO_SDK_PATH}/**",
-                "${workspaceFolder}/../lib/RadioLib/src"
-                
+                "/home/denssumesh/Documents/coconut-fsw/deps/**",
+                "/home/denssumesh/Documents/coconut-fsw/libraries/RadioLib/src"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
