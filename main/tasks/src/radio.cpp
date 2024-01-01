@@ -10,8 +10,6 @@ PiPicoHal *hal = new PiPicoHal(spi0); // can specify the speed here as an argume
 RFM98 radio = new Module(hal, RADIO_NSS_PIN, RADIO_IRQ_PIN, RADIO_NRST_PIN, RADIOLIB_NC);
 volatile bool packet_recieved = false;
 
-// having issues initializing hal for some reason?
-// I assume it's because of some sort of included path problem to the RadioLib files?
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -75,7 +73,7 @@ void radio_task(void *unused_arg)
 {
     init_radio();
     radio_queue = xQueueCreate(RADIO_MAX_QUEUE_ITEMS, sizeof(telemetry_queue_transmission_t));
-       telemetry_queue_transmission_t rec;
+    telemetry_queue_transmission_t rec;
 
     while(true) {
     if (packet_recieved){
@@ -93,9 +91,8 @@ void radio_task(void *unused_arg)
         }
     }
 
-    xQueueReceive(radio_queue, &rec, 0);
     //should maybe move to interrupt based transmit but may cause UB when combined with recieve interrupts
-    if (sizeof(rec.payload_buffer) > 0){
+    if (xQueueReceive(radio_queue, &rec, 0)){
         radio.transmit(rec.payload_buffer);
         vPortFree(rec.payload_buffer);
     }
