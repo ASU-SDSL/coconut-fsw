@@ -1,11 +1,14 @@
 #ifndef RADIO_FILE_DEFINED
 #define RADIO_FILE_DEFINED
 #include <log.h>
-#include "FreeRTOS.h"
+#include <FreeRTOS.h>
 
 
-void radio_task(void* unused_arg);
-void transmit_task(void* unused_arg);
+
+
+void radio_packet_recieve();
+void init_radio();
+void radio_task();
 
 
 #endif /* !RADIO_FILE_DEFINED */

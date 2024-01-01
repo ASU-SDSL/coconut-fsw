@@ -53,7 +53,7 @@ public:
         return gpio_get(pin);
     }
     typedef void(* gpio_irq_callback_t) (uint gpio, uint32_t event_mask);
-    void gpio_set_irq_enabled_with_callback (uint gpio, uint32_t event_mask, bool enabled, gpio_irq_callback_t callback);
+    //void gpio_set_irq_enabled_with_callback (uint gpio, uint32_t event_mask, bool enabled, gpio_irq_callback_t callback);
     void attachInterrupt(uint32_t interruptNum, void (*interruptCb)(void), uint32_t mode) override {
         if (interruptNum == RADIOLIB_NC) {
             return;
