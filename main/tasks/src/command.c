@@ -12,6 +12,15 @@ void receive_command_byte_from_isr(char ch) {
     }
 }
 
+//if we recieve smt on uart and radio at the same time, this may cause UB as bytes can get mixed up
+void parse_radio_packet(uint8_t* packet, size_t packet_size){
+    if (command_byte_queue) {
+        for (int i = 0; i < packet_size; i++ ){
+            xQueueSendToBack(command_byte_queue, &packet[i], portMAX_DELAY);
+        }
+    }
+}
+
 void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
     switch (header.apid) {
         case CHANGE_HEARTBEAT_TELEM_RATE:

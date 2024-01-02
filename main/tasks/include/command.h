@@ -13,7 +13,7 @@
 #include "ccsds.h"
 #include "log.h"
 
-#define COMMAND_MAX_QUEUE_ITEMS 64
+#define COMMAND_MAX_QUEUE_ITEMS 300
 #define COMMAND_CHECK_DELAY_MS 500
 #define COMMAND_SYNC_BYTES "\x35\x2E\xF8\x53"
 #define STARTING_COMMAND_BUF_SIZE 32
@@ -35,6 +35,7 @@ void receive_command_byte_from_isr(char ch);
 
 /* INTERNAL FUNCTIONS */
 void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t payload_size);
+void parse_radio_packet(uint8_t* packet, size_t packet_size);
 
 // Main Task
 void command_task(void* unused_arg);
