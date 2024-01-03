@@ -1,5 +1,6 @@
 #include "log.h"
 #include <stdio.h>
+#include <pico/stdio.h>
 
 // TODO: Add ability to use format strings with these log messages
 

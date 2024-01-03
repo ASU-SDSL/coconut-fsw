@@ -4,6 +4,7 @@
 // #include <SX1278.h>
 #include <radio.h>
 #include <FreeRTOS.h>
+#include "command.h"
 
 /**
  * one thread
@@ -33,7 +34,7 @@ extern "C"
         telemetry_queue_transmission_t new_buffer;
         new_buffer.payload_size = size;
         // Allocate chunk on heap to copy buffer contents
-        char *heap_buf = (char *)pvPortMalloc(size);
+        auto heap_buf = static_cast<char *>(pvPortMalloc(size));
         memcpy(heap_buf, buffer, size);
         new_buffer.payload_buffer = heap_buf;
         // Wait for queue to become available
@@ -47,7 +48,7 @@ extern "C"
 }
 #endif
 
-void radio_packet_recieve(void)
+void radio_packet_recieve()
 {
     packet_recieved = true;
 }

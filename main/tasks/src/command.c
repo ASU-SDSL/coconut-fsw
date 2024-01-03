@@ -13,6 +13,7 @@ void receive_command_byte_from_isr(char ch) {
 }
 
 //if we recieve smt on uart and radio at the same time, this may cause UB as bytes can get mixed up
+//stopgap implementation, we should just parse the packet wholesale in the future
 void parse_radio_packet(uint8_t* packet, size_t packet_size){
     if (command_byte_queue) {
         for (int i = 0; i < packet_size; i++ ){

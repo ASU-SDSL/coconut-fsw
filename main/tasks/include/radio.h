@@ -1,9 +1,7 @@
 #ifndef RADIO_FILE_DEFINED
 #define RADIO_FILE_DEFINED
-#include <log.h>
 #include <FreeRTOS.h>
 #include "queue.h"
-#include "command.h"
 
 
 #define RADIO_NSS_PIN 7
