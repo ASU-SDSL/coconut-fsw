@@ -8,6 +8,7 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 #include "command.h"
+#include "log.h"
 
 #define BAUD_RATE 115200
 #define DATA_BITS 8
@@ -24,10 +25,11 @@
 #define GSE_CHECK_DELAY_MS 500
 #define UART_QUEUE_CHECK_TIME portMAX_DELAY
 
-typedef struct transmission_buffer {
-    char* buffer;
-    size_t size;
-} transmission_buffer_t;
+typedef struct telemetry_queue_transmission {
+    uint16_t apid;
+    char* payload_buffer;
+    size_t payload_size;
+} telemetry_queue_transmission_t;
 
 QueueHandle_t uart0_queue;
 

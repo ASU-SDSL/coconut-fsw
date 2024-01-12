@@ -1,18 +1,23 @@
+#include <stdio.h>
+#include "pico/stdlib.h"
+#include "sd_card.h"
+#include "ff.h"
 #include "gse.h"
 #include "command.h"
 #include "rtc.h"
+#include "sdcardinterface.h"
 
 void uart_queue_message(char* buffer, size_t size) {
     // Create new transmission structure
-    transmission_buffer_t new_buffer;
-    new_buffer.size = size;
+    telemetry_queue_transmission_t new_buffer;
+    new_buffer.payload_size = size;
     // Allocate chunk on heap to copy buffer contents
     char* heap_buf = pvPortMalloc(size);
     memcpy(heap_buf, buffer, size);
-    new_buffer.buffer = heap_buf;
+    new_buffer.payload_buffer = heap_buf;
     // Wait for queue to become available
     while (!uart0_queue) {
-        vTaskDelay(GSE_CHECK_DELAY_MS);
+        vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
     }
     xQueueSendToBack(uart0_queue, &new_buffer, portMAX_DELAY);
 }
@@ -29,6 +34,7 @@ void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq
     uart_init(uart_instance, BAUD_RATE);
 
     // Set the TX and RX pins
+    // TODO: This currently crashes on the feather I think, pins currently setup for the standard Pi Pico
     gpio_set_function(tx_pin, GPIO_FUNC_UART);
     gpio_set_function(rx_pin, GPIO_FUNC_UART);
 
@@ -49,13 +55,23 @@ void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq
     uart_set_irq_enables(uart_instance, true, false);
 }
 
-void gse_task() {
+void gse_task(void *pvParameters) {
+    vTaskDelay(2000);
+
+    SemaphoreHandle_t* mutex = (SemaphoreHandle_t *) pvParameters;
+    write(mutex);
+
+    while (1) {
+        
+        vTaskDelay(2000);
+        printf("SD card\n");
+    }
     // Initialize UART0
     uart_initialize(UART0_INSTANCE, UART0_TX_PIN, UART0_RX_PIN, UART0_IRQ);
-    
+
     // Create UART0 queue
     // TODO: Change this to a struct instead of char ptr for sending actual command data
-    uart0_queue = xQueueCreate(UART_MAX_QUEUE_ITEMS, sizeof(transmission_buffer_t));
+    uart0_queue = xQueueCreate(UART_MAX_QUEUE_ITEMS, sizeof(telemetry_queue_transmission_t));
 
     // Initialize write LED
     gpio_init(LED_PIN);
@@ -64,7 +80,7 @@ void gse_task() {
     // rtc_test();
 
     // Start listening for UART queue messages
-    transmission_buffer_t rec;
+    telemetry_queue_transmission_t rec;
     while (true) {
         // Wait on a message in the queue
         xQueueReceive(uart0_queue, &rec, UART_QUEUE_CHECK_TIME);
@@ -73,12 +89,12 @@ void gse_task() {
         // Write bytes to UART
         if (uart_is_writable(UART0_INSTANCE)) {
             // Send bytes to UART port one-by-one
-            for (int i = 0; i < rec.size; i++) {
-                uart_putc_raw(UART0_INSTANCE, rec.buffer[i]);
+            for (int i = 0; i < rec.payload_size; i++) {
+                uart_putc_raw(UART0_INSTANCE, rec.payload_buffer[i]);
             }
         }
         // Free buffer allocated in uart_queue_message
-        vPortFree(rec.buffer);
+        vPortFree(rec.payload_buffer);
         // Disable write LED
         gpio_put(LED_PIN, 0);
     }

@@ -18,25 +18,22 @@
 #define COMMAND_SYNC_BYTES "\x35\x2E\xF8\x53"
 #define STARTING_COMMAND_BUF_SIZE 32
 
+// Command Structs and Types
+typedef enum command_apid {
+    STORE_GROUNDNODE_DATA = 0,
+    CHANGE_HEARTBEAT_TELEM_RATE = 1,
+    REQUEST_DOWNLINK_GROUNDNODE_DATA = 2, 
+    REQUEST_DOWNLINK_TELEMETRY_DATA = 3
+} command_apid_t;
+
+// Internal Command Thread Structs
 QueueHandle_t command_byte_queue;
-
-// typedef enum command_source {
-//     UART,
-//     RADIO
-// } command_source_t;
-
 typedef char command_byte_t;
-
-// typedef struct command_byte {
-//     // command_source_t source;
-//     char value;
-// } command_byte_t;
 
 /* USER FUNCTIONS */
 void receive_command_byte_from_isr(char ch);
 
 /* INTERNAL FUNCTIONS */
-
 void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t payload_size);
 
 // Main Task
