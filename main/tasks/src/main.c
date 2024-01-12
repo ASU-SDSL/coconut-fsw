@@ -21,11 +21,18 @@ int main() {
     // Arg 5+ are arguments to the function of the task
     logln_info("Initializing FreeRTOS Tasks...");
 
+    SemaphoreHandle_t sdMutex = xSemaphoreCreateMutex();
+
+    if (sdMutex == NULL) {
+        logln_error("Could not create SD mutex");
+        while (true);
+    }
+
 #ifdef GSE_ENABLED
     BaseType_t gse_task_status = xTaskCreate(gse_task, 
                                         "GSE", 
                                         128, 
-                                        NULL, 
+                                        &sdMutex,
                                         1,
                                         NULL);
 #endif                       

@@ -8,6 +8,7 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 #include "command.h"
+#include "log.h"
 
 #define BAUD_RATE 115200
 #define DATA_BITS 8

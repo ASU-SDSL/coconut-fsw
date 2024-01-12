@@ -16,3 +16,6 @@
 [submodule "deps/RadioLib"]
 	path = deps/RadioLib
 	url = https://github.com/jgromes/RadioLib
+[submodule "deps/no-OS-FatFS-SD-SPI-RPi-Pico"]
+	path = deps/no-OS-FatFS-SD-SPI-RPi-Pico
+	url = https://github.com/carlk3/no-OS-FatFS-SD-SPI-RPi-Pico

@@ -47,7 +47,6 @@ int reg_write(	i2c_inst_t *i2c,
 	for  (int i=0; i < nbytes; i++) {
 		msg[i + 1] = buf[i];
 	}
-
 	num_bytes_written = i2c_write_blocking(i2c, addr, msg, (nbytes + 1), false);
 
 	// this could be an error code as well
