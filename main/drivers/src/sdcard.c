@@ -1,3 +1,4 @@
+#include "sdcard.h"
 #include "ff.h"
 
 void write(SemaphoreHandle_t* mutex) {

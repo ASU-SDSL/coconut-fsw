@@ -5,7 +5,7 @@
 #include "gse.h"
 #include "command.h"
 #include "rtc.h"
-#include "sdcardinterface.h"
+#include "sdcard.h"
 
 void uart_queue_message(char* buffer, size_t size) {
     // Create new transmission structure

@@ -24,7 +24,7 @@ set(DO_DEBUG "ON")
 set(CMAKE_C_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
 set(CMAKE_CXX_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
 set(FREERTOS_CFG_DIRECTORY "${CMAKE_SOURCE_DIR}/freertos")
-set(FREERTOS_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/deps/FreeRTOS-Kernel")
+set(FREERTOS_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/FreeRTOS-Kernel")
 
 # Name the project
 project(${PROJECT_NAME}
@@ -55,6 +55,5 @@ target_include_directories(FreeRTOS PUBLIC
 add_subdirectory(${MAIN_DIRECTORY})
 
 # add libraries here (and in target_link_libraries under the main cmakelists)
-add_subdirectory(${CMAKE_SOURCE_DIR}/deps/RadioLib)
-
-add_subdirectory(deps/no-OS-FatFS-SD-SPI-RPi-Pico/FatFs_SPI build)
+add_subdirectory(${CMAKE_SOURCE_DIR}/lib/RadioLib)
+add_subdirectory(${CMAKE_SOURCE_DIR}/lib/no-OS-FatFS-SD-SPI-RPi-Pico/FatFs_SPI build)

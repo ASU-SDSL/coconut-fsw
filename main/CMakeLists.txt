@@ -20,12 +20,13 @@ set(SOURCES
     ${MAIN_DIRECTORY}/tasks/src/command.c
     ${MAIN_DIRECTORY}/tasks/src/telemetry.c
 
-    ${MAIN_DIRECTORY}/libraries/src/ccsds.c
-    ${MAIN_DIRECTORY}/libraries/src/eps.c
-    ${MAIN_DIRECTORY}/libraries/src/log.c
-    ${MAIN_DIRECTORY}/libraries/src/rtc.c
-    ${MAIN_DIRECTORY}/libraries/src/mag.c
-    ${MAIN_DIRECTORY}/libraries/src/hw_config.c
+    ${MAIN_DIRECTORY}/utilities/src/ccsds.c
+    ${MAIN_DIRECTORY}/utilities/src/log.c
+
+    ${MAIN_DIRECTORY}/drivers/src/eps.c
+    ${MAIN_DIRECTORY}/drivers/src/rtc.c
+    ${MAIN_DIRECTORY}/drivers/src/mag.c
+    ${MAIN_DIRECTORY}/drivers/src/hw_config.c
 )
 
 add_executable(${PROJECT_NAME}
@@ -51,7 +52,8 @@ target_link_libraries(${PROJECT_NAME} LINK_PUBLIC
 
 target_include_directories(${PROJECT_NAME} 
     PRIVATE ${MAIN_DIRECTORY}/tasks/include
-    PRIVATE ${MAIN_DIRECTORY}/libraries/include
+    PRIVATE ${MAIN_DIRECTORY}/utilities/include
+    PRIVATE ${MAIN_DIRECTORY}/drivers/include
 )
 
 # Enable/disable STDIO via USB and UART

@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdint.h>
-#include <sleep.h>          //For sleep function
 #include "pico/stdlib.h"    //Include Pico SDK
 #include "watchdog.h"
 
@@ -23,6 +22,7 @@ void pet_dog() {
     //gpio_put(WDI_PIN, 0);
 }
 
+/*
 int main() {
     while (1) {
         pet_dog();  
@@ -31,3 +31,4 @@ int main() {
 
     return 0;
 }
+*/

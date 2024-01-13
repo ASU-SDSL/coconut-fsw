@@ -25,7 +25,8 @@ static const uint8_t INT_SRC = 0x31;
 static const uint8_t INT_THIS_L = 0x32;
 static const uint8_t INT_THIS_H = 0x33;
 
-uint i2c_init (i2c_inst_t *i2c, uint 100 * 1000) //initialization of i2c
+// Not sure what this was for, should not be needed
+//uint i2c_init (i2c_inst_t *i2c, uint 100 * 1000) //initialization of i2c
 
 int reg_read_m(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg, uint8_t *output_buf, const uint8_t nbytes) 
 {
