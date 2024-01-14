@@ -13,12 +13,12 @@ add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
 
 # Create a sources variable with a link to all cpp files to compile
 set(SOURCES
-    ${MAIN_DIRECTORY}/tasks/src/main.c
-    ${MAIN_DIRECTORY}/tasks/src/gse.c
-    ${MAIN_DIRECTORY}/tasks/src/steve.c
-    ${MAIN_DIRECTORY}/tasks/src/radio.cpp
-    ${MAIN_DIRECTORY}/tasks/src/command.c
-    ${MAIN_DIRECTORY}/tasks/src/telemetry.c
+    ${MAIN_DIRECTORY}/tasks/main/main.c
+    ${MAIN_DIRECTORY}/tasks/gse/gse.c
+    ${MAIN_DIRECTORY}/tasks/steve/steve.c
+    ${MAIN_DIRECTORY}/tasks/radio/radio.cpp
+    ${MAIN_DIRECTORY}/tasks/command/command.c
+    ${MAIN_DIRECTORY}/tasks/telemetry/telemetry.c
 
     ${MAIN_DIRECTORY}/utilities/src/ccsds.c
     ${MAIN_DIRECTORY}/utilities/src/log.c
@@ -51,7 +51,13 @@ target_link_libraries(${PROJECT_NAME} LINK_PUBLIC
 )
 
 target_include_directories(${PROJECT_NAME} 
-    PRIVATE ${MAIN_DIRECTORY}/tasks/include
+    PRIVATE ${MAIN_DIRECTORY}/tasks/main
+    PRIVATE ${MAIN_DIRECTORY}/tasks/command
+    PRIVATE ${MAIN_DIRECTORY}/tasks/gse
+    PRIVATE ${MAIN_DIRECTORY}/tasks/radio
+    PRIVATE ${MAIN_DIRECTORY}/tasks/steve
+    PRIVATE ${MAIN_DIRECTORY}/tasks/telemetry
+
     PRIVATE ${MAIN_DIRECTORY}/utilities/include
     PRIVATE ${MAIN_DIRECTORY}/drivers/include
 )
