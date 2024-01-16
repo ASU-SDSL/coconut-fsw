@@ -1,5 +1,5 @@
 #include "mag.h"
-// testing
+
 //Slave Address
 //static uint8_t SAD = 0x1E; Use if SDO/SA1 is connected to high
 static uint8_t SAD = 0x1C;
