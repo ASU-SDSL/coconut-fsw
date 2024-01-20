@@ -78,7 +78,7 @@ int getVShunt(        i2c_inst_t *i2c,
 
 		uint8_t buf;
 
-		if (reg_read(i2c, addr, reg_vs, &buf, 2) < 0) {
+		if (i2c_driver_read(i2c, addr, reg_vs, &buf, 2) < 0) {
 			return 0;
 		}
 
@@ -93,7 +93,7 @@ int getVBus(          i2c_inst_t *i2c,
 
         uint8_t buf;
 
-        if (reg_read(i2c, addr, reg_vb, &buf, 2) < 0) {
+        if (i2c_driver_read(i2c, addr, reg_vb, &buf, 2) < 0) {
 			return 0;
 		}
 
@@ -109,7 +109,7 @@ int getPower(	i2c_inst_t *i2c,
 	uint8_t buf;
 
 	// error codes are < 0
-	if (reg_read(i2c, addr, reg_p, &buf, 2) < 0) {
+	if (i2c_driver_read(i2c, addr, reg_p, &buf, 2) < 0) {
 		return 0;
 	}
         
@@ -124,7 +124,7 @@ int getCurrent(      i2c_inst_t *i2c,
 
         uint8_t buf;
 
-        if (reg_read(i2c, addr, reg_c, &buf, 2) < 0) {
+        if (i2c_driver_read(i2c, addr, reg_c, &buf, 2) < 0) {
 			return 0;
 		}
 
@@ -160,10 +160,10 @@ int test() {
 
 	// Program Calibration register
 	data = CAL[0]; // point to start of array
-	reg_write(i2c, INA219_ADDR, REG_CALIB, &data, 2);
+	i2c_driver_write(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 
 	// Test: read Calibration register
-	reg_read(i2c, INA219_ADDR, REG_CALIB, &data, 2);
+	i2c_driver_read(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 	printf("0x%02x\r\n", data);
 
 	// Wait

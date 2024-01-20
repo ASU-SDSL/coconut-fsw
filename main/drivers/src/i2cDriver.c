@@ -27,7 +27,7 @@ int i2c_driver_write(	i2c_inst_t *i2c,
 int i2c_driver_read(	i2c_inst_t *i2c,
 				const uint8_t addr,
 				const uint8_t reg,
-				uint8_t *buf,
+				uint8_t *output_buf,
 				const uint8_t nbytes){
     i2c_init(i2c, 100 * 1000); // added from eps to mag 
 
