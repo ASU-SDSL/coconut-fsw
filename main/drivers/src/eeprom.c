@@ -1,7 +1,8 @@
 #include "eeprom.c"
 
 //Slave Address
-static u_int8_t SAD = 0x50;
+static u_int8_t M24C02_ADDR = 0x50;
+static u_int8_t DATA_ADDR = 0xAA;
 
 int address_write(    i2c_inst_t *i2c,
                 const uint8_t addr,
