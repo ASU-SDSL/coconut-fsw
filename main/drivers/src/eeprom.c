@@ -36,5 +36,18 @@ void write_byte(i2c_inst_t *i2c, uint8_t byte, uint8_t address) {
 
 
 uint8_t* read_bytes() {
+    uint8_t* read_bytes(i2c_inst_t * i2c, const uint8_t addr, const uint8_t reg, uint8_t * output_buf, const uint8_t nbytes) {
 
+        int num_bytes_read = 0;
+
+        if (nbytes < 1) {
+            return 0;
+        }
+
+        i2c_write_blocking(i2c, addr, &reg, 1, true);
+        num_bytes_read = i2c_read_blocking(i2c, addr, output_buf, nbytes, false);
+
+        return num_bytes_read;
+
+    }
 }
