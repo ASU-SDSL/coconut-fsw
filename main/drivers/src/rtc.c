@@ -1,23 +1,19 @@
-// look at eps.c
-// copy reg_write and reg_read
-
-/////other code 
-
 #include "rtc.h"
 #include "hardware/i2c.h"
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
+#include "i2c.h"
 
 // RTC I2C address
-static const uint8_t RTC_ADDR = 0x68;  // Replace with the correct RTC address
+#define RTC_ADDR 0x68  // Replace with the correct RTC address
 
 // Register addresses for time data
-static const uint8_t RTC_SECONDS_REG = 0x00;
-static const uint8_t RTC_MINUTES_REG = 0x01;
-static const uint8_t RTC_HOURS_REG = 0x02;
+#define RTC_SECONDS_REG 0x00
+#define RTC_MINUTES_REG 0x01
+#define RTC_HOURS_REG 0x02
 
-static const uint8_t RTC_TEMP_REG_UPPER = 0x11;
-static const uint8_t RTC_TEMP_REG_LOWER = 0x12; // decimal
+#define RTC_TEMP_REG_UPPER 0x11
+#define RTC_TEMP_REG_LOWER 0x12 // decimal part of the temp
 
 void set_time(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg,
               uint8_t hour, uint8_t minute, uint8_t second) {
@@ -29,23 +25,29 @@ void set_time(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg,
     time_data[2] = (hour / 10 << 4) | (hour % 10);
 
     // Write the time data to the specified register on the RTC
+    // @TODO - rewrite using i2c.h functions
     i2c_write_blocking(i2c, addr, &reg, 1, true);  // Set register pointer
     i2c_write_blocking(i2c, addr, time_data, 3, false);
 }
 
-int read_temp(i2c_inst_t *i2c) {
+// Needs to be tested
+int read_temp(i2c_inst_t *i2c, uint8_t* out) {
 
-    uint8_t reg = RTC_TEMP_REG_UPPER;
-    uint8_t temp_h = 0;
-    printf("here1\n");
+    /*
     i2c_write_blocking(i2c, RTC_ADDR, &reg, 1, false);
-    printf("here2\n");
     i2c_read_blocking(i2c, RTC_ADDR, &temp_h, 1, false);
-    printf("here3\n");
+    */
+    
+    uint8_t temp_h = 0;
+    if (i2c_read_from_register(i2c, RTC_ADDR, RTC_TEMP_REG_UPPER, &temp_h, 1) == 1) {
+        out = temp_h;
+        return 0;
+    }
 
-    return temp_h;
+    return 1; // error
 
 }
+
 
 int rtc_test() {
    
@@ -60,7 +62,8 @@ int rtc_test() {
     // Set the time (Example: 5:06:50)
     //set_time(i2c, RTC_ADDR, RTC_HOURS_REG, 5, 6, 50);
 
-    uint8_t temp_h = read_temp(i2c);
+    uint8_t temp = 0;
+    uint8_t temp_h = read_temp(i2c, temp);
 
     // Close the I2C communication
     i2c_deinit(i2c);

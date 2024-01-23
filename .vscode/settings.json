@@ -18,6 +18,8 @@
         "epssensor.h": "c",
         "i2c.h": "c",
         "gpio.h": "c",
-        "sstream": "c"
+        "sstream": "c",
+        "rtc.h": "c",
+        "string.h": "c"
     }
 }
