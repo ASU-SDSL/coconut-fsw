@@ -58,14 +58,19 @@ void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq
 void gse_task(void *pvParameters) {
     vTaskDelay(2000);
 
-    SemaphoreHandle_t* mutex = (SemaphoreHandle_t *) pvParameters;
+    printf("Get temp\n");
+    uint8_t temp = rtc_test();
+    printf("Temp: %d\n", temp);
+
+    /*SemaphoreHandle_t* mutex = (SemaphoreHandle_t *) pvParameters;
     write(mutex);
 
     while (1) {
         
         vTaskDelay(2000);
         printf("SD card\n");
-    }
+    }*/
+
     // Initialize UART0
     uart_initialize(UART0_INSTANCE, UART0_TX_PIN, UART0_RX_PIN, UART0_IRQ);
 
@@ -76,9 +81,7 @@ void gse_task(void *pvParameters) {
     // Initialize write LED
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
-
-    // rtc_test();
-
+    
     // Start listening for UART queue messages
     telemetry_queue_transmission_t rec;
     while (true) {
