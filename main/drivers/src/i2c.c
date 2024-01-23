@@ -3,7 +3,7 @@
 void config_i2c0() {
    
     // Ports
-    i2c_init(i2c, I2CSpeed);
+    i2c_init(i2c0, I2CSpeed);
 
 	// Set SCL and SDA to I2C0 pins defined in i2c.h
     gpio_set_function(I2C0_SDA_GPIO, GPIO_FUNC_I2C);
@@ -17,15 +17,8 @@ int i2c_write_to_register(	i2c_inst_t *i2c,
 							const uint8_t reg,
 							uint8_t *buf,
 							const uint8_t nbytes){
-    
-	i2c_write_blocking(i2c, RTC_ADDR, &reg, 1, false);
-    i2c_read_blocking(i2c, RTC_ADDR, &temp_h, 1, false);
 
-	if (nbytes < 1) {
-		return 0;
-	}
-
-	int num_bytes_written;
+	if (nbytes < 1) { return 1; }
 
 	// create message, putting the register first (mes is just [reg, [buf]])
 	uint8_t msg[nbytes + 1];
@@ -34,9 +27,10 @@ int i2c_write_to_register(	i2c_inst_t *i2c,
 		msg[i + 1] = buf[i];
 	}
 
-	num_bytes_written = i2c_write_timeout_us(i2c, addr, msg, (nbytes + 1), false, I2CTimeout_us);
+	int num_bytes_written = i2c_write_timeout_us(i2c, addr, msg, (nbytes + 1), false, I2CTimeout_us);
+	if (num_bytes_written != nbytes + 1) { return 1; }
 
-	return num_bytes_written;
+	return 0; // no errors
 }
 
 int i2c_read_from_register(	i2c_inst_t *i2c,
@@ -45,13 +39,14 @@ int i2c_read_from_register(	i2c_inst_t *i2c,
 							uint8_t *output_buf,
 							const uint8_t nbytes){
 
-	if (nbytes < 1) {
-		return 0; // 0 bytes read
-	}
+	if (nbytes < 1) { return 1; }
 
-	int ret = i2c_write_timeout_us(i2c, addr, &reg, 1, false, I2CTimeout_us);
-	num_bytes_read = i2c_read_timeout_us(i2c, addr, output_buf, nbytes, false, I2CTimeout_us);
+	int bytes_written = i2c_write_timeout_us(i2c, addr, &reg, 1, false, I2CTimeout_us);
+	if (bytes_written != 1) { return 1; } // return error
 
-	return num_bytes_read;
+	int num_bytes_read = i2c_read_timeout_us(i2c, addr, output_buf, nbytes, false, I2CTimeout_us);
+	if (num_bytes_read != nbytes) { return 1; }
+
+	return 0; // no errors
 }
 

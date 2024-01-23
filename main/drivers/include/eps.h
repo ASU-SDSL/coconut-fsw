@@ -2,5 +2,3 @@
 #include "hardware/gpio.h"
 #include "log.h"
 #include <stdio.h>
-
-#include "i2cDriver.h"

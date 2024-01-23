@@ -40,7 +40,7 @@ int read_temp(i2c_inst_t *i2c, uint8_t* out) {
     
     uint8_t temp_h = 0;
     if (i2c_read_from_register(i2c, RTC_ADDR, RTC_TEMP_REG_UPPER, &temp_h, 1) == 1) {
-        out = temp_h;
+        *out = temp_h;
         return 0;
     }
 
@@ -63,7 +63,7 @@ int rtc_test() {
     //set_time(i2c, RTC_ADDR, RTC_HOURS_REG, 5, 6, 50);
 
     uint8_t temp = 0;
-    uint8_t temp_h = read_temp(i2c, temp);
+    uint8_t temp_h = read_temp(i2c, &temp);
 
     // Close the I2C communication
     i2c_deinit(i2c);

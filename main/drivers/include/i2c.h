@@ -12,10 +12,11 @@
 /*
 * Configure i2c0 speed and pins
 */
-int config_i2c0();
+void config_i2c0();
 
 /* 
 * Write [reg] and [buf] to i2c device, [reg] is just inserted before [buf]
+* Returns status of operation (0 = good)
 */
 int i2c_write_to_register(	i2c_inst_t *i2c,
 							const uint8_t addr,
@@ -26,7 +27,7 @@ int i2c_write_to_register(	i2c_inst_t *i2c,
 /*
 * Write [reg] byte to i2c device and then read [nbytes] from it.
 * Read bytes are stored in [buf]
-* Returns number of bytes read (ideally should be [nbytes])
+* Returns status of operation (0 = good)
 */
 int i2c_read_from_register(	i2c_inst_t *i2c,
 							const uint8_t addr,
