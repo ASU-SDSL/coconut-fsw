@@ -1,3 +1,0 @@
-
-void read();
-void receive();

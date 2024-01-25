@@ -1,18 +1,18 @@
-[submodule "libraries/RadioLib"]
-	path = libraries/RadioLib
-	url = https://github.com/jgromes/RadioLib
 [submodule ".deps/FreeRTOS-Kernel"]
 	path = .deps/FreeRTOS-Kernel
 	url = https://github.com/FreeRTOS/FreeRTOS-Kernel
 [submodule "deps/FreeRTOS-Kernel"]
-	path = deps/FreeRTOS-Kernel
+	path = lib/FreeRTOS-Kernel
 	url = https://github.com/FreeRTOS/FreeRTOS-Kernel
-[submodule "deps/RadioLib"]
-	path = deps/RadioLib
-	url = https://github.com/jgromes/RadioLib
 [submodule "deps/pico-sdk"]
-	path = deps/pico-sdk
+	path = lib/pico-sdk
 	url = https://github.com/raspberrypi/pico-sdk
 [submodule "deps/spacepacket"]
-	path = deps/spacepacket
+	path = lib/spacepacket
 	url = https://github.com/yuasatakayuki/CCSDSLibrary
+[submodule "deps/RadioLib"]
+	path = lib/RadioLib
+	url = https://github.com/jgromes/RadioLib
+[submodule "deps/no-OS-FatFS-SD-SPI-RPi-Pico"]
+	path = lib/no-OS-FatFS-SD-SPI-RPi-Pico
+	url = https://github.com/carlk3/no-OS-FatFS-SD-SPI-RPi-Pico

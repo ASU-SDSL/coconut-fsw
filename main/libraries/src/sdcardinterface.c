@@ -1,7 +1,0 @@
-void write() {
-
-}
-
-void read() {
-
-}
