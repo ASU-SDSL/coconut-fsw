@@ -225,17 +225,7 @@ void heartbeat_telemetry_job(void* unused) {
     payload.uptime = get_uptime();
     // Send it
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
-    //logln_info("Lol");
-
-    // get mag info
-    //i2c_inst_t *i2c = i2c0;
-    //int x = get_x_output(i2c);
-
-    /*
-    char str[10];
-    sprintf(str, "X: %d", x);
-    logln_info(str);*/
-
+    logln_info("Lol");
 }
 
 void initialize_steve() {

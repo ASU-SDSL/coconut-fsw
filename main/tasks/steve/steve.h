@@ -12,7 +12,6 @@
 #include "telemetry.h"
 #include "log.h"
 #include "state.h"
-#include "mag.h"
 
 // Constants
 #define MAX_JOBS 256
@@ -46,8 +45,11 @@ SemaphoreHandle_t g_steve_job_mutex;
 
 // Utility Functions
 TickType_t ms_to_ticks(unsigned long ms);
+unsigned long ticks_to_ms(TickType_t ms);
 unsigned long secs_to_ms(unsigned long secs);
+unsigned long ms_to_secs(unsigned long ms);
 unsigned long mins_to_secs(unsigned long mins);
+unsigned long secs_to_mins(unsigned long mins);
 
 // Recurring Job User Functions
 void schedule_recurring_job_ms(const char* job_name, job_func job_func_ptr, unsigned long ms_until_recur);
@@ -82,6 +84,5 @@ void delete_steve_job(steve_job_t* job);
 void cleanup_steve_jobs_list();
 void initialize_steve();
 
-void radio_transmission(void*);
 // Main Task
 void steve_task(void* unused_arg);
