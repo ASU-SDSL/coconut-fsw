@@ -4,5 +4,7 @@
 #include <stdint.h>
 #include "log.h"
 
+#include "i2c.h"
+
 int get_x_output();
 //int get_y_output();

@@ -141,3 +141,34 @@ int get_status(i2c_inst_t *i2c) { //Indicates if data is available/overrun
 	int status = (int) buf;
 	return status;
 }
+
+int mag_test(){
+
+    i2c_inst_t *i2c = i2c0;
+
+    // Setup i2c
+    config_i2c0();
+
+    // Wait
+    sleep_ms(2000);
+
+    // Loop 1000 times
+    for(int i = 0; i < 1000; i++){
+
+        printf("Status: %d\n", get_status(i2c));
+
+        printf("X output: %d\n", get_x_output(i2c));
+
+        printf("Y output: %d\n", get_y_output(i2c));
+
+        printf("Z output: %d\n", get_z_output(i2c));
+
+        printf("Get Temp Output: %d\n", get_temp_output(i2c));
+
+        sleep_ms(100);
+
+    }
+
+    
+
+}

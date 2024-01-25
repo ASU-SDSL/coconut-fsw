@@ -59,11 +59,17 @@ void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq
 void gse_task(void *pvParameters) {
     vTaskDelay(2000);
 
-    printf("Get temp\n");
-    uint8_t temp = rtc_test();
-    printf("Temp: %d\n", temp);
+    // printf("Get temp\n");
+    // uint8_t temp = rtc_test();
+    // printf("Temp: %d\n", temp);
 
+    printf("Starting EPS test...\n");
     eps_test();
+    printf("Finished EPS test.\n");
+
+    // printf("Starting Mag test...\n");
+    // mag_test();
+    // printf("Finished Mag test.\n");
 
     /*SemaphoreHandle_t* mutex = (SemaphoreHandle_t *) pvParameters;
     write(mutex);

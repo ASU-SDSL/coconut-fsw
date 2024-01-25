@@ -161,8 +161,8 @@ int eps_test() {
 	// Wait
 	sleep_ms(2000);
 
-	// Loop
-	while (true) {
+	// Loop 1000 times
+	for(int i = 0; i < 1000; i++){
 
 		// Read registers (16 bits each)
 		float shunt;
