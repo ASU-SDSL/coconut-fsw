@@ -6,5 +6,14 @@
 
 #include "i2c.h"
 
-int get_x_output();
-//int get_y_output();
+int get_x_output(i2c_inst_t *i2c);
+
+int get_y_output(i2c_inst_t *i2c);
+
+int get_z_output(i2c_inst_t *i2c);
+
+int get_temp_output(i2c_inst_t *i2c);
+
+int get_status(i2c_inst_t *i2c);
+
+int mag_test();
