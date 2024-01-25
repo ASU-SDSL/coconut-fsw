@@ -61,10 +61,16 @@ void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq
 void gse_task(void *pvParameters) {
     vTaskDelay(2000);
 
-    // printf("Get temp\n");
+    printf("Get temp\n");
     // uint8_t temp = rtc_test();
-    // printf("Temp: %d\n", temp);
 
+    config_i2c0();
+
+    int temp = 0;
+    int res = read_temp(i2c0, &temp);
+    printf("Result: %d. Temp: %d\n", res, temp);
+
+    vTaskDelay(500);
     printf("Starting EPS test...\n");
     eps_test();
     printf("Finished EPS test.\n");

@@ -97,6 +97,8 @@ int getVBus(          i2c_inst_t *i2c,
 			return 0;
 		}
 
+		printf("raw bus: %d\n", buf);
+
         *output_buf = (buf >> 3)*(BUS_LSB);
         return 1;
 }
@@ -148,7 +150,7 @@ int eps_test() {
 	double current;
 
 	// Setup i2c
-	config_i2c0();
+	//config_i2c0();
 
 	// Program Calibration register
 	data = CAL[0]; // point to start of array

@@ -33,13 +33,13 @@ void set_time(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg,
 // Needs to be tested
 int read_temp(i2c_inst_t *i2c, uint8_t* out) {
 
-    /*
-    i2c_write_blocking(i2c, RTC_ADDR, &reg, 1, false);
+    /*uint8_t temp_h = 0;
+    i2c_write_blocking(i2c, RTC_ADDR, RTC_TEMP_REG_UPPER, 1, false);
     i2c_read_blocking(i2c, RTC_ADDR, &temp_h, 1, false);
-    */
+    *out = temp_h;*/
     
     uint8_t temp_h = 0;
-    if (i2c_read_from_register(i2c, RTC_ADDR, RTC_TEMP_REG_UPPER, &temp_h, 1) == 1) {
+    if (i2c_read_from_register(i2c, RTC_ADDR, RTC_TEMP_REG_UPPER, &temp_h, 1) == 0) {
         *out = temp_h;
         return 0;
     }
