@@ -39,7 +39,7 @@ typedef struct steve_context {
 
 // Global Scheduler Context
 steve_context_t g_steve_context;
-QueueHandle_t job_creation_queue;
+SemaphoreHandle_t g_steve_job_mutex;
 
 /* USER FUNCTIONS */
 
@@ -48,15 +48,19 @@ TickType_t ms_to_ticks(unsigned long ms);
 unsigned long secs_to_ms(unsigned long secs);
 unsigned long mins_to_secs(unsigned long mins);
 
-// Recurring Job Helper Functions
+// Recurring Job User Functions
 void schedule_recurring_job_ms(const char* job_name, job_func job_func_ptr, unsigned long ms_until_recur);
 void schedule_recurring_job_secs(const char* job_name, job_func job_func_ptr, unsigned long secs_until_recur);
 void schedule_recurring_job_mins(const char* job_name, job_func job_func_ptr, unsigned long mins_until_recur);
 
-// Delayed Job Helper Functions
+// Delayed Job User Functions
 void schedule_delayed_job_ms(const char* job_name, job_func job_func_ptr, unsigned long ms_delay);
 void schedule_delayed_job_secs(const char* job_name, job_func job_func_ptr, unsigned long secs_delay);
 void schedule_delayed_job_mins(const char* job_name, job_func job_func_ptr, unsigned long mins_delay);
+
+// Job Management User Functions
+void kill_steve_job(const char* job_name);
+void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time);
 
 /* INTERNAL FUNCTIONS */
 
@@ -69,7 +73,8 @@ void heartbeat_telemetry_job(void*);
 TickType_t get_uptime();
 
 // Internal Scheduler Functions
-void queue_steve_job_creation(const char* job_name, TickType_t execute_time, TickType_t recur_time, job_func job_func_ptr);
+steve_job_t* find_steve_job(const char* job_name);
+void create_steve_job_helper(const char* job_name, TickType_t execute_time, TickType_t recur_time, job_func job_func_ptr);
 void create_steve_job(steve_job_t* sr);
 bool run_steve_job(steve_job_t* job);
 void delete_steve_job(steve_job_t* job);
