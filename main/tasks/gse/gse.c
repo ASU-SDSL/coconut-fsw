@@ -6,6 +6,7 @@
 #include "command.h"
 #include "rtc.h"
 #include "sdcard.h"
+#include "eps.h"
 
 void uart_queue_message(char* buffer, size_t size) {
     // Create new transmission structure
@@ -61,6 +62,8 @@ void gse_task(void *pvParameters) {
     printf("Get temp\n");
     uint8_t temp = rtc_test();
     printf("Temp: %d\n", temp);
+
+    eps_test();
 
     /*SemaphoreHandle_t* mutex = (SemaphoreHandle_t *) pvParameters;
     write(mutex);

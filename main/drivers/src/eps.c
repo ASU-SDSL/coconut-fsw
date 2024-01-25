@@ -78,7 +78,7 @@ int getVShunt(        i2c_inst_t *i2c,
 
 		uint8_t buf;
 
-		if (i2c_driver_read(i2c, addr, reg_vs, &buf, 2) < 0) {
+		if (i2c_read_from_register(i2c, addr, reg_vs, &buf, 2) < 0) {
 			return 0;
 		}
 
@@ -93,7 +93,7 @@ int getVBus(          i2c_inst_t *i2c,
 
         uint8_t buf;
 
-        if (i2c_driver_read(i2c, addr, reg_vb, &buf, 2) < 0) {
+        if (i2c_read_from_register(i2c, addr, reg_vb, &buf, 2) < 0) {
 			return 0;
 		}
 
@@ -109,7 +109,7 @@ int getPower(	i2c_inst_t *i2c,
 	uint8_t buf;
 
 	// error codes are < 0
-	if (i2c_driver_read(i2c, addr, reg_p, &buf, 2) < 0) {
+	if (i2c_read_from_register(i2c, addr, reg_p, &buf, 2) < 0) {
 		return 0;
 	}
         
@@ -124,7 +124,7 @@ int getCurrent(      i2c_inst_t *i2c,
 
         uint8_t buf;
 
-        if (i2c_driver_read(i2c, addr, reg_c, &buf, 2) < 0) {
+        if (i2c_read_from_register(i2c, addr, reg_c, &buf, 2) < 0) {
 			return 0;
 		}
 
@@ -132,11 +132,7 @@ int getCurrent(      i2c_inst_t *i2c,
         return 1;
 }
 
-int test() {
-
-	// Pins
-	const uint sda_pin = 6;
-	const uint scl_pin = 7;
+int eps_test() {
 
 	// Ports
 	i2c_inst_t *i2c = i2c0;
@@ -151,19 +147,15 @@ int test() {
 	double power;
 	double current;
 
-	// Initialize I2C port at 400 kHz
-	i2c_init(i2c, 400 * 1000);
-
-	// Initialize I2C pins
-	gpio_set_function(sda_pin, GPIO_FUNC_I2C);
-	gpio_set_function(scl_pin, GPIO_FUNC_I2C);
+	// Setup i2c
+	config_i2c0();
 
 	// Program Calibration register
 	data = CAL[0]; // point to start of array
-	i2c_driver_write(i2c, INA219_ADDR, REG_CALIB, &data, 2);
+	i2c_write_to_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 
 	// Test: read Calibration register
-	i2c_driver_read(i2c, INA219_ADDR, REG_CALIB, &data, 2);
+	i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 	printf("0x%02x\r\n", data);
 
 	// Wait
