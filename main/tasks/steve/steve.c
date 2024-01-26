@@ -95,6 +95,7 @@ void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time
 }
 
 void print_debug_exec_times() {
+    logln_info("Printing S.T.E.V.E Task Times:");
     // Take mutex
     xSemaphoreTake(g_steve_job_mutex, portMAX_DELAY);
     for (int i = 0; i < g_steve_context.job_count; i++) {
