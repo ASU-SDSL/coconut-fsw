@@ -72,88 +72,90 @@ int reg_read(	i2c_inst_t *i2c,
 	return num_bytes_read;
 }
 
-int calibrate(		i2c_inst_t *i2c,
-					){
+int calibrate(i2c_inst_t *i2c){
 
-		// Program calibration register
-		data = CAL[0];
-		i2c_write_to_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
+	// Program calibration register
+	int data = CAL[0];
+	if(i2c_write_to_register(i2c, INA219_ADDR, REG_CALIB, &data, 2) != 0){
+		return 0;
+	}
 
-		// Test calibration register 
-		i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
-		printf("0x%02x\r\n", data);
+	// Test calibration register 
+	i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
+	printf("0x%02x\r\n", data);
 
-}
-
-int getVShunt(        i2c_inst_t *i2c,
-                        const uint8_t addr,
-                        const uint8_t reg_vs,
-                        float *output_buf) {
-
-		uint8_t buf;
-
-		if (i2c_read_from_register(i2c, addr, reg_vs, &buf, 2) < 0) {
-			return 0;
-		}
-
-		*output_buf = (buf >> 3)*(SHUNT_LSB);
-        return 1;
-}
-
-int getVShuntNew(        i2c_inst_t *i2c,
-                        const uint8_t addr,
-                        const uint8_t reg_vs,
-                        float *output_buf) {
-		unint8_t buf;
-
-		if(i2c_read_from_register(i2c, addr, reg_vs, &buf, 2) < 0){
-			return 0;
-		}
-
-		*output_buf = (buf * (SHUNT_LSB)) * 0.01; // mV
-		return 1;
+	return 1;
 
 }
 
-int getVBus(          i2c_inst_t *i2c,
-                        const uint8_t addr,
-                        const uint8_t reg_vb,
-                        float *output_buf) {
+int getVShunt(i2c_inst_t *i2c,
+				const uint8_t addr,
+				const uint8_t reg_vs,
+				float *output_buf) {
 
-        uint8_t buf;
+	uint8_t buf;
 
-        if (i2c_read_from_register(i2c, addr, reg_vb, &buf, 2) < 0) {
-			return 0;
-		}
+	if (i2c_read_from_register(i2c, addr, reg_vs, &buf, 2) < 0) {
+		return 0;
+	}
 
-		printf("raw bus: %d\n", buf);
-
-        *output_buf = (buf >> 3)*(BUS_LSB); // in volts
-        return 1;
+	*output_buf = (buf >> 3)*(SHUNT_LSB);
+	return 1;
 }
 
-int getVBusNew(          i2c_inst_t *i2c,
-                        const uint8_t addr,
-                        const uint8_t reg_vb,
-                        float *output_buf) {
+int getVShuntNew(i2c_inst_t *i2c,
+					const uint8_t addr,
+					const uint8_t reg_vs,
+					float *output_buf) {
+	uint8_t buf;
 
-        uint8_t buf;
+	if(i2c_read_from_register(i2c, addr, reg_vs, &buf, 2) < 0){
+		return 0;
+	}
 
-        if (i2c_read_from_register(i2c, addr, reg_vb, &buf, 2) < 0) {
-			return 0;
-		}
+	*output_buf = (buf * (SHUNT_LSB)) * 0.01; // mV
+	return 1;
 
-		printf("raw bus: %d\n", buf);
+}
 
-        *output_buf = (int16_t)((buf >> 3)*(4)); // in mV
-        return 1;
+int getVBus(i2c_inst_t *i2c,
+			const uint8_t addr,
+			const uint8_t reg_vb,
+			float *output_buf) {
+
+	uint8_t buf;
+
+	if (i2c_read_from_register(i2c, addr, reg_vb, &buf, 2) < 0) {
+		return 0;
+	}
+
+	printf("raw bus: %d\n", buf);
+
+	*output_buf = (buf >> 3)*(BUS_LSB); // in volts
+	return 1;
+}
+
+int getVBusNew(i2c_inst_t *i2c,
+				const uint8_t addr,
+				const uint8_t reg_vb,
+				float *output_buf) {
+	uint8_t buf;
+
+	if (i2c_read_from_register(i2c, addr, reg_vb, &buf, 2) < 0) {
+		return 0;
+	}
+
+	printf("raw bus: %d\n", buf);
+
+	*output_buf = (int16_t)((buf >> 3)*(4)); // in mV
+	return 1;
 }
 
 // power in Watts
-int getPower(	i2c_inst_t *i2c,
-          	 		const uint8_t addr,
-	                const uint8_t reg_p,
-         	        double *output_buf) {
+int getPower(i2c_inst_t *i2c,
+				const uint8_t addr,
+				const uint8_t reg_p,
+				double *output_buf) {
 
 	uint8_t buf;
 
@@ -166,10 +168,10 @@ int getPower(	i2c_inst_t *i2c,
 	return 1;
 }
 
-int getPowerNew(	i2c_inst_t *i2c,
-          	 		const uint8_t addr,
-	                const uint8_t reg_p,
-         	        double *output_buf) {
+int getPowerNew(i2c_inst_t *i2c,
+				const uint8_t addr,
+				const uint8_t reg_p,
+				double *output_buf) {
 
 	uint8_t buf;
 
@@ -183,37 +185,37 @@ int getPowerNew(	i2c_inst_t *i2c,
 }
 
 // current in Amps
-int getCurrent(      i2c_inst_t *i2c,
-                        const uint8_t addr,
-                        const uint8_t reg_c,
-                        double *output_buf) {
+int getCurrent(i2c_inst_t *i2c,
+				const uint8_t addr,
+				const uint8_t reg_c,
+				double *output_buf) {
 
-        uint8_t buf;
+	uint8_t buf;
 
-        if (i2c_read_from_register(i2c, addr, reg_c, &buf, 2) < 0) {
-			return 0;
-		}
+	if (i2c_read_from_register(i2c, addr, reg_c, &buf, 2) < 0) {
+		return 0;
+	}
 
-        *output_buf = (buf)*(CURRENT_LSB);
-        return 1;
+	*output_buf = (buf)*(CURRENT_LSB);
+	return 1;
 }
 
-int getCurrentNew(      i2c_inst_t *i2c,
-                        const uint8_t addr,
-                        const uint8_t reg_c,
-                        double *output_buf) {
+int getCurrentNew(i2c_inst_t *i2c,
+					const uint8_t addr,
+					const uint8_t reg_c,
+					double *output_buf) {
 
-        uint8_t buf;
+	uint8_t buf;
 
-        if (i2c_read_from_register(i2c, addr, reg_c, &buf, 2) < 0) {
-			return 0;
-		}
+	if (i2c_read_from_register(i2c, addr, reg_c, &buf, 2) < 0) {
+		return 0;
+	}
 
-        *output_buf = (buf)*(CURRENT_LSB);
-        return 1;
+	*output_buf = (buf)*(CURRENT_LSB);
+	return 1;
 }
 
-int eps_test() {
+void eps_test() {
 
 	// Ports
 	i2c_inst_t *i2c = i2c0;
@@ -280,7 +282,7 @@ int eps_test() {
 		
 		printf("\nTESTING NEW FUNCTIONS BASED OFF ARDUINO\n");
 		// Read registers (16 bits each)
-		float shunt;
+	
 		if (getVShuntNew(i2c, INA219_ADDR, REG_SHUNT, &shunt) == 0) {
 			printf("Shunt voltage error\n");
 		}
@@ -288,7 +290,7 @@ int eps_test() {
 			printf("Shunt voltage: %.2f V\r\n", shunt);
 		}
 
-		float vbus;
+		
 		if (getVBusNew(i2c, INA219_ADDR, REG_BUS, &vbus) == 0) {
 			printf("Bus voltage error\n");
 		}
@@ -296,7 +298,7 @@ int eps_test() {
 			printf("Bus voltage: %.2f V\r\n", vbus);
 		}
 
-		double power;
+		
 		if (getPowerNew(i2c, INA219_ADDR, REG_POWER, &power) == 0) {
 			printf("Power error\n");
 		}
@@ -304,7 +306,7 @@ int eps_test() {
 			printf("Power: %.2f W\r\n", power);
 		}
 		
-		double current;
+		
 		if (getCurrentNew(i2c, INA219_ADDR, REG_CURRENT, &current) == 0) {
 			printf("Current error\n");
 		}
