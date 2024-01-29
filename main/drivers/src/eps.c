@@ -88,10 +88,10 @@ int calibrate(i2c_inst_t *i2c){
 	if(i2c_write_to_register(i2c, INA219_ADDR, REG_CALIB, &data, 2) != 0){
 		return 0;
 	}
-
+	uint16_t data2;
 	// Test calibration register 
-	i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
-	printf("0x%02x\r\n", data);
+	i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data2, 2);
+	printf("0x%x\r\n", data2);
 
 	return 1;
 
