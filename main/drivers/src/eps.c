@@ -233,6 +233,7 @@ int getCurrentNew(i2c_inst_t *i2c,
 }
 
 void eps_test() {
+	printf("STARTING EPS TEST\n");
 
 	// Ports
 	i2c_inst_t *i2c = i2c0;
@@ -263,7 +264,7 @@ void eps_test() {
 	sleep_ms(2000);
 
 	// Loop 1000 times
-	for(int i = 0; i < 100; i++){
+	for(int i = 0; i < 10; i++){
 
 		// Read registers (16 bits each)
 		float shunt;
