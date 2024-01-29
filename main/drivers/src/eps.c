@@ -27,9 +27,11 @@ static const uint8_t CAL[] = {0x10, 0x00}; // this is 26843, but needs to be inp
 static const double POWER_LSB = 0.002; // 20 * Current_LSB
 static const float SHUNT_LSB = 0.00001;
 static const float BUS_LSB = 0.004;
+static const CURRENT_DEVIDER_MA = 10;
+static const POWER_MULTIPLIER_MW = 2;
 
 //uint16_t config = (0x2000) | (0x1800) |  (0x0180) | (0x0018) | (0x07);
-static const uint8_t CON[] = {0x39,0x9f};
+static const uint8_t CONFIG[] = {0x39,0x9f};
 
 int reg_write(	i2c_inst_t *i2c,
 				const uint8_t addr,
@@ -98,17 +100,25 @@ int calibrate(i2c_inst_t *i2c){
 	printf("0x%x\r\n", data[0]);
 	printf("0x%x\r\n", data[1]);
 
-	//Program config register 
-	uint8_t* data2 = CON;
-	if(i2c_write_to_register(i2c, INA219_ADDR, REG_CONFIG, data2, 2));
-
-	i2c_read_from_register(i2c, INA219_ADDR, REG_CONFIG, data2, 2);
-
-	printf("0x%x\r\n", data2[0]);
-	printf("0x%x\r\n", data2[1]);
-
 	return 1;
 
+}
+
+int config(i2c_inst_t *i2c){
+	//Program config register 
+	uint8_t* config = CONFIG;
+
+	if(i2c_write_to_register(i2c, INA219_ADDR, REG_CONFIG, config, 2) != 0){
+		return 0;
+	}
+
+	// Test calibration register
+	i2c_read_from_register(i2c, INA219_ADDR, REG_CONFIG, config, 2);
+
+	printf("0x%x\r\n", config[0]);
+	printf("0x%x\r\n", config[1]);
+
+	return 1;
 }
 
 int getVShunt(i2c_inst_t *i2c,
@@ -132,7 +142,7 @@ int getVShuntNew(i2c_inst_t *i2c,
 					const uint8_t addr,
 					const uint8_t reg_vs,
 					float *output_buf) {
-	uint8_t buf;
+	uint16_t buf;
 
 	if(i2c_read_from_register(i2c, addr, reg_vs, &buf, 2) < 0){
 		return 0;
@@ -140,7 +150,7 @@ int getVShuntNew(i2c_inst_t *i2c,
 
 	printf("raw vshunt: %d\n", buf);
 
-	*output_buf = (buf * (SHUNT_LSB)) * 0.01; // mV
+	*output_buf = buf * 0.01; // mV
 	return 1;
 
 }
@@ -166,7 +176,7 @@ int getVBusNew(i2c_inst_t *i2c,
 				const uint8_t addr,
 				const uint8_t reg_vb,
 				float *output_buf) {
-	uint8_t buf;
+	uint16_t buf;
 
 	if (i2c_read_from_register(i2c, addr, reg_vb, &buf, 2) < 0) {
 		return 0;
@@ -174,7 +184,7 @@ int getVBusNew(i2c_inst_t *i2c,
 
 	printf("raw bus: %d\n", buf);
 
-	*output_buf = (int16_t)((buf >> 3)*(4)) * 0.001;
+	*output_buf = (((buf >> 3) * 4)) * 0.001;
 	return 1;
 }
 
@@ -201,7 +211,9 @@ int getPowerNew(i2c_inst_t *i2c,
 				const uint8_t reg_p,
 				double *output_buf) {
 
-	uint8_t buf;
+	uint16_t buf;
+
+	calibrate(i2c);
 
 	// error codes are < 0
 	if (i2c_read_from_register(i2c, addr, reg_p, &buf, 2) < 0) {
@@ -209,7 +221,7 @@ int getPowerNew(i2c_inst_t *i2c,
 	}
 	printf("raw power: %d\n", buf);
         
-	*output_buf = (buf)*(POWER_LSB);
+	*output_buf = (buf)*(POWER_MULTIPLIER_MW);
 	return 1;
 }
 
@@ -235,14 +247,16 @@ int getCurrentNew(i2c_inst_t *i2c,
 					const uint8_t reg_c,
 					double *output_buf) {
 
-	uint8_t buf;
+	uint16_t buf;
+
+	calibrate(i2c);
 
 	if (i2c_read_from_register(i2c, addr, reg_c, &buf, 2) < 0) {
 		return 0;
 	}
 	printf("raw current: %d\n", buf);
 
-	*output_buf = (buf)*(CURRENT_LSB);
+	*output_buf = (buf) / (CURRENT_DEVIDER_MA);
 	return 1;
 }
 
@@ -273,6 +287,7 @@ void eps_test() {
 	// i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 	// printf("0x%02x\r\n", data);
 	calibrate(i2c);
+	config(i2c);
 
 	// Wait
 	sleep_ms(2000);
@@ -320,7 +335,7 @@ void eps_test() {
 			printf("Shunt voltage error\n");
 		}
 		else {
-			printf("Shunt voltage: %.2f V\r\n", shunt);
+			printf("Shunt voltage: %.2f mV\r\n", shunt);
 		}
 
 		
@@ -336,7 +351,7 @@ void eps_test() {
 			printf("Power error\n");
 		}
 		else {
-			printf("Power: %.2f W\r\n", power);
+			printf("Power: %.2f mW\r\n", power);
 		}
 		
 		
@@ -344,7 +359,7 @@ void eps_test() {
 			printf("Current error\n");
 		}
 		else {
-			printf("Current: %.2f A\r\n", current);
+			printf("Current: %.2f mA\r\n", current);
 		}
 		printf("\n");
 

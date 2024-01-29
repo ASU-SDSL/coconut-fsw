@@ -7,6 +7,11 @@
 #include "i2c.h"
 
 /*
+* See https://github.com/adafruit/Adafruit_INA219/ for reference
+*/
+
+
+/*
 * Calibrates the EPS by writing to the calibration register
 * Currently set up for a max current of 0.5A
 * Returns status of operation (1 = good)
