@@ -99,6 +99,8 @@ int getVShunt(i2c_inst_t *i2c,
 		return 0;
 	}
 
+	prinf("raw vshunt: %d\n", buf);
+
 	*output_buf = (buf >> 3)*(SHUNT_LSB);
 	return 1;
 }
@@ -112,6 +114,8 @@ int getVShuntNew(i2c_inst_t *i2c,
 	if(i2c_read_from_register(i2c, addr, reg_vs, &buf, 2) < 0){
 		return 0;
 	}
+
+	prinf("raw vshunt: %d\n", buf);
 
 	*output_buf = (buf * (SHUNT_LSB)) * 0.01; // mV
 	return 1;
@@ -163,6 +167,7 @@ int getPower(i2c_inst_t *i2c,
 	if (i2c_read_from_register(i2c, addr, reg_p, &buf, 2) < 0) {
 		return 0;
 	}
+	prinf("raw power: %d\n", buf);
         
 	*output_buf = (buf)*(POWER_LSB);
 	return 1;
@@ -179,6 +184,7 @@ int getPowerNew(i2c_inst_t *i2c,
 	if (i2c_read_from_register(i2c, addr, reg_p, &buf, 2) < 0) {
 		return 0;
 	}
+	prinf("raw power: %d\n", buf);
         
 	*output_buf = (buf)*(POWER_LSB);
 	return 1;
@@ -195,6 +201,7 @@ int getCurrent(i2c_inst_t *i2c,
 	if (i2c_read_from_register(i2c, addr, reg_c, &buf, 2) < 0) {
 		return 0;
 	}
+	prinf("raw current: %d\n", buf);
 
 	*output_buf = (buf)*(CURRENT_LSB);
 	return 1;
@@ -210,6 +217,7 @@ int getCurrentNew(i2c_inst_t *i2c,
 	if (i2c_read_from_register(i2c, addr, reg_c, &buf, 2) < 0) {
 		return 0;
 	}
+	prinf("raw current: %d\n", buf);
 
 	*output_buf = (buf)*(CURRENT_LSB);
 	return 1;
@@ -234,12 +242,13 @@ void eps_test() {
 	//config_i2c0();
 
 	// Program Calibration register
-	data = CAL[0]; // point to start of array
-	i2c_write_to_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
+	// data = CAL[0]; // point to start of array
+	// i2c_write_to_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 
-	// Test: read Calibration register
-	i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
-	printf("0x%02x\r\n", data);
+	// // Test: read Calibration register
+	// i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
+	// printf("0x%02x\r\n", data);
+	calibrate(i2c);
 
 	// Wait
 	sleep_ms(2000);

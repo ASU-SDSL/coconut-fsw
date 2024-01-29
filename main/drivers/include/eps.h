@@ -14,7 +14,7 @@
 int calibrate(i2c_inst_t *i2c);
 
 /*
-* Reads from the VShunt register [reg_vs] of the device with 
+* Reads from the VShunt register [reg_vs](0x01) of the device with 
 * i2c address [addr] and writes it to [output_buf] in Volts?
 * Returns status of operation (1 = good)
 */
@@ -24,7 +24,7 @@ int getVShunt(i2c_inst_t *i2c,
                 float *output_buf);
 
 /*
-* Reads from VBus register [reg_vb] of the device with 
+* Reads from VBus register [reg_vb](0x02) of the device with 
 * i2c address [addr] and writes it to [output_buf] in Volts
 * Returns status of operation (1 = good)
 */
@@ -34,7 +34,7 @@ int getVBus(i2c_inst_t *i2c,
             float *output_buf);
 
 /*
-* Reads from Power register [reg_p] of the device with 
+* Reads from Power register [reg_p](0x03) of the device with 
 * i2c address [addr] and writes it to [output_bef] in Watts
 * Returns status of operation (1 = good)
 */
@@ -44,7 +44,7 @@ int getPower(i2c_inst_t *i2c,
                 double *output_buf);
 
 /*
-* Reads from Current register [reg_c] of the device with 
+* Reads from Current register [reg_c](0x04) of the device with 
 * i2c address [addr] and writes it to [output_buf] in Amps
 * Returns status of operation (1 = good)
 */
