@@ -22,11 +22,13 @@ static const uint8_t REG_CALIB = 0x05;
 // static const float SHUNT_RESISTOR = 0.1; // ohms
 
 static const double CURRENT_LSB = 0.1; // expected current 0.5A, (max expected current / 2^15)
-static const uint8_t CAL[] = {0x10, 0x00}; // this is 26843, but needs to be input as an array of uint8_t
+static const uint8_t CAL[] = {0x39, 0x9f}; // this is 26843, but needs to be input as an array of uint8_t
 					// trunc(0.04096 / (Current_LSB * Rshunt)) Rshunt = 0.1 ohms?
 static const double POWER_LSB = 0.002; // 20 * Current_LSB
 static const float SHUNT_LSB = 0.00001;
 static const float BUS_LSB = 0.004;
+
+uint16_t config = (0x2000) | (0x1800) |  (0x0180) | (0x0018) | (0x07);
 
 int reg_write(	i2c_inst_t *i2c,
 				const uint8_t addr,
