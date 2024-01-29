@@ -90,7 +90,7 @@ int calibrate(i2c_inst_t *i2c){
 	}
 	uint8_t data2[2];
 	// Test calibration register 
-	i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data2, 2);
+	i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, data2, 2);
 	printf("0x%x\r\n", data2);
 
 	return 1;
