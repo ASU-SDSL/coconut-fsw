@@ -117,7 +117,7 @@ int getVShuntNew(i2c_inst_t *i2c,
 		return 0;
 	}
 
-	prinf("raw vshunt: %d\n", buf);
+	printf("raw vshunt: %d\n", buf);
 
 	*output_buf = (buf * (SHUNT_LSB)) * 0.01; // mV
 	return 1;
@@ -169,7 +169,7 @@ int getPower(i2c_inst_t *i2c,
 	if (i2c_read_from_register(i2c, addr, reg_p, &buf, 2) < 0) {
 		return 0;
 	}
-	prinf("raw power: %d\n", buf);
+	printf("raw power: %d\n", buf);
         
 	*output_buf = (buf)*(POWER_LSB);
 	return 1;
@@ -186,7 +186,7 @@ int getPowerNew(i2c_inst_t *i2c,
 	if (i2c_read_from_register(i2c, addr, reg_p, &buf, 2) < 0) {
 		return 0;
 	}
-	prinf("raw power: %d\n", buf);
+	printf("raw power: %d\n", buf);
         
 	*output_buf = (buf)*(POWER_LSB);
 	return 1;
@@ -203,7 +203,7 @@ int getCurrent(i2c_inst_t *i2c,
 	if (i2c_read_from_register(i2c, addr, reg_c, &buf, 2) < 0) {
 		return 0;
 	}
-	prinf("raw current: %d\n", buf);
+	printf("raw current: %d\n", buf);
 
 	*output_buf = (buf)*(CURRENT_LSB);
 	return 1;
@@ -219,7 +219,7 @@ int getCurrentNew(i2c_inst_t *i2c,
 	if (i2c_read_from_register(i2c, addr, reg_c, &buf, 2) < 0) {
 		return 0;
 	}
-	prinf("raw current: %d\n", buf);
+	printf("raw current: %d\n", buf);
 
 	*output_buf = (buf)*(CURRENT_LSB);
 	return 1;
