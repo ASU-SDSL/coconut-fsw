@@ -75,7 +75,7 @@ int reg_read(	i2c_inst_t *i2c,
 int calibrate(i2c_inst_t *i2c){
 
 	// Program calibration register
-	int data = CAL[0];
+	uint8_t data = CAL[0];
 	if(i2c_write_to_register(i2c, INA219_ADDR, REG_CALIB, &data, 2) != 0){
 		return 0;
 	}
