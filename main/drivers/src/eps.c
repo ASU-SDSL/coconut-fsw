@@ -12,8 +12,8 @@ static const uint8_t REG_CURRENT = 0x04;
 static const uint8_t REG_CALIB = 0x05;
 
 // Other constants
-// static const double CURRENT_LSB = 0.00001525879; // expected current 0.5A, (max expected current / 2^15)
-// static const uint8_t CAL[] = {0x68, 0xDB}; // this is 26843, but needs to be input as an array of uint8_t
+static const double CURRENT_LSB = 0.00001525879; // expected current 0.5A, (max expected current / 2^15)
+static const uint8_t CAL[] = {0x68, 0xDB}; // this is 26843, but needs to be input as an array of uint8_t
 // 					// trunc(0.04096 / (Current_LSB * Rshunt)) Rshunt = 0.1 ohms?
 // //static const uint8_t CAL[] = {0x14, 0x7A, 0x89}; //trunc(0.04096 / (CURRENT_LSB * SHUNT_RESISTOR)) can be this, too many bits
 // static const double POWER_LSB = 0.00030517578; // 20 * Current_LSB
@@ -21,10 +21,10 @@ static const uint8_t REG_CALIB = 0x05;
 // static const float BUS_LSB = 0.004;
 // static const float SHUNT_RESISTOR = 0.1; // ohms
 
-static const double CURRENT_LSB = 0.1; // expected current 0.5A, (max expected current / 2^15)
-static const uint8_t CAL[] = {0x10, 0x00}; // this is 26843, but needs to be input as an array of uint8_t
+//static const double CURRENT_LSB = 0.1; // expected current 0.5A, (max expected current / 2^15)
+//static const uint8_t CAL[] = {0x10, 0x00}; // this is 26843, but needs to be input as an array of uint8_t
 					// trunc(0.04096 / (Current_LSB * Rshunt)) Rshunt = 0.1 ohms?
-static const double POWER_LSB = 0.002; // 20 * Current_LSB
+static const double POWER_LSB = 20 * CURRENT_LSB; //0.002; // 20 * Current_LSB
 static const float SHUNT_LSB = 0.00001;
 static const float BUS_LSB = 0.004;
 static const int CURRENT_DEVIDER_MA = 10;
@@ -307,11 +307,14 @@ void eps_test() {
 	// Wait
 	sleep_ms(2000);
 
-	// Loop 1000 times
+	// Loop 10 times
 	for(int i = 0; i < 10; i++){
+		float shunt;
+		float vbus;
+		double power;
+		double current;
 
 		// Read registers (16 bits each)
-		float shunt;
 		if (getVShunt(i2c, INA219_ADDR, REG_SHUNT, &shunt) == 0) {
 			printf("Shunt voltage error\n");
 		}
@@ -319,7 +322,6 @@ void eps_test() {
 			printf("Shunt voltage: %.2f V\r\n", shunt);
 		}
 
-		float vbus;
 		if (getVBus(i2c, INA219_ADDR, REG_BUS, &vbus) == 0) {
 			printf("Bus voltage error\n");
 		}
@@ -327,7 +329,6 @@ void eps_test() {
 			printf("Bus voltage: %.2f V\r\n", vbus);
 		}
 
-		double power;
 		if (getPower(i2c, INA219_ADDR, REG_POWER, &power) == 0) {
 			printf("Power error\n");
 		}
@@ -335,7 +336,6 @@ void eps_test() {
 			printf("Power: %.2f W\r\n", power);
 		}
 		
-		double current;
 		if (getCurrent(i2c, INA219_ADDR, REG_CURRENT, &current) == 0) {
 			printf("Current error\n");
 		}
