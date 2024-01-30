@@ -27,8 +27,8 @@ static const uint8_t CAL[] = {0x10, 0x00}; // this is 26843, but needs to be inp
 static const double POWER_LSB = 0.002; // 20 * Current_LSB
 static const float SHUNT_LSB = 0.00001;
 static const float BUS_LSB = 0.004;
-static const CURRENT_DEVIDER_MA = 10;
-static const POWER_MULTIPLIER_MW = 2;
+static const int CURRENT_DEVIDER_MA = 10;
+static const int POWER_MULTIPLIER_MW = 2;
 
 //uint16_t config = (0x2000) | (0x1800) |  (0x0180) | (0x0018) | (0x07);
 static const uint8_t CONFIG[] = {0x39,0x9f};
@@ -142,15 +142,18 @@ int getVShuntNew(i2c_inst_t *i2c,
 					const uint8_t addr,
 					const uint8_t reg_vs,
 					float *output_buf) {
-	uint16_t buf;
+	uint8_t buf[2];
 
-	if(i2c_read_from_register(i2c, addr, reg_vs, &buf, 2) < 0){
+	if(i2c_read_from_register(i2c, addr, reg_vs, buf, 2) < 0){
 		return 0;
 	}
 
 	printf("raw vshunt: %d\n", buf);
 
-	*output_buf = buf * 0.01; // mV
+	uint16_t bufComb = buf[1];
+	bufComb = (bufComb << 8) | buf[2];
+
+	*output_buf = bufComb * 0.01; // mV
 	return 1;
 
 }
@@ -176,15 +179,18 @@ int getVBusNew(i2c_inst_t *i2c,
 				const uint8_t addr,
 				const uint8_t reg_vb,
 				float *output_buf) {
-	uint16_t buf;
+	uint8_t buf[2];
 
-	if (i2c_read_from_register(i2c, addr, reg_vb, &buf, 2) < 0) {
+	if (i2c_read_from_register(i2c, addr, reg_vb, buf, 2) < 0) {
 		return 0;
 	}
 
-	printf("raw bus: %d\n", buf);
+	uint16_t bufComb = buf[1];
+	bufComb = (bufComb << 8) | buf[2];
 
-	*output_buf = (((buf >> 3) * 4)) * 0.001;
+	printf("raw bus: %x\n", bufComb);
+
+	*output_buf = (((bufComb >> 3) * 4)) * 0.001;
 	return 1;
 }
 
@@ -211,17 +217,21 @@ int getPowerNew(i2c_inst_t *i2c,
 				const uint8_t reg_p,
 				double *output_buf) {
 
-	uint16_t buf;
+	uint8_t buf[2];
 
 	calibrate(i2c);
 
 	// error codes are < 0
-	if (i2c_read_from_register(i2c, addr, reg_p, &buf, 2) < 0) {
+	if (i2c_read_from_register(i2c, addr, reg_p, buf, 2) < 0) {
 		return 0;
 	}
-	printf("raw power: %d\n", buf);
+
+	uint16_t bufComb = buf[1];
+	bufComb = (bufComb << 8) | buf[2];
+
+	printf("raw power: %d\n", bufComb);
         
-	*output_buf = (buf)*(POWER_MULTIPLIER_MW);
+	*output_buf = (bufComb)*(POWER_MULTIPLIER_MW);
 	return 1;
 }
 
@@ -247,16 +257,20 @@ int getCurrentNew(i2c_inst_t *i2c,
 					const uint8_t reg_c,
 					double *output_buf) {
 
-	uint16_t buf;
+	uint8_t buf[2];
 
 	calibrate(i2c);
 
-	if (i2c_read_from_register(i2c, addr, reg_c, &buf, 2) < 0) {
+	if (i2c_read_from_register(i2c, addr, reg_c, buf, 2) < 0) {
 		return 0;
 	}
-	printf("raw current: %d\n", buf);
 
-	*output_buf = (buf) / (CURRENT_DEVIDER_MA);
+	uint16_t bufComb = buf[1];
+	bufComb = (bufComb << 8) | buf[2];
+
+	printf("raw current: %d\n", bufComb);
+
+	*output_buf = (bufComb) / (CURRENT_DEVIDER_MA);
 	return 1;
 }
 
