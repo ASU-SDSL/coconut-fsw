@@ -148,7 +148,7 @@ int getVShuntNew(i2c_inst_t *i2c,
 		return 0;
 	}
 
-	printf("raw vshunt: %d\n", buf);
+	printf("raw vshunt: %x\n", buf);
 
 	uint16_t bufComb = buf[1];
 	bufComb = (bufComb << 8) | buf[2];
@@ -377,6 +377,6 @@ void eps_test() {
 		}
 		printf("\n");
 
-		sleep_ms(100);
+		sleep_ms(500);
 	}
 }
