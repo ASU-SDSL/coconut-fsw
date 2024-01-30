@@ -12,8 +12,8 @@ static const uint8_t REG_CURRENT = 0x04;
 static const uint8_t REG_CALIB = 0x05;
 
 // Other constants
-static const double CURRENT_LSB = 0.00001525879; // expected current 0.5A, (max expected current / 2^15)
-static const uint8_t CAL[] = {0x68, 0xDB}; // this is 26843, but needs to be input as an array of uint8_t
+//static const double CURRENT_LSB = 0.00001525879; // expected current 0.5A, (max expected current / 2^15)
+//static const uint8_t CAL[] = {0x68, 0xDB}; // this is 26843, but needs to be input as an array of uint8_t
 // 					// trunc(0.04096 / (Current_LSB * Rshunt)) Rshunt = 0.1 ohms?
 // //static const uint8_t CAL[] = {0x14, 0x7A, 0x89}; //trunc(0.04096 / (CURRENT_LSB * SHUNT_RESISTOR)) can be this, too many bits
 // static const double POWER_LSB = 0.00030517578; // 20 * Current_LSB
@@ -21,8 +21,8 @@ static const uint8_t CAL[] = {0x68, 0xDB}; // this is 26843, but needs to be inp
 // static const float BUS_LSB = 0.004;
 // static const float SHUNT_RESISTOR = 0.1; // ohms
 
-//static const double CURRENT_LSB = 0.1; // expected current 0.5A, (max expected current / 2^15)
-//static const uint8_t CAL[] = {0x10, 0x00}; // this is 26843, but needs to be input as an array of uint8_t
+static const double CURRENT_LSB = 0.1; // expected current 0.5A, (max expected current / 2^15)
+static const uint8_t CAL[] = {0x10, 0x00}; // this is 26843, but needs to be input as an array of uint8_t
 					// trunc(0.04096 / (Current_LSB * Rshunt)) Rshunt = 0.1 ohms?
 static const double POWER_LSB = 20 * CURRENT_LSB; //0.002; // 20 * Current_LSB
 static const float SHUNT_LSB = 0.00001;
@@ -271,7 +271,7 @@ int getCurrentNew(i2c_inst_t *i2c,
 
 	printf("raw current: %d\n", bufComb);
 
-	*output_buf = (bufComb) / (CURRENT_DEVIDER_MA);
+	*output_buf = ((double)(bufComb)) / (CURRENT_DEVIDER_MA);
 	return 1;
 }
 
