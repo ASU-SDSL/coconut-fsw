@@ -148,10 +148,11 @@ int getVShuntNew(i2c_inst_t *i2c,
 		return 0;
 	}
 
-	printf("raw vshunt: %x\n", buf);
 
 	uint16_t bufComb = buf[1];
 	bufComb = (bufComb << 8) | buf[2];
+
+	printf("raw vshunt: %d\n", bufComb);
 
 	*output_buf = bufComb * 0.01; // mV
 	return 1;
