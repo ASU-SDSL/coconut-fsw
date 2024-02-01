@@ -308,7 +308,7 @@ void eps_test() {
 	sleep_ms(2000);
 
 	// Loop 10 times
-	for(int i = 0; i < 10; i++){
+	for(int i = 0; i < 20; i++){
 		float shunt;
 		float vbus;
 		double power;
