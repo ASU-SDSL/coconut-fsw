@@ -186,8 +186,8 @@ int getVBusNew(i2c_inst_t *i2c,
 		return 0;
 	}
 
-	uint16_t bufComb = buf[1];
-	bufComb = (bufComb << 8) | buf[2];
+	uint16_t bufComb = buf[2];
+	bufComb = (bufComb << 8) | buf[1];
 
 	printf("raw bus: %x\n", bufComb);
 
