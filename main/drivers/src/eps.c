@@ -191,7 +191,7 @@ int getVBusNew(i2c_inst_t *i2c,
 
 	printf("raw bus: %x\n", bufComb);
 
-	*output_buf = (((bufComb >> 3) * 4)) * 0.001;
+	*output_buf = ((int16_t)(((bufComb >> 3) * 4))) * 0.001;
 	return 1;
 }
 
