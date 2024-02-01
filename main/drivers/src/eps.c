@@ -378,6 +378,6 @@ void eps_test() {
 		}
 		printf("\n");
 
-		sleep_ms(500);
+		sleep_ms(2000);
 	}
 }
