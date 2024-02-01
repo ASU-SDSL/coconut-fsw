@@ -301,11 +301,15 @@ void eps_test() {
 	// // Test: read Calibration register
 	// i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 	// printf("0x%02x\r\n", data);
+	printf("CALIBRATING\n");
 	calibrate(i2c);
+	printf("CONFIGURING\n");
 	config(i2c);
 
 	// Wait
 	sleep_ms(2000);
+
+	printf("STARTING TEST\n");
 
 	// Loop 10 times
 	for(int i = 0; i < 20; i++){
