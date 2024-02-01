@@ -314,34 +314,34 @@ void eps_test() {
 		double power;
 		double current;
 
-		// Read registers (16 bits each)
-		if (getVShunt(i2c, INA219_ADDR, REG_SHUNT, &shunt) == 0) {
-			printf("Shunt voltage error\n");
-		}
-		else {
-			printf("Shunt voltage: %.2f V\r\n", shunt);
-		}
+		// // Read registers (16 bits each)
+		// if (getVShunt(i2c, INA219_ADDR, REG_SHUNT, &shunt) == 0) {
+		// 	printf("Shunt voltage error\n");
+		// }
+		// else {
+		// 	printf("Shunt voltage: %.2f V\r\n", shunt);
+		// }
 
-		if (getVBus(i2c, INA219_ADDR, REG_BUS, &vbus) == 0) {
-			printf("Bus voltage error\n");
-		}
-		else {
-			printf("Bus voltage: %.2f V\r\n", vbus);
-		}
+		// if (getVBus(i2c, INA219_ADDR, REG_BUS, &vbus) == 0) {
+		// 	printf("Bus voltage error\n");
+		// }
+		// else {
+		// 	printf("Bus voltage: %.2f V\r\n", vbus);
+		// }
 
-		if (getPower(i2c, INA219_ADDR, REG_POWER, &power) == 0) {
-			printf("Power error\n");
-		}
-		else {
-			printf("Power: %.2f W\r\n", power);
-		}
+		// if (getPower(i2c, INA219_ADDR, REG_POWER, &power) == 0) {
+		// 	printf("Power error\n");
+		// }
+		// else {
+		// 	printf("Power: %.2f W\r\n", power);
+		// }
 		
-		if (getCurrent(i2c, INA219_ADDR, REG_CURRENT, &current) == 0) {
-			printf("Current error\n");
-		}
-		else {
-			printf("Current: %.2f A\r\n", current);
-		}
+		// if (getCurrent(i2c, INA219_ADDR, REG_CURRENT, &current) == 0) {
+		// 	printf("Current error\n");
+		// }
+		// else {
+		// 	printf("Current: %.2f A\r\n", current);
+		// }
 		
 		printf("\nTESTING NEW FUNCTIONS BASED OFF ARDUINO\n");
 		// Read registers (16 bits each)
