@@ -87,13 +87,14 @@ int reg_read(	i2c_inst_t *i2c,
 }
 
 void print_all_registers(i2c_inst_t* i2c){
+	int reg[6] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05};
 
-	uint8_t allRegisters[12];
-	i2c_read_from_register(i2c, INA219_ADDR, 0x00, allRegisters, 12);
-
-	for(int i = 0; i < 12; i++){
-		printf("%x", allRegisters[i]);
-		if(i % 2 == 1) printf(" ");
+	uint8_t buf[2];
+	for(int i = 0; i < 6; i++){
+		i2c_read_from_register(i2c, INA219_ADDR, reg[i], buf, 2);
+		printf("%x", buf[0]);
+		printf("%x ", buf[1]);
+		
 	}
 	printf("\n");
 }
