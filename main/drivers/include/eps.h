@@ -12,11 +12,17 @@
 
 
 /*
-* Calibrates the EPS by writing to the calibration register
+* Calibrates the EPS by writing to the calibration register (0x05)
 * Currently set up for a max current of 0.5A
 * Returns status of operation (1 = good)
 */
 int calibrate(i2c_inst_t *i2c);
+
+/*
+* Configures the EPS by writing to the configuration register (0x00)
+* Config register value taken from Adafruit_INA219 library
+*/
+int config(i2c_inst_t *i2c);
 
 /*
 * Reads from the VShunt register [reg_vs](0x01) of the device with 
