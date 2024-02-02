@@ -306,10 +306,10 @@ void eps_test() {
 	printf("CONFIGURING\n");
 	config(i2c);
 
-	uint8_t allRegisters[10];
-	i2c_read_from_register(i2c, INA219_ADDR, 0x00, allRegisters, 10);
+	uint8_t allRegisters[12];
+	i2c_read_from_register(i2c, INA219_ADDR, 0x00, allRegisters, 12);
 
-	for(int i = 0; i < 10; i++){
+	for(int i = 0; i < 12; i++){
 		printf("%x", allRegisters[i]);
 		if(i % 2 == 1) printf(" ");
 	}
