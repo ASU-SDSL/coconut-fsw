@@ -92,8 +92,8 @@ void print_all_registers(i2c_inst_t* i2c){
 	uint8_t buf[2];
 	for(int i = 0; i < 6; i++){
 		i2c_read_from_register(i2c, INA219_ADDR, reg[i], buf, 2);
-		printf("%x", buf[0]);
-		printf("%x ", buf[1]);
+		printf("%02x", buf[1]);
+		printf("%02x ", buf[0]);
 		
 	}
 	printf("\n");
