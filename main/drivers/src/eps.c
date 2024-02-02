@@ -86,6 +86,18 @@ int reg_read(	i2c_inst_t *i2c,
 	return num_bytes_read;
 }
 
+void print_all_registers(i2c_inst_t* i2c){
+
+	uint8_t allRegisters[12];
+	i2c_read_from_register(i2c, INA219_ADDR, 0x00, allRegisters, 12);
+
+	for(int i = 0; i < 12; i++){
+		printf("%x", allRegisters[i]);
+		if(i % 2 == 1) printf(" ");
+	}
+	printf("\n");
+}
+
 int calibrate(i2c_inst_t *i2c){
 
 	// Program calibration register
@@ -301,19 +313,17 @@ void eps_test() {
 	// // Test: read Calibration register
 	// i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 	// printf("0x%02x\r\n", data);
+	print_all_registers(i2c);
+
 	printf("CALIBRATING\n");
 	calibrate(i2c);
+
+	print_all_registers(i2c);
+
 	printf("CONFIGURING\n");
 	config(i2c);
 
-	uint8_t allRegisters[12];
-	i2c_read_from_register(i2c, INA219_ADDR, 0x00, allRegisters, 12);
-
-	for(int i = 0; i < 12; i++){
-		printf("%x", allRegisters[i]);
-		if(i % 2 == 1) printf(" ");
-	}
-	printf("\n");
+	print_all_registers(i2c);
 
 	// Wait
 	sleep_ms(2000);
@@ -322,6 +332,7 @@ void eps_test() {
 
 	// Loop 10 times
 	for(int i = 0; i < 20; i++){
+		print_all_registers(i2c);
 		float shunt;
 		float vbus;
 		double power;
