@@ -408,7 +408,14 @@ void eps_test() {
 
 		sleep_ms(5);
 
-		
+		if (getCurrentNew(i2c, INA219_ADDR, REG_CURRENT, &current) == 0) {
+			printf("Current error\n");
+		}
+		else {
+			printf("Current: %.2f mA\r\n", current);
+		}
+		printf("\n");
+
 		if (getPowerNew(i2c, INA219_ADDR, REG_POWER, &power) == 0) {
 			printf("Power error\n");
 		}
@@ -417,15 +424,6 @@ void eps_test() {
 		}
 		
 		sleep_ms(5);
-
-		
-		if (getCurrentNew(i2c, INA219_ADDR, REG_CURRENT, &current) == 0) {
-			printf("Current error\n");
-		}
-		else {
-			printf("Current: %.2f mA\r\n", current);
-		}
-		printf("\n");
 
 		sleep_ms(2000);
 	}
