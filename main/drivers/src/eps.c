@@ -102,7 +102,7 @@ void print_each_register(i2c_inst_t* i2c){
 void print_all_registers(i2c_inst_t* i2c){
 
 	uint8_t buf[12];
-	i2c_read_from_register(i2c, INA219_ADDR, 0x00, buf, 2);
+	i2c_read_from_register(i2c, INA219_ADDR, 0x00, buf, 12);
 
 	for(int i = 0; i < 12; i++){
 		printf("%x", buf[i]);
