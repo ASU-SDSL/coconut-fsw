@@ -41,7 +41,7 @@ int i2c_read_from_register(	i2c_inst_t *i2c,
 
 	if (nbytes < 1) { return 1; }
 
-	int bytes_written = i2c_write_timeout_us(i2c, addr, &reg, 1, false, I2CTimeout_us);
+	int bytes_written = i2c_write_timeout_us(i2c, addr, &reg, 1, true, I2CTimeout_us);
 	if (bytes_written != 1) { return 1; } // return error
 
 	int num_bytes_read = i2c_read_timeout_us(i2c, addr, buf, nbytes, false, I2CTimeout_us);
