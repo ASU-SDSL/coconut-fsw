@@ -218,8 +218,8 @@ int getVBusNew(i2c_inst_t *i2c,
 		return 0;
 	}
 
-	uint16_t bufComb = buf[1];
-	bufComb = (bufComb << 8) | buf[2];
+	uint16_t bufComb = buf[0];
+	bufComb = (bufComb << 8) | buf[1];
 
 	printf("raw bus: %x\n", bufComb);
 
@@ -259,8 +259,8 @@ int getPowerNew(i2c_inst_t *i2c,
 		return 0;
 	}
 
-	uint16_t bufComb = buf[1];
-	bufComb = (bufComb << 8) | buf[2];
+	uint16_t bufComb = buf[0];
+	bufComb = (bufComb << 8) | buf[1];
 
 	printf("raw power: %d\n", bufComb);
         
@@ -298,8 +298,8 @@ int getCurrentNew(i2c_inst_t *i2c,
 		return 0;
 	}
 
-	uint16_t bufComb = buf[1];
-	bufComb = (bufComb << 8) | buf[2];
+	uint16_t bufComb = buf[0];
+	bufComb = (bufComb << 8) | buf[1];
 
 	printf("raw current: %d\n", bufComb);
 
