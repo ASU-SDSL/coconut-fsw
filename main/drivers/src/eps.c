@@ -127,10 +127,10 @@ int calibrate(i2c_inst_t *i2c){
 	}
 
 	// Test calibration register 
-	i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, data, 2);
+	//i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, data, 2);
 
-	printf("0x%x\r\n", data[0]);
-	printf("0x%x\r\n", data[1]);
+	//printf("0x%x\r\n", data[0]);
+	//printf("0x%x\r\n", data[1]);
 
 	return 1;
 
@@ -145,10 +145,10 @@ int config(i2c_inst_t *i2c){
 	}
 
 	// Test calibration register
-	i2c_read_from_register(i2c, INA219_ADDR, REG_CONFIG, config, 2);
+	//i2c_read_from_register(i2c, INA219_ADDR, REG_CONFIG, config, 2);
 
-	printf("0x%x\r\n", config[0]);
-	printf("0x%x\r\n", config[1]);
+	//printf("0x%x\r\n", config[0]);
+	//printf("0x%x\r\n", config[1]);
 
 	return 1;
 }
@@ -333,18 +333,18 @@ void eps_test() {
 	// // Test: read Calibration register
 	// i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 	// printf("0x%02x\r\n", data);
-	printf("ALL: "); print_all_registers(i2c);
-	printf("EACH: "); print_each_register(i2c);
+	//printf("ALL: "); print_all_registers(i2c);
+	//printf("EACH: "); print_each_register(i2c);
 
 	printf("CALIBRATING\n");
 	calibrate(i2c);
 
-	printf("EACH: "); print_each_register(i2c);
+	//printf("EACH: "); print_each_register(i2c);
 
 	printf("CONFIGURING\n");
 	config(i2c);
 
-	printf("EACH: "); print_each_register(i2c);
+	//printf("EACH: "); print_each_register(i2c);
 
 	// Wait
 	sleep_ms(2000);
@@ -353,7 +353,7 @@ void eps_test() {
 
 	// Loop 10 times
 	for(int i = 0; i < 20; i++){
-		printf("EACH: "); print_each_register(i2c);
+		//printf("EACH: "); print_each_register(i2c);
 		float shunt;
 		float vbus;
 		double power;
