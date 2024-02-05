@@ -102,7 +102,14 @@ void print_each_register(i2c_inst_t* i2c){
 void print_all_registers(i2c_inst_t* i2c){
 
 	uint8_t buf[12];
-	i2c_read_from_register(i2c, INA219_ADDR, 0x00, buf, 12);
+	int success = i2c_read_from_register(i2c, INA219_ADDR, 0x00, buf, 12);
+
+	if(success == PICO_ERROR_TIMEOUT){
+		printf("TIMEOUT\n");
+	}
+	else if(success == PICO_ERROR_GENERIC){
+		printf("GENERIC\n");
+	}
 
 	for(int i = 0; i < 12; i++){
 		printf("%x", buf[i]);
@@ -326,17 +333,18 @@ void eps_test() {
 	// // Test: read Calibration register
 	// i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 	// printf("0x%02x\r\n", data);
-	print_all_registers(i2c);
+	printf("ALL: "); print_all_registers(i2c);
+	printf("EACH: "); print_each_register(i2c);
 
 	printf("CALIBRATING\n");
 	calibrate(i2c);
 
-	print_all_registers(i2c);
+	printf("EACH: "); print_each_register(i2c);
 
 	printf("CONFIGURING\n");
 	config(i2c);
 
-	print_all_registers(i2c);
+	printf("EACH: "); print_each_register(i2c);
 
 	// Wait
 	sleep_ms(2000);
@@ -345,7 +353,7 @@ void eps_test() {
 
 	// Loop 10 times
 	for(int i = 0; i < 20; i++){
-		print_all_registers(i2c);
+		printf("EACH: "); print_each_register(i2c);
 		float shunt;
 		float vbus;
 		double power;
