@@ -86,7 +86,7 @@ int reg_read(	i2c_inst_t *i2c,
 	return num_bytes_read;
 }
 
-void print_all_registers(i2c_inst_t* i2c){
+void print_each_register(i2c_inst_t* i2c){
 	int reg[6] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05};
 
 	uint8_t buf[2];
@@ -95,6 +95,18 @@ void print_all_registers(i2c_inst_t* i2c){
 		printf("%02x", buf[0]);
 		printf("%02x ", buf[1]);
 		
+	}
+	printf("\n");
+}
+
+void print_all_registers(i2c_inst_t* i2c){
+
+	uint8_t buf[12];
+	i2c_read_from_register(i2c, INA219_ADDR, 0x00, buf, 2);
+
+	for(int i = 0; i < 12; i++){
+		printf("%x", buf[i]);
+		if(i % 2 == 1) printf(" ");
 	}
 	printf("\n");
 }
