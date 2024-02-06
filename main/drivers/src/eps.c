@@ -33,95 +33,10 @@ static const int POWER_MULTIPLIER_MW = 2;
 //uint16_t config = (0x2000) | (0x1800) |  (0x0180) | (0x0018) | (0x07);
 static const uint8_t CONFIG[] = {0x39,0x9f};
 
-int reg_write(	i2c_inst_t *i2c,
-				const uint8_t addr,
-				const uint8_t reg,
-				uint8_t *buf,
-				const uint8_t nbytes);
-
-int reg_read(	i2c_inst_t *i2c,
-				const uint8_t addr,
-				const uint8_t reg,
-				uint8_t *buf,
-				const uint8_t nbytes);
-
-int reg_write(	i2c_inst_t *i2c,
-                const uint8_t addr,
-                const uint8_t reg,
-                uint8_t *buf,
-                const uint8_t nbytes) {
-	
-	int num_bytes_written;
-	uint8_t msg[nbytes + 1];
-
-	if (nbytes < 1) {
-		return 0;
-	}
-
-	msg[0] = reg;
-	for  (int i=0; i < nbytes; i++) {
-		msg[i + 1] = buf[i];
-	}
-	num_bytes_written = i2c_write_blocking(i2c, addr, msg, (nbytes + 1), false);
-
-	// this could be an error code as well
-	return num_bytes_written;
-}
-
-int reg_read(	i2c_inst_t *i2c,
-				const uint8_t addr,
-				const uint8_t reg,
-				uint8_t *output_buf,
-				const uint8_t nbytes) {
-
-	int num_bytes_read = 0;
-
-	if (nbytes < 1) {
-		return 0;
-	}
-
-	i2c_write_blocking(i2c, addr, &reg, 1, true);
-	num_bytes_read = i2c_read_blocking(i2c, addr, output_buf, nbytes, false);
-
-	return num_bytes_read;
-}
-
-void print_each_register(i2c_inst_t* i2c){
-	int reg[6] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05};
-
-	uint8_t buf[2];
-	for(int i = 0; i < 6; i++){
-		i2c_read_from_register(i2c, INA219_ADDR, reg[i], buf, 2);
-		printf("%02x", buf[0]);
-		printf("%02x ", buf[1]);
-		
-	}
-	printf("\n");
-}
-
-void print_all_registers(i2c_inst_t* i2c){
-
-	uint8_t buf[12];
-	int success = i2c_read_from_register(i2c, INA219_ADDR, 0x00, buf, 12);
-
-	if(success == PICO_ERROR_TIMEOUT){
-		printf("TIMEOUT\n");
-	}
-	else if(success == PICO_ERROR_GENERIC){
-		printf("GENERIC\n");
-	}
-
-	for(int i = 0; i < 12; i++){
-		printf("%x", buf[i]);
-		if(i % 2 == 1) printf(" ");
-	}
-	printf("\n");
-}
-
 int calibrate(i2c_inst_t *i2c){
 
 	// Program calibration register
-	uint8_t* data = CAL;
+	uint8_t* data = (uint8_t*)CAL;
 	if(i2c_write_to_register(i2c, INA219_ADDR, REG_CALIB, data, 2) != 0){
 		return 0;
 	}
@@ -138,7 +53,7 @@ int calibrate(i2c_inst_t *i2c){
 
 int config(i2c_inst_t *i2c){
 	//Program config register 
-	uint8_t* config = CONFIG;
+	uint8_t* config = (uint8_t*)CONFIG;
 
 	if(i2c_write_to_register(i2c, INA219_ADDR, REG_CONFIG, config, 2) != 0){
 		return 0;

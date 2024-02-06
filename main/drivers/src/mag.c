@@ -98,10 +98,10 @@ int get_x_output(i2c_inst_t *i2c) { //defines function
 int get_y_output(i2c_inst_t *i2c) { //Y output
 
     uint8_t buf_low;
-    i2c_read_from_register(i2c, SAD, OUT_Y_L, buf_low, 1);
+    i2c_read_from_register(i2c, SAD, OUT_Y_L, &buf_low, 1);
 
     uint8_t buf_high;
-    i2c_read_from_register(i2c, SAD, OUT_Y_H, buf_high, 1);
+    i2c_read_from_register(i2c, SAD, OUT_Y_H, &buf_high, 1);
 
     int y_out = (int) buf_low | ((int) buf_high << 8);
     return y_out;
@@ -110,10 +110,10 @@ int get_y_output(i2c_inst_t *i2c) { //Y output
 int get_z_output(i2c_inst_t *i2c){ //Z output
 
     uint8_t buf_low;
-    i2c_read_from_register(i2c, SAD, OUT_Z_L, buf_low, 1);
+    i2c_read_from_register(i2c, SAD, OUT_Z_L, &buf_low, 1);
 
     uint8_t buf_high;
-    i2c_read_from_register(i2c, SAD, OUT_Z_H, buf_high, 1);
+    i2c_read_from_register(i2c, SAD, OUT_Z_H, &buf_high, 1);
 
     int z_out = (int) buf_low | ((int) buf_high << 8);
     return z_out;
@@ -123,10 +123,10 @@ int get_z_output(i2c_inst_t *i2c){ //Z output
 int get_temp_output(i2c_inst_t *i2c){ //Temperature output
 
     uint8_t buf_low;
-    i2c_read_from_register(i2c, SAD, TEMP_OUT_L, buf_low, 1);
+    i2c_read_from_register(i2c, SAD, TEMP_OUT_L, &buf_low, 1);
 
     uint8_t buf_high;
-    i2c_read_from_register(i2c, SAD, TEMP_OUT_H, buf_high, 1);
+    i2c_read_from_register(i2c, SAD, TEMP_OUT_H, &buf_high, 1);
 
     int temp_out = (int) buf_low | ((int) buf_high << 8);
     return temp_out;
@@ -136,7 +136,7 @@ int get_temp_output(i2c_inst_t *i2c){ //Temperature output
 int get_status(i2c_inst_t *i2c) { //Indicates if data is available/overrun
 
 	uint8_t buf;
-	i2c_read_from_register(i2c, SAD, STATUS_REG, buf, 1);
+	i2c_read_from_register(i2c, SAD, STATUS_REG, &buf, 1);
 
 	int status = (int) buf;
 	return status;
