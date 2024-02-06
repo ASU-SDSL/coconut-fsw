@@ -26,13 +26,23 @@ int config(i2c_inst_t *i2c);
 
 /*
 * Reads from the VShunt register [reg_vs](0x01) of the device with 
-* i2c address [addr] and writes it to [output_buf] in Volts?
+* i2c address [addr] and writes it to [output_buf] in mV
 * Returns status of operation (1 = good)
 */
 int getVShunt(i2c_inst_t *i2c,
                 const uint8_t addr,
                 const uint8_t reg_vs,
                 float *output_buf);
+
+/*
+* Reads from the VShunt register [reg_vs](0x01) of the device with 
+* i2c address [addr] and writes it to [output_buf] unprocessed
+* Returns status of operation (1 = good)
+*/
+int getVShunt_raw(i2c_inst_t *i2c,
+                const uint8_t addr,
+                const uint8_t reg_vs,
+                uint16_t *output_buf);
 
 /*
 * Reads from VBus register [reg_vb](0x02) of the device with 
@@ -45,6 +55,16 @@ int getVBus(i2c_inst_t *i2c,
             float *output_buf);
 
 /*
+* Reads from VBus register [reg_vb](0x02) of the device with 
+* i2c address [addr] and writes it to [output_buf] unprocessed
+* Returns status of operation (1 = good)
+*/
+int getVBus_raw(i2c_inst_t *i2c,
+            const uint8_t addr,
+            const uint8_t reg_vb,
+            uint16_t *output_buf);
+
+/*
 * Reads from Power register [reg_p](0x03) of the device with 
 * i2c address [addr] and writes it to [output_bef] in Watts
 * Returns status of operation (1 = good)
@@ -55,6 +75,16 @@ int getPower(i2c_inst_t *i2c,
                 double *output_buf);
 
 /*
+* Reads from Power register [reg_p](0x03) of the device with 
+* i2c address [addr] and writes it to [output_bef] unprocessed
+* Returns status of operation (1 = good)
+*/
+int getPower_raw(i2c_inst_t *i2c,
+                const uint8_t addr,
+                const uint8_t reg_p,
+                uint16_t *output_buf);
+
+/*
 * Reads from Current register [reg_c](0x04) of the device with 
 * i2c address [addr] and writes it to [output_buf] in Amps
 * Returns status of operation (1 = good)
@@ -63,6 +93,16 @@ int getCurrent(i2c_inst_t *i2c,
                 const uint8_t addr,
                 const uint8_t reg_c,
                 double *output_buf);
+
+/*
+* Reads from Current register [reg_c](0x04) of the device with 
+* i2c address [addr] and writes it to [output_buf] unprocessed
+* Returns status of operation (1 = good)
+*/
+int getCurrent_raw(i2c_inst_t *i2c,
+                const uint8_t addr,
+                const uint8_t reg_c,
+                uint16_t *output_buf);
                         
 /*
 * Tests EPS functions
