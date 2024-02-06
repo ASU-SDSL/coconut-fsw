@@ -84,7 +84,7 @@ int getVShunt(i2c_inst_t *i2c,
 	uint16_t bufComb = buf[0];
 	bufComb = (bufComb << 8) | buf[1];
 
-	printf("raw vshunt: %d\n", bufComb);
+	// printf("raw vshunt: %d\n", bufComb);
 
 	*output_buf = bufComb * 0.01; // mV
 	return 1;
@@ -104,7 +104,7 @@ int getVShunt_raw(i2c_inst_t *i2c,
 	uint16_t bufComb = buf[0];
 	bufComb = (bufComb << 8) | buf[1];
 
-	printf("raw vshunt: %d\n", bufComb);
+	// printf("raw vshunt: %d\n", bufComb);
 
 	*output_buf = bufComb; // * 0.01 = mV
 	return 1;
@@ -124,7 +124,7 @@ int getVBus(i2c_inst_t *i2c,
 	uint16_t bufComb = buf[0];
 	bufComb = (bufComb << 8) | buf[1];
 
-	printf("raw bus: %x\n", bufComb);
+	// printf("raw bus: %x\n", bufComb);
 
 	*output_buf = ((int16_t)(((bufComb >> 3) * 4))) * 0.001; // volts
 	return 1;
@@ -143,7 +143,7 @@ int getVBus_raw(i2c_inst_t *i2c,
 	uint16_t bufComb = buf[0];
 	bufComb = (bufComb << 8) | buf[1];
 
-	printf("raw bus: %x\n", bufComb);
+	// printf("raw bus: %x\n", bufComb);
 
 	*output_buf = bufComb; // ((int16_t)(((bufComb >> 3) * 4))) * 0.001; // volts
 	return 1;
@@ -166,7 +166,7 @@ int getPower(i2c_inst_t *i2c,
 	uint16_t bufComb = buf[0];
 	bufComb = (bufComb << 8) | buf[1];
 
-	printf("raw power: %d\n", bufComb);
+	// printf("raw power: %d\n", bufComb);
         
 	*output_buf = (bufComb)*(POWER_MULTIPLIER_MW);
 	return 1;
@@ -189,7 +189,7 @@ int getPower_raw(i2c_inst_t *i2c,
 	uint16_t bufComb = buf[0];
 	bufComb = (bufComb << 8) | buf[1];
 
-	printf("raw power: %d\n", bufComb);
+	// printf("raw power: %d\n", bufComb);
         
 	*output_buf = bufComb; // (bufComb)*(POWER_MULTIPLIER_MW); // mW
 	return 1;
@@ -211,7 +211,7 @@ int getCurrent(i2c_inst_t *i2c,
 	uint16_t bufComb = buf[0];
 	bufComb = (bufComb << 8) | buf[1];
 
-	printf("raw current: %d\n", bufComb);
+	// printf("raw current: %d\n", bufComb);
 
 	*output_buf = ((double)(bufComb)) / (CURRENT_DEVIDER_MA);
 	return 1;
@@ -233,7 +233,7 @@ int getCurrent_raw(i2c_inst_t *i2c,
 	uint16_t bufComb = buf[0];
 	bufComb = (bufComb << 8) | buf[1];
 
-	printf("raw current: %d\n", bufComb);
+	// printf("raw current: %d\n", bufComb);
 
 	*output_buf = bufComb; // ((double)(bufComb)) / (CURRENT_DEVIDER_MA); // mA
 	return 1;
@@ -265,18 +265,14 @@ void eps_test() {
 	// // Test: read Calibration register
 	// i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 	// printf("0x%02x\r\n", data);
-	//printf("ALL: "); print_all_registers(i2c);
-	//printf("EACH: "); print_each_register(i2c);
 
 	printf("CALIBRATING\n");
 	calibrate(i2c);
 
-	//printf("EACH: "); print_each_register(i2c);
 
 	printf("CONFIGURING\n");
 	config(i2c);
 
-	//printf("EACH: "); print_each_register(i2c);
 
 	// Wait
 	sleep_ms(2000);
@@ -285,7 +281,6 @@ void eps_test() {
 
 	// Loop 10 times
 	for(int i = 0; i < 20; i++){
-		//printf("EACH: "); print_each_register(i2c);
 		float shunt;
 		float vbus;
 		double power;
