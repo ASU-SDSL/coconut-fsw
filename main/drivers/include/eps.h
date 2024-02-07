@@ -71,8 +71,8 @@ int getPower(i2c_inst_t *i2c,
                 double *output_buf);
 
 /*
-* Reads from Power register [reg_p](0x03) of the device with 
-* i2c address [addr] and writes it to [output_bef] unprocessed
+* Reads from Power register (0x03),
+* writes it to [output_bef] unprocessed
 * Returns status of operation (1 = good)
 */
 int getPower_raw(i2c_inst_t *i2c,
@@ -89,8 +89,8 @@ int getCurrent(i2c_inst_t *i2c,
                 double *output_buf);
 
 /*
-* Reads from Current register [reg_c](0x04) of the device with 
-* i2c address [addr] and writes it to [output_buf] unprocessed
+* Reads from Current register (0x04)
+* writes it to [output_buf] unprocessed
 * Returns status of operation (1 = good)
 */
 int getCurrent_raw(i2c_inst_t *i2c,
