@@ -95,6 +95,31 @@ int get_x_output(i2c_inst_t *i2c) { //defines function
     return x_out;
 }
 
+uint16_t get_x_output_raw(i2c_inst_t *i2c) { 
+
+    uint8_t buf_low; //buf means buffer, allocates space for data to be entered in an 8 bit number (uint8_t)
+    i2c_read_from_register(i2c, SAD, OUT_X_L, &buf_low, 1); 
+
+    uint8_t buf_high;
+    i2c_read_from_register(i2c, SAD, OUT_X_H, &buf_high, 1);
+
+    //high =   00000010
+    //low =    00000001
+    //high is just the higher register, probably just the higher value
+
+    uint16_t x_out = (uint16_t) buf_low | ((uint16_t) buf_high << 8); // or ?logic operator, basically makes 0 or 1 = 1
+    //0 | 1 = 1
+    //01 | 10 = 11
+    // 0 | 0 = 0
+
+    //<< 8 pushes values 8 to the left
+    //0000000 00000000 00000000 00000001
+    //0000000 00000000 00000010 <<<<<<<<
+    //or operator
+    //0000000 00000000 00000010 00000001
+    return x_out;
+}
+
 int get_y_output(i2c_inst_t *i2c) { //Y output
 
     uint8_t buf_low;
@@ -107,6 +132,18 @@ int get_y_output(i2c_inst_t *i2c) { //Y output
     return y_out;
 }
 
+uint16_t get_y_output_raw(i2c_inst_t *i2c) { //Y output
+
+    uint8_t buf_low;
+    i2c_read_from_register(i2c, SAD, OUT_Y_L, &buf_low, 1);
+
+    uint8_t buf_high;
+    i2c_read_from_register(i2c, SAD, OUT_Y_H, &buf_high, 1);
+
+    uint16_t y_out = ((uint16_t) buf_low) | (((uint16_t) buf_high) << 8);
+    return y_out;
+}
+
 int get_z_output(i2c_inst_t *i2c){ //Z output
 
     uint8_t buf_low;
@@ -116,6 +153,19 @@ int get_z_output(i2c_inst_t *i2c){ //Z output
     i2c_read_from_register(i2c, SAD, OUT_Z_H, &buf_high, 1);
 
     int z_out = (int) buf_low | ((int) buf_high << 8);
+    return z_out;
+
+}
+
+uint16_t get_z_output_raw(i2c_inst_t *i2c){ //Z output
+
+    uint8_t buf_low;
+    i2c_read_from_register(i2c, SAD, OUT_Z_L, &buf_low, 1);
+
+    uint8_t buf_high;
+    i2c_read_from_register(i2c, SAD, OUT_Z_H, &buf_high, 1);
+
+    uint16_t z_out = (uint16_t) buf_low | ((uint16_t) buf_high << 8);
     return z_out;
 
 }
@@ -133,7 +183,20 @@ int get_temp_output(i2c_inst_t *i2c){ //Temperature output
 
 }
 
-int get_status(i2c_inst_t *i2c) { //Indicates if data is available/overrun
+uint16_t get_temp_output_raw(i2c_inst_t *i2c){ //Temperature output
+
+    uint8_t buf_low;
+    i2c_read_from_register(i2c, SAD, TEMP_OUT_L, &buf_low, 1);
+
+    uint8_t buf_high;
+    i2c_read_from_register(i2c, SAD, TEMP_OUT_H, &buf_high, 1);
+
+    uint16_t temp_out = (uint16_t) buf_low | ((uint16_t) buf_high << 8);
+    return temp_out;
+
+}
+
+int get_mag_status(i2c_inst_t *i2c) { //Indicates if data is available/overrun
 
 	uint8_t buf;
 	i2c_read_from_register(i2c, SAD, STATUS_REG, &buf, 1);
@@ -155,7 +218,7 @@ int mag_test(){
     // Loop 1000 times
     for(int i = 0; i < 1000; i++){
 
-        printf("Status: %d\n", get_status(i2c));
+        printf("Status: %d\n", get_mag_status(i2c));
 
         printf("X output: %d\n", get_x_output(i2c));
 

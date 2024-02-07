@@ -14,6 +14,6 @@ int get_z_output(i2c_inst_t *i2c);
 
 int get_temp_output(i2c_inst_t *i2c);
 
-int get_status(i2c_inst_t *i2c);
+int get_mag_status(i2c_inst_t *i2c);
 
 int mag_test();

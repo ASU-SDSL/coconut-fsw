@@ -149,7 +149,10 @@ void heartbeat_telemetry_job(void* unused) {
     payload.eps_power = buf;
 
     // mag stuff 
-
+    payload.mag_x = get_x_output(i2c);
+    payload.mag_y = get_y_output(i2c);
+    payload.mag_z = get_z_output(i2c);
+    payload.mag_temp = get_temp_output(i2c);
 
     // Send it
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
