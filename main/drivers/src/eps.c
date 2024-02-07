@@ -344,7 +344,6 @@ void eps_test() {
 		else {
 			printf("Current: %.2f mA\r\n", current);
 		}
-		printf("\n");
 
 		if (getPower(i2c, INA219_ADDR, REG_POWER, &power) == 0) {
 			printf("Power error\n");
