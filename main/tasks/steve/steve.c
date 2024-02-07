@@ -135,6 +135,12 @@ void heartbeat_telemetry_job(void* unused) {
     heartbeat_telemetry_t payload;
     payload.state = g_payload_state;
     payload.uptime = get_uptime();
+
+    // eps stuff
+
+    // mag stuff 
+    
+
     // Send it
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
     //logln_info("Lol");

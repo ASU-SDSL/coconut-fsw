@@ -33,6 +33,10 @@ typedef enum {
 typedef struct __attribute__((__packed__)) {
     payload_state_t state;
     TickType_t uptime;
+    uint16_t eps_shunt;
+    uint16_t eps_vbus;
+    uint16_t eps_power;
+    uint16_t eps_current;
 } heartbeat_telemetry_t;
 
 /* USER FUNCTIONS */

@@ -75,9 +75,9 @@ void gse_task(void *pvParameters) {
     eps_test();
     printf("Finished EPS test.\n");
 
-    // printf("Starting Mag test...\n");
-    // mag_test();
-    // printf("Finished Mag test.\n");
+    printf("Starting Mag test...\n");
+    mag_test();
+    printf("Finished Mag test.\n");
 
     /*SemaphoreHandle_t* mutex = (SemaphoreHandle_t *) pvParameters;
     write(mutex);
