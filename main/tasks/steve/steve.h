@@ -13,6 +13,7 @@
 #include "log.h"
 #include "state.h"
 #include "mag.h"
+#include "eps.h"
 
 // Constants
 #define MAX_JOBS 256

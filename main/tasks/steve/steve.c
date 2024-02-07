@@ -137,9 +137,19 @@ void heartbeat_telemetry_job(void* unused) {
     payload.uptime = get_uptime();
 
     // eps stuff
+    i2c_inst_t *i2c = i2c0;
+    uint16_t buf;
+    getVShunt_raw(i2c, &buf);
+    payload.eps_shunt = buf;
+    getVBus_raw(i2c, &buf);
+    payload.eps_vbus = buf;
+    getCurrent_raw(i2c, &buf);
+    payload.eps_current = buf; 
+    getPower_raw(i2c, &buf);
+    payload.eps_power = buf;
 
     // mag stuff 
-    
+
 
     // Send it
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
