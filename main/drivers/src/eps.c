@@ -286,28 +286,28 @@ void eps_test() {
 			printf("Shunt voltage error\n");
 		}
 		else {
-			printf("Shunt voltage (raw): %02x \r\n", raw);
+			printf("Shunt voltage (raw): %04x \r\n", raw);
 		}
 
 		if (getVBus_raw(i2c, &raw) == 0) {
 			printf("Bus voltage error\n");
 		}
 		else {
-			printf("Bus voltage (raw): %02x \r\n", raw);
+			printf("Bus voltage (raw): %04x \r\n", raw);
 		}
 
 		if (getPower_raw(i2c, &raw) == 0) {
 			printf("Power error\n");
 		}
 		else {
-			printf("Power (raw): %02x \r\n", raw);
+			printf("Power (raw): %04x \r\n", raw);
 		}
 		
 		if (getCurrent_raw(i2c, &raw) == 0) {
 			printf("Current error\n");
 		}
 		else {
-			printf("Current: %02x \r\n", raw);
+			printf("Current: %04x \r\n", raw);
 		}
 		
 		printf("PROCESSED VALUES\n");

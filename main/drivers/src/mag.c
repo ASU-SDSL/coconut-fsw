@@ -223,15 +223,16 @@ int mag_test(){
         printf("Status (raw): %02x\n", get_mag_status(i2c));
 
         printf("X output: %d\n", get_x_output(i2c));
-        printf("X output (raw): %02x\n", get_x_output_raw(i2c));
+        printf("X output (raw): %04x\n", get_x_output_raw(i2c));
 
         printf("Y output: %d\n", get_y_output(i2c));
-        printf("Y output (raw): %02x\n", get_y_output_raw(i2c));
+        printf("Y output (raw): %04x\n", get_y_output_raw(i2c));
 
         printf("Z output: %d\n", get_z_output(i2c));
-        printf("Z output (raw): %02x\n", get_z_output(i2c));
+        printf("Z output (raw): %04x\n", get_z_output(i2c));
 
         printf("Get Temp Output: %d\n", get_temp_output(i2c));
+        printf("Get Temp Output (raw): %04x\n", get_temp_output_raw(i2c));
 
         sleep_ms(500);
 
