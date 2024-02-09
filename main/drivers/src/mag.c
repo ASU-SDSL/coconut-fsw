@@ -92,7 +92,7 @@ int config_mag(i2c_inst_t *i2c){
     // z - high performance mode (---- 10--)
     i2c_read_from_register(i2c, SAD, CTRL_REG4, &buf, 1);
     buf = (buf | 0b00001000) & 0b11111011;
-    printf("writing to CTRL_REG1: %02x\n", buf);
+    printf("writing to CTRL_REG4: %02x\n", buf);
     i2c_write_to_register(i2c, SAD, CTRL_REG4, &buf, 1);
 
     // set data rate - 155 Hz - (---- --1-)
@@ -104,10 +104,10 @@ int config_mag(i2c_inst_t *i2c){
     // set range (this is default - currently no changes)
 
     // set operation mode
-    i2c_read_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
+    i2c_read_from_register(i2c, SAD, CTRL_REG3, &buf, 1);
     buf = (buf & 0b11111100);
-    printf("writing to CTRL_REG1: %02x\n", buf);
-    i2c_write_to_register(i2c, SAD, CTRL_REG1, &buf, 1);
+    printf("writing to CTRL_REG3: %02x\n", buf);
+    i2c_write_to_register(i2c, SAD, CTRL_REG3, &buf, 1);
 }
 
 int get_x_output(i2c_inst_t *i2c) { //defines function
