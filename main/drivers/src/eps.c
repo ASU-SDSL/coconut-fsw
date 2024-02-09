@@ -281,36 +281,36 @@ void eps_test() {
 		uint16_t raw; 
 
 		// // Read registers (16 bits each)
-		printf("RAW VALUES\n");
+		printf("\nRAW VALUES\n");
 		if (getVShunt_raw(i2c, &raw) == 0) {
 			printf("Shunt voltage error\n");
 		}
 		else {
-			printf("Shunt voltage (raw): %.2f V\r\n", raw);
+			printf("Shunt voltage (raw): %02x \r\n", raw);
 		}
 
 		if (getVBus_raw(i2c, &raw) == 0) {
 			printf("Bus voltage error\n");
 		}
 		else {
-			printf("Bus voltage (raw): %.2f V\r\n", raw);
+			printf("Bus voltage (raw): %02x \r\n", raw);
 		}
 
 		if (getPower_raw(i2c, &raw) == 0) {
 			printf("Power error\n");
 		}
 		else {
-			printf("Power (raw): %.2f W\r\n", raw);
+			printf("Power (raw): %02x \r\n", raw);
 		}
 		
 		if (getCurrent_raw(i2c, &raw) == 0) {
 			printf("Current error\n");
 		}
 		else {
-			printf("Current: %.2f A\r\n", raw);
+			printf("Current: %02x \r\n", raw);
 		}
 		
-		printf("\nPROCESSED VALUES\n");
+		printf("PROCESSED VALUES\n");
 		// Read registers (16 bits each)
 	
 		if (getVShunt(i2c, INA219_ADDR, REG_SHUNT, &shunt) == 0) {

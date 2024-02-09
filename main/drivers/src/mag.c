@@ -196,13 +196,14 @@ uint16_t get_temp_output_raw(i2c_inst_t *i2c){ //Temperature output
 
 }
 
-int get_mag_status(i2c_inst_t *i2c) { //Indicates if data is available/overrun
+uint8_t get_mag_status(i2c_inst_t *i2c) { //Indicates if data is available/overrun
 
 	uint8_t buf;
 	i2c_read_from_register(i2c, SAD, STATUS_REG, &buf, 1);
 
-	int status = (int) buf;
-	return status;
+	// int status = (int) buf;
+	// return status;
+    return buf;
 }
 
 int mag_test(){
@@ -219,16 +220,20 @@ int mag_test(){
     for(int i = 0; i < 10; i++){
 
         printf("Status: %d\n", get_mag_status(i2c));
+        printf("Status (raw): %02x\n", get_mag_status(i2c));
 
         printf("X output: %d\n", get_x_output(i2c));
+        printf("X output (raw): %02x\n", get_x_output_raw(i2c));
 
         printf("Y output: %d\n", get_y_output(i2c));
+        printf("Y output (raw): %02x\n", get_y_output_raw(i2c));
 
         printf("Z output: %d\n", get_z_output(i2c));
+        printf("Z output (raw): %02x\n", get_z_output(i2c));
 
         printf("Get Temp Output: %d\n", get_temp_output(i2c));
 
-        sleep_ms(100);
+        sleep_ms(500);
 
     }
 
