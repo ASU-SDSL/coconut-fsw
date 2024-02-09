@@ -25,6 +25,9 @@ static const uint8_t INT_SRC = 0x31;
 static const uint8_t INT_THIS_L = 0x32;
 static const uint8_t INT_THIS_H = 0x33;
 
+// config constants, use reference: https://github.com/adafruit/Adafruit_LIS3MDL/
+ 
+
 //scale (for range of 4 gauss (default))
 int scale = 6842; 
 
@@ -73,21 +76,40 @@ int reg_write_m(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg, uint8_t 
 	return num_bytes_written;
 }
 
+const uint8_t MODE = 0b10; // high performance mode
+const uint8_t DATA_RATE = 0b0001; // 300 Hz 
+const uint8_t RANGE = 0b00; // +/- 4 gauss (default)
+const uint8_t OPERATION_MODE = 0b00;
 int config_mag(i2c_inst_t *i2c){
-    uint8_t buf; 
+    // set performance mode
+    // xy - high performance mode (-10- ----)
+    // also enable temp sensor (1--- ----)
+    // combined (110- ----)
+    uint8_t buf;
     i2c_read_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
-    printf("ctrl 1 raw: %02x\n", buf);
+    buf = (buf | 0b11000000) & 0b11011111;
+    printf("writing to CTRL_REG1: %02x\n", buf);
+    i2c_write_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
 
-    buf = buf | 0b10100000;
+    // z - high performance mode (---- 10--)
+    i2c_read_from_register(i2c, SAD, CTRL_REG4, &buf, 1);
+    buf = (buf | 0b00001000) & 0b11111011;
+    printf("writing to CTRL_REG1: %02x\n", buf);
+    i2c_write_from_register(i2c, SAD, CTRL_REG4, &buf, 1);
 
-    printf("new ctrl 1 raw: %02x\n", buf);
+    // set data rate - 155 Hz - (---- --1-)
+    i2c_read_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
+    buf = (buf | 0b00000010);
+    printf("writing to CTRL_REG1: %02x\n", buf);
+    i2c_write_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
 
-    int success = i2c_write_to_register(i2c, SAD, CTRL_REG1, &buf, 1);
+    // set range (this is default - currently no changes)
 
-    i2c_read_from_register(i2c, SAD, CTRL_REG2, &buf, 1);
-    printf("crtl 2: raw: %02x\n", buf);
-    
-    return success;
+    // set operation mode
+    i2c_read_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
+    buf = (buf & 0b11111100);
+    printf("writing to CTRL_REG1: %02x\n", buf);
+    i2c_write_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
 }
 
 int get_x_output(i2c_inst_t *i2c) { //defines function
