@@ -152,7 +152,7 @@ int get_y_output(i2c_inst_t *i2c) { //Y output
 
     int y_out = (int) buf_low | ((int) buf_high << 8);
 
-    printf("scaled y: %f\n", (float)y_out / scale;
+    printf("scaled y: %f\n", (float)y_out / scale);
 
     return y_out;
 }
