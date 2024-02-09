@@ -115,8 +115,8 @@ int get_x_output(i2c_inst_t *i2c) { //defines function
     uint8_t buf_low; //buf means buffer, allocates space for data to be entered in an 8 bit number (uint8_t)
     i2c_read_from_register(i2c, SAD, OUT_X_L, &buf_low, 1); // taken from eps library, 0x28 is the location
 
-    uint8_t* buf_high;
-    i2c_read_from_register(i2c, SAD, OUT_X_H, buf_high, 1);
+    uint8_t buf_high;
+    i2c_read_from_register(i2c, SAD, OUT_X_H, &buf_high, 1);
 
     //high =   00000010
     //low =    00000001
