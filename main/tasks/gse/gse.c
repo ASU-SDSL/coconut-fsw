@@ -70,11 +70,12 @@ void gse_task(void *pvParameters) {
     int res = read_temp(i2c0, &temp);
     printf("Result: %d. Temp: %d\n", res, temp);
 
-    vTaskDelay(500);
-    printf("Starting EPS test...\n");
-    eps_test();
-    printf("Finished EPS test.\n");
+    // vTaskDelay(500);
+    // printf("Starting EPS test...\n");
+    // eps_test();
+    // printf("Finished EPS test.\n");
 
+    vTaskDelay(500);
     printf("Starting Mag test...\n");
     mag_test();
     printf("Finished Mag test.\n");

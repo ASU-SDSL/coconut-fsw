@@ -73,10 +73,15 @@ int reg_write_m(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg, uint8_t 
 int config_mag(i2c_inst_t *i2c){
     uint8_t buf; 
     i2c_read_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
+    printf("ctrl 1 raw: %02x\n", buf);
 
     buf = buf | 0b10000000;
 
-    i2c_write_to_register(i2c, SAD, CTRL_REG1, &buf, 1);
+    printf("new ctrl 1 raw: %02x\n", buf);
+
+    int success = i2c_write_to_register(i2c, SAD, CTRL_REG1, &buf, 1);
+    
+    return success;
 }
 
 int get_x_output(i2c_inst_t *i2c) { //defines function
