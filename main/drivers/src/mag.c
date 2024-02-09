@@ -110,7 +110,7 @@ int config_mag(i2c_inst_t *i2c){
     i2c_write_to_register(i2c, SAD, CTRL_REG3, &buf, 1);
 }
 
-int get_x_output(i2c_inst_t *i2c) { //defines function
+int16_t get_x_output(i2c_inst_t *i2c) { //defines function
 
     uint8_t buf_low; //buf means buffer, allocates space for data to be entered in an 8 bit number (uint8_t)
     i2c_read_from_register(i2c, SAD, OUT_X_L, &buf_low, 1); // taken from eps library, 0x28 is the location
@@ -122,7 +122,8 @@ int get_x_output(i2c_inst_t *i2c) { //defines function
     //low =    00000001
     //high is just the higher register, probably just the higher value
 
-    int x_out = (int) buf_low | ((int) buf_high << 8); // or ?logic operator, basically makes 0 or 1 = 1
+    int16_t x_out = 0;// (int) buf_low | ((int) buf_high << 8); // or ?logic operator, basically makes 0 or 1 = 1
+    x_out = ((x_out | buf_high) << 8) | buf_low;
     //0 | 1 = 1
     //01 | 10 = 11
     // 0 | 0 = 0
