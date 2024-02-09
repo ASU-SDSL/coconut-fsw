@@ -70,6 +70,15 @@ int reg_write_m(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg, uint8_t 
 	return num_bytes_written;
 }
 
+int config_mag(i2c_inst_t *i2c){
+    uint8_t buf; 
+    i2c_read_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
+
+    buf = buf | 0b10000000;
+
+    i2c_write_to_register(i2c, SAD, CTRL_REG1, &buf, 1);
+}
+
 int get_x_output(i2c_inst_t *i2c) { //defines function
 
     uint8_t buf_low; //buf means buffer, allocates space for data to be entered in an 8 bit number (uint8_t)
@@ -212,6 +221,9 @@ int mag_test(){
 
     // Setup i2c
     config_i2c0();
+
+    // config mag
+    config_mag(i2c);
 
     // Wait
     sleep_ms(2000);
