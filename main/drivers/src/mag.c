@@ -216,7 +216,7 @@ int mag_test(){
     sleep_ms(2000);
 
     // Loop 1000 times
-    for(int i = 0; i < 1000; i++){
+    for(int i = 0; i < 10; i++){
 
         printf("Status: %d\n", get_mag_status(i2c));
 
