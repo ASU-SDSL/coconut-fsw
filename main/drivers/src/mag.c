@@ -108,6 +108,8 @@ int config_mag(i2c_inst_t *i2c){
     buf = (buf & 0b11111100);
     printf("writing to CTRL_REG3: %02x\n", buf);
     i2c_write_to_register(i2c, SAD, CTRL_REG3, &buf, 1);
+
+    return 1;
 }
 
 int16_t get_x_output(i2c_inst_t *i2c) { //defines function
@@ -215,7 +217,7 @@ uint16_t get_z_output_raw(i2c_inst_t *i2c){ //Z output
 
 }
 
-int get_temp_output(i2c_inst_t *i2c){ //Temperature output
+int16_t get_temp_output(i2c_inst_t *i2c){ //Temperature output
 
     uint8_t buf_low;
     i2c_read_from_register(i2c, SAD, TEMP_OUT_L, &buf_low, 1);
@@ -223,7 +225,8 @@ int get_temp_output(i2c_inst_t *i2c){ //Temperature output
     uint8_t buf_high;
     i2c_read_from_register(i2c, SAD, TEMP_OUT_H, &buf_high, 1);
 
-    int temp_out = (int) buf_low | ((int) buf_high << 8);
+    int16_t temp_out = 0; //(int) buf_low | ((int) buf_high << 8);
+    temp_out = ((temp_out | buf_high) << 8) | buf_low;
     return temp_out;
 
 }
@@ -271,15 +274,15 @@ int mag_test(){
         printf("Status (raw): %02x\n", get_mag_status(i2c));
 
         printf("X output: %d\n", get_x_output(i2c));
-        printf("X output (scaled): %f\n", (float)get_x_output(i2c) / SCALE);
+        printf("X output (gauss): %f\n", (float)get_x_output(i2c) / SCALE);
         printf("X output (raw): %04x\n", get_x_output_raw(i2c));
 
         printf("Y output: %d\n", get_y_output(i2c));
-        printf("Y output (scaled): %f\n", (float)get_y_output(i2c) / SCALE);
+        printf("Y output (gauss): %f\n", (float)get_y_output(i2c) / SCALE);
         printf("Y output (raw): %04x\n", get_y_output_raw(i2c));
 
         printf("Z output: %d\n", get_z_output(i2c));
-        printf("Z output (scaled): %f\n", (float)get_z_output(i2c) / SCALE);
+        printf("Z output (gauss): %f\n", (float)get_z_output(i2c) / SCALE);
         printf("Z output (raw): %04x\n", get_z_output(i2c));
 
         printf("Get Temp Output: %d\n", get_temp_output(i2c));
