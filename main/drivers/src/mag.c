@@ -26,10 +26,8 @@ static const uint8_t INT_THIS_L = 0x32;
 static const uint8_t INT_THIS_H = 0x33;
 
 // config constants, use reference: https://github.com/adafruit/Adafruit_LIS3MDL/
- 
-
 //scale (for range of 4 gauss (default))
-int scale = 6842; 
+int SCALE = 6842; 
 
 // Not sure what this was for, should not be needed
 //uint i2c_init (i2c_inst_t *i2c, uint 100 * 1000) //initialization of i2c
@@ -134,7 +132,6 @@ int get_x_output(i2c_inst_t *i2c) { //defines function
     //0000000 00000000 00000010 <<<<<<<<
     //or operator
     //0000000 00000000 00000010 00000001
-    printf("scaled x: %f\n", (float)x_out / scale);
 
     return x_out;
 }
@@ -174,8 +171,6 @@ int get_y_output(i2c_inst_t *i2c) { //Y output
 
     int y_out = (int) buf_low | ((int) buf_high << 8);
 
-    printf("scaled y: %f\n", (float)y_out / scale);
-
     return y_out;
 }
 
@@ -200,7 +195,6 @@ int get_z_output(i2c_inst_t *i2c){ //Z output
     i2c_read_from_register(i2c, SAD, OUT_Z_H, &buf_high, 1);
 
     int z_out = (int) buf_low | ((int) buf_high << 8);
-    printf("scaled z: %f\n", (float)z_out / scale);
     return z_out;
 
 }
@@ -274,12 +268,15 @@ int mag_test(){
         printf("Status (raw): %02x\n", get_mag_status(i2c));
 
         printf("X output: %d\n", get_x_output(i2c));
+        printf("X output (scaled): %f\n", (float)get_x_output(i2c) / SCALE);
         printf("X output (raw): %04x\n", get_x_output_raw(i2c));
 
         printf("Y output: %d\n", get_y_output(i2c));
+        printf("Y output (scaled): %f\n", (float)get_y_output(i2c) / SCALE);
         printf("Y output (raw): %04x\n", get_y_output_raw(i2c));
 
         printf("Z output: %d\n", get_z_output(i2c));
+        printf("Z output (scaled): %f\n", (float)get_z_output(i2c) / SCALE);
         printf("Z output (raw): %04x\n", get_z_output(i2c));
 
         printf("Get Temp Output: %d\n", get_temp_output(i2c));
