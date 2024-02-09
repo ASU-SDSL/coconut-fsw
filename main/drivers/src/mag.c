@@ -162,7 +162,7 @@ uint16_t get_x_output_raw(i2c_inst_t *i2c) {
     return x_out;
 }
 
-int get_y_output(i2c_inst_t *i2c) { //Y output
+int16_t get_y_output(i2c_inst_t *i2c) { //Y output
 
     uint8_t buf_low;
     i2c_read_from_register(i2c, SAD, OUT_Y_L, &buf_low, 1);
@@ -170,7 +170,8 @@ int get_y_output(i2c_inst_t *i2c) { //Y output
     uint8_t buf_high;
     i2c_read_from_register(i2c, SAD, OUT_Y_H, &buf_high, 1);
 
-    int y_out = (int) buf_low | ((int) buf_high << 8);
+    int16_t y_out = 0; //(int) buf_low | ((int) buf_high << 8);
+    y_out = ((y_out | buf_high) << 8) | buf_low;
 
     return y_out;
 }
@@ -187,7 +188,7 @@ uint16_t get_y_output_raw(i2c_inst_t *i2c) { //Y output
     return y_out;
 }
 
-int get_z_output(i2c_inst_t *i2c){ //Z output
+int16_t get_z_output(i2c_inst_t *i2c){ //Z output
 
     uint8_t buf_low;
     i2c_read_from_register(i2c, SAD, OUT_Z_L, &buf_low, 1);
@@ -195,7 +196,8 @@ int get_z_output(i2c_inst_t *i2c){ //Z output
     uint8_t buf_high;
     i2c_read_from_register(i2c, SAD, OUT_Z_H, &buf_high, 1);
 
-    int z_out = (int) buf_low | ((int) buf_high << 8);
+    int16_t z_out = 0; //(int) buf_low | ((int) buf_high << 8);
+    z_out = ((z_out | buf_high) << 8) | buf_low;
     return z_out;
 
 }
