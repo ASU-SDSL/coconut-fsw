@@ -25,6 +25,9 @@ static const uint8_t INT_SRC = 0x31;
 static const uint8_t INT_THIS_L = 0x32;
 static const uint8_t INT_THIS_H = 0x33;
 
+//scale (for range of 4 gauss (default))
+int scale = 6842; 
+
 // Not sure what this was for, should not be needed
 //uint i2c_init (i2c_inst_t *i2c, uint 100 * 1000) //initialization of i2c
 
@@ -109,6 +112,8 @@ int get_x_output(i2c_inst_t *i2c) { //defines function
     //0000000 00000000 00000010 <<<<<<<<
     //or operator
     //0000000 00000000 00000010 00000001
+    printf("scaled x: %f\n", (float)x_out / scale);
+
     return x_out;
 }
 
@@ -146,6 +151,9 @@ int get_y_output(i2c_inst_t *i2c) { //Y output
     i2c_read_from_register(i2c, SAD, OUT_Y_H, &buf_high, 1);
 
     int y_out = (int) buf_low | ((int) buf_high << 8);
+
+    printf("scaled y: %f\n", (float)y_out / scale;
+
     return y_out;
 }
 
@@ -170,6 +178,7 @@ int get_z_output(i2c_inst_t *i2c){ //Z output
     i2c_read_from_register(i2c, SAD, OUT_Z_H, &buf_high, 1);
 
     int z_out = (int) buf_low | ((int) buf_high << 8);
+    printf("scaled z: %f\n", (float)z_out / scale);
     return z_out;
 
 }
