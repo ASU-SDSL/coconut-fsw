@@ -37,10 +37,10 @@ typedef struct __attribute__((__packed__)) {
     uint16_t eps_vbus;
     uint16_t eps_power;
     uint16_t eps_current;
-    uint16_t mag_x;
-    uint16_t mag_y;
-    uint16_t mag_z;
-    uint16_t mag_temp;
+    int16_t mag_x;
+    int16_t mag_y;
+    int16_t mag_z;
+    int16_t mag_temp;
 } heartbeat_telemetry_t;
 
 /* USER FUNCTIONS */
