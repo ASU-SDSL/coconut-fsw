@@ -25,8 +25,11 @@ static const uint8_t INT_SRC = 0x31;
 static const uint8_t INT_THIS_L = 0x32;
 static const uint8_t INT_THIS_H = 0x33;
 
-// config constants, use reference: https://github.com/adafruit/Adafruit_LIS3MDL/
-//scale (for range of 4 gauss (default))
+/**
+ * config constants, use reference: https://github.com/adafruit/Adafruit_LIS3MDL/
+ * scale (for range of 4 gauss (default)) - divide xyz outputs by the scale to get 
+ * readings in gauss
+*/
 int SCALE = 6842; 
 
 // Not sure what this was for, should not be needed
@@ -37,10 +40,11 @@ int config_mag(i2c_inst_t *i2c){
     // set performance mode
     // xy - high performance mode (-10- ----)
     // also enable temp sensor (1--- ----)
-    // combined (110- ----)
+    // also set 155 Hz data rate (---- --1-)
+    // combined (110- --1-)
     uint8_t buf;
     success += i2c_read_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
-    buf = (buf | 0b11000000) & 0b11011111;
+    buf = (buf | 0b11000010) & 0b11011111;
     printf("writing to CTRL_REG1: %02x\n", buf);
     success += i2c_write_to_register(i2c, SAD, CTRL_REG1, &buf, 1);
 
@@ -49,12 +53,6 @@ int config_mag(i2c_inst_t *i2c){
     buf = (buf | 0b00001000) & 0b11111011;
     printf("writing to CTRL_REG4: %02x\n", buf);
     success += i2c_write_to_register(i2c, SAD, CTRL_REG4, &buf, 1);
-
-    // set data rate - 155 Hz - (---- --1-)
-    success += i2c_read_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
-    buf = (buf | 0b00000010);
-    printf("writing to CTRL_REG1: %02x\n", buf);
-    success += i2c_write_to_register(i2c, SAD, CTRL_REG1, &buf, 1);
 
     // set range (this is default - currently no changes)
 
