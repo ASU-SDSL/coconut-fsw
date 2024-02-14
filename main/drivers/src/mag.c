@@ -47,6 +47,8 @@ int config_mag(i2c_inst_t *i2c){
     buf = (buf | 0b11000010) & 0b11011111;
     // printf("writing to CTRL_REG1: %02x\n", buf);
     success += i2c_write_to_register(i2c, SAD, CTRL_REG1, &buf, 1);
+    i2c_read_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
+    printf("%x\n", buf);
 
     // z - high performance mode (---- 10--)
     success += i2c_read_from_register(i2c, SAD, CTRL_REG4, &buf, 1);
