@@ -18,8 +18,8 @@ static const uint8_t OUT_Y_L = 0x2A;
 static const uint8_t OUT_Y_H = 0x2B;
 static const uint8_t OUT_Z_L = 0x2C;
 static const uint8_t OUT_Z_H = 0x2D;
-static const uint8_t TEMP_OUT_L = 0x2E;
-static const uint8_t TEMP_OUT_H = 0x2F;
+static const uint8_t MAG_TEMP_OUT_L = 0x2E;
+static const uint8_t MAG_TEMP_OUT_H = 0x2F;
 static const uint8_t INT_CFG = 0x30;
 static const uint8_t INT_SRC = 0x31;
 static const uint8_t INT_THIS_L = 0x32;
@@ -110,11 +110,10 @@ int16_t get_z_output(i2c_inst_t *i2c){ //Z output
 int16_t get_temp_output(i2c_inst_t *i2c){ //Temperature output
 
     uint8_t buf_low;
-    i2c_read_from_register(i2c, SAD, TEMP_OUT_L, &buf_low, 1);
-    printf("%d\n", TEMP_OUT_L);
+    i2c_read_from_register(i2c, SAD, MAG_TEMP_OUT_L, &buf_low, 1);
 
     uint8_t buf_high;
-    i2c_read_from_register(i2c, SAD, TEMP_OUT_H, &buf_high, 1);
+    i2c_read_from_register(i2c, SAD, MAG_TEMP_OUT_H, &buf_high, 1);
 
     int16_t temp_out = 0; //(int) buf_low | ((int) buf_high << 8);
     temp_out = ((temp_out | buf_high) << 8) | buf_low;
@@ -161,6 +160,7 @@ int mag_test(){
         printf("Z output (gauss): %f\n", (float)get_z_output(i2c) / SCALE);
 
         printf("Get Temp Output: %d\n", get_temp_output(i2c));
+        printf("%d\n", MAG_TEMP_OUT_L);
 
         sleep_ms(500);
 
