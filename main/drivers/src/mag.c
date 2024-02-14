@@ -160,7 +160,7 @@ int mag_test(){
         printf("Z output (gauss): %f\n", (float)get_z_output(i2c) / SCALE);
 
         printf("Get Temp Output: %d\n", get_temp_output(i2c));
-        printf("%d\n", MAG_TEMP_OUT_L);
+        printf("%x\n", MAG_TEMP_OUT_L);
 
         sleep_ms(500);
 
