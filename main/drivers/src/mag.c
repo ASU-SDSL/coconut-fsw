@@ -45,13 +45,13 @@ int config_mag(i2c_inst_t *i2c){
     uint8_t buf;
     success += i2c_read_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
     buf = (buf | 0b11000010) & 0b11011111;
-    printf("writing to CTRL_REG1: %02x\n", buf);
+    // printf("writing to CTRL_REG1: %02x\n", buf);
     success += i2c_write_to_register(i2c, SAD, CTRL_REG1, &buf, 1);
 
     // z - high performance mode (---- 10--)
     success += i2c_read_from_register(i2c, SAD, CTRL_REG4, &buf, 1);
     buf = (buf | 0b00001000) & 0b11111011;
-    printf("writing to CTRL_REG4: %02x\n", buf);
+    // printf("writing to CTRL_REG4: %02x\n", buf);
     success += i2c_write_to_register(i2c, SAD, CTRL_REG4, &buf, 1);
 
     // set range (this is default - currently no changes)
@@ -59,7 +59,7 @@ int config_mag(i2c_inst_t *i2c){
     // set operation mode
     success += i2c_read_from_register(i2c, SAD, CTRL_REG3, &buf, 1);
     buf = (buf & 0b11111100);
-    printf("writing to CTRL_REG3: %02x\n", buf);
+    // printf("writing to CTRL_REG3: %02x\n", buf);
     success += i2c_write_to_register(i2c, SAD, CTRL_REG3, &buf, 1);
 
     return success;
@@ -111,6 +111,7 @@ int16_t get_temp_output(i2c_inst_t *i2c){ //Temperature output
 
     uint8_t buf_low;
     i2c_read_from_register(i2c, SAD, TEMP_OUT_L, &buf_low, 1);
+    printf("%d\n", TEMP_OUT_L);
 
     uint8_t buf_high;
     i2c_read_from_register(i2c, SAD, TEMP_OUT_H, &buf_high, 1);
