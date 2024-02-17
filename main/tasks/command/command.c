@@ -46,8 +46,8 @@ void command_task(void* unused_arg) {
             command_byte_t command_byte = 0;
             xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
             
-            logln_info("Byte Received: 0x%x", command_byte);
-            logln_info("Checking Sync Byte: 0x%x", COMMAND_SYNC_BYTES[sync_index]);
+            // logln_info("Byte Received: 0x%x", command_byte);
+            // logln_info("Checking Sync Byte: 0x%x", COMMAND_SYNC_BYTES[sync_index]);
 
             // check if current sync index byte matches
             if (command_byte != COMMAND_SYNC_BYTES[sync_index]) {
@@ -63,7 +63,6 @@ void command_task(void* unused_arg) {
             // otherwise keep checking bytes
             sync_index += 1;
         }
-        logln_info("Received sync bytes!");
         // We've succesfully received all sync bytes if we've reached here
         // TODO: Add better error checks and handling here
         // Gather spacepacket header bytes
@@ -72,7 +71,6 @@ void command_task(void* unused_arg) {
             xQueueReceive(command_byte_queue, &spacepacket_header_bytes[i], portMAX_DELAY);
         }
         // Parse spacepacket header
-        logln_info("Parsing CCSDS Header...");
         ccsds_header_t header = parse_ccsds_header(spacepacket_header_bytes);
         // Allocate correct size buffer
         size_t payload_size = header.packet_length + 1; // 4.1.3.5.3 transmits data size field as payload_length - 1
@@ -83,10 +81,8 @@ void command_task(void* unused_arg) {
         }
         // Read payload
         for (int i = 0; i < payload_size; i++) {
-            logln_info("Reading Payload...");
             xQueueReceive(command_byte_queue, &payload_buf[i], portMAX_DELAY);
         }
-        logln_info("Parsing command packet...");
         // Parse packet payload
         parse_command_packet(header, payload_buf, payload_size);
         // Free payload buffer
