@@ -56,11 +56,11 @@ void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq
 }
 
 void gse_task(void *pvParameters) {
-    vTaskDelay(2000);
+    // vTaskDelay(2000);
 
-    printf("Get temp\n");
-    uint8_t temp = rtc_test();
-    printf("Temp: %d\n", temp);
+    // printf("Get temp\n");
+    // uint8_t temp = rtc_test();
+    // printf("Temp: %d\n", temp);
 
     /*SemaphoreHandle_t* mutex = (SemaphoreHandle_t *) pvParameters;
     write(mutex);
@@ -87,6 +87,8 @@ void gse_task(void *pvParameters) {
     while (true) {
         // Wait on a message in the queue
         xQueueReceive(uart0_queue, &rec, UART_QUEUE_CHECK_TIME);
+        // Logging
+        logln_info("Sending: 0x%llx\n", &rec.payload_buffer);
         // Enable write LED
         gpio_put(LED_PIN, 1);
         // Write bytes to UART
