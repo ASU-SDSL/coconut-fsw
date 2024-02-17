@@ -72,32 +72,37 @@ void schedule_delayed_job_mins(const char* job_name, job_func job_func_ptr, unsi
 
 void kill_steve_job(const char* job_name) {
     // Take mutex
-    xSemaphoreTake(g_steve_job_mutex, portMAX_DELAY);
+    xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
     // Find job
     steve_job_t* job = find_steve_job(job_name);
     // Delete job
     delete_steve_job(job);
     // Give mutex back
-    xSemaphoreGive(g_steve_job_mutex);
+    xSemaphoreGive(g_steve_context.mutex);
 }
 
 void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time) {
+    // logln_info("Changing %s job recur time to: %d ms", job_name, ms_recur_time);
     // Take mutex
-    xSemaphoreTake(g_steve_job_mutex, portMAX_DELAY);
+    xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
     // Find job
     steve_job_t* job = find_steve_job(job_name);
+    if (job == NULL) {
+        logln_error("Can't find task to change recur time! %s", job_name)
+        return;
+    }
     // Edit recur time
     job->recur_time = ms_recur_time;
     // Reset the execution time
     job->execute_time = xTaskGetTickCount() + job->recur_time;
     // Give mutex back
-    xSemaphoreGive(g_steve_job_mutex);
+    xSemaphoreGive(g_steve_context.mutex);
 }
 
 void print_debug_exec_times() {
     logln_info("Printing S.T.E.V.E Task Times:");
     // Take mutex
-    xSemaphoreTake(g_steve_job_mutex, portMAX_DELAY);
+    xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
     for (int i = 0; i < g_steve_context.job_count; i++) {
         steve_job_t *temp = g_steve_context.jobs[i];
         // make sure job is valid
@@ -109,13 +114,14 @@ void print_debug_exec_times() {
         logln_info("%s executing in %d seconds", temp->name, secs_until_exec);
     }
     // Give mutex back
-    xSemaphoreGive(g_steve_job_mutex);
+    xSemaphoreGive(g_steve_context.mutex);
 }
 
 // Internal Scheduler Functions
 
 steve_job_t* find_steve_job(const char* job_name) {
-    /* g_steve_job_mutex must be taken before using this function */
+    
+    /* g_steve_context.mutex must be taken before using this function */
     for (int i = 0; i < g_steve_context.job_count; i++) {
         steve_job_t *temp = g_steve_context.jobs[i];
         // make sure job is valid
@@ -123,6 +129,7 @@ steve_job_t* find_steve_job(const char* job_name) {
             continue;
         }
         // check name
+        logln_info("%s == %s", job_name, temp->name);
         if (strncmp(job_name, temp->name, MAX_JOB_NAME_LEN) == 0) {
             return temp;
         }
@@ -139,7 +146,7 @@ void create_steve_job_helper(const char* job_name, TickType_t execute_time, Tick
         logln_error("Name of job %s is too large, reduce to less than %u chars!!!", job_name, MAX_JOB_NAME_LEN);
         return;
     }
-    strncpy(sr->name, job_name, job_name_len);
+    strncpy(sr->name, job_name, job_name_len + 1);
     // Copy other fields
     sr->execute_time = execute_time;
     sr->recur_time = recur_time;
@@ -149,7 +156,7 @@ void create_steve_job_helper(const char* job_name, TickType_t execute_time, Tick
 
 void create_steve_job(steve_job_t* sr) {
     // Checks
-    if (!g_steve_job_mutex) {
+    if (!g_steve_context.mutex) {
         logln_error("You can only create tasks after initialize_steve() is called!!!");
         return;
     }
@@ -158,13 +165,13 @@ void create_steve_job(steve_job_t* sr) {
         return;
     }
     // Add job to list
-    xSemaphoreTake(g_steve_job_mutex, portMAX_DELAY);
+    xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
     g_steve_context.jobs[g_steve_context.job_count++] = sr;
-    xSemaphoreGive(g_steve_job_mutex);
+    xSemaphoreGive(g_steve_context.mutex);
 }
 
 bool run_steve_job(steve_job_t* job) {
-    /* g_steve_job_mutex must be taken before using this function */
+    /* g_steve_context.mutex must be taken before using this function */
     // Run the job function
     job->func_ptr(job->arg_data);
     // Check if it needs to be rescheduled (recurring job)
@@ -180,7 +187,7 @@ bool run_steve_job(steve_job_t* job) {
 }
 
 void delete_steve_job(steve_job_t* job) {
-    /* g_steve_job_mutex must be taken before using this function */
+    /* g_steve_context.mutex must be taken before using this function */
     // Find job in list and set job ptr to null to prevent UAF's
     bool found_ptr = false;
     for (int i = 0; i < g_steve_context.job_count; i++) {
@@ -201,7 +208,7 @@ void delete_steve_job(steve_job_t* job) {
 }
 
 void cleanup_steve_jobs_list() {
-    /* g_steve_job_mutex must be taken before using this function */
+    /* g_steve_context.mutex must be taken before using this function */
     // Find null entries in the scheduler list
     for (int i = 0; i < g_steve_context.job_count; i++) {
         if (g_steve_context.jobs[i] == NULL) {
@@ -218,6 +225,8 @@ TickType_t get_uptime() {
     // TODO: Maybe get an RTC instead of using CPU ticks
     return xTaskGetTickCount();
 }
+
+uint32_t counter_lol;
 
 void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
@@ -236,26 +245,29 @@ void heartbeat_telemetry_job(void* unused) {
     char str[10];
     sprintf(str, "X: %d", x);
     logln_info(str);*/
-    logln_info("Lol");
+    counter_lol += 1;
+    logln_info("Lol %ld\n", counter_lol);
 }
 
 void initialize_steve() {
     // Initialize scheduler job mutex
-    g_steve_job_mutex = xSemaphoreCreateMutex();
+    g_steve_context.mutex = xSemaphoreCreateMutex();
     // Initialize state
     g_payload_state = INIT;
     // Create jobs
+    counter_lol = 0;
     schedule_recurring_job_secs(HEARTBEAT_JOB_NAME, heartbeat_telemetry_job, HEARTBEAT_TELEMETRY_DEFAULT_INTERVAL);
 }
 
 // Main thread job for scheduling and executing STEVE jobs
 void steve_task(void* unused_arg) {
+    logln_info("Test");
     // Setup STEVE jobs and state
     initialize_steve();
     // Run main task loop
     while (true) {
         // Take mutex
-        xSemaphoreTake(g_steve_job_mutex, portMAX_DELAY);
+        xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
         // Check each job to see if it needs to be executed
         bool needs_cleanup = false;
         for (int i = 0; i < g_steve_context.job_count; i++) {
@@ -276,7 +288,7 @@ void steve_task(void* unused_arg) {
             cleanup_steve_jobs_list();
         }
         // Give back mutex
-        xSemaphoreGive(g_steve_job_mutex);
+        xSemaphoreGive(g_steve_context.mutex);
         // Sleep for a bit before checking again
         vTaskDelay(ms_to_ticks(SCHEDULER_CHECK_DELAY_MS));
     }

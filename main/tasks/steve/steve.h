@@ -35,11 +35,12 @@ typedef struct steve_job {
 typedef struct steve_context {
     steve_job_t* jobs[MAX_JOBS]; // global storage for scheduler jobs
     size_t job_count; // amount of jobs currently allocated
+    SemaphoreHandle_t mutex;
 } steve_context_t;
 
 // Global Scheduler Context
 steve_context_t g_steve_context;
-SemaphoreHandle_t g_steve_job_mutex;
+
 
 /* USER FUNCTIONS */
 
