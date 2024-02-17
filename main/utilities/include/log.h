@@ -14,17 +14,17 @@ void print_banner();
 
 // Use these!
 
-#define logln_info(...) \
-    _log("[INFO] "); _logln(__VA_ARGS__);
+#define logln_info(f_, ...) \
+    _log("[INFO] "); _logln((f_), ##__VA_ARGS__);
 
-#define logln_warn(...) \
-    _log("[WARN] "); _logln(__VA_ARGS__);
+#define logln_warn(f_, ...) \
+    _log("[WARN] "); _logln((f_), ##__VA_ARGS__);
 
-#define logln_error(...) \
-    _log("[ERROR] "); _logln(__VA_ARGS__);
+#define logln_error(f_, ...) \
+    _log("[ERROR] "); _logln((f_), ##__VA_ARGS__);
 
-#define _logln(...) \
-    _log(__VA_ARGS__); _log("\n");
+#define _logln(f_, ...) \
+    _log((f_), ##__VA_ARGS__); _log("\n");
 
 /* INTERNAL FUNCTIONS */
 
