@@ -78,9 +78,8 @@ TickType_t get_uptime();
 
 // Internal Scheduler Functions
 steve_job_t* find_steve_job(const char* job_name);
-void create_steve_job_helper(const char* job_name, TickType_t execute_time, TickType_t recur_time, job_func job_func_ptr);
-void create_steve_job(steve_job_t* sr);
-bool run_steve_job(steve_job_t* job);
+void create_steve_job(const char* job_name, TickType_t execute_time, TickType_t recur_time, job_func job_func_ptr);
+void run_steve_job(steve_job_t* job);
 void delete_steve_job(steve_job_t* job);
 void cleanup_steve_jobs_list();
 void initialize_steve();

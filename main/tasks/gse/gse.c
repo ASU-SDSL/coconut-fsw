@@ -87,8 +87,6 @@ void gse_task(void *pvParameters) {
     while (true) {
         // Wait on a message in the queue
         xQueueReceive(uart0_queue, &rec, UART_QUEUE_CHECK_TIME);
-        // Logging
-        logln_info("Sending: 0x%llx\n", &rec.payload_buffer);
         // Enable write LED
         gpio_put(LED_PIN, 1);
         // Write bytes to UART

@@ -38,7 +38,7 @@ void schedule_recurring_job_ms(const char* job_name, job_func job_func_ptr, unsi
     // Calculate first run time 
     TickType_t execute_time = xTaskGetTickCount() + recur_time;
     // Create job
-    create_steve_job_helper(job_name, execute_time, recur_time, job_func_ptr);
+    create_steve_job(job_name, execute_time, recur_time, job_func_ptr);
 }
 
 void schedule_recurring_job_secs(const char* job_name, job_func job_func_ptr, unsigned long secs_until_recur) {
@@ -57,7 +57,7 @@ void schedule_delayed_job_ms(const char* job_name, job_func job_func_ptr, unsign
     // Calculate first run time 
     TickType_t execute_time = xTaskGetTickCount() + tick_delay;
     // Create job
-    create_steve_job_helper(job_name, execute_time, 0, job_func_ptr);
+    create_steve_job(job_name, execute_time, 0, job_func_ptr);
 }
 
 void schedule_delayed_job_secs(const char* job_name, job_func job_func_ptr, unsigned long secs_delay) {
@@ -91,10 +91,10 @@ void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time
         logln_error("Can't find task to change recur time! %s", job_name)
         return;
     }
-    // Edit recur time
-    job->recur_time = ms_recur_time;
-    // Reset the execution time
-    job->execute_time = xTaskGetTickCount() + job->recur_time;
+    // // Edit recur time
+    // job->recur_time = ms_recur_time;
+    // // Reset the execution time
+    // job->execute_time = xTaskGetTickCount() + job->recur_time;
     // Give mutex back
     xSemaphoreGive(g_steve_context.mutex);
 }
@@ -120,7 +120,6 @@ void print_debug_exec_times() {
 // Internal Scheduler Functions
 
 steve_job_t* find_steve_job(const char* job_name) {
-    
     /* g_steve_context.mutex must be taken before using this function */
     for (int i = 0; i < g_steve_context.job_count; i++) {
         steve_job_t *temp = g_steve_context.jobs[i];
@@ -129,7 +128,6 @@ steve_job_t* find_steve_job(const char* job_name) {
             continue;
         }
         // check name
-        logln_info("%s == %s", job_name, temp->name);
         if (strncmp(job_name, temp->name, MAX_JOB_NAME_LEN) == 0) {
             return temp;
         }
@@ -137,52 +135,49 @@ steve_job_t* find_steve_job(const char* job_name) {
     return NULL;
 }
 
-void create_steve_job_helper(const char* job_name, TickType_t execute_time, TickType_t recur_time, job_func job_func_ptr) {
-    // Allocate memory
-    steve_job_t* sr = pvPortMalloc(sizeof(steve_job_t));
-    // Check name and copy
-    size_t job_name_len = strlen(job_name);
-    if (job_name_len + 1 > MAX_JOB_NAME_LEN) {
-        logln_error("Name of job %s is too large, reduce to less than %u chars!!!", job_name, MAX_JOB_NAME_LEN);
-        return;
-    }
-    strncpy(sr->name, job_name, job_name_len + 1);
-    // Copy other fields
-    sr->execute_time = execute_time;
-    sr->recur_time = recur_time;
-    sr->func_ptr = job_func_ptr;
-    create_steve_job(sr);
-}
-
-void create_steve_job(steve_job_t* sr) {
+void create_steve_job(const char* job_name, TickType_t execute_time, TickType_t recur_time, job_func job_func_ptr) {
     // Checks
     if (!g_steve_context.mutex) {
         logln_error("You can only create tasks after initialize_steve() is called!!!");
         return;
     }
+    xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
     if (g_steve_context.job_count >= (MAX_JOBS-1)) {
         logln_error("Too many jobs!!! You can only create %d jobs", MAX_JOBS);
         return;
     }
+    xSemaphoreGive(g_steve_context.mutex);
+    // Check name
+    size_t job_name_len = strlen(job_name);
+    if (job_name_len + 1 > MAX_JOB_NAME_LEN) {
+        logln_error("Name of job %s is too large, reduce to less than %u chars!!!", job_name, MAX_JOB_NAME_LEN);
+        return;
+    }
+    // Allocate memory
+    steve_job_t* sr = pvPortMalloc(sizeof(steve_job_t));
+    // Copy name
+    strncpy(sr->name, job_name, job_name_len + 1);
+    // Copy other fields
+    sr->execute_time = execute_time;
+    sr->recur_time = recur_time;
+    sr->func_ptr = job_func_ptr;
     // Add job to list
     xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
     g_steve_context.jobs[g_steve_context.job_count++] = sr;
     xSemaphoreGive(g_steve_context.mutex);
 }
 
-bool run_steve_job(steve_job_t* job) {
+void run_steve_job(steve_job_t* job) {
     /* g_steve_context.mutex must be taken before using this function */
     // Run the job function
     job->func_ptr(job->arg_data);
     // Check if it needs to be rescheduled (recurring job)
     if (job->recur_time > 0) {
         job->execute_time = xTaskGetTickCount() + job->recur_time;
-        return false; // returns false, the job list does not need a cleanup
     }
     // Otherwise delete the job
     else {
         delete_steve_job(job);
-        return true; // returns true, the job list needs a cleanup
     }
 }
 
@@ -205,6 +200,8 @@ void delete_steve_job(steve_job_t* job) {
     }
     // Free the struct memory
     vPortFree(job);
+    // Cleanup job list
+    cleanup_steve_jobs_list();
 }
 
 void cleanup_steve_jobs_list() {
@@ -246,7 +243,7 @@ void heartbeat_telemetry_job(void* unused) {
     sprintf(str, "X: %d", x);
     logln_info(str);*/
     counter_lol += 1;
-    logln_info("Lol %ld\n", counter_lol);
+    logln_info("Loop %ld\n", counter_lol);
 }
 
 void initialize_steve() {
@@ -269,7 +266,6 @@ void steve_task(void* unused_arg) {
         // Take mutex
         xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
         // Check each job to see if it needs to be executed
-        bool needs_cleanup = false;
         for (int i = 0; i < g_steve_context.job_count; i++) {
             // Get indexed job
             steve_job_t* indexed_job = g_steve_context.jobs[i];
@@ -280,12 +276,8 @@ void steve_task(void* unused_arg) {
             // Check if job is ready to run
             if (indexed_job->execute_time >= xTaskGetTickCount()) {
                 // Run the job if so
-                needs_cleanup |= run_steve_job(indexed_job);
+                run_steve_job(indexed_job);
             }
-        }
-        // Cleanup job list if neccessary
-        if (needs_cleanup) {
-            cleanup_steve_jobs_list();
         }
         // Give back mutex
         xSemaphoreGive(g_steve_context.mutex);
