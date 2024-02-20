@@ -1,4 +1,4 @@
-#include "eeprom.h"
+#include "mram.h"
 
 //Slave Address
 static uint8_t M24C02_ADDR = 0x50;
