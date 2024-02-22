@@ -3,6 +3,8 @@
 //Global Modifiable Variables
 uint16_t cur_addr = 0;
 
+//TODO: Add error codes to methods
+
 void setup() {
     stdio_init_all();
     spi_init(SPI_BUS, FREQ);
@@ -41,14 +43,14 @@ int address_write(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
     gpio_put(CS, 0);
     //Trying two methods, send cmd, address, and data bytes separately; Or,make big array for all of them.
     spi_write_blocking(SPI_BUS, &WRITE, 1);
-    spi_write_blocking(SPI_BUS, &addr, 2); //TODO: Try to change uint16 to an array of uint8s or see if saying uint16 is an array of 2 uint8s works.
+    spi_write_blocking(SPI_BUS, (uint8_t*) &addr, 2); //TODO: Try to change uint16 to an array of uint8s or see if saying uint16 is an array of 2 uint8s works.
     spi_write_blocking(SPI_BUS, buf, nbytes);
     gpio_put(CS, 1);
     send__simple_command(&WRDI);
     //TODO: Update current address after write operation
 }
 
-uint8_t* read_bytes(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
+int read_bytes(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
     gpio_put(CS, 0);
     spi_write_blocking(SPI_BUS, &READ, 1);
     spi_write_blocking(SPI_BUS, &addr, 2); //TODO: Try to change uint16 to an array of uint8s or see if saying uint16 is an array of 2 uint8s works.
