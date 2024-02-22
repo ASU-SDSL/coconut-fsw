@@ -2,6 +2,7 @@
 #include "hardware/gpio.h"
 #include "log.h"
 #include <stdio.h>
+#include "pico/stdlib.h" //Probably need this
 //MAKE SURE TO UPDATE CORRESPONDING PINS ON Raspberry Pi
 #define CS 1
 #define SO 2
