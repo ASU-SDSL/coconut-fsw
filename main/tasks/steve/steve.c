@@ -91,10 +91,12 @@ void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time
         logln_error("Can't find task to change recur time! %s", job_name)
         return;
     }
-    // // Edit recur time
-    // job->recur_time = ms_recur_time;
-    // // Reset the execution time
-    // job->execute_time = xTaskGetTickCount() + job->recur_time;
+    // Roll back execution time
+    job->execute_time -= job->recur_time;
+    // Edit recur time
+    job->recur_time = ms_recur_time;
+    // Set new execution time
+    job->execute_time += job->recur_time;
     // Give mutex back
     xSemaphoreGive(g_steve_context.mutex);
 }
