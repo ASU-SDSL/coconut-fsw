@@ -12,6 +12,7 @@
 #include "gse.h"
 #include "ccsds.h"
 #include "log.h"
+#include "steve.h"
 
 #define COMMAND_MAX_QUEUE_ITEMS 300
 #define COMMAND_CHECK_DELAY_MS 500
@@ -25,6 +26,10 @@ typedef enum command_apid {
     REQUEST_DOWNLINK_GROUNDNODE_DATA = 2, 
     REQUEST_DOWNLINK_TELEMETRY_DATA = 3
 } command_apid_t;
+
+typedef struct {
+    uint32_t ms;
+} change_heartbeat_telem_rate_t;
 
 // Internal Command Thread Structs
 QueueHandle_t command_byte_queue;
