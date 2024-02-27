@@ -19,31 +19,41 @@
  * if smt in queue send on radio
  */
 
-PiPicoHal *hal = new PiPicoHal(spi0); // can specify the speed here as an argument if desired
-// Add interupt pin
-RFM98 radio = new Module(hal, RADIO_NSS_PIN, RADIO_IRQ_PIN, RADIO_NRST_PIN, RADIOLIB_NC);
+// create a new instance of the HAL class
+PicoHal* hal = new PicoHal(SPI_PORT, SPI_MISO, SPI_MOSI, SPI_SCK);
+
+// Add interupt pin // now we can create the radio module
+// NSS pin:  17
+// DIO0 pin:  21
+// RESET pin:  22
+// DIO1/BUSY pin:  20 // not sure why this is named differently here? should be busy
+SX1268 radio = new Module(hal, RFM_NSS, RFM_DIO0, RFM_RST, RFM_DIO1);
+
+
 volatile bool packet_recieved = false;
+int state = 0;
+
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-    void radio_queue_message(char *buffer, size_t size)
+void radio_queue_message(char *buffer, size_t size)
+{
+    // Create new transmission structure
+    telemetry_queue_transmission_t new_buffer;
+    new_buffer.payload_size = size;
+    // Allocate chunk on heap to copy buffer contents
+    auto heap_buf = static_cast<char *>(pvPortMalloc(size));
+    memcpy(heap_buf, buffer, size);
+    new_buffer.payload_buffer = heap_buf;
+    // Wait for queue to become available
+    while (!radio_queue)
     {
-        // Create new transmission structure
-        telemetry_queue_transmission_t new_buffer;
-        new_buffer.payload_size = size;
-        // Allocate chunk on heap to copy buffer contents
-        auto heap_buf = static_cast<char *>(pvPortMalloc(size));
-        memcpy(heap_buf, buffer, size);
-        new_buffer.payload_buffer = heap_buf;
-        // Wait for queue to become available
-        while (!radio_queue)
-        {
-            vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
-        }
-        xQueueSendToBack(radio_queue, &new_buffer, portMAX_DELAY);
+        vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
     }
+    xQueueSendToBack(radio_queue, &new_buffer, portMAX_DELAY);
+}
 #ifdef __cplusplus
 }
 #endif
@@ -55,75 +65,54 @@ void radio_packet_recieve()
 
 void init_radio()
 {
-    hal->init();
-    int radio_state = radio.begin();
-    if (radio_state == RADIOLIB_ERR_NONE)
-    {
-        printf("Success, radio initialized");
-    }
-    else
-    {
-        printf("failed ");
-        while (true)
-            ;
-    }
+    // make on board LED blink to check for function
+    gpio_init(LED_PIN_RADIO);
+    gpio_set_dir(LED_PIN_RADIO, GPIO_OUT);
+    gpio_put(LED_PIN_RADIO, 1);
+    sleep_ms(2000);
 
-    radio.setPacketReceivedAction(radio_packet_recieve);
-    int recieve_state = radio.startReceive();
-    if (recieve_state == RADIOLIB_ERR_NONE)
-    {
-        printf("Success, recieving...");
+    // initialize just like with Arduino
+    printf("[SX1268] Initializing ... ");
+    state = radio.begin((float)434.0, (float)125.0, (uint8_t)9, (uint8_t)7, (uint8_t)RADIOLIB_SX126X_SYNC_WORD_PRIVATE, (int8_t)-9, (uint16_t)8, (float)0.0);
+    if (state != RADIOLIB_ERR_NONE) {
+        while (true) {
+            printf("failed, code %d\n", state);
+            hal->delay(1000);
+        }
     }
-    else
-    {
-        printf("failed");
-        while (true)
-            ;
-    }
+    printf("success!\n");
 }
 
 /**
  * @brief Monitor radio, write to SD card, and send stuff when needed
  */
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 void radio_task(void *unused_arg)
 {
     init_radio();
-    radio_queue = xQueueCreate(RADIO_MAX_QUEUE_ITEMS, sizeof(telemetry_queue_transmission_t));
-    telemetry_queue_transmission_t rec;
+    // radio_queue = xQueueCreate(RADIO_MAX_QUEUE_ITEMS, sizeof(telemetry_queue_transmission_t));
+    // telemetry_queue_transmission_t rec;
 
     while (true)
     {
-        if (packet_recieved)
-        {
-            uint8_t *packet;
-            size_t packet_size = radio.getPacketLength();
+        // send a packet
+        printf("[SX1268] Transmitting packet ... "); 
 
-            int packet_state = radio.readData(packet, packet_size);
+        state = radio.transmit("Hello World!");
+        if (state == RADIOLIB_ERR_NONE) {
+            // the packet was successfully transmitted
+            printf("success!\n");
 
-            if (packet_state == RADIOLIB_ERR_NONE)
-            {
-                // parse out sync bytes and grab packet with header
-                // create command.c function to read packet
-                printf("Recieved packet");
-                parse_radio_packet(packet, packet_size);
-            }
-            else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
-            {
-                printf("CRC Error!!");
-            }
-            else
-            {
-                printf("Packet Reading failed");
-            }
+            // wait for a second before transmitting again
+            hal->delay(1000);
+        } else {
+            printf("failed, code %d\n", state);
         }
-
-        // should maybe move to interrupt based transmit but may cause UB when combined with recieve interrupts
-        if (xQueueReceive(radio_queue, &rec, 0))
-        {
-            radio.transmit(rec.payload_buffer);
-            vPortFree(rec.payload_buffer);
-        }
-
-        radio.startReceive();
     }
 }
+#ifdef __cplusplus
+}
+#endif
