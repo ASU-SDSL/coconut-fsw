@@ -29,7 +29,7 @@ void _log(char* str, ...) {
 
     // Writes to the debug log
     // Currently just printf's to the USB UART port but we can make it send telemetry in the future
-    printf(str, args);
+    vprintf(str, args);
 
     va_end(args);
 }
