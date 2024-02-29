@@ -2,7 +2,6 @@
 Scheduler Task for Executing Vital Events (STEVE) is a core Coconut componenet that schedules misson-critical, time-sensitive jobs. Jobs can either be scheduled once or can be recurring. Jobs can be scheduled using STEVE's api functions. You must provide a job name, job function pointer, and recur/delay time in order to schedule a job.
 
 
-
 ## Type Definitions
 
 ### steve_job_t
@@ -19,6 +18,7 @@ The `steve_job_t` type is a struct that represents a steve job. In order to crea
 * job_count: amount of jobs currently allocated
 
 ## Globals
+### g_steve_context
 `g_steve_context` is the global that represents the global steve context, which contains all jobs. It is of type `steve_context_t`.
 
 ## API Functions
