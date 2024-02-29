@@ -12,7 +12,6 @@
 #include "telemetry.h"
 #include "log.h"
 #include "state.h"
-#include "mag.h"
 
 // Constants
 #define MAX_JOBS 256
@@ -36,28 +35,36 @@ typedef struct steve_job {
 typedef struct steve_context {
     steve_job_t* jobs[MAX_JOBS]; // global storage for scheduler jobs
     size_t job_count; // amount of jobs currently allocated
+    SemaphoreHandle_t mutex;
 } steve_context_t;
 
 // Global Scheduler Context
 steve_context_t g_steve_context;
-QueueHandle_t job_creation_queue;
+
 
 /* USER FUNCTIONS */
 
 // Utility Functions
 TickType_t ms_to_ticks(unsigned long ms);
+unsigned long ticks_to_ms(TickType_t ms);
 unsigned long secs_to_ms(unsigned long secs);
+unsigned long ms_to_secs(unsigned long ms);
 unsigned long mins_to_secs(unsigned long mins);
+unsigned long secs_to_mins(unsigned long mins);
 
-// Recurring Job Helper Functions
+// Recurring Job User Functions
 void schedule_recurring_job_ms(const char* job_name, job_func job_func_ptr, unsigned long ms_until_recur);
 void schedule_recurring_job_secs(const char* job_name, job_func job_func_ptr, unsigned long secs_until_recur);
 void schedule_recurring_job_mins(const char* job_name, job_func job_func_ptr, unsigned long mins_until_recur);
 
-// Delayed Job Helper Functions
+// Delayed Job User Functions
 void schedule_delayed_job_ms(const char* job_name, job_func job_func_ptr, unsigned long ms_delay);
 void schedule_delayed_job_secs(const char* job_name, job_func job_func_ptr, unsigned long secs_delay);
 void schedule_delayed_job_mins(const char* job_name, job_func job_func_ptr, unsigned long mins_delay);
+
+// Job Management User Functions
+void kill_steve_job(const char* job_name);
+void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time);
 
 /* INTERNAL FUNCTIONS */
 
@@ -70,13 +77,12 @@ void heartbeat_telemetry_job(void*);
 TickType_t get_uptime();
 
 // Internal Scheduler Functions
-void queue_steve_job_creation(const char* job_name, TickType_t execute_time, TickType_t recur_time, job_func job_func_ptr);
-void create_steve_job(steve_job_t* sr);
-bool run_steve_job(steve_job_t* job);
+steve_job_t* find_steve_job(const char* job_name);
+void create_steve_job(const char* job_name, TickType_t execute_time, TickType_t recur_time, job_func job_func_ptr);
+void run_steve_job(steve_job_t* job);
 void delete_steve_job(steve_job_t* job);
 void cleanup_steve_jobs_list();
 void initialize_steve();
 
-void radio_transmission(void*);
 // Main Task
 void steve_task(void* unused_arg);
