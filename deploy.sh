@@ -47,6 +47,7 @@ comment
 uf2_path="build/main/COCONUTFSW.uf2"
 
 # RUNTIME START
+debug_build=0
 for arg in "$@"; do
     check_arg=${arg,,}
     echo "check: $check_arg"
@@ -57,6 +58,8 @@ for arg in "$@"; do
         do_flash=0
     elif [[ "$check_arg" = "-flash" || "$check_arg" = "-f" ]]; then # only flash
         do_build=0 
+    elif [[ "$check_arg" = "-debug" || "$check_arg" = "-g" ]]; then # enable debug build
+        debug_build=1
     fi
 done
 
@@ -65,15 +68,21 @@ err=0
 if [[ ${do_build} -eq 1 ]]; then
     # FROM 1.1.0 -- auto-update the build number
     #update_build_number
-    
-    if [[ ! -e "./build" ]]; then
-        # No build folder? Then create it
-        # and configure the build
-        cmake -S . -B build/ -D "CMAKE_C_COMPILER:FILEPATH=$(which arm-none-eabi-gcc)" -D CMAKE_BUILD_TYPE:STRING=Release
-        err=$?
+
+    # resolve build string
+    build_string="Release"
+    if [[ ${debug_build} -eq 1 ]]; then
+        build_string="Debug"
     fi
+    echo $build_string
     
-    # Build the app
+    # generate make files
+    # if [[ ! -e "./build" ]]; then
+        cmake -S . -B build/ -D "CMAKE_C_COMPILER:FILEPATH=$(which arm-none-eabi-gcc)" -D CMAKE_BUILD_TYPE:STRING="${build_string}"
+        err=$?
+    # fi
+    
+    # build
     cmake --build build
     err=$?
 fi
