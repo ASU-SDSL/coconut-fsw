@@ -14,10 +14,8 @@
 #include "log.h"
 #include "steve.h"
 
-#define COMMAND_MAX_QUEUE_ITEMS 300
-#define COMMAND_CHECK_DELAY_MS 500
+#define COMMAND_MAX_QUEUE_ITEMS 0x200
 #define COMMAND_SYNC_BYTES "\x35\x2E\xF8\x53"
-#define STARTING_COMMAND_BUF_SIZE 32
 
 // Command Structs and Types
 typedef enum command_apid {

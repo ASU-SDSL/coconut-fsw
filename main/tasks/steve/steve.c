@@ -7,11 +7,11 @@
 
 // Utility Functions
 TickType_t ms_to_ticks(unsigned long ms) {
-    return ms / portTICK_PERIOD_MS;
+    return pdMS_TO_TICKS(ms);
 }
 
 unsigned long ticks_to_ms(TickType_t ticks) {
-    return ticks * portTICK_PERIOD_MS;
+    return pdTICKS_TO_MS(ticks);
 }
 
 unsigned long secs_to_ms(unsigned long secs) {
@@ -91,10 +91,12 @@ void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time
         logln_error("Can't find task to change recur time! %s", job_name)
         return;
     }
+    // Calculate exec time in ticks
+    TickType_t tick_delay = ms_to_ticks(ms_recur_time);
     // Roll back execution time
     job->execute_time -= job->recur_time;
     // Edit recur time
-    job->recur_time = ms_recur_time;
+    job->recur_time = tick_delay;
     // Set new execution time
     job->execute_time += job->recur_time;
     // Give mutex back
@@ -276,7 +278,8 @@ void steve_task(void* unused_arg) {
                 continue;
             }
             // Check if job is ready to run
-            if (indexed_job->execute_time >= xTaskGetTickCount()) {
+            TickType_t task_tick_count = xTaskGetTickCount();
+            if (indexed_job->execute_time >= task_tick_count) {
                 // Run the job if so
                 run_steve_job(indexed_job);
             }
@@ -284,6 +287,6 @@ void steve_task(void* unused_arg) {
         // Give back mutex
         xSemaphoreGive(g_steve_context.mutex);
         // Sleep for a bit before checking again
-        vTaskDelay(ms_to_ticks(SCHEDULER_CHECK_DELAY_MS));
+        // vTaskDelay(ms_to_ticks(SCHEDULER_CHECK_DELAY_MS));
     }
 }
