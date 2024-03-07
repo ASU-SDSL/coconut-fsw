@@ -16,7 +16,7 @@ void uart_queue_message(char* buffer, size_t size) {
     memcpy(heap_buf, buffer, size);
     new_buffer.payload_buffer = heap_buf;
     // Wait for queue to become available
-    while (!uart0_queue) {
+    while (uart0_queue == NULL) {
         vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
     }
     xQueueSendToBack(uart0_queue, &new_buffer, portMAX_DELAY);

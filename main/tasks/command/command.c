@@ -2,10 +2,6 @@
 
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
-    // // Build command_char struct
-    // command_byte_t command_byte;
-    // command_byte.value = ch;
-    // // command_byte.source = source;
     // Send to command queue
     if (command_byte_queue) {
         xQueueSendToBackFromISR(command_byte_queue, &ch, NULL);
@@ -46,8 +42,8 @@ void command_task(void* unused_arg) {
             command_byte_t command_byte = 0;
             xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
             
-            // logln_info("Byte Received: 0x%x", command_byte);
-            // logln_info("Checking Sync Byte: 0x%x", COMMAND_SYNC_BYTES[sync_index]);
+            logln_info("Byte Received: 0x%x", command_byte);
+            logln_info("Checking Sync Byte: 0x%x", COMMAND_SYNC_BYTES[sync_index]);
 
             // check if current sync index byte matches
             if (command_byte != COMMAND_SYNC_BYTES[sync_index]) {

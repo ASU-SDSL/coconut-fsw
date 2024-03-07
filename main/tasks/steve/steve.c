@@ -7,11 +7,11 @@
 
 // Utility Functions
 TickType_t ms_to_ticks(unsigned long ms) {
-    return ms / portTICK_PERIOD_MS;
+    return pdMS_TO_TICKS(ms);
 }
 
 unsigned long ticks_to_ms(TickType_t ticks) {
-    return ticks * portTICK_PERIOD_MS;
+    return pdTICKS_TO_MS(ticks);
 }
 
 unsigned long secs_to_ms(unsigned long secs) {
@@ -83,6 +83,10 @@ void kill_steve_job(const char* job_name) {
 
 void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time) {
     // logln_info("Changing %s job recur time to: %d ms", job_name, ms_recur_time);
+    // Checks
+    if ((ms_recur_time > 0) && (ms_recur_time < SCHEDULER_CHECK_DELAY_MS)) {
+        logln_warn("Recur time for task %s less than scheduler check time resolution (%d ms)! May lead to inaccurate timings", job_name, SCHEDULER_CHECK_DELAY_MS);
+    }
     // Take mutex
     xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
     // Find job
@@ -91,10 +95,12 @@ void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time
         logln_error("Can't find task to change recur time! %s", job_name)
         return;
     }
+    // Calculate exec time in ticks
+    TickType_t tick_delay = ms_to_ticks(ms_recur_time);
     // Roll back execution time
     job->execute_time -= job->recur_time;
     // Edit recur time
-    job->recur_time = ms_recur_time;
+    job->recur_time = tick_delay;
     // Set new execution time
     job->execute_time += job->recur_time;
     // Give mutex back
@@ -142,6 +148,9 @@ void create_steve_job(const char* job_name, TickType_t execute_time, TickType_t 
     if (!g_steve_context.mutex) {
         logln_error("You can only create tasks after initialize_steve() is called!!!");
         return;
+    }
+    if ((recur_time > 0) && (recur_time < SCHEDULER_CHECK_DELAY_TICKS)) {
+        logln_warn("Recur time for task %s less than scheduler check time resolution (%d ms)! May lead to inaccurate timings", job_name, SCHEDULER_CHECK_DELAY_MS);
     }
     xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
     if (g_steve_context.job_count >= (MAX_JOBS-1)) {
@@ -276,7 +285,8 @@ void steve_task(void* unused_arg) {
                 continue;
             }
             // Check if job is ready to run
-            if (indexed_job->execute_time >= xTaskGetTickCount()) {
+            TickType_t task_tick_count = xTaskGetTickCount();
+            if (task_tick_count >= indexed_job->execute_time) {
                 // Run the job if so
                 run_steve_job(indexed_job);
             }

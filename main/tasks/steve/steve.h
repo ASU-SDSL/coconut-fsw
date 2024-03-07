@@ -17,9 +17,10 @@
 #define MAX_JOBS 256
 #define MAX_JOB_NAME_LEN 32
 #define SCHEDULER_CHECK_DELAY_MS 500
+#define SCHEDULER_CHECK_DELAY_TICKS pdMS_TO_TICKS(SCHEDULER_CHECK_DELAY_MS)
+
 #define MS_IN_SEC 1000
 #define SECS_IN_MIN 60
-#define JOB_CREATION_MAX_QUEUE_ITEMS 16
 
 // Job Structs and Types
 typedef void (*job_func)(void*);

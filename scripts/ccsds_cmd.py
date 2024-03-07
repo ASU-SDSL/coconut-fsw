@@ -14,7 +14,7 @@ header_bytes = spacepacket_header.pack()
 # Create change telem rate payload
 payload = b"\x35\x2E\xF8\x53"
 payload += header_bytes
-payload += int.to_bytes(50, 4, byteorder='little') # seconds
+payload += int.to_bytes(300, 4, byteorder='little') # ms
 
 # Send spacepacket uart port
 ser.write(payload)
