@@ -43,7 +43,13 @@ int address_write(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
     gpio_put(CS, 0);
     //Trying two methods, send cmd, address, and data bytes separately; Or,make big array for all of them.
     spi_write_blocking(SPI_BUS, &WRITE, 1);
-    spi_write_blocking(SPI_BUS, (uint8_t*) &addr, 2); //TODO: Try to change uint16 to an array of uint8s or see if saying uint16 is an array of 2 uint8s works.
+
+    // code to recast uint16 into uint8
+    // its reversed for some reason
+    uint8_t* tmp = (uint8_t*) &addr;
+    uint8_t arr[2] = [*(tmp+1), *tmp]; //TODO: find a less ugly solution
+
+    spi_write_blocking(SPI_BUS, arr, 2); // Fixed
     spi_write_blocking(SPI_BUS, buf, nbytes);
     gpio_put(CS, 1);
     send__simple_command(&WRDI);
