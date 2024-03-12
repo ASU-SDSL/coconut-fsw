@@ -30,6 +30,9 @@ void setup() {
     send__simple_command(&WAKE);
 
     //TODO: Set current address pointer using initial space in memory
+    uint8_t p[2];
+    read_bytes(0x0000, p, 2);
+    cur_addr = p[0]*0x100+p[1];
 }
 
 void send__simple_command(uint8_t* cmd) {
@@ -45,9 +48,7 @@ int address_write(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
     spi_write_blocking(SPI_BUS, &WRITE, 1);
 
     // code to recast uint16 into uint8
-    // its reversed for some reason
-    uint8_t* tmp = (uint8_t*) &addr;
-    uint8_t arr[2] = [*(tmp+1), *tmp]; //TODO: find a less ugly solution
+    uint8_t arr[2] = {addr/0x100, add%0x100};
 
     spi_write_blocking(SPI_BUS, arr, 2); // Fixed
     spi_write_blocking(SPI_BUS, buf, nbytes);
