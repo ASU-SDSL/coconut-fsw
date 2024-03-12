@@ -46,21 +46,18 @@ int address_write(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
     gpio_put(CS, 0);
     //Trying two methods, send cmd, address, and data bytes separately; Or,make big array for all of them.
     spi_write_blocking(SPI_BUS, &WRITE, 1);
-
-    // code to recast uint16 into uint8
-    uint8_t arr[2] = {addr/0x100, add%0x100};
-
-    spi_write_blocking(SPI_BUS, arr, 2); // Fixed
+    uint8_t arr[2] = {addr/0x100, addr % 0x100}; // Code to cast uint16 address into two bytes
+    spi_write_blocking(SPI_BUS, arr, 2);
     spi_write_blocking(SPI_BUS, buf, nbytes);
     gpio_put(CS, 1);
     send__simple_command(&WRDI);
-    //TODO: Update current address after write operation
 }
 
 int read_bytes(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
     gpio_put(CS, 0);
     spi_write_blocking(SPI_BUS, &READ, 1);
-    spi_write_blocking(SPI_BUS, &addr, 2); //TODO: Try to change uint16 to an array of uint8s or see if saying uint16 is an array of 2 uint8s works.
+    uint8_t arr[2] = { addr/0x100, addr%0x100 };
+    spi_write_blocking(SPI_BUS, arr, 2); //Code to cast uint16 address into two bytes
     spi_read_blocking(SPI_BUS, buf, nbytes);
     gpio_put(CS, 1);
 }
@@ -71,4 +68,5 @@ uint8_t* write_packet(i2c_inst_t *i2c, uint8_t* buf) {
 
 uint8_t* read_packet(i2c_inst_t i2c, uint8_t* buf) {
     read_bytes(cur_addr, buf, PACKET_SIZE); //TODO: Make sure we start from correct address for reading most recent packets
+    //TODO: Update current address after write operation
 }
