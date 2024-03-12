@@ -47,7 +47,7 @@ void telemetry_task(void* unused_arg) {
         memcpy(payload_buffer + header_size, telemetry.payload_buffer, telemetry.payload_size);
         // Send telemetry through UART
         uart_queue_message(payload_buffer, total_payload_size);
-        radio_queue_message(payload_buffer, total_payload_size);
+        //radio_queue_message(payload_buffer, total_payload_size); NEEDS TO BE REMOVED SO THAT UART CAN WORK - IT IS CURRENTLY (3/11) FREEZING THE TASK
 
         // TODO: Send payload through radio
 
