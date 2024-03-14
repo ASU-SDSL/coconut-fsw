@@ -30,3 +30,5 @@ const uint8_t READ = 0x03;
 const uint8_t WRITE = 0x02;
 const uint8_t SLEEP = 0xB9;
 const uint8_t WAKE = 0xAB;
+
+//TODO: Add method headers for testing right here.
