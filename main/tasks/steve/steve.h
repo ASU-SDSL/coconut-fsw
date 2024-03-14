@@ -13,6 +13,10 @@
 #include "log.h"
 #include "state.h"
 
+#include "mag.h"
+#include "eps.h"
+
+
 // Constants
 #define MAX_JOBS 256
 #define MAX_JOB_NAME_LEN 32

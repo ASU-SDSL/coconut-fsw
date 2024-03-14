@@ -36,15 +36,15 @@ int i2c_write_to_register(	i2c_inst_t *i2c,
 int i2c_read_from_register(	i2c_inst_t *i2c,
 							const uint8_t addr,
 							const uint8_t reg,
-							uint8_t *output_buf,
+							uint8_t *buf,
 							const uint8_t nbytes){
 
 	if (nbytes < 1) { return 1; }
 
-	int bytes_written = i2c_write_timeout_us(i2c, addr, &reg, 1, false, I2CTimeout_us);
+	int bytes_written = i2c_write_timeout_us(i2c, addr, &reg, 1, true, I2CTimeout_us);
 	if (bytes_written != 1) { return 1; } // return error
 
-	int num_bytes_read = i2c_read_timeout_us(i2c, addr, output_buf, nbytes, false, I2CTimeout_us);
+	int num_bytes_read = i2c_read_timeout_us(i2c, addr, buf, nbytes, false, I2CTimeout_us);
 	if (num_bytes_read != nbytes) { return 1; }
 
 	return 0; // no errors
