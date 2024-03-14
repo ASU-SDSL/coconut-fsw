@@ -8,9 +8,10 @@
 //Project specific constants
 #define SPI_BUS spi0
 #define FREQ 5000
-#define PACKET_SIZE 15
+#define PACKET_SIZE 8
+#define MAX_BYTES 32768
 
-//PINS ON Raspberry Pi
+//PINS ON Raspberry Pi - to be set by electrical team.
 #define CS 1
 #define SO 2
 #define WP 3
@@ -21,11 +22,11 @@
 #define PS 8
 
 //Command codes
-const uint8_t WREN = 0x06h;
-const uint8_t WRDI = 0x04h;
-const uint8_t RDSR = 0x05h;
-const uint8_t WRSR = 0x01h;
-const uint8_t READ = 0x03h;
-const uint8_t WRITE = 0x02h;
-const uint8_t SLEEP = 0xB9h;
-const uint8_t WAKE = 0xABh;
+const uint8_t WREN = 0x06;
+const uint8_t WRDI = 0x04;
+const uint8_t RDSR = 0x05;
+const uint8_t WRSR = 0x01;
+const uint8_t READ = 0x03;
+const uint8_t WRITE = 0x02;
+const uint8_t SLEEP = 0xB9;
+const uint8_t WAKE = 0xAB;
