@@ -19,7 +19,7 @@ void uart_queue_message(char* buffer, size_t size) {
     memcpy(heap_buf, buffer, size);
     new_buffer.payload_buffer = heap_buf;
     // Wait for queue to become available
-    while (!uart0_queue) {
+    while (uart0_queue == NULL) {
         vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
     }
     xQueueSendToBack(uart0_queue, &new_buffer, portMAX_DELAY);
@@ -59,7 +59,7 @@ void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq
 }
 
 void gse_task(void *pvParameters) {
-    vTaskDelay(2000);
+    // vTaskDelay(2000);
 
     printf("Get temp\n");
     // uint8_t temp = rtc_test();

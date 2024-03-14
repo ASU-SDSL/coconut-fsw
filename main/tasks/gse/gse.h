@@ -19,7 +19,7 @@
 #define UART0_TX_PIN   0
 #define UART0_RX_PIN   1
 
-#define LED_PIN 13
+#define LED_PIN PICO_DEFAULT_LED_PIN
 
 #define UART_MAX_QUEUE_ITEMS 64
 #define GSE_CHECK_DELAY_MS 500

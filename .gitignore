@@ -1,9 +1,14 @@
 build
 docker_build
 pico-sdk/*
-CMakeFiles/*
+CMakeFiles
 main/CMakeFiles/*
 main/elf2uf2/*
-generated/*
+generated
+pioasm
 *.cmake
 Makefile
+CMakeCache.txt
+CMakeLists.txt
+CMakeDoxyfile.in
+libFreeRTOS.a
