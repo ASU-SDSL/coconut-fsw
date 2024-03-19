@@ -71,7 +71,7 @@ void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time
 
 // Defined Jobs
 #define HEARTBEAT_JOB_NAME "HEARTBEAT_TELEMETRY"
-#define HEARTBEAT_TELEMETRY_DEFAULT_INTERVAL 5
+#define HEARTBEAT_TELEMETRY_DEFAULT_INTERVAL 30
 void heartbeat_telemetry_job(void*);
 
 // Helper functions
