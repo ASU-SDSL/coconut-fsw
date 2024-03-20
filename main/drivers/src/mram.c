@@ -9,10 +9,6 @@ uint16_t cur_addr;
 //TODO: Add flag to indicate whether the entire storage has already been used.
 
 void setup() {
-    //Add padding so that only a whole number of packets will fit into data storage. Padding should also be at least 2 bytes to allow for memory for cur_addr pointer.
-    memory_start = MAX_BYTES % PACKET_SIZE;
-    if (memory_start < 2) { memory_start += PACKET_SIZE; }
-
     stdio_init_all();
     spi_init(SPI_BUS, FREQ);
     //TODO: See if we need to do anything to change SPI Mode to 0.
@@ -36,6 +32,10 @@ void setup() {
     //Make sure device is initially awake
     send__simple_command(WAKE);
 
+    //Add padding so that only a whole number of packets will fit into data storage. Padding should also be at least 2 bytes to allow for memory for cur_addr pointer.
+    memory_start = MAX_BYTES % PACKET_SIZE;
+    if (memory_start < 2) { memory_start += PACKET_SIZE; }
+    
     //Set current address pointer based on what was last set in the two bytes before the start of packet memory. In case pointer was not set properly, the pointer will default to start of packet memory. 
     uint8_t p[2];
     read_bytes(memory_start - 2, p, 2);
@@ -81,6 +81,7 @@ int write_packet(uint8_t* buf) {
     address_write(cur_addr, buf, PACKET_SIZE);
     cur_addr += PACKET_SIZE;
     if (cur_addr > MAX_BYTES) { cur_addr = memory_start; }
+    address_write(memory_start - 2, {cur_addr/0x100, cur_addr%0x100}, 2); //Update current address in memory
     return 1;
 }
 
