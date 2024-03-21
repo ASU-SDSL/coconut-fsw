@@ -62,14 +62,13 @@ void gse_task(void *pvParameters) {
     // uint8_t temp = rtc_test();
     // printf("Temp: %d\n", temp);
 
-    /*SemaphoreHandle_t* mutex = (SemaphoreHandle_t *) pvParameters;
-    write(mutex);
 
-    while (1) {
-        
-        vTaskDelay(2000);
-        printf("SD card\n");
-    }*/
+    SemaphoreHandle_t* mutex = (SemaphoreHandle_t *) pvParameters;
+    xSemaphoreTake(mutex, portMAX_DELAY);
+    write("Test01.txt", "This is a test\r\n", 0);
+    xSemaphoreGive(mutex);
+
+    
 
     // Initialize UART0
     uart_initialize(UART0_INSTANCE, UART0_TX_PIN, UART0_RX_PIN, UART0_IRQ);
