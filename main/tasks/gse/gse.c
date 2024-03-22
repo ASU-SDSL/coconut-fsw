@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "sd_card.h"
 #include "ff.h"
 #include "gse.h"
 #include "command.h"
 #include "rtc.h"
-#include "sdcard.h"
+#include "storage.h"
 
 void uart_queue_message(char* buffer, size_t size) {
     // Create new transmission structure
@@ -62,12 +61,18 @@ void gse_task(void *pvParameters) {
     // uint8_t temp = rtc_test();
     // printf("Temp: %d\n", temp);
 
+    
+    SemaphoreHandle_t mutex = xSemaphoreCreateMutex();
 
-    SemaphoreHandle_t* mutex = (SemaphoreHandle_t *) pvParameters;
+    if (mutex == NULL) {
+        logln_error("Could not create SD mutex");
+        while (true);
+    }
+
     xSemaphoreTake(mutex, portMAX_DELAY);
-    write("Test01.txt", "This is a test\r\n", 0);
+    sd_write("Test01.txt", "This is a test\r\n", 0);
     xSemaphoreGive(mutex);
-
+    logln_info("bals");
     
 
     // Initialize UART0

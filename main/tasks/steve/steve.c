@@ -255,6 +255,7 @@ void heartbeat_telemetry_job(void* unused) {
     logln_info(str);*/
     counter_lol += 1;
     logln_info("Loop %ld\n", counter_lol);
+
 }
 
 void initialize_steve() {

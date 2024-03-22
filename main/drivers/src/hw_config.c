@@ -39,20 +39,6 @@ socket, which SPI it is driven by, and how it is wired.
 //
 #include "diskio.h" /* Declarations of disk functions */
 
-/* 
-This example assumes the following hardware configuration:
-
-|       | SPI0  | GPIO  | Pin   | SPI       | MicroSD   | Description            | 
-| ----- | ----  | ----- | ---   | --------  | --------- | ---------------------- |
-| MISO  | RX    | 16    | 21    | DO        | DO        | Master In, Slave Out   |
-| MOSI  | TX    | 19    | 25    | DI        | DI        | Master Out, Slave In   |
-| SCK   | SCK   | 18    | 24    | SCLK      | CLK       | SPI clock              |
-| CS0   | CSn   | 17    | 22    | SS or CS  | CS        | Slave (or Chip) Select |
-| DET   |       | 22    | 29    |           | CD        | Card Detect            |
-| GND   |       |       | 18,23 |           | GND       | Ground                 |
-| 3v3   |       |       | 36    |           | 3v3       | 3.3 volt power         |
-
-*/
 
 // Hardware Configuration of SPI "objects"
 // Note: multiple SD cards can be driven by one SPI if they use different slave
