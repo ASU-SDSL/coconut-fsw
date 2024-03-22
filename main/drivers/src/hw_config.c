@@ -39,7 +39,6 @@ socket, which SPI it is driven by, and how it is wired.
 //
 #include "diskio.h" /* Declarations of disk functions */
 
-<<<<<<< HEAD
 /* 
 This example assumes the following hardware configuration:
 
@@ -54,8 +53,6 @@ This example assumes the following hardware configuration:
 | VCC   |       | VSYS  |           | 5v        | 5 volt power           |
 
 */
-=======
->>>>>>> 6cd51b2866fbea0673c8b5594597d9e41b4d3244
 
 // Hardware Configuration of SPI "objects"
 // Note: multiple SD cards can be driven by one SPI if they use different slave
