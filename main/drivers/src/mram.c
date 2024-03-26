@@ -94,3 +94,6 @@ int read_packets(uint8_t* buf, int num_packets) {
     read_bytes(cur_addr - bytes_to_read + 1, buf + bytes_read, bytes_to_read);
     return num_packets;
 }
+void testing() {
+    
+}
