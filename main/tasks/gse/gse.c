@@ -6,7 +6,6 @@
 #include "command.h"
 #include "rtc.h"
 #include "sdcard.h"
-#include "mram.h"
 
 void uart_queue_message(char* buffer, size_t size) {
     // Create new transmission structure
