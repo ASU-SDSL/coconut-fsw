@@ -57,7 +57,7 @@ void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq
 }
 
 void gse_task(void *pvParameters) {
-    vTaskDelay(2000);
+    /* vTaskDelay(2000);
 
     SemaphoreHandle_t* mutex = (SemaphoreHandle_t *) pvParameters;
     write(mutex);
@@ -97,6 +97,7 @@ void gse_task(void *pvParameters) {
         // Free buffer allocated in uart_queue_message
         vPortFree(rec.payload_buffer);
         // Disable write LED
-        gpio_put(LED_PIN, 0);
+        gpio_put(LED_PIN, 0); */
+        mram_testing();
     }
 }
