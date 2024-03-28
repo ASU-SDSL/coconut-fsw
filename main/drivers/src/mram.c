@@ -95,5 +95,16 @@ int read_packets(uint8_t* buf, int num_packets) {
     return num_packets;
 }
 void mram_testing() {
-    
+    setup();
+    uint8_t my_buf[8] = { 1, 2, 3, 4, 5, 6, 7, 8}; 
+    for(int i = 0; i < 8; i++) {
+        printf("%d ", my_buf[i]);
+    }
+    printf("\n");
+    address_write(cur_addr, my_buf, 8);
+    uint8_t output[8];
+    read_bytes(curr_addr, output, 8);
+    for(int i = 0; i < 8; i++) {
+        printf("%d ", output[i]);
+    }
 }
