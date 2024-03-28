@@ -5,38 +5,13 @@
     Scheduler Task for Executing Vital Events
 */
 
-// Utility Functions
-TickType_t ms_to_ticks(unsigned long ms) {
-    return pdMS_TO_TICKS(ms);
-}
-
-unsigned long ticks_to_ms(TickType_t ticks) {
-    return pdTICKS_TO_MS(ticks);
-}
-
-unsigned long secs_to_ms(unsigned long secs) {
-    return secs * MS_IN_SEC;
-}
-
-unsigned long ms_to_secs(unsigned long ms) {
-    return ms / MS_IN_SEC;
-}
-
-unsigned long secs_to_mins(unsigned long secs) {
-    return secs / SECS_IN_MIN;
-}
-
-unsigned long mins_to_secs(unsigned long mins) {
-    return mins * SECS_IN_MIN;
-}
-
 // Recurring Job User Functions
 // These jobs will wait a specified time, run, wait a specified time, run, etc.
 void schedule_recurring_job_ms(const char* job_name, job_func job_func_ptr, unsigned long ms_until_recur) {
     // Convert ms to ticks
     TickType_t recur_time = ms_to_ticks(ms_until_recur);
     // Calculate first run time 
-    TickType_t execute_time = xTaskGetTickCount() + recur_time;
+    TickType_t execute_time = get_uptime() + recur_time;
     // Create job
     create_steve_job(job_name, execute_time, recur_time, job_func_ptr);
 }
@@ -55,7 +30,7 @@ void schedule_delayed_job_ms(const char* job_name, job_func job_func_ptr, unsign
     // Convert ms to ticks
     TickType_t tick_delay = ms_to_ticks(ms_delay);
     // Calculate first run time 
-    TickType_t execute_time = xTaskGetTickCount() + tick_delay;
+    TickType_t execute_time = get_uptime() + tick_delay;
     // Create job
     create_steve_job(job_name, execute_time, 0, job_func_ptr);
 }
@@ -108,7 +83,7 @@ void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time
 }
 
 void print_debug_exec_times() {
-    logln_info("Printing S.T.E.V.E Task Times:");
+    logln_info("S.T.E.V.E. Tasks:");
     // Take mutex
     xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
     for (int i = 0; i < g_steve_context.job_count; i++) {
@@ -118,15 +93,15 @@ void print_debug_exec_times() {
             continue;
         }
         // print details
-        int secs_until_exec = ms_to_secs(xTaskGetTickCount() - temp->execute_time);
-        logln_info("%s executing in %d seconds", temp->name, secs_until_exec);
+        int ms_until_exec = ticks_to_ms(temp->execute_time - get_uptime()); // NOTE: will not be 100% accurate until get_uptime uses a RTC, currently per-task
+        int secs_until_exec = ms_to_secs();
+        logln("\t%s\t\t%ds", temp->name, secs_until_exec); // example: "heartbeat_telemetry      23s"
     }
     // Give mutex back
     xSemaphoreGive(g_steve_context.mutex);
 }
 
 // Internal Scheduler Functions
-
 steve_job_t* find_steve_job(const char* job_name) {
     /* g_steve_context.mutex must be taken before using this function */
     for (int i = 0; i < g_steve_context.job_count; i++) {
@@ -184,7 +159,7 @@ void run_steve_job(steve_job_t* job) {
     job->func_ptr(job->arg_data);
     // Check if it needs to be rescheduled (recurring job)
     if (job->recur_time > 0) {
-        job->execute_time = xTaskGetTickCount() + job->recur_time;
+        job->execute_time = get_uptime() + job->recur_time;
     }
     // Otherwise delete the job
     else {
@@ -229,66 +204,17 @@ void cleanup_steve_jobs_list() {
     }
 }
 
-TickType_t get_uptime() {
-    // TODO: Maybe get an RTC instead of using CPU ticks
-    return xTaskGetTickCount();
-}
-
-uint32_t counter_lol;
-
-void heartbeat_telemetry_job(void* unused) {
-    // Create heartbeat struct
-    heartbeat_telemetry_t payload;
-    payload.state = g_payload_state;
-    payload.uptime = get_uptime();
-
-    // eps stuff
-    i2c_inst_t *i2c = i2c0;
-    uint16_t buf;
-    getVShunt_raw(i2c, &buf);
-    payload.eps_shunt = buf;
-    getVBus_raw(i2c, &buf);
-    payload.eps_vbus = buf;
-    getCurrent_raw(i2c, &buf);
-    payload.eps_current = buf; 
-    getPower_raw(i2c, &buf);
-    payload.eps_power = buf;
-
-    // mag stuff 
-    payload.mag_x = get_x_output(i2c);
-    payload.mag_y = get_y_output(i2c);
-    payload.mag_z = get_z_output(i2c);
-    payload.mag_temp = get_temp_output(i2c);
-
-    // Send it
-    send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
-    //logln_info("Lol");
-
-    // get mag info
-    //i2c_inst_t *i2c = i2c0;
-    //int x = get_x_output(i2c);
-
-    /*
-    char str[10];
-    sprintf(str, "X: %d", x);
-    logln_info(str);*/
-    counter_lol += 1;
-    logln_info("Loop %ld\n", counter_lol);
-}
-
 void initialize_steve() {
     // Initialize scheduler job mutex
     g_steve_context.mutex = xSemaphoreCreateMutex();
     // Initialize state
     g_payload_state = INIT;
     // Create jobs
-    counter_lol = 0;
     schedule_recurring_job_secs(HEARTBEAT_JOB_NAME, heartbeat_telemetry_job, HEARTBEAT_TELEMETRY_DEFAULT_INTERVAL);
 }
 
 // Main thread job for scheduling and executing STEVE jobs
 void steve_task(void* unused_arg) {
-    logln_info("Test");
     // Setup STEVE jobs and state
     initialize_steve();
     // Run main task loop
@@ -304,7 +230,7 @@ void steve_task(void* unused_arg) {
                 continue;
             }
             // Check if job is ready to run
-            TickType_t task_tick_count = xTaskGetTickCount();
+            TickType_t task_tick_count = get_uptime();
             if (task_tick_count >= indexed_job->execute_time) {
                 // Run the job if so
                 run_steve_job(indexed_job);
