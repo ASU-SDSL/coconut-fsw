@@ -32,4 +32,4 @@ const uint8_t SLEEP = 0xB9;
 const uint8_t WAKE = 0xAB;
 
 //TODO: Add method headers for testing right here.
-void mram_testing();
+
