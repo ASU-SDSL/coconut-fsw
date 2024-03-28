@@ -1,5 +1,4 @@
-#ifndef LOG_FILE_DEFINED
-#define LOG_FILE_DEFINED
+#pragma once
 
 #include <stdarg.h>
 
@@ -29,5 +28,3 @@ void print_banner();
 /* INTERNAL FUNCTIONS */
 
 void _log(char* str, ...);
-
-#endif /* !LOG_FILE_DEFINED */

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <RadioLib.h>
 #include <stdio.h>
 #include "pico/stdlib.h"
