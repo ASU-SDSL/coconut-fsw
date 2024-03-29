@@ -11,11 +11,6 @@ void sd_write(const char* fileName, const char* text, int append_flag) {
     char buf[100];
 
 
-    // Wait for user to press 'enter' to continue
-    logln_info("\r\nSD card test. Press 'enter' to start.\r\n");
-
-    
-    // this is called implicitly now
     // Initialize SD card
     if (!sd_init_driver()) {
         for(;;) {
@@ -64,45 +59,45 @@ void sd_write(const char* fileName, const char* text, int append_flag) {
     
 }
 
-void sd_read(const char* fileName) {
+const char* sd_read(const char* fileName) {
     FRESULT fr;
     FATFS fs;
     FIL fil;
     int ret;
-    char readBuffer[255];
+    // char readBuffer[256];
+    char* readBuffer = pvPortMalloc(256 * sizeof(char));
+
 
     // mount filesystem
     fr = f_mount(&fs, "0:", 1);
-    if (fr != FR_OK) {
+    while(fr != FR_OK) {
         logln_info("ERROR: Could not mount filesystem (%d)\r\n", fr);
-        while (true);
     }
 
     // open file
     fr = f_open(&fil, fileName, FA_READ);
-    if (fr != FR_OK) {
+    while(fr != FR_OK) {
         logln_info("ERROR: Could not open file (%d)\r\n", fr);
-        while (true);
     }    
 
 
     // read from file, buffer only allows 255 chars
     // might need to switch the last argument to uint* rather than null
-    fr = f_read(&fil, readBuffer, 255, NULL);
-    if(fr != FR_OK) {
+    fr = f_read(&fil, readBuffer, 256, NULL);
+    //for(;;) {logln_info(readBuffer); }
+    while(fr != FR_OK) {
         logln_info("ERROR: Could not read from file (%d)\r\n", fr);
-        while (true);
     }
 
     // close file
     fr = f_close(&fil);
-    if (fr != FR_OK) {
+    while(fr != FR_OK) {
         logln_info("ERROR: Could not close file (%d)\r\n", fr);
-        while (true);
     }
 
     // unmount fs
     f_unmount("0:");
+    return readBuffer;
 }
 
 void sd_delete(const char * fileName) {

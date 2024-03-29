@@ -4,17 +4,39 @@ TODO:   sd card driver does not look finished, so finish the driver to read and 
 
 */
 
-
+/* Includes and Constants */
 #pragma once
 
 #include "sdcard.h"
 #include <semphr.h>
+#include "queue.h"
+#include "FreeRTOS.h"
 
-//create global mutex for sd card
-SemaphoreHandle_t sd_mutex;
+#define FILESYSTEM_QUEUE_LENGTH 64
+#define EMPTY_QUEUE_WAIT_TIME portMAX_DELAY
+#define NULL_QUEUE_WAIT_TIME 300
 
+/* Types and Globals */
 
-/* USER FUNCTIONS */
+// enum to define different file system operations
+typedef enum operation_type {
+    WRITE,
+    READ
+} operation_type_t;
+
+// queue to accept incoming operations on the file system
+QueueHandle_t filesystem_queue;
+
+// struct to represent operations passed to the queue
+// TODO: come up with actual struct def
+typedef struct filesystem_queue_operations {
+    operation_type_t operation_type;
+    char* file_name;
+    char* text_to_write;
+    char* read_buffer;
+} filesystem_queue_operations_t;
+
+/* User Functions */
 
 //read file
 char* read_file(const char* file_name);
@@ -33,7 +55,7 @@ void create_file(const char* new_file_name);
 void delete_file(const char* file_name);
 
 
-/* INTERNAL FUNCTIONS */
+/* Internal Functions */
 
 
 // Main Task

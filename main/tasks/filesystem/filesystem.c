@@ -1,52 +1,83 @@
 #include "filesystem.h"
 
 /* USER FUNCTIONS */
-char* read_file(const char* file_name) {
+// char* read_file(const char* file_name) {
 
-}
+// }
 
-//write file
+// write file
 void write_file(const char* file_name, const char* text_to_write) {
-    xSemaphoreTake(sd_mutex, portMAX_DELAY);
-    // the third arg is the append_flag, since we are not appending -> 0
-    write(file_name, text_to_write, 0);
-    xSemaphoreGive(sd_mutex);
+    // create new blank write operation and fill it with correct values
+    filesystem_queue_operations_t new_write_operation;
+    new_write_operation.operation_type = WRITE;
+    // might need to dynamically allocate file_name and text_to_write
+    // might go out of scope in caller and be deallocated while our function still needs it
+    new_write_operation.file_name = file_name;
+    new_write_operation.text_to_write = text_to_write;
+
+    // wait for queue to be initialized
+    while(filesystem_queue == NULL) {
+        vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
+    }
+    // after queue is initialized, add write op onto queue
+    xQueueSendToBack(filesystem_queue, &new_write_operation, portMAX_DELAY);
 }
 
-//append file
-void append_file(const char* file_name, const char* text_to_append) {
-    xSemaphoreTake(sd_mutex, portMAX_DELAY);
-    // since we are appending, set append flag to 1
-    write(file_name, text_to_append, 1);
-    xSemaphoreGive(sd_mutex);
-}
+// //append file
+// void append_file(const char* file_name, const char* text_to_append) {
+//     xSemaphoreTake(sd_mutex, portMAX_DELAY);
+//     // since we are appending, set append flag to 1
+//     write(file_name, text_to_append, 1);
+//     xSemaphoreGive(sd_mutex);
+// }
 
-//create file
-void create_file(const char* new_file_name) {
+// //create file
+// void create_file(const char* new_file_name) {
 
-}
+// }
 
-//delete file
-void delete_file(const char* file_name) {
-    xSemaphoreTake(sd_mutex, portMAX_DELAY);
-    // since we are appending, set append flag to 1
-    delete(file_name);
-    xSemaphoreGive(sd_mutex);
-}
+// //delete file
+// void delete_file(const char* file_name) {
+//     xSemaphoreTake(sd_mutex, portMAX_DELAY);
+//     // since we are appending, set append flag to 1
+//     delete(file_name);
+//     xSemaphoreGive(sd_mutex);
+// }
 
 void sd_task(void* unused_arg) {
-    // init sd card mutex
-    sd_mutex = xSemaphoreCreateMutex();
-
     //have a queue and other threads will queue up on operations
     //this thread will go through the queue and execute operations, if there are any
     //keeps looping until new operations are in queue
 
     // init queue and other stuff
+    filesystem_queue = xQueueCreate(FILESYSTEM_QUEUE_LENGTH, sizeof(filesystem_queue_operations_t));
+    if(filesystem_queue == NULL) {
+        // TODO: Find a better solution to handling queue creation failure
+        vTaskDelete(NULL);
+    }
 
     // start inf loop
-    // check queue for queued operation
-    // if operation is in queue, execute it
+    filesystem_queue_operations_t received_operation;
+    while(true) {
+        // check queue for queued operation
+        // wait forever until an operation is in queue
+        xQueueReceive(filesystem_queue, &received_operation, EMPTY_QUEUE_WAIT_TIME);
 
-    // if no operation in queue, continue (after delay?)
+        // if operation is in queue, execute it
+        switch (received_operation.operation_type) {
+            case WRITE:
+                // execute write operation
+                write_file(received_operation.file_name, received_operation.text_to_write);
+                break;
+            case READ:
+                // execute read operation
+                break;
+            default:
+                // TODO: figure out proper way to handle this error
+                break;
+        }
+
+        
+
+    }
 }
