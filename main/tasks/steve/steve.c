@@ -261,6 +261,11 @@ void heartbeat_telemetry_job(void* unused) {
     payload.mag_temp = get_temp_output(i2c);
 
     // Send it
+    printf("sending packet...\n");
+    char* start = &payload;
+    for(int i = 0; i < sizeof(heartbeat_telemetry_t); i++){
+        printf("%02x ",((char*)&payload)[i]);
+    }
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
     //logln_info("Lol");
 
