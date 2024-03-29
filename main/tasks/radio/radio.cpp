@@ -82,6 +82,10 @@ void init_radio()
     }
 }
 
+void set_power_output(RFM98 radio_module, int8_t new_dbm) {
+    radio_module.setOutputPower(new_dbm);
+}
+
 /**
  * @brief Monitor radio, write to SD card, and send stuff when needed
  */
@@ -106,6 +110,7 @@ void radio_task(void *unused_arg)
                 // create command.c function to read packet
                 printf("Recieved packet");
                 parse_radio_packet(packet, packet_size);
+                // Check if command is to set output power of the radio
             }
             else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
             {
