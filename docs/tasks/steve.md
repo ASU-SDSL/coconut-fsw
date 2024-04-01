@@ -23,51 +23,6 @@ The `steve_job_t` type is a struct that represents a steve job. In order to crea
 
 ## API Functions
 
-<details><summary><big>ms_to_ticks()</big></summary>
-
-#### Description
-> Converts milliseconds to ticks.
-
-#### Parameters
-> | Name | Type | Description |
-> | ---- | ---- | ----------- |
-> | ms | unsigned long | milliseconds |
-
-#### Returns
-> TickType_t
-
-</details>
-
-<details> <summary><big>secs_to_ms()</big></summary>
-
-#### Description
-> Converts seconds to milliseconds.
-
-#### Parameters
-> | Name | Type | Description |
-> | ---- | ---- | ----------- |
-> | secs | unsigned long | seconds |
-
-#### Returns
-> unsigned long
-
-</details>
-
-<details><summary><big>mins_to_secs()</big></summary>
-
-#### Description
-> Converts minutes to seconds.
-
-#### Parameters
-> | Name | Type | Description |
-> | ---- | ---- | ----------- |
-> | mins | unsigned long | minutes |
-
-#### Returns
-> unsigned long
-
-</details>
-
 <details><summary><big>schedule_recurring_job_ms()</big></summary>
 
 #### Description
