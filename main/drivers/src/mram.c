@@ -36,7 +36,7 @@ void setup() {
     memory_start = MAX_BYTES % PACKET_SIZE;
     if (memory_start < 2) { memory_start += PACKET_SIZE; }
     
-    //Set current address pointer based on what was last set in the two bytes before the start of packet memory. In case pointer was not set properly, the pointer will default to start of packet memory. 
+    //Set current address pointer based on whWRENat was last set in the two bytes before the start of packet memory. In case pointer was not set properly, the pointer will default to start of packet memory. 
     uint8_t p[2];
     read_bytes(memory_start - 2, p, 2);
     cur_addr = max(p[0]*0x100 +p[1], memory_start);
@@ -57,6 +57,7 @@ int address_write(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
     gpio_put(CS, 0);
     //Trying two methods, send cmd, address, and data bytes separately; Or,make big array for all of them.
     spi_write_blocking(SPI_BUS, WRITE, 1);
+    // uint16_t big_endian_addr = ((addr & 0xFF) << 8) | (addr & 0xFF00);
     uint8_t arr[2] = {addr/0x100, addr % 0x100}; // Code to cast uint16 address into two bytes
     spi_write_blocking(SPI_BUS, arr, 2);
     spi_write_blocking(SPI_BUS, buf, nbytes);
@@ -72,7 +73,7 @@ int read_bytes(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
     spi_write_blocking(SPI_BUS, READ, 1);
     uint8_t arr[2] = { addr/0x100, addr%0x100 };
     spi_write_blocking(SPI_BUS, arr, 2); //Code to cast uint16 address into two bytes to be sent through SPI
-    spi_read_blocking(SPI_BUS, buf, nbytes);
+    spi_read_blocking(SPI_BUS, NULL, buf, nbytes);
     gpio_put(CS, 1);
     return nbytes;
 }
@@ -82,16 +83,17 @@ int write_packet(uint8_t* buf) {
     address_write(cur_addr, buf, PACKET_SIZE);
     cur_addr += PACKET_SIZE;
     if (cur_addr > MAX_BYTES) { cur_addr = memory_start; }
-    address_write(memory_start - 2, {cur_addr/0x100, cur_addr%0x100}, 2); //Update current address in memory
+    uint8_t arr[2] = {cur_addr / 0x100, cur_addr % 0x100}; // Code to cast uint16 address into two bytes
+    address_write(memory_start - 2, arr, 2); //Update current address in memory
     return 1;
 }
 
 int read_packets(uint8_t* buf, int num_packets) {
     if (num_packets <= 0) { return 0; }
 
-    uint16_t bytes_to_read = Math.min(cur_addr - memory_start, num_packets * PACKET_SIZE);
+    uint16_t bytes_to_read = min(cur_addr - memory_start, num_packets * PACKET_SIZE);
     uint16_t bytes_read = num_packets * PACKET_SIZE - bytes_to_read;
-    read_bytes(MAX_BYTES - bytes_read + 1, buf, bytes_read )
+    read_bytes(MAX_BYTES - bytes_read + 1, buf, bytes_read );
     read_bytes(cur_addr - bytes_to_read + 1, buf + bytes_read, bytes_to_read);
     return num_packets;
 }
@@ -104,7 +106,7 @@ void mram_testing() {
     printf("\n");
     address_write(cur_addr, my_buf, 8);
     uint8_t output[8];
-    read_bytes(curr_addr, output, 8);
+    read_bytes(cur_addr, output, 8);
     for(int i = 0; i < 8; i++) {
         printf("%d ", output[i]);
     }

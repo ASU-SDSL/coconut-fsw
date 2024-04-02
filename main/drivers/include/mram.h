@@ -1,9 +1,11 @@
+#pragma once
+
 #include "hardware/spi.h"
 #include "hardware/gpio.h"
 #include "log.h"
-#include <stdio.h>
 #include "pico/stdlib.h" //Probably need this
-
+#include <stdio.h>
+#include <stdlib.h> 
 
 //Project specific constants
 #define SPI_BUS spi0
@@ -22,14 +24,14 @@
 #define PS 8
 
 //Command codes
-const uint8_t WREN = 0x06;
-const uint8_t WRDI = 0x04;
-const uint8_t RDSR = 0x05;
-const uint8_t WRSR = 0x01;
-const uint8_t READ = 0x03;
-const uint8_t WRITE = 0x02;
-const uint8_t SLEEP = 0xB9;
-const uint8_t WAKE = 0xAB;
+#define WREN 0x06
+#define WRDI 0x04
+#define RDSR 0x05
+#define WRSR 0x01
+#define READ 0x03
+#define WRITE 0x02
+#define SLEEP 0xB9
+#define WAKE 0xAB
 
 //TODO: Add method headers for testing right here.
 
