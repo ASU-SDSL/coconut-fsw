@@ -11,6 +11,10 @@
 #define RTC_SECONDS_REG 0x00
 #define RTC_MINUTES_REG 0x01
 #define RTC_HOURS_REG 0x02
+#define RTC_DAY_REG 0x03
+#define RTC_DATE_REG 0x04
+#define RTC_MONTH_CENTURY_REG 0x05
+#define RTC_YEAR_REG 0x06
 
 #define RTC_TEMP_REG_UPPER 0x11
 #define RTC_TEMP_REG_LOWER 0x12 // decimal part of the temp
@@ -31,28 +35,72 @@ void set_time(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg,
 }
 
 // Needs to be tested
-int read_temp(i2c_inst_t *i2c, uint8_t* out) {
+int read_temp(i2c_inst_t *i2c) {
 
     /*uint8_t temp_h = 0;
     i2c_write_blocking(i2c, RTC_ADDR, RTC_TEMP_REG_UPPER, 1, false);
     i2c_read_blocking(i2c, RTC_ADDR, &temp_h, 1, false);
     *out = temp_h;*/
     
-    uint8_t temp_h = 0;
-    if (i2c_read_from_register(i2c, RTC_ADDR, RTC_TEMP_REG_UPPER, &temp_h, 1) == 0) {
-        *out = temp_h;
-        return 0;
-    }
+    // uint8_t temp_h = 0;
+    // if (i2c_read_from_register(i2c, RTC_ADDR, RTC_TEMP_REG_UPPER, &temp_h, 1) == 0) {
+    //     *out = temp_h;
+    //     return 0;
+    // }
 
     return 1; // error
 
 }
 
-int rtc_get_time(i2c_inst_t *i2c){
-
-    return 0;
+int rtc_get_second(i2c_inst_t *i2c){
+    uint8_t input;
+    i2c_read_from_register(i2c, RTC_ADDR, RTC_SECONDS_REG, &input, 1);
+    return input; 
 }
 
+int rtc_get_minute(i2c_inst_t *i2c){
+    uint8_t input;
+    i2c_read_from_register(i2c, RTC_ADDR, RTC_MINUTES_REG, &input, 1);
+    return input; 
+}
+
+int rtc_get_hour(i2c_inst_t *i2c){
+    uint8_t input;
+    i2c_read_from_register(i2c, RTC_ADDR, RTC_HOURS_REG, &input, 1);
+    return input; 
+}
+
+int rtc_get_date(i2c_inst_t *i2c){
+    uint8_t input;
+    i2c_read_from_register(i2c, RTC_ADDR, RTC_DATE_REG, &input, 1);
+
+    if(input & (0b1 << 6)){ // if bit 6 is high then read as 12h hour 
+            //   ones place             add ten if ten bit              add 12 if am/pm bit is pm (1 is am)
+        return (input & 0b00001111) + (10 * (input & 0b00010000)) + (12 * !(input & 0b00100000));
+    }
+    else {
+        //      ones place              add ten if ten bit          add 20 if 20 bit
+        return (input & 0b00001111) + (10 * (input & 0b00010000) + (20 * (input & 0b00100000)));
+    }
+
+    return input; 
+}
+
+int rtc_get_month(i2c_inst_t *i2c){
+    uint8_t input;
+    i2c_read_from_register(i2c, RTC_ADDR, RTC_MONTH_CENTURY_REG, &input, 1);
+
+    input &= 0b01111111; // remove century bit 
+    //      ones place              add ten if ten bit
+    return (input & 0b00001111) + (10 * (input & 0b00010000));
+}
+
+int rtc_get_year(i2c_inst_t *i2c){
+    uint8_t input;
+    i2c_read_from_register(i2c, RTC_ADDR, RTC_YEAR_REG, &input, 1);
+
+    return (input & 0b00001111) + (10 * (input & 0b11110000)); 
+}
 
 int rtc_test() {
    
@@ -66,11 +114,9 @@ int rtc_test() {
 
     for(int i = 0; i < 10; i++){
 
-        uint8_t temp;
-        read_temp(i2c, &temp);
-        printf("RTC Temp: %d", temp);
+        printf("RTC Temp: %d\n", read_temp(i2c));
 
-        printf("RTC Time: %d", rtc_get_time(i2c)); 
+        printf("RTC Time: %d:%d:%d\n", rtc_get_hour(i2c), rtc_get_minute(i2c), rtc_get_second(i2c)); 
 
         sleep_ms(100);
     }
