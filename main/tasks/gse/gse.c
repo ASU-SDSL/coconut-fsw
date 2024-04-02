@@ -66,19 +66,20 @@ void gse_task(void *pvParameters) {
 
     config_i2c0();
 
-    int temp = 0;
-    int res = read_temp(i2c0, &temp);
-    printf("Result: %d. Temp: %d\n", res, temp);
+    vTaskDelay(500);
+    printf("Starting RTC test...\n");
+    rtc_test();
+    printf("Finished RTC test.\n");
 
     // vTaskDelay(500);
     // printf("Starting EPS test...\n");
     // eps_test();
     // printf("Finished EPS test.\n");
 
-    vTaskDelay(500);
-    printf("Starting Mag test...\n");
-    mag_test();
-    printf("Finished Mag test.\n");
+    // vTaskDelay(500);
+    // printf("Starting Mag test...\n");
+    // mag_test();
+    // printf("Finished Mag test.\n");
 
     /*SemaphoreHandle_t* mutex = (SemaphoreHandle_t *) pvParameters;
     write(mutex);

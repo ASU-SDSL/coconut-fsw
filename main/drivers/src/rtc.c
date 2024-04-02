@@ -48,26 +48,50 @@ int read_temp(i2c_inst_t *i2c, uint8_t* out) {
 
 }
 
+int rtc_get_time(i2c_inst_t *i2c){
+
+    return 0;
+}
+
 
 int rtc_test() {
    
-    // Ports
     i2c_inst_t *i2c = i2c0;
-    i2c_init(i2c, 100 * 1000);
 
-    gpio_set_function(PICO_DEFAULT_I2C_SDA_PIN, GPIO_FUNC_I2C);
-    gpio_set_function(PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C);
-    bi_decl(bi_2pins_with_func(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C));
+    // Setup i2c
+    config_i2c0();
 
-    // Set the time (Example: 5:06:50)
-    //set_time(i2c, RTC_ADDR, RTC_HOURS_REG, 5, 6, 50);
+    // config mag
+    config_mag(i2c);
 
-    uint8_t temp = 0;
-    uint8_t temp_h = read_temp(i2c, &temp);
+    for(int i = 0; i < 10; i++){
 
-    // Close the I2C communication
-    i2c_deinit(i2c);
-    return temp_h;
+        uint8_t temp;
+        read_temp(i2c, &temp);
+        printf("RTC Temp: %d", temp);
+
+        printf("RTC Time: %d", rtc_get_time(i2c)); 
+
+        sleep_ms(100);
+    }
+
+    // // Ports
+    // i2c_inst_t *i2c = i2c0;
+    // i2c_init(i2c, 100 * 1000);
+
+    // gpio_set_function(PICO_DEFAULT_I2C_SDA_PIN, GPIO_FUNC_I2C);
+    // gpio_set_function(PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C);
+    // bi_decl(bi_2pins_with_func(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C));
+
+    // // Set the time (Example: 5:06:50)
+    // //set_time(i2c, RTC_ADDR, RTC_HOURS_REG, 5, 6, 50);
+
+    // uint8_t temp = 0;
+    // uint8_t temp_h = read_temp(i2c, &temp);
+
+    // // Close the I2C communication
+    // i2c_deinit(i2c);
+    // return temp_h;
 }
 
 
