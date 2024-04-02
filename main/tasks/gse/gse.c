@@ -99,5 +99,5 @@ void gse_task(void *pvParameters) {
         // Disable write LED
         gpio_put(LED_PIN, 0); */
         mram_testing();
-    }
+    // }
 }
