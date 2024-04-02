@@ -18,126 +18,156 @@ static const uint8_t OUT_Y_L = 0x2A;
 static const uint8_t OUT_Y_H = 0x2B;
 static const uint8_t OUT_Z_L = 0x2C;
 static const uint8_t OUT_Z_H = 0x2D;
-static const uint8_t TEMP_OUT_L = 0x2E;
-static const uint8_t TEMP_OUT_H = 0x2F;
+static const uint8_t MAG_TEMP_OUT_L = 0x2E;
+static const uint8_t MAG_TEMP_OUT_H = 0x2F;
 static const uint8_t INT_CFG = 0x30;
 static const uint8_t INT_SRC = 0x31;
 static const uint8_t INT_THIS_L = 0x32;
 static const uint8_t INT_THIS_H = 0x33;
 
+/**
+ * config constants, use reference: https://github.com/adafruit/Adafruit_LIS3MDL/
+ * scale (for range of 4 gauss (default)) - divide xyz outputs by the scale to get 
+ * readings in gauss
+*/
+int SCALE = 6842; 
+
 // Not sure what this was for, should not be needed
 //uint i2c_init (i2c_inst_t *i2c, uint 100 * 1000) //initialization of i2c
 
-int reg_read_m(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg, uint8_t *output_buf, const uint8_t nbytes) 
-{
-    i2c_init(i2c, 100 * 1000);
+int config_mag(i2c_inst_t *i2c){
+    int success = 0;
+    // set performance mode
+    // xy - high performance mode (-10- ----)
+    // also enable temp sensor (1--- ----)
+    // also set 155 Hz data rate (---- --1-)
+    // combined (110- --1-)
+    uint8_t buf;
+    success += i2c_read_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
+    buf = (buf | 0b11000010) & 0b11011111;
+    // printf("writing to CTRL_REG1: %02x\n", buf);
+    success += i2c_write_to_register(i2c, SAD, CTRL_REG1, &buf, 1);
+    i2c_read_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
+    printf("%x\n", buf);
 
-	int num_bytes_read = 0;
+    // z - high performance mode (---- 10--)
+    success += i2c_read_from_register(i2c, SAD, CTRL_REG4, &buf, 1);
+    buf = (buf | 0b00001000) & 0b11111011;
+    // printf("writing to CTRL_REG4: %02x\n", buf);
+    success += i2c_write_to_register(i2c, SAD, CTRL_REG4, &buf, 1);
 
-	if (nbytes < 1) 
-	{
-        logln_info("too little bytes");
-		return 0;
-	}
+    // set range (this is default - currently no changes)
 
-    logln_info("read");
-	int ret = i2c_write_timeout_us(i2c, addr, &reg, 1, true, 1000000);
-	num_bytes_read = i2c_read_timeout_us(i2c, addr, output_buf, nbytes, false, 1000000);
+    // set operation mode
+    success += i2c_read_from_register(i2c, SAD, CTRL_REG3, &buf, 1);
+    buf = (buf & 0b11111100);
+    // printf("writing to CTRL_REG3: %02x\n", buf);
+    success += i2c_write_to_register(i2c, SAD, CTRL_REG3, &buf, 1);
 
-    logln_info("here: %d", ret);
-
-	return num_bytes_read;
+    return success;
 }
 
-int reg_write_m(i2c_inst_t *i2c, const uint8_t addr, const uint8_t reg, uint8_t *buf, const uint8_t nbytes) 
-{
-	if (nbytes < 1) 
-	{
-		return 0;
-	}
+int16_t get_x_output(i2c_inst_t *i2c) { //defines function
 
-	int num_bytes_written;
-	uint8_t msg[nbytes + 1];
+    uint8_t buf_low; //buf means buffer, allocates space for data to be entered in an 8 bit number (uint8_t)
+    i2c_read_from_register(i2c, SAD, OUT_X_L, &buf_low, 1); // taken from eps library, 0x28 is the location
 
-	msg[0] = reg;
-	for (int i = 0; i < nbytes; i++) {
-		msg[i + 1] = buf[i];
-	}
+    uint8_t buf_high;
+    i2c_read_from_register(i2c, SAD, OUT_X_H, &buf_high, 1);
 
-	num_bytes_written = i2c_write_blocking(i2c, addr, msg, (nbytes + 1), false);
+    int16_t x_out = 0;// (int) buf_low | ((int) buf_high << 8); // or ?logic operator, basically makes 0 or 1 = 1
+    x_out = ((x_out | buf_high) << 8) | buf_low;
 
-	return num_bytes_written;
-}
-
-int get_x_output(i2c_inst_t *i2c) { //defines function
-
-    uint8_t* buf_low; //buf means buffer, allocates space for data to be entered in an 8 bit number (uint8_t)
-    reg_read_m(i2c, SAD, OUT_X_L, buf_low, 1); // taken from eps library, 0x28 is the location
-
-    uint8_t* buf_high;
-    reg_read_m(i2c, SAD, OUT_X_H, buf_high, 1);
-
-    //high =   00000010
-    //low =    00000001
-    //high is just the higher register, probably just the higher value
-
-    int x_out = (int) buf_low | ((int) buf_high << 8); // or ?logic operator, basically makes 0 or 1 = 1
-    //0 | 1 = 1
-    //01 | 10 = 11
-    // 0 | 0 = 0
-
-    //<< 8 pushes values 8 to the left
-    //0000000 00000000 00000000 00000001
-    //0000000 00000000 00000010 <<<<<<<<
-    //or operator
-    //0000000 00000000 00000010 00000001
     return x_out;
 }
 
-
-int get_y_output(i2c_inst_t *i2c) { //Y output
+int16_t get_y_output(i2c_inst_t *i2c) { //Y output
 
     uint8_t buf_low;
-    reg_read(i2c, SAD, OUT_Y_L, buf_low, 1);
+    i2c_read_from_register(i2c, SAD, OUT_Y_L, &buf_low, 1);
 
     uint8_t buf_high;
-    reg_read(i2c, SAD, OUT_Y_H, buf_high, 1);
+    i2c_read_from_register(i2c, SAD, OUT_Y_H, &buf_high, 1);
 
-    int y_out = (int) buf_low | ((int) buf_high << 8);
+    int16_t y_out = 0; //(int) buf_low | ((int) buf_high << 8);
+    y_out = ((y_out | buf_high) << 8) | buf_low;
+
     return y_out;
 }
 
-int get_z_output(i2c_inst_t *i2c){ //Z output
+int16_t get_z_output(i2c_inst_t *i2c){ //Z output
 
     uint8_t buf_low;
-    reg_read(i2c, SAD, OUT_Z_L, buf_low, 1);
+    i2c_read_from_register(i2c, SAD, OUT_Z_L, &buf_low, 1);
 
     uint8_t buf_high;
-    reg_read(i2c, SAD, OUT_Z_H, buf_high, 1);
+    i2c_read_from_register(i2c, SAD, OUT_Z_H, &buf_high, 1);
 
-    int z_out = (int) buf_low | ((int) buf_high << 8);
+    int16_t z_out = 0; //(int) buf_low | ((int) buf_high << 8);
+    z_out = ((z_out | buf_high) << 8) | buf_low;
     return z_out;
 
 }
 
-int get_temp_output(i2c_inst_t *i2c){ //Temperature output
+int16_t get_temp_output(i2c_inst_t *i2c){ //Temperature output
 
     uint8_t buf_low;
-    reg_read(i2c, SAD, TEMP_OUT_L, buf_low, 1);
+    i2c_read_from_register(i2c, SAD, MAG_TEMP_OUT_L, &buf_low, 1);
 
     uint8_t buf_high;
-    reg_read(i2c, SAD, TEMP_OUT_H, buf_high, 1);
+    i2c_read_from_register(i2c, SAD, MAG_TEMP_OUT_H, &buf_high, 1);
 
-    int temp_out = (int) buf_low | ((int) buf_high << 8);
+    int16_t temp_out = 0; //(int) buf_low | ((int) buf_high << 8);
+    temp_out = ((temp_out | buf_high) << 8) | buf_low;
     return temp_out;
 
 }
 
-int get_status(i2c_inst_t *i2c) { //Indicates if data is available/overrun
+uint8_t get_mag_status(i2c_inst_t *i2c) { //Indicates if data is available/overrun
 
 	uint8_t buf;
-	reg_read(i2c, SAD, STATUS_REG, buf, 1);
+	i2c_read_from_register(i2c, SAD, STATUS_REG, &buf, 1);
 
-	int status = (int) buf;
-	return status;
+	// int status = (int) buf;
+	// return status;
+    return buf;
+}
+
+int mag_test(){
+
+    i2c_inst_t *i2c = i2c0;
+
+    // Setup i2c
+    config_i2c0();
+
+    // config mag
+    config_mag(i2c);
+
+    // Wait
+    sleep_ms(2000);
+
+    // Loop 1000 times
+    for(int i = 0; i < 10; i++){
+
+        printf("Status: %d\n", get_mag_status(i2c));
+        printf("Status (raw): %02x\n", get_mag_status(i2c));
+
+        printf("X output: %d\n", get_x_output(i2c));
+        printf("X output (gauss): %f\n", (float)get_x_output(i2c) / SCALE);
+
+        printf("Y output: %d\n", get_y_output(i2c));
+        printf("Y output (gauss): %f\n", (float)get_y_output(i2c) / SCALE);
+
+        printf("Z output: %d\n", get_z_output(i2c));
+        printf("Z output (gauss): %f\n", (float)get_z_output(i2c) / SCALE);
+
+        printf("Get Temp Output: %d\n", get_temp_output(i2c));
+        printf("%x\n", MAG_TEMP_OUT_L);
+
+        sleep_ms(500);
+
+    }
+
+    
+
 }

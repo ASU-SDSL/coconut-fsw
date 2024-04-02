@@ -23,6 +23,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/utilities/src/ccsds.c
     ${MAIN_DIRECTORY}/utilities/src/log.c
 
+    ${MAIN_DIRECTORY}/drivers/src/i2c.c
     ${MAIN_DIRECTORY}/drivers/src/eps.c
     ${MAIN_DIRECTORY}/drivers/src/rtc.c
     ${MAIN_DIRECTORY}/drivers/src/mag.c

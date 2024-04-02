@@ -8,7 +8,11 @@
 
 int main() {
 
-    //test comment
+
+    // Initialize debug timer
+#ifdef TSDEBUG
+    timer_hw->dbgpause = 0;
+#endif
 
     // Initialize debug logging
     init_debug_log();
@@ -31,7 +35,7 @@ int main() {
 #ifdef GSE_ENABLED
     BaseType_t gse_task_status = xTaskCreate(gse_task, 
                                         "GSE", 
-                                        128, 
+                                        256, 
                                         &sdMutex,
                                         1,
                                         NULL);
@@ -45,21 +49,21 @@ int main() {
 
     BaseType_t command_task_status = xTaskCreate(command_task,
                                         "COMMAND",
-                                        128,
+                                        512,
                                         NULL,
                                         1,
                                         NULL);
     
     BaseType_t telemetry_task_status = xTaskCreate(telemetry_task,
                                         "TELEMETRY",
-                                        128,
+                                        256,
                                         NULL,
                                         1,
                                         NULL);
 #ifndef GSE_ENABLED
     BaseType_t radio_task_status = xTaskCreate(radio_task, 
                                          "RADIO", 
-                                         128, 
+                                         256, 
                                          NULL, 
                                          1,
                                          NULL);

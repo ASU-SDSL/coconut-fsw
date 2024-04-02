@@ -2,10 +2,6 @@
 
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
-    // // Build command_char struct
-    // command_byte_t command_byte;
-    // command_byte.value = ch;
-    // // command_byte.source = source;
     // Send to command queue
     if (command_byte_queue) {
         xQueueSendToBackFromISR(command_byte_queue, &ch, NULL);
@@ -23,8 +19,12 @@ void parse_radio_packet(uint8_t* packet, size_t packet_size){
 }
 
 void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
+    logln_info("Received command with APID: %hu", header.apid);
     switch (header.apid) {
         case CHANGE_HEARTBEAT_TELEM_RATE:
+            if (payload_size < sizeof(change_heartbeat_telem_rate_t)) break;
+            change_heartbeat_telem_rate_t* args = payload_buf;
+            edit_steve_job_recur_time(HEARTBEAT_JOB_NAME, args->ms);
             break;
         default:
             logln_error("Received command with unknown APID: %hu", header.apid);
@@ -42,11 +42,8 @@ void command_task(void* unused_arg) {
             command_byte_t command_byte = 0;
             xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
             
-            // char log_str[256];
-            // sprintf(log_str, "Byte Received: 0x%x", command_byte);
-            // log_info(log_str);
-            // sprintf(log_str, "Checking Sync Byte: 0x%x", COMMAND_SYNC_BYTES[sync_index]);
-            // log_info(log_str);
+            logln_info("Byte Received: 0x%x", command_byte);
+            logln_info("Checking Sync Byte: 0x%x", COMMAND_SYNC_BYTES[sync_index]);
 
             // check if current sync index byte matches
             if (command_byte != COMMAND_SYNC_BYTES[sync_index]) {
@@ -62,7 +59,6 @@ void command_task(void* unused_arg) {
             // otherwise keep checking bytes
             sync_index += 1;
         }
-        logln_info("Received sync bytes!");
         // We've succesfully received all sync bytes if we've reached here
         // TODO: Add better error checks and handling here
         // Gather spacepacket header bytes

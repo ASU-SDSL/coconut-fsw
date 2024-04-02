@@ -47,10 +47,9 @@ void telemetry_task(void* unused_arg) {
         memcpy(payload_buffer + header_size, telemetry.payload_buffer, telemetry.payload_size);
         // Send telemetry through UART
         uart_queue_message(payload_buffer, total_payload_size);
-        radio_queue_message(payload_buffer, total_payload_size);
 
         // TODO: Send payload through radio
-
+        // radio_queue_message(payload_buffer, total_payload_size);
         // Free buffers
         vPortFree(payload_buffer);
         vPortFree(telemetry.payload_buffer);
