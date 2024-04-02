@@ -35,7 +35,7 @@ void setup() {
     /* //Add padding so that only a whole number of packets will fit into data storage. Padding should also be at least 2 bytes to allow for memory for cur_addr pointer.
     memory_start = MAX_BYTES % PACKET_SIZE;
     if (memory_start < 2) { memory_start += PACKET_SIZE; }
-    
+    Documents/coconut/coconut-fsw$
     //Set current address pointer based on whWRENat was last set in the two bytes before the start of packet memory. In case pointer was not set properly, the pointer will default to start of packet memory. 
     uint8_t p[2];
     read_bytes(memory_start - 2, p, 2);
@@ -99,15 +99,20 @@ int read_packets(uint8_t* buf, int num_packets) {
 }
 void mram_testing() {
     setup();
-    uint8_t my_buf[8] = { 1, 2, 3, 4, 5, 6, 7, 8}; 
-    for(int i = 0; i < 8; i++) {
-        printf("%d ", my_buf[i]);
-    }
-    printf("\n");
-    address_write(cur_addr, my_buf, 8);
-    uint8_t output[8];
-    read_bytes(cur_addr, output, 8);
-    for(int i = 0; i < 8; i++) {
-        printf("%d ", output[i]);
+    while (true) {
+        uint8_t my_buf[8] = { 1, 2, 3, 4, 5, 6, 7, 8}; 
+        printf("Writing: ");
+        for(int i = 0; i < 8; i++) {
+            printf("%d ", my_buf[i]);
+        }
+        printf("\n");
+        address_write(1, my_buf, 8);
+        uint8_t output[8];
+        read_bytes(1, output, 8);
+        printf("Reading: ");
+        for(int i = 0; i < 8; i++) {
+            printf("%d ", output[i]);
+        }
+        printf("\n");
     }
 }

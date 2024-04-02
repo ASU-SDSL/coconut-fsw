@@ -8,20 +8,20 @@
 #include <stdlib.h> 
 
 //Project specific constants
-#define SPI_BUS spi0
+#define SPI_BUS spi1
 #define FREQ 5000
 #define PACKET_SIZE 8
 #define MAX_BYTES 32768
 
 //PINS ON Raspberry Pi - to be set by electrical team.
-#define CS 1
-#define SO 2
-#define WP 3
-#define SI 5
-#define SCK 6
-#define HOLD 7
-#define GND 4
-#define PS 8
+#define CS 13 
+#define SO 12 // MISO/SDO/SO are all same thing
+#define WP 3 //Wired to power supply
+#define SI 15 // MOSI/SDI/SI are all same thing
+#define SCK 14 
+#define HOLD 7 // Wired up to power supply
+#define GND 4 //Wired up to random place
+#define PS 8 // Wired up to random place
 
 //Command codes
 #define WREN 0x06
