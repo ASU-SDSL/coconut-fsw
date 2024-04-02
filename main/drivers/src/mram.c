@@ -32,7 +32,7 @@ void setup() {
     //Make sure device is initially awake
     send__simple_command(WAKE);
 
-    //Add padding so that only a whole number of packets will fit into data storage. Padding should also be at least 2 bytes to allow for memory for cur_addr pointer.
+    /* //Add padding so that only a whole number of packets will fit into data storage. Padding should also be at least 2 bytes to allow for memory for cur_addr pointer.
     memory_start = MAX_BYTES % PACKET_SIZE;
     if (memory_start < 2) { memory_start += PACKET_SIZE; }
     
@@ -40,6 +40,7 @@ void setup() {
     uint8_t p[2];
     read_bytes(memory_start - 2, p, 2);
     cur_addr = max(p[0]*0x100 +p[1], memory_start);
+    */
 }
 
 //Make sure code doesn't break due to copying to local variable in method instead of using exact same memory location. 
