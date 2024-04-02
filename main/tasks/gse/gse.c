@@ -6,7 +6,6 @@
 #include "command.h"
 #include "rtc.h"
 #include "sdcard.h"
-#include "mram.h"
 
 #include "eps.h"
 #include "mag.h"
