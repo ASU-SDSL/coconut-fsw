@@ -54,7 +54,7 @@ void kill_steve_job(const char* job_name) {
     delete_steve_job(job);
     // Give mutex back
     xSemaphoreGive(g_steve_context.mutex);
-}
+};
 
 void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time) {
     // logln_info("Changing %s job recur time to: %d ms", job_name, ms_recur_time);
@@ -94,7 +94,7 @@ void print_debug_exec_times() {
         }
         // print details
         int ms_until_exec = ticks_to_ms(temp->execute_time - get_uptime()); // NOTE: will not be 100% accurate until get_uptime uses a RTC, currently per-task
-        int secs_until_exec = ms_to_secs();
+        int secs_until_exec = ms_to_secs(ms_until_exec);
         logln("\t%s\t\t%ds", temp->name, secs_until_exec); // example: "heartbeat_telemetry      23s"
     }
     // Give mutex back

@@ -58,6 +58,7 @@ void schedule_delayed_job_mins(const char* job_name, job_func job_func_ptr, unsi
 // Job Management User Functions
 void kill_steve_job(const char* job_name);
 void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time);
+void print_debug_exec_times();
 
 /* INTERNAL FUNCTIONS */
 
