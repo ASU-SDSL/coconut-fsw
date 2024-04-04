@@ -9,7 +9,7 @@
 
 //Project specific constants
 #define SPI_BUS spi1
-#define FREQ 5000
+#define FREQ 1000000
 #define PACKET_SIZE 8
 #define MAX_BYTES 32768
 
