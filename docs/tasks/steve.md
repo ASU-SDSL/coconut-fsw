@@ -157,6 +157,20 @@ The `steve_job_t` type is a struct that represents a steve job. In order to crea
 
 </details>
 
+
+<details><summary><big>print_debug_exec_times()</big></summary>
+
+#### Description
+> Prints all the currently queued STEVE jobs and the time until they run in milliseconds.
+
+#### Parameters
+> None
+
+#### Returns
+> None
+
+</details>
+
 ## Internal Functions
 ### Note: These functions should ***NEVER*** be run outside of `steve.c`
 
