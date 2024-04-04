@@ -6,7 +6,7 @@
 // }
 
 // write file
-void write_file(const char* file_name, const char* text_to_write) {
+void write_file(const char* file_name, char* text_to_write) {
     // create new blank write operation and fill it with correct values
     filesystem_queue_operations_t new_write_operation;
     new_write_operation.operation_type = WRITE;
@@ -21,6 +21,21 @@ void write_file(const char* file_name, const char* text_to_write) {
     }
     // after queue is initialized, add write op onto queue
     xQueueSendToBack(filesystem_queue, &new_write_operation, portMAX_DELAY);
+}
+
+// this function takes in a buffer as a parameter to store the result from the read
+// the caller is responsible for allocating memory for this buffer and freeing the memory
+void read_file(const char* file_name, char* result_buffer) {
+    filesystem_queue_operations_t new_read_operation;
+    new_read_operation.operation_type = READ;
+
+    new_read_operation.file_name = file_name;
+    new_read_operation.read_buffer = result_buffer;
+
+    while(filesystem_queue == NULL) {
+        vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
+    }
+    xQueueSendToBack(filesystem_queue, &new_read_operation, portMAX_DELAY);
 }
 
 // //append file
@@ -55,22 +70,27 @@ void sd_task(void* unused_arg) {
         // TODO: Find a better solution to handling queue creation failure
         vTaskDelete(NULL);
     }
+    logln_info("Queue created\r\n");
 
     // start inf loop
     filesystem_queue_operations_t received_operation;
-    while(true) {
+    while(1) {
         // check queue for queued operation
         // wait forever until an operation is in queue
         xQueueReceive(filesystem_queue, &received_operation, EMPTY_QUEUE_WAIT_TIME);
+        logln_info("Received operation %d\r\n", received_operation.operation_type);
 
         // if operation is in queue, execute it
         switch (received_operation.operation_type) {
             case WRITE:
                 // execute write operation
-                write_file(received_operation.file_name, received_operation.text_to_write);
+                sd_write(received_operation.file_name, received_operation.text_to_write, 0);
+                logln_info("sd write\r\n");
                 break;
             case READ:
                 // execute read operation
+                sd_read(received_operation.file_name, received_operation.read_buffer);
+                logln_info("sd read\r\n");
                 break;
             default:
                 // TODO: figure out proper way to handle this error

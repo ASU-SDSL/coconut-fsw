@@ -7,10 +7,11 @@ TODO:   sd card driver does not look finished, so finish the driver to read and 
 /* Includes and Constants */
 #pragma once
 
-#include "sdcard.h"
+#include "storage.h"
 #include <semphr.h>
 #include "queue.h"
 #include "FreeRTOS.h"
+#include "log.h"
 
 #define FILESYSTEM_QUEUE_LENGTH 64
 #define EMPTY_QUEUE_WAIT_TIME portMAX_DELAY
@@ -31,7 +32,7 @@ QueueHandle_t filesystem_queue;
 // TODO: come up with actual struct def
 typedef struct filesystem_queue_operations {
     operation_type_t operation_type;
-    char* file_name;
+    const char* file_name;
     char* text_to_write;
     char* read_buffer;
 } filesystem_queue_operations_t;
@@ -39,11 +40,11 @@ typedef struct filesystem_queue_operations {
 /* User Functions */
 
 //read file
-char* read_file(const char* file_name);
+void read_file(const char* file_name, char* result_buffer);
 
 //write file
 // may want to add return value to specify whether operation was successful
-void write_file(const char* file_name, const char* text_to_write);
+void write_file(const char* file_name, char* text_to_write);
 
 //append file
 void append_file(const char* file_name, const char* text_to_append);

@@ -19,6 +19,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/tasks/radio/radio.cpp
     ${MAIN_DIRECTORY}/tasks/command/command.c
     ${MAIN_DIRECTORY}/tasks/telemetry/telemetry.c
+    ${MAIN_DIRECTORY}/tasks/filesystem/filesystem.c
 
     ${MAIN_DIRECTORY}/utilities/src/ccsds.c
     ${MAIN_DIRECTORY}/utilities/src/log.c
@@ -59,6 +60,7 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE ${MAIN_DIRECTORY}/tasks/radio
     PRIVATE ${MAIN_DIRECTORY}/tasks/steve
     PRIVATE ${MAIN_DIRECTORY}/tasks/telemetry
+    PRIVATE ${MAIN_DIRECTORY}/tasks/filesystem
 
     PRIVATE ${MAIN_DIRECTORY}/utilities/include
     PRIVATE ${MAIN_DIRECTORY}/drivers/include
