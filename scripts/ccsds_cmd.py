@@ -8,11 +8,11 @@ ser = serial.Serial('/dev/ttyUSB0', baudrate=115200)
 
 ### Create change telem rate payload
 # spacepacket_header = SpacePacketHeader(
-#     packet_type=PacketType.TC, apid=0x01, seq_count=0, data_len=4)
+#     packet_type=PacketType.TC, apid=0x01, seq_count=0, data_len=3)
 # header_bytes = spacepacket_header.pack()
 # payload = b"\x35\x2E\xF8\x53"
 # payload += header_bytes
-# payload += int.to_bytes(300, 4, byteorder='little') # ms
+# payload += int.to_bytes(1, 4, byteorder='little') # ms
 
 ### List STEVE task payload
 spacepacket_header = SpacePacketHeader(
@@ -20,7 +20,7 @@ spacepacket_header = SpacePacketHeader(
 header_bytes = spacepacket_header.pack()
 payload = b"\x35\x2E\xF8\x53"
 payload += header_bytes
-
+payload += b"\x69"
 
 # Send spacepacket uart port
 ser.write(payload)
