@@ -56,7 +56,8 @@ int address_write(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
     send__simple_command(WREN);
     gpio_put(CS, 0);
     //Trying two methods, send cmd, address, and data bytes separately; Or,make big array for all of them.
-    spi_write_blocking(SPI_BUS, WRITE, 1);
+    uint8_t cmd = WRITE;
+    spi_write_blocking(SPI_BUS, &cmd, 1);
     // uint16_t big_endian_addr = ((addr & 0xFF) << 8) | (addr & 0xFF00);
     uint8_t arr[2] = {addr/0x100, addr % 0x100}; // Code to cast uint16 address into two bytes
     spi_write_blocking(SPI_BUS, arr, 2);
@@ -70,7 +71,8 @@ int read_bytes(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
     if (nbytes <= 0) { return 0; }
 
     gpio_put(CS, 0);
-    spi_write_blocking(SPI_BUS, READ, 1);
+    uint8_t cmd = READ;
+    spi_write_blocking(SPI_BUS, &cmd, 1);
     uint8_t arr[2] = { addr/0x100, addr%0x100 };
     spi_write_blocking(SPI_BUS, arr, 2); //Code to cast uint16 address into two bytes to be sent through SPI
     spi_read_blocking(SPI_BUS, NULL, buf, nbytes);
