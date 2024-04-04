@@ -1,5 +1,4 @@
-#ifndef CCSDS_FILE_DEFINED
-#define CCSDS_FILE_DEFINED
+#pragma once
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -20,5 +19,3 @@ ccsds_header_t parse_ccsds_header(uint8_t* header_buf);
 
 // TODO: Needs implementation
 bool encode_ccsds_header(ccsds_header_t header, uint8_t* out_buf);
-
-#endif /* !CCSDS_FILE_DEFINED */

@@ -20,8 +20,11 @@ set(SOURCES
     ${MAIN_DIRECTORY}/tasks/command/command.c
     ${MAIN_DIRECTORY}/tasks/telemetry/telemetry.c
 
+    ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
+
     ${MAIN_DIRECTORY}/utilities/src/ccsds.c
     ${MAIN_DIRECTORY}/utilities/src/log.c
+    ${MAIN_DIRECTORY}/utilities/src/timing.c
 
     ${MAIN_DIRECTORY}/drivers/src/i2c.c
     ${MAIN_DIRECTORY}/drivers/src/eps.c
@@ -57,6 +60,7 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE ${MAIN_DIRECTORY}/tasks/gse
     PRIVATE ${MAIN_DIRECTORY}/tasks/radio
     PRIVATE ${MAIN_DIRECTORY}/tasks/steve
+    PRIVATE ${MAIN_DIRECTORY}/tasks/steve/jobs
     PRIVATE ${MAIN_DIRECTORY}/tasks/telemetry
 
     PRIVATE ${MAIN_DIRECTORY}/utilities/include

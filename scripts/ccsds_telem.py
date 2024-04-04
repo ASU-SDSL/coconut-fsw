@@ -9,6 +9,7 @@ ser = serial.Serial('/dev/ttyUSB0', baudrate=115200)
 sync_bytes = b"\x35\x2E\xF8\x53"
 
 while True:
+    # receive telemetry
     received_byte = ser.read(1)
     print(received_byte)
   

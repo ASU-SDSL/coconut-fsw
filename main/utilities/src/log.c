@@ -10,7 +10,7 @@ void init_debug_log() {
 }
 
 void print_banner() {
-    _logln(
+    logln(
         "=============================\n"
         "╔═╗╔═╗╔═╗╔═╗╔╗╔╦ ╦╔╦╗        \n"
         "║  ║ ║║  ║ ║║║║║ ║ ║         \n"
