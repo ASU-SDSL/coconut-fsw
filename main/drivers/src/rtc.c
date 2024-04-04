@@ -54,6 +54,7 @@ int read_temp(i2c_inst_t *i2c) {
 
 int rtc_get_second(i2c_inst_t *i2c){
     uint8_t input;
+    printf("%x\n", input);
     i2c_read_from_register(i2c, RTC_ADDR, RTC_SECONDS_REG, &input, 1);
     //      ones place              tens place
     return (int)(input & 0b00001111) + (int)(10 * (input >> 4));
