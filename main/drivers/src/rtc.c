@@ -70,12 +70,6 @@ int rtc_get_minute(i2c_inst_t *i2c){
 int rtc_get_hour(i2c_inst_t *i2c){
     uint8_t input;
     i2c_read_from_register(i2c, RTC_ADDR, RTC_HOURS_REG, &input, 1);
-    return input; 
-}
-
-int rtc_get_date(i2c_inst_t *i2c){
-    uint8_t input;
-    i2c_read_from_register(i2c, RTC_ADDR, RTC_DATE_REG, &input, 1);
 
     if(input & (0b1 << 6)){ // if bit 6 is high then read as 12h hour 
             //   ones place             add ten if ten bit              add 12 if am/pm bit is pm (1 is am)
@@ -87,6 +81,13 @@ int rtc_get_date(i2c_inst_t *i2c){
     }
 
     return input; 
+}
+
+int rtc_get_date(i2c_inst_t *i2c){
+    uint8_t input;
+    i2c_read_from_register(i2c, RTC_ADDR, RTC_DATE_REG, &input, 1);
+
+    return (int)(input & 0b00001111) + (int)(10 * (input >> 4));
 }
 
 int rtc_get_month(i2c_inst_t *i2c){
