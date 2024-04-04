@@ -51,7 +51,7 @@ void send__simple_command(uint8_t cmd) {
 }
 
 int address_write(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
-    if (nbytes <= 0) { return 0; }
+     if (nbytes <= 0) { return 0; }
 
     send__simple_command(WREN);
     gpio_put(CS, 0);
@@ -100,12 +100,13 @@ int read_packets(uint8_t* buf, int num_packets) {
 void mram_testing() {
     setup();
 
-    uint8_t my_buf[8] = {1, 2, 3, 4, 5, 6, 7, 8};
-    address_write(1, my_buf, 8);
-    uint8_t output[8];
-    read_bytes(1, output, 8);
+    while(true) {
+        uint8_t my_buf[8] = {1, 2, 3, 4, 5, 6, 7, 8};
+        address_write(1, my_buf, 1);
+        uint8_t output[8];
+        read_bytes(1, output, 1);
 
-    while(true){
+    
         printf("Writing: ");
         for (int i = 0; i < 8; i++)
         {
