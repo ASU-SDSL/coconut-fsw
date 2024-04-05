@@ -87,8 +87,11 @@ uint8_t rtc_read_temp(i2c_inst_t *i2c, float* output) {
         return 1;
     }
 
+    // printf("Upper: 0x%x Lower 0x%x\n", tempUpper, tempLower);
+    // printf("Upper: %d Lower %f\n", ((int)tempUpper), ((0.5) * (1 && (tempLower & 0b10000000)) + (0.25 * (1 && (tempLower & 0b010000000)))));
+
     //      2'C integer        fixed point decimal 
-    *output = ((int)tempUpper) + (0.5 * (tempLower & 0b10000000)) + (0.25 * (tempLower & 0b01000000));
+    *output = ((int)tempUpper) + ((0.5) * (1 && (tempLower & 0b10000000)) + (0.25 * (1 && (tempLower & 0b010000000))));
 
     return 0;
 }
@@ -121,14 +124,13 @@ uint8_t rtc_get_hour(i2c_inst_t *i2c, uint8_t* output){
     if(i2c_read_from_register(i2c, RTC_ADDR, RTC_HOURS_REG, output, 1)){
         return 1;
     }
-    printf("hour raw: %d\n", *output);
     if(*output & (0b1 << 6)){ // if bit 6 is high then read as 12h hour 
                 //   ones place             add ten if ten bit              add 12 if am/pm bit is pm (1 is am)
-        *output = (*output & 0b00001111) + (10 * (*output & 0b00010000)) + (12 * !((*output) & 0b00100000));
+        *output = ((*output & 0b00001111) + (10 * (1 && (*output & 0b00010000))) + (12 * (1 && ((*output) & 0b00100000)))) % 24;
     }
     else {
             //      ones place              add ten if ten bit          add 20 if 20 bit
-        *output = (*output & 0b00001111) + (10 * (*output & 0b00010000) + (20 * (*output & 0b00100000)));
+        *output = ((*output & 0b00001111) + (10 * (1 && (*output & 0b00010000)) + (20 * (1 && (*output & 0b00100000))))) % 24;
     }
 
     return 0; 
@@ -164,7 +166,7 @@ uint8_t rtc_get_year(i2c_inst_t *i2c, uint8_t* output){
         return 1;
     }
 
-    *output = (*output & 0b00001111) + (10 * (*output & 0b11110000)); 
+    *output = (*output & 0b00001111) + (10 * (*output >> 4)); 
 
     return 0;
 }
@@ -177,14 +179,14 @@ void rtc_test() {
     config_i2c0();
 
     // set time
-    rtc_set_time(i2c, 12, 11, 0, 4, 5, 24);
+    rtc_set_time(i2c, 15, 11, 0, 4, 5, 24);
     sleep_ms(100);
 
     for(int i = 0; i < 100; i++){
         float temp;
-        // rtc_update_temp(i2c);
-        // rtc_read_temp(i2c, &temp);
-        // printf("RTC Temp: %f\n", temp);
+        rtc_update_temp(i2c);
+        rtc_read_temp(i2c, &temp);
+        printf("RTC Temp: %f\n", temp);
 
         uint8_t hour;
         uint8_t minute;
