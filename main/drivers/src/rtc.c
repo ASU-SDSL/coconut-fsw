@@ -95,12 +95,15 @@ uint8_t rtc_read_temp(i2c_inst_t *i2c, float* output) {
 
 // returns 0 on success
 uint8_t rtc_get_second(i2c_inst_t *i2c, uint8_t* output){
-    if(i2c_read_from_register(i2c, RTC_ADDR, RTC_SECONDS_REG, output, 1)){
+    uint8_t input;
+    if(i2c_read_from_register(i2c, RTC_ADDR, RTC_SECONDS_REG, &input, 1)){
         return 1;
     }
-    printf("Seconds raw: %x\n", *output);
+    printf("Seconds raw: %x\n", input);
     //           ones place                     tens place
-    *output = (*output & 0b00001111) + (10 * (*output >> 4));
+    input = (input & 0b00001111) + (10 * (input >> 4));
+    *output = input;
+    //*output = (*output & 0b00001111) + (10 * (*output >> 4));
 
     return 0;
 }
