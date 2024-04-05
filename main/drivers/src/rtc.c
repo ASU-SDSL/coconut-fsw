@@ -189,9 +189,10 @@ void rtc_test() {
     config_i2c0();
 
     // set time
-    //rtc_set_time(i2c, 0, 0, 0, 4, 4, 24);
+    rtc_set_time(i2c, 12, 11, 0, 4, 5, 24);
+    sleep_ms(100);
 
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 100; i++){
         float temp;
         // rtc_update_temp(i2c);
         // rtc_read_temp(i2c, &temp);
@@ -224,7 +225,7 @@ void rtc_test() {
 
         printf("Seconds return: %d\n", rtc_return_second(i2c));
         printf("RTC TimeStamp: \n%d:%d:%d %d/%d/%d \n", hour, minute, second, month, date, year);  
-        sleep_ms(100);
+        sleep_ms(1000);
     }
 
 }
