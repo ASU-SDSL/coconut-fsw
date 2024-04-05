@@ -108,6 +108,14 @@ uint8_t rtc_get_second(i2c_inst_t *i2c, uint8_t* output){
     return 0;
 }
 
+uint8_t rtc_return_second(i2c_inst_t *i2c){
+    uint8_t input;
+    i2c_read_from_register(i2c, RTC_ADDR, RTC_SECONDS_REG, &input, 1);
+    printf("raw return: %x\n", input);
+
+    return (int)(input & 0b00001111) + (int)(10 * (input >> 4));
+}
+
 // returns 0 on success
 uint8_t rtc_get_minute(i2c_inst_t *i2c, uint8_t* output){
 
@@ -181,13 +189,13 @@ void rtc_test() {
     config_i2c0();
 
     // set time
-    rtc_set_time(i2c, 0, 0, 0, 4, 4, 24);
+    //rtc_set_time(i2c, 0, 0, 0, 4, 4, 24);
 
     for(int i = 0; i < 10; i++){
         float temp;
-        rtc_update_temp(i2c);
-        rtc_read_temp(i2c, &temp);
-        printf("RTC Temp: %f\n", temp);
+        // rtc_update_temp(i2c);
+        // rtc_read_temp(i2c, &temp);
+        // printf("RTC Temp: %f\n", temp);
 
         uint8_t hour;
         uint8_t minute;
@@ -214,6 +222,7 @@ void rtc_test() {
             printf("Date failed\n");
         }
 
+        printf("Seconds return: %d\n", rtc_return_second(i2c));
         printf("RTC TimeStamp: \n%d:%d:%d %d/%d/%d \n", hour, minute, second, month, date, year);  
         sleep_ms(100);
     }
