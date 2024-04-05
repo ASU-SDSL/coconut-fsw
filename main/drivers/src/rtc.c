@@ -121,7 +121,7 @@ uint8_t rtc_get_hour(i2c_inst_t *i2c, uint8_t* output){
     if(i2c_read_from_register(i2c, RTC_ADDR, RTC_HOURS_REG, output, 1)){
         return 1;
     }
-
+    printf("hour raw: %d\n", *output);
     if(*output & (0b1 << 6)){ // if bit 6 is high then read as 12h hour 
                 //   ones place             add ten if ten bit              add 12 if am/pm bit is pm (1 is am)
         *output = (*output & 0b00001111) + (10 * (*output & 0b00010000)) + (12 * !((*output) & 0b00100000));
