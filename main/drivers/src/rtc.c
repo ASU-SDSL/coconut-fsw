@@ -95,25 +95,13 @@ uint8_t rtc_read_temp(i2c_inst_t *i2c, float* output) {
 
 // returns 0 on success
 uint8_t rtc_get_second(i2c_inst_t *i2c, uint8_t* output){
-    uint8_t input;
-    if(i2c_read_from_register(i2c, RTC_ADDR, RTC_SECONDS_REG, &input, 1)){
+    if(i2c_read_from_register(i2c, RTC_ADDR, RTC_SECONDS_REG, output, 1)){
         return 1;
     }
-    printf("Seconds raw: %x\n", input);
     //           ones place                     tens place
-    input = (input & 0b00001111) + (10 * (input >> 4));
-    *output = input;
-    //*output = (*output & 0b00001111) + (10 * (*output >> 4));
+    *output = (*output & 0b00001111) + (10 * (*output >> 4));
 
     return 0;
-}
-
-uint8_t rtc_return_second(i2c_inst_t *i2c){
-    uint8_t input;
-    i2c_read_from_register(i2c, RTC_ADDR, RTC_SECONDS_REG, &input, 1);
-    printf("raw return: %x\n", input);
-
-    return (int)(input & 0b00001111) + (int)(10 * (input >> 4));
 }
 
 // returns 0 on success
@@ -223,7 +211,6 @@ void rtc_test() {
             printf("Date failed\n");
         }
 
-        printf("Seconds return: %d\n", rtc_return_second(i2c));
         printf("RTC TimeStamp: \n%d:%d:%d %d/%d/%d \n", hour, minute, second, month, date, year);  
         sleep_ms(1000);
     }
