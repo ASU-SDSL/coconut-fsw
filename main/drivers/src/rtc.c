@@ -155,7 +155,7 @@ uint8_t rtc_get_month(i2c_inst_t *i2c, uint8_t* output){
 
     *output &= 0b01111111; // remove century bit 
     //      ones place              add ten if ten bit
-    *output = (*output & 0b00001111) + (10 * (*output & 0b00010000));
+    *output = (*output & 0b00001111) + (10 * (1 && (*output & 0b00010000)));
 
     return 0;
 }
@@ -182,7 +182,7 @@ void rtc_test() {
     rtc_set_time(i2c, 23, 58, 0, 12, 31, 24);
     sleep_ms(100);
 
-    for(int i = 0; i < 100; i++){
+    for(int i = 0; i < 150; i++){
         float temp;
         rtc_update_temp(i2c);
         rtc_read_temp(i2c, &temp);
