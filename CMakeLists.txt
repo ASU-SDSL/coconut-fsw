@@ -19,10 +19,17 @@ set(COMMON_CODE_DIRECTORY "${CMAKE_SOURCE_DIR}/freertos/Common")
 set(DO_DEBUG "ON")
 
 # Set flags and directory variables
+
+# Simulator
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcommon")
+
+# RP2040
+# set(CMAKE_C_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
+# set(CMAKE_CXX_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
+
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DTSDEBUG -g -O0")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTSDEBUG -g -O0")
-set(CMAKE_C_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
-set(CMAKE_CXX_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
 set(FREERTOS_CFG_DIRECTORY "${CMAKE_SOURCE_DIR}/freertos")
 set(FREERTOS_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/FreeRTOS-Kernel")
 
@@ -33,22 +40,55 @@ project(${PROJECT_NAME}
 )
 
 # Add FreeRTOS as a library
-add_library(FreeRTOS STATIC
+set (FREERTOS_SOURCE_FILES
     ${FREERTOS_SRC_DIRECTORY}/event_groups.c
     ${FREERTOS_SRC_DIRECTORY}/list.c
     ${FREERTOS_SRC_DIRECTORY}/queue.c
     ${FREERTOS_SRC_DIRECTORY}/stream_buffer.c
     ${FREERTOS_SRC_DIRECTORY}/tasks.c
     ${FREERTOS_SRC_DIRECTORY}/timers.c
-    ${FREERTOS_SRC_DIRECTORY}/portable/MemMang/heap_3.c
-    ${FREERTOS_SRC_DIRECTORY}/portable/GCC/ARM_CM0/port.c
+    ${FREERTOS_SRC_DIRECTORY}/portable/MemMang/heap_3.c 
 )
 
+# Simulator
+set(FREERTOS_SOURCE_FILES
+    ${FREERTOS_SOURCE_FILES}
+    ${FREERTOS_SRC_DIRECTORY}/portable/ThirdParty/GCC/Posix/port.c
+    ${FREERTOS_SRC_DIRECTORY}/portable/ThirdParty/GCC/Posix/utils/wait_for_event.c
+)
+
+# RP2040
+# set(FREERTOS_SOURCE_FILES
+#     ${FREERTOS_SOURCE_FILES}
+#     ${FREERTOS_SRC_DIRECTORY}/portable/ThirdPartyGCC/ARM_CM0/port.c
+# )
+
+add_library(FreeRTOS STATIC
+    ${FREERTOS_SOURCE_FILES}
+)
+
+
 # Build FreeRTOS
-target_include_directories(FreeRTOS PUBLIC
+set(FREERTOS_INCLUDE_FILES
     ${FREERTOS_CFG_DIRECTORY}/
     ${FREERTOS_SRC_DIRECTORY}/include
-    ${FREERTOS_SRC_DIRECTORY}/portable/GCC/ARM_CM0
+)
+
+# Simulator
+set(FREERTOS_INCLUDE_FILES
+    ${FREERTOS_INCLUDE_FILES}
+    ${FREERTOS_SRC_DIRECTORY}/portable/ThirdParty/GCC/Posix
+    ${FREERTOS_SRC_DIRECTORY}/portable/ThirdParty/GCC/Posix/utils
+)
+
+# RP2040
+# set(FREERTOS_INCLUDE_FILES
+#     ${FREERTOS_INCLUDE_FILES}
+#     ${FREERTOS_SRC_DIRECTORY}/portable/GCC/ARM_CM0
+# )
+
+target_include_directories(FreeRTOS PUBLIC
+    ${FREERTOS_INCLUDE_FILES}
 )
 
 # Include the app's source code

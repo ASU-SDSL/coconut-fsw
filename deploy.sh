@@ -78,7 +78,7 @@ if [[ ${do_build} -eq 1 ]]; then
     
     # generate make files
     # if [[ ! -e "./build" ]]; then
-        cmake -S . -B build/ -D "CMAKE_C_COMPILER:FILEPATH=$(which arm-none-eabi-gcc)" -D CMAKE_BUILD_TYPE:STRING="${build_string}"
+        cmake -S . -B build/ -D "CMAKE_C_COMPILER:FILEPATH=$(which arm-none-eabi-gcc)" -D CMAKE_BUILD_TYPE:STRING="${build_string}" 
         err=$?
     # fi
     

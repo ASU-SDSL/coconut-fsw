@@ -50,6 +50,7 @@ target_link_libraries(${PROJECT_NAME} LINK_PUBLIC
     hardware_i2c
     RadioLib
     FatFs_SPI
+    pthread
     #spacepacket - note: for now, just include spacepacket as an executable if its needed, otherwise we will probably have to make it a library through its
     #               cmakelists file
 )
