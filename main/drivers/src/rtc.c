@@ -179,7 +179,7 @@ void rtc_test() {
     config_i2c0();
 
     // set time
-    rtc_set_time(i2c, 15, 11, 0, 4, 5, 24);
+    rtc_set_time(i2c, 23, 58, 0, 12, 31, 24);
     sleep_ms(100);
 
     for(int i = 0; i < 100; i++){
