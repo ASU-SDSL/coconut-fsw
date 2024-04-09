@@ -43,13 +43,13 @@ void heartbeat_telemetry_job(void* unused) {
 
     // Mag data
     int16_t magbuf; 
-    if(!mag_get_x(i2c, magbuf)) payload.mag_x = magbuf;
+    if(!mag_get_x(i2c, &magbuf)) payload.mag_x = magbuf;
     else payload.mag_x = 0; 
-    if(!mag_get_y(i2c, magbuf)) payload.mag_y = magbuf;
+    if(!mag_get_y(i2c, &magbuf)) payload.mag_y = magbuf;
     else payload.mag_y = 0; 
-    if(!mag_get_z(i2c, magbuf)) payload.mag_z = magbuf; 
+    if(!mag_get_z(i2c, &magbuf)) payload.mag_z = magbuf; 
     else payload.mag_z = 0; 
-    if(!mag_get_temp(i2c, magbuf)) payload.mag_temp = magbuf; 
+    if(!mag_get_temp(i2c, &magbuf)) payload.mag_temp = magbuf; 
     else payload.mag_temp = 0; 
 
     // Send it

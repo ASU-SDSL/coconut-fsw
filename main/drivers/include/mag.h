@@ -17,22 +17,26 @@ int mag_cofig(i2c_inst_t *i2c);
 
 // x, y, and z outputs can be given units, they are scaled based on config input 
 /**
- * Returns the x output (unitless)
+ * Writes the x output to [output]
+ * Returns 0 on success
 */
 uint8_t mag_get_x(i2c_inst_t *i2c, int16_t* output);
 
 /**
- * Returns the y output (unitless)
+ * Writes the y output to [output]
+ * Returns 0 on success
 */
 uint8_t mag_get_y(i2c_inst_t *i2c, int16_t* output);
 
 /**
- * Returns the z output (unitless)
+ * Writes the z output to [output]
+ * Returns 0 on success
 */
 uint8_t mag_get_z(i2c_inst_t *i2c, int16_t* output);
 
 /**
- * Returns the temperature output in Celsius
+ * Writes the temperature output in Celsius to [output]
+ * Returns 0 on success
 */
 uint8_t mag_get_temp(i2c_inst_t *i2c, int16_t* output);
 
