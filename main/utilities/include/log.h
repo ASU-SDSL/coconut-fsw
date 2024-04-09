@@ -1,5 +1,4 @@
-#ifndef LOG_FILE_DEFINED
-#define LOG_FILE_DEFINED
+#pragma once
 
 #include <stdarg.h>
 
@@ -15,19 +14,17 @@ void print_banner();
 // Use these!
 
 #define logln_info(f_, ...) \
-    _log("[INFO] "); _logln((f_), ##__VA_ARGS__);
+    _log("[INFO] "); logln((f_), ##__VA_ARGS__);
 
 #define logln_warn(f_, ...) \
-    _log("[WARN] "); _logln((f_), ##__VA_ARGS__);
+    _log("[WARN] "); logln((f_), ##__VA_ARGS__);
 
 #define logln_error(f_, ...) \
-    _log("[ERROR] "); _logln((f_), ##__VA_ARGS__);
+    _log("[ERROR] "); logln((f_), ##__VA_ARGS__);
 
-#define _logln(f_, ...) \
+#define logln(f_, ...) \
     _log((f_), ##__VA_ARGS__); _log("\n");
 
 /* INTERNAL FUNCTIONS */
 
 void _log(char* str, ...);
-
-#endif /* !LOG_FILE_DEFINED */

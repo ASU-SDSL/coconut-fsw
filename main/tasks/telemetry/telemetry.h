@@ -12,7 +12,6 @@
 #include "radio.h"
 #include "state.h"
 
-
 #define TELEMETRY_SYNC_BYTES "\x35\x2E\xF8\x53"
 #define TELEMETRY_MAX_QUEUE_ITEMS 64
 #define TELEMETRY_CHECK_DELAY_MS 500
@@ -24,24 +23,10 @@ QueueHandle_t telemetry_queue;
 /* TELEMETRY DEFINITIONS*/
 typedef enum {
     RESERVED = 0,
-
     HEARTBEAT = 1, // just to keep the command and telemetry apid equal :)
     DOWNLINK_GROUNDNODE_DATA = 2, 
     DOWNLINK_TELEMETRY_DATA = 3
 } telemetry_apid_t;
-
-typedef struct __attribute__((__packed__)) {
-    payload_state_t state;
-    TickType_t uptime;
-    uint16_t eps_shunt;
-    uint16_t eps_vbus;
-    uint16_t eps_power;
-    uint16_t eps_current;
-    int16_t mag_x;
-    int16_t mag_y;
-    int16_t mag_z;
-    int16_t mag_temp;
-} heartbeat_telemetry_t;
 
 /* USER FUNCTIONS */
 void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t payload_size);
