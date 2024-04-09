@@ -36,8 +36,9 @@ uint8_t rtc_set_time(i2c_inst_t *i2c, uint8_t hour, uint8_t minute, uint8_t seco
     if(i2c_write_to_register(i2c, RTC_ADDR, RTC_MINUTES_REG, &buf, 1)){
         return 2;
     }
-    //    24h mode      tens place      ones place
-    buf = (1 << 6) | (hour / 10 << 4) | (hour % 10);
+    //       tens place      ones place
+    buf = (hour / 10 << 4) | (hour % 10);
+    printf("hour: %x\n", buf);
     if(i2c_write_to_register(i2c, RTC_ADDR, RTC_HOURS_REG, &buf, 1)){
         return 3;
     }
@@ -179,7 +180,7 @@ void rtc_test() {
     config_i2c0();
 
     // set time
-    rtc_set_time(i2c, 23, 58, 0, 12, 31, 24);
+    rtc_set_time(i2c, 20, 59, 0, 12, 31, 24);
     sleep_ms(100);
 
     for(int i = 0; i < 150; i++){
