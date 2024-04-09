@@ -13,28 +13,28 @@
  * data rate of 155Hz, range +/- 4 gauss, and continuous-conversion
  * operation mode. Writes to CTRL registers
 */
-int config_mag(i2c_inst_t *i2c);
+int mag_cofig(i2c_inst_t *i2c);
 
 // x, y, and z outputs can be given units, they are scaled based on config input 
 /**
  * Returns the x output (unitless)
 */
-int16_t get_x_output(i2c_inst_t *i2c);
+uint8_t mag_get_x(i2c_inst_t *i2c, int16_t* output);
 
 /**
  * Returns the y output (unitless)
 */
-int16_t get_y_output(i2c_inst_t *i2c);
+uint8_t mag_get_y(i2c_inst_t *i2c, int16_t* output);
 
 /**
  * Returns the z output (unitless)
 */
-int16_t get_z_output(i2c_inst_t *i2c);
+uint8_t mag_get_z(i2c_inst_t *i2c, int16_t* output);
 
 /**
  * Returns the temperature output in Celsius
 */
-int16_t get_temp_output(i2c_inst_t *i2c);
+uint8_t mag_get_temp(i2c_inst_t *i2c, int16_t* output);
 
 /**
  * Returns the value stored in the status register
