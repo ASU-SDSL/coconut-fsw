@@ -66,9 +66,10 @@ void gse_task(void *pvParameters) {
 
     config_i2c0();
 
-    int temp = 0;
-    int res = read_temp(i2c0, &temp);
-    printf("Result: %d. Temp: %d\n", res, temp);
+    vTaskDelay(500);
+    printf("Starting RTC test...\n");
+    rtc_test();
+    printf("Finished RTC test.\n");
 
     // Initialize UART0
     uart_initialize(UART0_INSTANCE, UART0_TX_PIN, UART0_RX_PIN, UART0_IRQ);
