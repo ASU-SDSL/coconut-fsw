@@ -1,12 +1,20 @@
 #include "mram.h"
+#include "FreeRTOS.h"
 
 //Global Modifiable Variables
 uint16_t memory_start;
 uint16_t cur_addr;
 
 //TODO: Add error codes to methods
-//TODO: Use bit-shifting instead of multiplication for uint16 and uint8
+//TODO: Finish code to make sure write and read command bytes are all sent at once
 //TODO: Add flag to indicate whether the entire storage has already been used.
+
+//Make sure code doesn't break due to copying to local variable in method instead of using exact same memory location. 
+void send_simple_command(uint8_t cmd) {
+    //gpio_put(CS, 0);
+    spi_write_blocking(SPI_BUS, &cmd, 1);
+    //gpio_put(CS, 1);
+}
 
 void setup() {
     stdio_init_all();
@@ -22,7 +30,7 @@ void setup() {
     /* //Setup CS pin for SPI
     gpio_init(CS);
     gpio_set_dir(CS, GPIO_OUT); 
-    gpio_put(CS, 1); */
+    //gpio_put(CS, 1); */
 
     //Setup other random pins specific to our device but not necessarily required for SPI
     gpio_set_dir(WP,GPIO_OUT);
@@ -31,7 +39,7 @@ void setup() {
     gpio_put(HOLD, 1);
 
     //Make sure device is initially awake
-    send__simple_command(WAKE);
+    send_simple_command(WAKE);
 
     /* //Add padding so that only a whole number of packets will fit into data storage. Padding should also be at least 2 bytes to allow for memory for cur_addr pointer.
     memory_start = MAX_BYTES % PACKET_SIZE;
@@ -44,27 +52,32 @@ void setup() {
     */
 }
 
-//Make sure code doesn't break due to copying to local variable in method instead of using exact same memory location. 
-void send__simple_command(uint8_t cmd) {
-    //gpio_put(CS, 0);
-    spi_write_blocking(SPI_BUS, &cmd, 1);
-    //gpio_put(CS, 1);
-}
-
 int address_write(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
      if (nbytes <= 0) { return 0; }
+     send_simple_command(WREN);
 
-    send__simple_command(WREN);
+    uint8_t arr[3 + nbytes];
+    arr[0] = WRITE;
+    arr[1] = addr >> 8;
+    arr[2] = addr & 0xff;
+    for (int i = 0; i < nbytes; i++) {
+        arr[i + 3] = buf[i];
+    }
+    spi_write_blocking(SPI_BUS, arr, 3 + nbytes);
+
+    /*send_simple_command(WREN);
     //gpio_put(CS, 0);
     //Trying two methods, send cmd, address, and data bytes separately; Or,make big array for all of them.
     uint8_t cmd = WRITE;
     spi_write_blocking(SPI_BUS, &cmd, 1);
     // uint16_t big_endian_addr = ((addr & 0xFF) << 8) | (addr & 0xFF00);
-    uint8_t arr[2] = {addr/0x100, addr % 0x100}; // Code to cast uint16 address into two bytes
+    uint8_t arr[2] = { addr >> 8, addr & 0xff }; // Code to cast uint16 address into two bytes
     spi_write_blocking(SPI_BUS, arr, 2);
-    spi_write_blocking(SPI_BUS, buf, nbytes);
+    spi_write_blocking(SPI_BUS, buf, nbytes);*/
     //gpio_put(CS, 1);
-    send__simple_command(WRDI);
+
+    send_simple_command(WRDI);
+    
     return nbytes;
 }
 
@@ -74,9 +87,9 @@ int read_bytes(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
     //gpio_put(CS, 0);
     uint8_t cmd = READ;
     spi_write_blocking(SPI_BUS, &cmd, 1);
-    uint8_t arr[2] = { addr/0x100, addr%0x100 };
+    uint8_t arr[2] = { addr >> 8, addr & 0xff };
     spi_write_blocking(SPI_BUS, arr, 2); //Code to cast uint16 address into two bytes to be sent through SPI
-    spi_read_blocking(SPI_BUS, NULL, buf, nbytes);
+    spi_read_blocking(SPI_BUS, 0, buf, nbytes);
     //gpio_put(CS, 1);
     return nbytes;
 }
@@ -105,11 +118,13 @@ void mram_testing() {
 
     while(true) {
         uint8_t my_buf[8] = {1, 2, 3, 4, 5, 6, 7, 8};
-        address_write(1, my_buf, 1);
-        uint8_t output[8];
-        read_bytes(1, output, 1);
+        address_write(1, my_buf, 8);
+        
+        vTaskDelay(500);
 
-    
+        uint8_t output[8] = {0,0,0,0,0,0,0,0};
+        read_bytes(1, output, 8);
+
         printf("Writing: ");
         for (int i = 0; i < 8; i++)
         {
@@ -123,5 +138,8 @@ void mram_testing() {
             printf("%d ", output[i]);
         }
         printf("\n");
+
+        vTaskDelay(500);
+
     }
 }
