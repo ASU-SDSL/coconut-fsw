@@ -61,7 +61,7 @@ int main() {
                                         1,
                                         NULL);
 #ifndef GSE_ENABLED
-    BaseType_t radio_task_status = xTaskCreate(radio_task, 
+    BaseType_t radio_task_statestingtus = xTaskCreate(radio_task, 
                                          "RADIO", 
                                          256, 
                                          NULL, 

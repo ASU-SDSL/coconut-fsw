@@ -17,11 +17,12 @@ void setup() {
     gpio_set_function(SO, GPIO_FUNC_SPI);
     gpio_set_function(SCK, GPIO_FUNC_SPI);
     gpio_set_function(SI, GPIO_FUNC_SPI);
+    gpio_set_function(CS, GPIO_FUNC_SPI);
 
-    //Setup CS pin for SPI
+    /* //Setup CS pin for SPI
     gpio_init(CS);
     gpio_set_dir(CS, GPIO_OUT); 
-    gpio_put(CS, 1);
+    gpio_put(CS, 1); */
 
     //Setup other random pins specific to our device but not necessarily required for SPI
     gpio_set_dir(WP,GPIO_OUT);
@@ -45,16 +46,16 @@ void setup() {
 
 //Make sure code doesn't break due to copying to local variable in method instead of using exact same memory location. 
 void send__simple_command(uint8_t cmd) {
-    gpio_put(CS, 0);
+    //gpio_put(CS, 0);
     spi_write_blocking(SPI_BUS, &cmd, 1);
-    gpio_put(CS, 1);
+    //gpio_put(CS, 1);
 }
 
 int address_write(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
      if (nbytes <= 0) { return 0; }
 
     send__simple_command(WREN);
-    gpio_put(CS, 0);
+    //gpio_put(CS, 0);
     //Trying two methods, send cmd, address, and data bytes separately; Or,make big array for all of them.
     uint8_t cmd = WRITE;
     spi_write_blocking(SPI_BUS, &cmd, 1);
@@ -62,7 +63,7 @@ int address_write(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
     uint8_t arr[2] = {addr/0x100, addr % 0x100}; // Code to cast uint16 address into two bytes
     spi_write_blocking(SPI_BUS, arr, 2);
     spi_write_blocking(SPI_BUS, buf, nbytes);
-    gpio_put(CS, 1);
+    //gpio_put(CS, 1);
     send__simple_command(WRDI);
     return nbytes;
 }
@@ -70,13 +71,13 @@ int address_write(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
 int read_bytes(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
     if (nbytes <= 0) { return 0; }
 
-    gpio_put(CS, 0);
+    //gpio_put(CS, 0);
     uint8_t cmd = READ;
     spi_write_blocking(SPI_BUS, &cmd, 1);
     uint8_t arr[2] = { addr/0x100, addr%0x100 };
     spi_write_blocking(SPI_BUS, arr, 2); //Code to cast uint16 address into two bytes to be sent through SPI
     spi_read_blocking(SPI_BUS, NULL, buf, nbytes);
-    gpio_put(CS, 1);
+    //gpio_put(CS, 1);
     return nbytes;
 }
 
