@@ -31,5 +31,5 @@ void heartbeat_telemetry_job(void* unused) {
 
     // Logging
     iteration_counter += 1;
-    logln_info("Heartbeat %ld\n", iteration_counter);
+    logln_info("Heartbeat %ld", iteration_counter);
 }
