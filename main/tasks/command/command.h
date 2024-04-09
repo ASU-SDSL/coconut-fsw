@@ -22,7 +22,8 @@ typedef enum command_apid {
     STORE_GROUNDNODE_DATA = 0,
     CHANGE_HEARTBEAT_TELEM_RATE = 1,
     REQUEST_DOWNLINK_GROUNDNODE_DATA = 2, 
-    REQUEST_DOWNLINK_TELEMETRY_DATA = 3
+    REQUEST_DOWNLINK_TELEMETRY_DATA = 3,
+    LIST_STEVE_TASKS = 4
 } command_apid_t;
 
 typedef struct {

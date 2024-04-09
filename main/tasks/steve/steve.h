@@ -9,22 +9,18 @@
 #include <semphr.h>
 #include "pico/stdlib.h"
 
-#include "telemetry.h"
 #include "log.h"
-#include "state.h"
-
 #include "mag.h"
 #include "eps.h"
+#include "timing.h"
 
+#include "heartbeat_job.h"
 
 // Constants
 #define MAX_JOBS 256
 #define MAX_JOB_NAME_LEN 32
 #define SCHEDULER_CHECK_DELAY_MS 500
 #define SCHEDULER_CHECK_DELAY_TICKS pdMS_TO_TICKS(SCHEDULER_CHECK_DELAY_MS)
-
-#define MS_IN_SEC 1000
-#define SECS_IN_MIN 60
 
 // Job Structs and Types
 typedef void (*job_func)(void*);
@@ -49,14 +45,6 @@ steve_context_t g_steve_context;
 
 /* USER FUNCTIONS */
 
-// Utility Functions
-TickType_t ms_to_ticks(unsigned long ms);
-unsigned long ticks_to_ms(TickType_t ms);
-unsigned long secs_to_ms(unsigned long secs);
-unsigned long ms_to_secs(unsigned long ms);
-unsigned long mins_to_secs(unsigned long mins);
-unsigned long secs_to_mins(unsigned long mins);
-
 // Recurring Job User Functions
 void schedule_recurring_job_ms(const char* job_name, job_func job_func_ptr, unsigned long ms_until_recur);
 void schedule_recurring_job_secs(const char* job_name, job_func job_func_ptr, unsigned long secs_until_recur);
@@ -70,16 +58,9 @@ void schedule_delayed_job_mins(const char* job_name, job_func job_func_ptr, unsi
 // Job Management User Functions
 void kill_steve_job(const char* job_name);
 void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time);
+void print_debug_exec_times();
 
 /* INTERNAL FUNCTIONS */
-
-// Defined Jobs
-#define HEARTBEAT_JOB_NAME "HEARTBEAT_TELEMETRY"
-#define HEARTBEAT_TELEMETRY_DEFAULT_INTERVAL 30
-void heartbeat_telemetry_job(void*);
-
-// Helper functions
-TickType_t get_uptime();
 
 // Internal Scheduler Functions
 steve_job_t* find_steve_job(const char* job_name);

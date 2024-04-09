@@ -1,5 +1,4 @@
-#ifndef GSE_FILE_DEFINED
-#define GSE_FILE_DEFINED
+#pragma once
 
 #include "pico/stdlib.h"
 #include "hardware/uart.h"
@@ -40,5 +39,3 @@ void uart_on_rx();
 void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq);
 
 void gse_task();
-
-#endif  /* !GSE_FILE_DEFINED */
