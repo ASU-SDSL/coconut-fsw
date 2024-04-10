@@ -1,5 +1,5 @@
 # STEVE
-Scheduler Task for Executing Vital Events (STEVE) is a core Coconut componenet that schedules misson-critical, time-sensitive jobs. Jobs can either be scheduled once or can be recurring. Jobs can be scheduled using STEVE's api functions. You must provide a job name, job function pointer, and recur/delay time in order to schedule a job.
+Scheduler Task for Executing Vital Events (STEVE) is a core Coconut component that schedules misson-critical, time-sensitive jobs. Jobs can either be scheduled once or can be recurring. Jobs can be scheduled using STEVE's api functions. You must provide a job name, job function pointer, and recur/delay time in order to schedule a job.
 
 
 ## Type Definitions
