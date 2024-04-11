@@ -4,10 +4,13 @@
 #include "gse.h"
 #include "command.h"
 #include "rtc.h"
+
 #include "storage.h"
 
 #include "eps.h"
 #include "mag.h"
+#include <string.h>
+#include "filesystem.h"
 
 void uart_queue_message(char* buffer, size_t size) {
     // Create new transmission structure
@@ -58,30 +61,25 @@ void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq
 }
 
 void gse_task(void *pvParameters) {
-    // vTaskDelay(2000);
-
-    printf("Get temp\n");
+    // printf("Get temp\n");
     // uint8_t temp = rtc_test();
+    
+    write_file("Test03.txt", "Test!!!!\r\n");
+
+    char* buffer = pvPortMalloc(sizeof(char) * 256);
+    memset(buffer, 0, 256);
+    read_file("Test03.txt", buffer);
+    
+    logln_info(buffer);
 
     
-    SemaphoreHandle_t mutex = xSemaphoreCreateMutex();
-
-    if (mutex == NULL) {
-        logln_error("Could not create SD mutex");
-        while (true);
-    }
-
-    xSemaphoreTake(mutex, portMAX_DELAY);
-    sd_write("Test01.txt", "This is a test\r\n", 0);
-    xSemaphoreGive(mutex);
-    logln_info("bals");
     
-    config_i2c0();
+    // config_i2c0();
 
-    vTaskDelay(500);
-    printf("Starting RTC test...\n");
-    rtc_test();
-    printf("Finished RTC test.\n");
+    // vTaskDelay(500);
+    // printf("Starting RTC test...\n");
+    // rtc_test();
+    // printf("Finished RTC test.\n");
 
     // Initialize UART0
     uart_initialize(UART0_INSTANCE, UART0_TX_PIN, UART0_RX_PIN, UART0_IRQ);

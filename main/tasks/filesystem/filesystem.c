@@ -1,9 +1,6 @@
 #include "filesystem.h"
 
 /* USER FUNCTIONS */
-// char* read_file(const char* file_name) {
-
-// }
 
 // write file
 void write_file(const char* file_name, char* text_to_write) {
@@ -78,19 +75,16 @@ void sd_task(void* unused_arg) {
         // check queue for queued operation
         // wait forever until an operation is in queue
         xQueueReceive(filesystem_queue, &received_operation, EMPTY_QUEUE_WAIT_TIME);
-        logln_info("Received operation %d\r\n", received_operation.operation_type);
 
         // if operation is in queue, execute it
         switch (received_operation.operation_type) {
             case WRITE:
                 // execute write operation
                 sd_write(received_operation.file_name, received_operation.text_to_write, 0);
-                logln_info("sd write\r\n");
                 break;
             case READ:
                 // execute read operation
                 sd_read(received_operation.file_name, received_operation.read_buffer);
-                logln_info("sd read\r\n");
                 break;
             default:
                 // TODO: figure out proper way to handle this error

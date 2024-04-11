@@ -25,9 +25,6 @@ typedef enum operation_type {
     READ
 } operation_type_t;
 
-// queue to accept incoming operations on the file system
-QueueHandle_t filesystem_queue;
-
 // struct to represent operations passed to the queue
 // TODO: come up with actual struct def
 typedef struct filesystem_queue_operations {
@@ -36,6 +33,11 @@ typedef struct filesystem_queue_operations {
     char* text_to_write;
     char* read_buffer;
 } filesystem_queue_operations_t;
+
+
+
+// queue to accept incoming operations on the file system
+QueueHandle_t filesystem_queue;
 
 /* User Functions */
 

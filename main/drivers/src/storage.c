@@ -15,8 +15,6 @@ void sd_write(const char* fileName, const char* text, int append_flag) {
     FATFS fs;
     FIL fil;
     int ret;
-    char buf[100];
-
 
     // Initialize SD card
     if (!sd_init_driver()) {
