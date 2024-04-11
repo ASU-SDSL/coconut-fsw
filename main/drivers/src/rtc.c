@@ -187,7 +187,7 @@ void rtc_test() {
         float temp;
         rtc_update_temp(i2c);
         rtc_read_temp(i2c, &temp);
-        printf("RTC Temp: %f\n", temp);
+        // printf("RTC Temp: %f\n", temp);
 
         uint8_t hour;
         uint8_t minute;
@@ -196,25 +196,25 @@ void rtc_test() {
         uint8_t date;
         uint8_t year;
         if(rtc_get_hour(i2c, &hour)){
-            printf("Hour failed\n");
+            // printf("Hour failed\n");
         }
         if(rtc_get_minute(i2c, &minute)){
-            printf("Minute failed\n");
+            // printf("Minute failed\n");
         }
         if(rtc_get_second(i2c, &second)){
-            printf("Second failed\n");
+            // printf("Second failed\n");
         }
         if(rtc_get_month(i2c, &month)){
-            printf("Month failed\n");
+            // printf("Month failed\n");
         }
         if(rtc_get_date(i2c, &date)){
-            printf("Date failed\n");
+            // printf("Date failed\n");
         }
         if(rtc_get_year(i2c, &year)){
-            printf("Date failed\n");
+            // printf("Date failed\n");
         }
 
-        printf("RTC TimeStamp: \n%d:%d:%d %d/%d/%d \n", hour, minute, second, month, date, year);  
+        // printf("RTC TimeStamp: \n%d:%d:%d %d/%d/%d \n", hour, minute, second, month, date, year);  
         sleep_ms(1000);
     }
 
