@@ -5,8 +5,6 @@
 if [ $? != 0 ]; then
     echo >&2 "\033[0;31m \nFailed to build!"
     exit 1
-else
-    exit 0
 fi
 
 
