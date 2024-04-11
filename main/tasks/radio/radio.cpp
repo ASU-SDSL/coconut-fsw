@@ -6,6 +6,41 @@
 #include <FreeRTOS.h>
 #include "command.h"
 
+// USER FUNCTIONS
+
+void set_power_output_request(int new_db) {
+
+    radio_queue_operations_t new_operation;
+    new_operation.operation_type = SET_OUTPUT_POWER;
+    new_operation.data_buffer = (char*)pvPortMalloc(sizeof(int));
+    new_operation.data_size = sizeof(int);
+    memcpy(new_operation.data_buffer, &new_db, sizeof(int)); // does this work?
+
+    while(radio_queue == NULL) {
+        vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
+    }
+    xQueueSendToBack(radio_queue, &new_read_operation, portMAX_DELAY);
+}
+
+void transmit_request(char* buffer, size_t size) {
+
+    radio_queue_operations_t new_operation;
+    
+    new_operation.data_size = size;
+    // Allocate chunk on heap to copy buffer contents
+    char* heap_buf = pvPortMalloc(size);
+    memcpy(heap_buf, buffer, size);
+    new_operation.data_buffer = heap_buf;
+    
+    // Wait for queue to become available
+    while (uart0_queue == NULL) {
+        vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
+    }
+    xQueueSendToBack(uart0_queue, &new_buffer, portMAX_DELAY);
+}
+
+
+
 /**
  * one thread
  * queue polling to check on the size of queue each iteration
@@ -125,8 +160,18 @@ void radio_task(void *unused_arg)
         // should maybe move to interrupt based transmit but may cause UB when combined with recieve interrupts
         if (xQueueReceive(radio_queue, &rec, 0))
         {
-            radio.transmit(rec.payload_buffer);
-            vPortFree(rec.payload_buffer);
+            switch (rec.function_id) {
+                case TRANSMIT:
+                    radio.transmit(rec.data_buffer, rec.data_size);
+                    vPortFree(rec.data_buffer);
+                    break;
+
+                case SET_OUTPUT_POWER:
+                    set_power_output(radio, rec.data_buffer[0]);
+                    vPortFree(rec.data_buffer);
+                    break;
+            }
+            
         }
 
         radio.startReceive();
