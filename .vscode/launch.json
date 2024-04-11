@@ -19,7 +19,7 @@
             "device": "RP2040",
             "configFiles": [
                 "interface/cmsis-dap.cfg",
-                "target/rp2040.cfg"
+                "${workspaceRoot}/debug/rp2040.cfg"
             ],
             "runToEntryPoint": "main", 
             // "preLaunchCommands": [

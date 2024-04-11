@@ -21,10 +21,25 @@ void parse_radio_packet(uint8_t* packet, size_t packet_size){
 void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
     logln_info("Received command with APID: %hu", header.apid);
     switch (header.apid) {
+        case STORE_GROUNDNODE_DATA:
+            // TODO: Implement
+            logln_error("STORE_GROUNDNODE_DATA unimplemented");
+            break;
         case CHANGE_HEARTBEAT_TELEM_RATE:
             if (payload_size < sizeof(change_heartbeat_telem_rate_t)) break;
-            change_heartbeat_telem_rate_t* args = payload_buf;
+            change_heartbeat_telem_rate_t* args = (change_heartbeat_telem_rate_t*)payload_buf;
             edit_steve_job_recur_time(HEARTBEAT_JOB_NAME, args->ms);
+            break;
+        case REQUEST_DOWNLINK_GROUNDNODE_DATA:
+            // TODO: Implement
+            logln_error("REQUEST_DOWNLINK_GROUNDNODE_DATA unimplemented");
+            break;
+        case REQUEST_DOWNLINK_TELEMETRY_DATA:
+            // TODO: Implement
+            logln_error("REQUEST_DOWNLINK_TELEMETRY_DATA unimplemented");
+            break;
+        case LIST_STEVE_TASKS:
+            print_debug_exec_times();
             break;
         default:
             logln_error("Received command with unknown APID: %hu", header.apid);

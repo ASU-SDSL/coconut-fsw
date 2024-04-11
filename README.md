@@ -1,41 +1,41 @@
 # Coconut Flight Software
 
-This repo contains the flight software for the SDSL Coconut CubeSat. It uses FreeRTOS on the Raspberry Pi Pico. This repo is based on [this repo](https://github.com/smittytone/RP2040-FreeRTOS) so check it out for reference.
+This repo contains the flight software for the Arizona State University SDSL (Sun Devil Satellite Lab) Coconut CubeSat. It is designed for FreeRTOS on a Raspberry Pi Pico (RP2040). This codebase is based on [this repo](https://github.com/smittytone/RP2040-FreeRTOS), so check it out for reference.
 
-## Setup (without Docker)
-Note that these instructions were made for Ubuntu.
-
-1. Clone the repository with submodules, SSH recommended (this may take awhile to install all of the dependencies): `git clone --recurse-submodules git@github.com:ASU-SDSL/coconut-fsw.git`
-2. Install Python and build tools: `sudo apt install -y python3 cmake gcc-arm-none-eabi build-essential`
-
-## Building
-
-1. Connect the board to your computer with a USB cable while holding the `BOOTSEL` button
-   1. If you don't want to keep disconnecting and reconnecting the USB cable while testing code, the `RESET` button helps
-2. Run `docker_deploy.sh` to build the firmware in Docker and deploy it to your board
-   1. Run `docker_build.sh` if you'd just like to build your firmware without flashing it
-   2. If you're getting this error when building on Windows: `env: bash\r: No such file or directory`, run `git config --global core.autocrlf false` then delete the repo, clone the repo again, then try building again
-   3. If you're having issues flashing 
+## Building and Deploying
+Note that these instructions were only tested on `Ubuntu 20.04`
+1. Navigate to the codebase in your terminal
+   1. `cd ./coconut-fsw`
+2. Install dependencies by running these two commands
+   1. `sudo apt install -y python3 cmake gcc-arm-none-eabi build-essential git`
+   2. `git submodule update --init --recursive` 
+   3. Once you run these once, you never have to run them again
+3. Build the firmware locally
+   1. Run `./build.sh`
+   2. You don't need any hardware to do this, just run this occasionally during development to see if your code is correct
+4. Deploy the firmware to the board
+   1. Hold the white `BOOTSEL` button on the RP2040
+   2. Connect the RP2040 to your computer with Micro-USB
+   3. Let go of the `BOOTSEL` button
+   4. A USB flashdrive called `RPI-RP2` should connect to your computer
+   5. Run `./deploy.sh`
+   6. The codebase will now be running on the board. It will boot back into the flashed firmware even if powered off and powered on again 
 
 ## Debugging
 
 For debugging, you have two options:
-1. Debugging with GDB through SWD/JTAG
-   1. Instructions needed
-2. Printing to the debug terminal
-   1. Call log_info, log_debug, etc. inside your function
-   2. Connect the board to your computer with a USB cable
-   3. Install and open PUTTY with admin privileges 
-   4. Select the `serial` option and use these options:
-      1. Serial line
-         1. `/dev/ttyACM0` on Linux
-         2. `COM3` on Windows, may be different on your system so you should check the `Ports (COM & LPT)` tab in Device Manager
-      2. Speed
-         1. `115200`
+1. Printing to the debug log
+   1. Run `ls /dev` and look for `ttyACM0` or `ttyACM1` 
+   2. Run `debug/ACM0.sh` or `debug/ACM1.sh` to see the log 
+   3. You will see any output from `logln_info` and `printf` calls in your code
+2. Debugging through SWD/JTAG
+   1. See `debug/README.md` to use the VSCode graphic debugger to set breakpoints and see variable values as your code executes
 
 ## Directory Structure
 1. `main` Contains the main firmware for the satellite
 2. `lib` Conatins external libraries (git submodules) used by the firmware
 3. `freertos` Contains FreeRTOS configuration info
 4. `scripts` Contains any testing/automation scripts unrelated to building
-5. `.vscode` Contains VSCode extension configuration info
+5. `.vscode` Contains VSCode extension configuration info and debugger setup
+6. `docs` Contains markdown documents describing API functions and internal functions of certain subsystems
+7. `build` Contains output from the build process (`build/main/COCONUTFSW.uf2` is the main firmware output binary)

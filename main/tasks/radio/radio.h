@@ -1,5 +1,5 @@
-#ifndef RADIO_FILE_DEFINED
-#define RADIO_FILE_DEFINED
+#pragma once
+
 #include <FreeRTOS.h>
 #include "queue.h"
 
@@ -25,6 +25,3 @@ extern "C"
 void radio_packet_recieve();
 void init_radio();
 void radio_task();
-
-
-#endif /* !RADIO_FILE_DEFINED */
