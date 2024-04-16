@@ -77,7 +77,7 @@ uint8_t rtc_update_temp(i2c_inst_t *i2c){
 }
 
 // returns 0 on success
-uint8_t rtc_read_temp(i2c_inst_t *i2c, float* output) {
+uint8_t rtc_get_temp(i2c_inst_t *i2c, float* output) {
 
     uint8_t tempUpper;
     if(i2c_read_from_register(i2c, RTC_ADDR, RTC_TEMP_REG_UPPER, &tempUpper, 1)){
@@ -186,8 +186,8 @@ void rtc_test() {
     for(int i = 0; i < 150; i++){
         float temp;
         rtc_update_temp(i2c);
-        rtc_read_temp(i2c, &temp);
-        // printf("RTC Temp: %f\n", temp);
+        rtc_get_temp(i2c, &temp);
+        printf("RTC Temp: %f\n", temp);
 
         uint8_t hour;
         uint8_t minute;

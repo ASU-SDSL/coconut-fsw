@@ -31,6 +31,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/rtc.c
     ${MAIN_DIRECTORY}/drivers/src/mag.c
     ${MAIN_DIRECTORY}/drivers/src/hw_config.c
+    ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
 )
 
 add_executable(${PROJECT_NAME}
