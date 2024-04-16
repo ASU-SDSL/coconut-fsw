@@ -56,7 +56,7 @@ void transmit_request(char* buffer, size_t size) {
 
 PiPicoHal *hal = new PiPicoHal(spi0); // can specify the speed here as an argument if desired
 // Add interupt pin
-RFM98 radio = new Module(hal, RADIO_NSS_PIN, RADIO_IRQ_PIN, RADIO_NRST_PIN, RADIOLIB_NC);
+RFM98 radio = new Module(hal, RADIO_NSS_PIN, RADIO_IRQ_PIN, RADIO_NRST_PIN, RADIOLIB_NC); // RFM98 is an alias for SX1278
 volatile bool packet_recieved = false;
 
 #ifdef __cplusplus
@@ -91,16 +91,18 @@ void radio_packet_recieve()
 void init_radio()
 {
     hal->init();
-    int radio_state = radio.begin();
+    int radio_state = radio.begin(); 
+
     if (radio_state == RADIOLIB_ERR_NONE)
     {
         printf("Success, radio initialized");
     }
     else
     {
-        printf("failed ");
-        while (true)
-            ;
+        while (true){
+            printf("radio init_failed with code %d\n", radio_state);
+            sleep_ms(500);
+        }
     }
 
     radio.setPacketReceivedAction(radio_packet_recieve);
@@ -112,8 +114,9 @@ void init_radio()
     else
     {
         printf("failed");
-        while (true)
-            ;
+        while (true){
+            printf("recieve setup failed with code %d\n", receive_state);
+        }
     }
 }
 
@@ -122,7 +125,7 @@ void set_power_output(RFM98 radio_module, int8_t new_dbm) {
 }
 
 /**
- * @brief Monitor radio, write to SD card, and send stuff when needed
+ * Monitor radio, write to SD card, and send stuff when needed
  */
 void radio_task(void *unused_arg)
 {
@@ -134,10 +137,13 @@ void radio_task(void *unused_arg)
     {
         if (packet_recieved)
         {
-            uint8_t *packet;
+            //uint8_t *packet; needs memeory allocated to ti
             size_t packet_size = radio.getPacketLength();
+            uint8_t packet[packet_size];
 
             int packet_state = radio.readData(packet, packet_size);
+            // acknowledge packet has been recieved 
+            packet_recieved = false;
 
             if (packet_state == RADIOLIB_ERR_NONE)
             {
