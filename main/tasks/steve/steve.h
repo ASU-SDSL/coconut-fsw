@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef SIMULATOR
+#include "pico/stdlib.h"
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
@@ -7,8 +11,6 @@
 #include <FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
-#include "pico/stdlib.h"
-
 #include "log.h"
 #include "mag.h"
 #include "eps.h"

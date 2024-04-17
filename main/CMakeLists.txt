@@ -49,7 +49,6 @@ set (LINK_LIBS
     hardware_i2c
     RadioLib
     FatFs_SPI
-    pthread
 )
 
 # add picolib only if not building for simulator
@@ -83,7 +82,7 @@ set (INTERNAL_INCLUDE_DIRS
 IF (SIMULATOR)
     set(INTERNAL_INCLUDE_DIRS
         ${INTERNAL_INCLUDE_DIRS}
-        PRIVATE ${MAIN_DIRECTORY}/simulator
+        PRIVATE ${MAIN_DIRECTORY}/simulator/pico-sdk
     )
 ENDIF()
 

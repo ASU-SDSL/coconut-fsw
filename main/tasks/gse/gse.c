@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "sd_card.h"
 #include "ff.h"
 #include "gse.h"
 #include "command.h"
 #include "rtc.h"
-#include "sdcard.h"
 
 #include "eps.h"
 #include "mag.h"

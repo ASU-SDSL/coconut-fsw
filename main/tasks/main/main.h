@@ -13,7 +13,7 @@
 #include <time.h>
 // Pico SDK
 #include "pico/stdlib.h"
-#include "pico/binary_info.h"
+
 // Project headers
 #include "gse.h"
 #include "radio.h"

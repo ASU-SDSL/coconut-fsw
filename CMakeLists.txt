@@ -69,7 +69,7 @@ ELSE()
     # RP2040
     set(FREERTOS_SOURCE_FILES
         ${FREERTOS_SOURCE_FILES}
-        ${FREERTOS_SRC_DIRECTORY}/portable/ThirdPartyGCC/ARM_CM0/port.c
+        ${FREERTOS_SRC_DIRECTORY}/portable/GCC/ARM_CM0/port.c
     )
 ENDIF()
 

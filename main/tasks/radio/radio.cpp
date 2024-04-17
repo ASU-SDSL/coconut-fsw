@@ -1,5 +1,5 @@
 #include <RadioLib.h>
-#include "RadioLibPiHal.h"
+#include "radiolibhal.h"
 #define ERR_NONE 0
 // #include <SX1278.h>
 #include <radio.h>

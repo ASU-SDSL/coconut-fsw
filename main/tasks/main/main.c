@@ -10,7 +10,7 @@ int main() {
 
 
     // Initialize debug timer
-#ifdef TSDEBUG
+#if defined(DEBUG) && !defined(SIMULATOR)
     timer_hw->dbgpause = 0;
 #endif
 

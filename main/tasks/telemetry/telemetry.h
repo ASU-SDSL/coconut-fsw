@@ -1,12 +1,13 @@
 #pragma once
 
+#include "pico/stdlib.h"
+
 #include <stdio.h>
 #include <string.h>
 
 #include <FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
-#include "pico/stdlib.h"
 
 #include "gse.h"
 #include "radio.h"
