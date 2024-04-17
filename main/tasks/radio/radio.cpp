@@ -1,10 +1,12 @@
 #include <RadioLib.h>
 #include "RadioLibPiHal.h"
-#define ERR_NONE 0
 // #include <SX1278.h>
 #include <radio.h>
 #include <FreeRTOS.h>
 #include "command.h"
+
+#define ERR_NONE 0
+#define NULL_QUEUE_WAIT_TIME 100
 
 // USER FUNCTIONS
 
@@ -12,31 +14,33 @@ void set_power_output_request(int new_db) {
 
     radio_queue_operations_t new_operation;
     new_operation.operation_type = SET_OUTPUT_POWER;
-    new_operation.data_buffer = (char*)pvPortMalloc(sizeof(int));
+    new_operation.data_buffer = (uint8_t*)pvPortMalloc(sizeof(int));
     new_operation.data_size = sizeof(int);
     memcpy(new_operation.data_buffer, &new_db, sizeof(int)); // does this work?
 
     while(radio_queue == NULL) {
         vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
     }
-    xQueueSendToBack(radio_queue, &new_read_operation, portMAX_DELAY);
+    xQueueSendToBack(radio_queue, &new_operation, portMAX_DELAY); 
 }
 
 void transmit_request(char* buffer, size_t size) {
 
     radio_queue_operations_t new_operation;
     
+    new_operation.operation_type = TRANSMIT;
     new_operation.data_size = size;
     // Allocate chunk on heap to copy buffer contents
-    char* heap_buf = pvPortMalloc(size);
+    uint8_t* heap_buf = (uint8_t*)pvPortMalloc(size);
     memcpy(heap_buf, buffer, size);
     new_operation.data_buffer = heap_buf;
     
     // Wait for queue to become available
-    while (uart0_queue == NULL) {
+    while (radio_queue == NULL) {
         vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
     }
-    xQueueSendToBack(uart0_queue, &new_buffer, portMAX_DELAY);
+    // xQueueSendToBack(uart0_queue, &new_buffer, portMAX_DELAY);
+    xQueueSendToBack(radio_queue, &new_operation, portMAX_DELAY);
 }
 
 
@@ -106,8 +110,8 @@ void init_radio()
     }
 
     radio.setPacketReceivedAction(radio_packet_recieve);
-    int recieve_state = radio.startReceive();
-    if (recieve_state == RADIOLIB_ERR_NONE)
+    int receive_state = radio.startReceive();
+    if (receive_state == RADIOLIB_ERR_NONE)
     {
         printf("Success, recieving...");
     }
@@ -130,11 +134,13 @@ void set_power_output(RFM98 radio_module, int8_t new_dbm) {
 void radio_task(void *unused_arg)
 {
     init_radio();
-    radio_queue = xQueueCreate(RADIO_MAX_QUEUE_ITEMS, sizeof(telemetry_queue_transmission_t));
-    telemetry_queue_transmission_t rec;
+    radio_queue = xQueueCreate(RADIO_MAX_QUEUE_ITEMS, sizeof(radio_queue_operations_t)); // telemetry_queue_transmission_t));
+    //telemetry_queue_transmission_t rec;
+    radio_queue_operations_t rec;
 
     while (true)
     {
+        printf("radio loop \n"); 
         if (packet_recieved)
         {
             //uint8_t *packet; needs memeory allocated to ti
@@ -149,7 +155,11 @@ void radio_task(void *unused_arg)
             {
                 // parse out sync bytes and grab packet with header
                 // create command.c function to read packet
-                printf("Recieved packet");
+                printf("Recieved packet: ");
+                for(int i = 0; i < packet_size; i++){
+                    printf("%c", packet[i]);
+                }
+                printf("\n"); 
                 parse_radio_packet(packet, packet_size);
                 // Check if command is to set output power of the radio
             }
@@ -166,7 +176,7 @@ void radio_task(void *unused_arg)
         // should maybe move to interrupt based transmit but may cause UB when combined with recieve interrupts
         if (xQueueReceive(radio_queue, &rec, 0))
         {
-            switch (rec.function_id) {
+            switch (rec.operation_type) {
                 case TRANSMIT:
                     radio.transmit(rec.data_buffer, rec.data_size);
                     vPortFree(rec.data_buffer);

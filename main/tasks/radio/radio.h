@@ -2,6 +2,7 @@
 
 #include <FreeRTOS.h>
 #include "queue.h"
+#include <stdint.h>
 
 
 #define RADIO_NSS_PIN 7
