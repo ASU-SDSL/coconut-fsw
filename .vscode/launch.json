@@ -13,7 +13,7 @@
             ],
             "preLaunchTask": "buildnflash",
             "cwd": "${workspaceRoot}",
-            "executable": "${workspaceRoot}/build/main/COCONUTFSW.elf",
+            "executable": "${workspaceRoot}/build/Debug/main/COCONUTFSW.elf",
             "armToolchainPath": "${env:PICO_TOOLCHAIN_PATH}", 
             "gdbPath": "gdb-multiarch",
             "device": "RP2040",

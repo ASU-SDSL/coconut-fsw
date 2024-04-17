@@ -4,7 +4,7 @@
         {
             "label": "buildnflash",
             "command": "./deploy.sh",
-            "args": ["-g"],
+            "args": ["-g", "-b"],
             "options": {
                 "cwd": "${workspaceFolder}"
             },
