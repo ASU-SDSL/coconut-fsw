@@ -16,7 +16,7 @@
 //PINS ON Raspberry Pi - to be set by electrical team.
 #define CS 13 
 #define SO 12 // MISO/SDO/SO are all same thing
-#define WP 3 //Wired to power supply
+#define WP 3 
 #define SI 15 // MOSI/SDI/SI are all same thing
 #define SCK 14 
 #define HOLD 7 // Wired up to power supply
