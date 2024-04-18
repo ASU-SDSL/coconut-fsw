@@ -56,16 +56,11 @@ int address_write(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
 
     send_simple_command(WREN);
 
-    uint8_t arr[3 + nbytes];
-    arr[0] = WRITE;
-    arr[1] = addr >> 8;
-    arr[2] = addr & 0xff;
-    for (int i = 0; i < nbytes; i++) {
-        arr[i + 3] = buf[i];
-    }
-
+    uint8_t arr[3] = {WRITE, addr >> 8, addr & 0xff};
+   
     gpio_put(CS, 0);
-    spi_write_blocking(SPI_BUS, arr, 3 + nbytes);
+    spi_write_blocking(SPI_BUS, arr, 3);
+    spi_write_blocking(SPI_BUS, buf, nbytes);
     gpio_put(CS, 1);
 
     /*send_simple_command(WREN);
@@ -88,13 +83,8 @@ int read_bytes(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
 
     gpio_put(CS, 0);
 
-    uint8_t arr[3];
-    arr[0] = READ;
-    arr[1] = addr >> 8;
-    arr[2] = addr & 0xff;
-    spi_write_blocking(SPI_BUS, arr, 3); //Code to cast uint16 address into two bytes to be sent through SPI
-
-
+    uint8_t arr[3] = {READ, addr >> 8, addr & 0xff}; //Code to cast uint16 address into two bytes to be sent through SPI
+    spi_write_blocking(SPI_BUS, arr, 3); 
     spi_read_blocking(SPI_BUS, 0, buf, nbytes);
     gpio_put(CS, 1);
     return nbytes;
@@ -123,13 +113,13 @@ void mram_testing() {
     setup();
 
     while(true) {
-        uint8_t my_buf[8] = {5, 6, 7, 8, 9, 10, 11, 12};
-        address_write(1, my_buf, 8);
+        uint8_t my_buf[8] = {1, 9, 8, 4, 256, 33, 22, 1};
+        address_write(100, my_buf, 8);
         
         //vTaskDelay(500);
 
         uint8_t output[8] = {0,0,0,0,0,0,0,0};
-        read_bytes(1, output, 8);
+        read_bytes(100, output, 8);
 
         printf("Writing: ");
         for (int i = 0; i < 8; i++)
@@ -144,6 +134,7 @@ void mram_testing() {
             printf("%d ", output[i]);
         }
         printf("\n");
+        printf("This is revised function with 2 separate spi_write_blockings\n");
 
         vTaskDelay(500);
 
