@@ -28,6 +28,7 @@ typedef struct radio_queue_operations {
 extern "C"
 {
 #endif
+    void radio_task(void *unused_arg);
     void radio_queue_message(char *buffer, size_t size);
 #ifdef __cplusplus
 }
@@ -35,4 +36,4 @@ extern "C"
 
 void radio_packet_recieve();
 void init_radio();
-void radio_task();
+void radio_task_cpp();

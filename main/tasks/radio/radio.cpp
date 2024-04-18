@@ -1,47 +1,48 @@
 #include <RadioLib.h>
 #include "RadioLibPiHal.h"
 // #include <SX1278.h>
-#include <radio.h>
+#include "radio.h"
 #include <FreeRTOS.h>
 #include "command.h"
 
 #define ERR_NONE 0
 #define NULL_QUEUE_WAIT_TIME 100
 
+
 // USER FUNCTIONS
 
-void set_power_output_request(int new_db) {
+// void set_power_output_request(int new_db) {
 
-    radio_queue_operations_t new_operation;
-    new_operation.operation_type = SET_OUTPUT_POWER;
-    new_operation.data_buffer = (uint8_t*)pvPortMalloc(sizeof(int));
-    new_operation.data_size = sizeof(int);
-    memcpy(new_operation.data_buffer, &new_db, sizeof(int)); // does this work?
+//     radio_queue_operations_t new_operation;
+//     new_operation.operation_type = SET_OUTPUT_POWER;
+//     new_operation.data_buffer = (uint8_t*)pvPortMalloc(sizeof(int));
+//     new_operation.data_size = sizeof(int);
+//     memcpy(new_operation.data_buffer, &new_db, sizeof(int)); // does this work?
 
-    while(radio_queue == NULL) {
-        vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
-    }
-    xQueueSendToBack(radio_queue, &new_operation, portMAX_DELAY); 
-}
+//     while(radio_queue == NULL) {
+//         vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
+//     }
+//     xQueueSendToBack(radio_queue, &new_operation, portMAX_DELAY); 
+// }
 
-void transmit_request(char* buffer, size_t size) {
+// void transmit_request(char* buffer, size_t size) {
 
-    radio_queue_operations_t new_operation;
+//     radio_queue_operations_t new_operation;
     
-    new_operation.operation_type = TRANSMIT;
-    new_operation.data_size = size;
-    // Allocate chunk on heap to copy buffer contents
-    uint8_t* heap_buf = (uint8_t*)pvPortMalloc(size);
-    memcpy(heap_buf, buffer, size);
-    new_operation.data_buffer = heap_buf;
+//     new_operation.operation_type = TRANSMIT;
+//     new_operation.data_size = size;
+//     // Allocate chunk on heap to copy buffer contents
+//     uint8_t* heap_buf = (uint8_t*)pvPortMalloc(size);
+//     memcpy(heap_buf, buffer, size);
+//     new_operation.data_buffer = heap_buf;
     
-    // Wait for queue to become available
-    while (radio_queue == NULL) {
-        vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
-    }
-    // xQueueSendToBack(uart0_queue, &new_buffer, portMAX_DELAY);
-    xQueueSendToBack(radio_queue, &new_operation, portMAX_DELAY);
-}
+//     // Wait for queue to become available
+//     while (radio_queue == NULL) {
+//         vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
+//     }
+//     // xQueueSendToBack(uart0_queue, &new_buffer, portMAX_DELAY);
+//     xQueueSendToBack(radio_queue, &new_operation, portMAX_DELAY);
+// }
 
 
 
@@ -67,6 +68,9 @@ volatile bool packet_recieved = false;
 extern "C"
 {
 #endif
+    void radio_task(void *unused_arg){
+        radio_task_cpp();
+    }
     void radio_queue_message(char *buffer, size_t size)
     {
         // Create new transmission structure
@@ -77,11 +81,15 @@ extern "C"
         memcpy(heap_buf, buffer, size);
         new_buffer.payload_buffer = heap_buf;
         // Wait for queue to become available
+        printf("before queue waiting\n");
         while (!radio_queue)
         {
             vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
         }
+        printf("Queue Status: %d\n", !radio_queue);
+        printf("after queue waiting\n");
         xQueueSendToBack(radio_queue, &new_buffer, portMAX_DELAY);
+        printf("rqm finished\n");
     }
 #ifdef __cplusplus
 }
@@ -131,10 +139,12 @@ void set_power_output(RFM98 radio_module, int8_t new_dbm) {
 /**
  * Monitor radio, write to SD card, and send stuff when needed
  */
-void radio_task(void *unused_arg)
+void radio_task_cpp()
 {
+    printf("Starting  Radio Task\n");
     init_radio();
     radio_queue = xQueueCreate(RADIO_MAX_QUEUE_ITEMS, sizeof(radio_queue_operations_t)); // telemetry_queue_transmission_t));
+    printf("Immediate queue status: %d\n", !radio_queue);
     //telemetry_queue_transmission_t rec;
     radio_queue_operations_t rec;
 
@@ -160,7 +170,7 @@ void radio_task(void *unused_arg)
                     printf("%c", packet[i]);
                 }
                 printf("\n"); 
-                parse_radio_packet(packet, packet_size);
+                //parse_radio_packet(packet, packet_size);
                 // Check if command is to set output power of the radio
             }
             else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
