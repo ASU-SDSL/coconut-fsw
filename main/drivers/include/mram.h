@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 
 #include "hardware/spi.h"
 #include "hardware/gpio.h"
