@@ -5,32 +5,39 @@
 #include "pico/stdlib.h"
 #include "hardware/adc.h"
 #include "hardware/spi.h"
+#include "radio.h"
 //#include <SX1278.h>
 
-class PiPicoHal : public RadioLibHal {
+class PiPicoHal : public RadioLibHal { 
 public:
     PiPicoHal(spi_inst_t *spi, uint32_t spi_speed = 2000000)
         : RadioLibHal(0, 1, 0, 1, 0, 1),  
           _spi(spi),
-          _spi_speed(spi_speed) {
-    }
+          _spi_speed(spi_speed) { }
 
     void init() override {
         stdio_init_all();
 
         spiBegin();
 
-        gpio_init(18);
-        gpio_set_dir(18, GPIO_OUT);
-        gpio_put(18, 1);
+        gpio_init(PICO_DEFAULT_SPI_TX_PIN);
+        gpio_set_dir(PICO_DEFAULT_SPI_TX_PIN, GPIO_OUT);
+        gpio_init(PICO_DEFAULT_SPI_RX_PIN);
+        gpio_set_dir(PICO_DEFAULT_SPI_RX_PIN, GPIO_IN);
+        gpio_init(RADIO_NSS_PIN);
+        gpio_set_dir(RADIO_NSS_PIN, GPIO_OUT); 
+
+        gpio_init(PICO_DEFAULT_SPI_SCK_PIN);
+        gpio_set_dir(PICO_DEFAULT_SPI_SCK_PIN, GPIO_OUT);
+        gpio_put(PICO_DEFAULT_SPI_SCK_PIN, 1);
     }
 
     void term() override {
         spiEnd();
 
-        gpio_init(18);
-        gpio_set_dir(18, GPIO_OUT);
-        gpio_put(18, 0);
+        gpio_init(PICO_DEFAULT_SPI_SCK_PIN);
+        gpio_set_dir(PICO_DEFAULT_SPI_SCK_PIN, GPIO_OUT);
+        gpio_put(PICO_DEFAULT_SPI_SCK_PIN, 0);
     }
 
     void pinMode(uint32_t pin, uint32_t mode) override {
@@ -54,6 +61,7 @@ public:
         }
         return gpio_get(pin);
     }
+
     typedef void(* gpio_irq_callback_t) (uint gpio, uint32_t event_mask);
     //void gpio_set_irq_enabled_with_callback (uint gpio, uint32_t event_mask, bool enabled, gpio_irq_callback_t callback);
     void attachInterrupt(uint32_t interruptNum, void (*interruptCb)(void), uint32_t mode) override {
@@ -90,6 +98,7 @@ public:
         return to_us_since_boot(get_absolute_time()) / 1000;
     }
 
+    // suspect
     long pulseIn(uint32_t pin, uint32_t state, unsigned long timeout) override {
         if (pin == RADIOLIB_NC) {
             return 0;
@@ -97,10 +106,16 @@ public:
 
         gpio_set_dir(pin, GPIO_IN);
 
-        uint32_t start = this->micros();
         uint32_t curtick = this->micros();
-        uint32_t timeoutMicros = timeout * 1000; 
+        uint32_t timeoutMicros = timeout; // * 1000; 
 
+        // changed
+        while(gpio_get(pin) != state){ // wait for pulse to start
+            if((this->micros() - curtick) > timeoutMicros){
+                return 0; 
+            }
+        }
+        uint32_t start = this->micros();
         while (gpio_get(pin) == state) {
             if ((this->micros() - curtick) > timeoutMicros) {
                 return 0;
@@ -115,12 +130,19 @@ public:
         spi_set_format(_spi, 8, SPI_CPOL_0, SPI_CPHA_0, SPI_MSB_FIRST);
     }
 
-    void spiBeginTransaction() {}
-    void spiEndTransaction() {}
+    void spiBeginTransaction() {
+        gpio_put(RADIO_NSS_PIN, 0); // pull cs down
+    }
 
+    // suspect
     void spiTransfer(uint8_t *out, size_t len, uint8_t *in) {
-        spi_write_blocking(_spi, out, len);
-        spi_read_blocking(_spi, 0, in, len);
+        spi_write_read_blocking(_spi, in, out, len);
+        //spi_write_blocking(_spi, out, len);
+        //spi_read_blocking(_spi, 0, in, len);
+    }
+
+    void spiEndTransaction() {
+        gpio_put(RADIO_NSS_PIN, 1); // put cs up 
     }
 
     void spiEnd() {
