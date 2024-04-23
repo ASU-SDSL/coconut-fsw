@@ -1,15 +1,20 @@
 #pragma once
 
+#include "pico/stdlib.h"
+
 #include <stdio.h>
 #include <string.h>
 
 #include <FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
-#include "pico/stdlib.h"
+
 
 #include "gse.h"
+#ifndef SIMULATOR
 #include "radio.h"
+#endif
+
 #include "state.h"
 
 #define TELEMETRY_SYNC_BYTES "\x35\x2E\xF8\x53"

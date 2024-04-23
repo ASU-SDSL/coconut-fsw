@@ -44,10 +44,9 @@ update_build_number() {
 }
 comment
 
-uf2_path="build/main/COCONUTFSW.uf2"
-
 # RUNTIME START
 debug_build=0
+simulator_build=0
 for arg in "$@"; do
     check_arg=${arg,,}
     echo "check: $check_arg"
@@ -56,10 +55,12 @@ for arg in "$@"; do
         exit 0
     elif [[ "$check_arg" = "--build" || "$check_arg" = "-b" ]]; then # only build
         do_flash=0
-    elif [[ "$check_arg" = "-flash" || "$check_arg" = "-f" ]]; then # only flash
+    elif [[ "$check_arg" = "--flash" || "$check_arg" = "-f" ]]; then # only flash
         do_build=0 
-    elif [[ "$check_arg" = "-debug" || "$check_arg" = "-g" ]]; then # enable debug build
+    elif [[ "$check_arg" = "--debug" || "$check_arg" = "-g" ]]; then # enable debug build
         debug_build=1
+    elif [[ "$check_arg" = "--sim" || "$check_arg" = "-s" ]]; then # enable debug build
+        simulator_build=1
     fi
 done
 
@@ -73,17 +74,24 @@ if [[ ${do_build} -eq 1 ]]; then
     build_string="Release"
     if [[ ${debug_build} -eq 1 ]]; then
         build_string="Debug"
+    elif [[ ${simulator_build} -eq 1 ]]; then
+        build_string="Simulator"
     fi
     echo $build_string
     
-    # generate make files
-    # if [[ ! -e "./build" ]]; then
-        cmake -S . -B build/ -D "CMAKE_C_COMPILER:FILEPATH=$(which arm-none-eabi-gcc)" -D CMAKE_BUILD_TYPE:STRING="${build_string}"
-        err=$?
-    # fi
+    # generate cmake files
+    build_path=build/${build_string}
+    uf2_path="${build_path}/main/COCONUTFSW.uf2"
+    if [[ ${simulator_build} -eq 1 ]]; then
+        cmake -S . -B ${build_path} -D "CMAKE_C_COMPILER:FILEPATH=$(which gcc)" -D CMAKE_BUILD_TYPE:STRING="Debug" -DSIMULATOR:BOOL=ON
+    else
+        cmake -S . -B ${build_path} -D "CMAKE_C_COMPILER:FILEPATH=$(which arm-none-eabi-gcc)" -D CMAKE_BUILD_TYPE:STRING="${build_string}" 
+    fi
+    
+    err=$?
     
     # build
-    cmake --build build
+    cmake --build ${build_path}
     err=$?
 fi
 
@@ -93,7 +101,7 @@ if [[ ${err} -ne 0 ]]; then
 fi
 
 # Do we flash?
-if [ ${do_flash} -eq 1 ]; then
+if [[ ${do_flash} -eq 1 && ${simulator_build} -ne 1 ]]; then
     # Wait for the RPI_R2 mount
     count=0
     if [ ! -d "${rpi_path}" ]; then

@@ -163,7 +163,7 @@ int mag_test(){
     mag_config(i2c);
 
     // Wait
-    sleep_ms(2000);
+    // sleep_ms(2000);
 
     // Loop 1000 times
     for(int i = 0; i < 10; i++){
@@ -204,7 +204,7 @@ int mag_test(){
             printf("Error reading mag temp\n"); 
         }
 
-        sleep_ms(500);
+        // sleep_ms(500);
 
     }
 

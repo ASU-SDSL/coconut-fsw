@@ -1,7 +1,11 @@
 #pragma once
 
+// #include <SX1278.h>
+
 #include <FreeRTOS.h>
 #include "queue.h"
+
+#include "command.h"
 
 
 #define RADIO_NSS_PIN 7
