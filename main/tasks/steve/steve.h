@@ -1,8 +1,6 @@
 #pragma once
 
-#ifndef SIMULATOR
 #include "pico/stdlib.h"
-#endif
 
 #include <stdio.h>
 #include <string.h>

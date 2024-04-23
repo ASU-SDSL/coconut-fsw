@@ -16,7 +16,6 @@ public:
     }
 
     void init() override {
-        stdio_init_all();
 
         spiBegin();
 

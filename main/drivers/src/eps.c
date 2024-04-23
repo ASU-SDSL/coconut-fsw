@@ -266,9 +266,6 @@ void eps_test() {
 	config(i2c);
 
 
-	// Wait
-	sleep_ms(2000);
-
 	printf("STARTING TEST\n");
 
 	// Loop 10 times
@@ -319,7 +316,7 @@ void eps_test() {
 		else {
 			printf("Shunt voltage: %.2f mV\r\n", shunt);
 		}
-		sleep_ms(5);
+		// sleep_ms(5);
 		
 		if (getVBus(i2c, INA219_ADDR, REG_BUS, &vbus) == 0) {
 			printf("Bus voltage error\n");
@@ -328,7 +325,7 @@ void eps_test() {
 			printf("Bus voltage: %.2f V\r\n", vbus);
 		}
 
-		sleep_ms(5);
+		// sleep_ms(5);
 
 		if (getCurrent(i2c, INA219_ADDR, REG_CURRENT, &current) == 0) {
 			printf("Current error\n");
@@ -344,8 +341,8 @@ void eps_test() {
 			printf("Power: %.2f mW\r\n", power);
 		}
 		
-		sleep_ms(5);
+		// sleep_ms(5);
 
-		sleep_ms(2000);
+		// sleep_ms(2000);
 	}
 }

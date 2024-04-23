@@ -144,7 +144,7 @@ int mag_test(){
     config_mag(i2c);
 
     // Wait
-    sleep_ms(2000);
+    // sleep_ms(2000);
 
     // Loop 1000 times
     for(int i = 0; i < 10; i++){
@@ -164,7 +164,7 @@ int mag_test(){
         printf("Get Temp Output: %d\n", get_temp_output(i2c));
         printf("%x\n", MAG_TEMP_OUT_L);
 
-        sleep_ms(500);
+        // sleep_ms(500);
 
     }
 
