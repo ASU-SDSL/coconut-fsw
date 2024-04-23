@@ -76,7 +76,6 @@ target_link_libraries(${PROJECT_NAME} LINK_PUBLIC
 
 ## Setup internal include dirs
 set (INTERNAL_INCLUDE_DIRS
-    PRIVATE ${MAIN_DIRECTORY}/tasks/radio
     PRIVATE ${MAIN_DIRECTORY}/tasks/main
     PRIVATE ${MAIN_DIRECTORY}/tasks/command
     PRIVATE ${MAIN_DIRECTORY}/tasks/gse
