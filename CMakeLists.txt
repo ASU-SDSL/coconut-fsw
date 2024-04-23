@@ -8,6 +8,7 @@ set(PROJECT_NAME "COCONUTFSW")
 option(SIMULATOR "Enables simulator build" OFF)
 IF (SIMULATOR)
     # add preprocessor define so we can see this within C files
+    message(STATUS "Debugging enabled for ${PROJECT_NAME}")
     add_definitions(-DSIMULATOR) 
 ENDIF()
 
@@ -26,14 +27,14 @@ set(COMMON_CODE_DIRECTORY "${CMAKE_SOURCE_DIR}/freertos/Common")
 ## Set flags and directory variables
 
 # Simulator
-IF (SIMULATOR)
+# IF (SIMULATOR)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcommon")
-ELSE()
-    # RP2040
-    set(CMAKE_C_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
-    set(CMAKE_CXX_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
-ENDIF()
+# ELSE()
+#     # RP2040
+#     set(CMAKE_C_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
+#     set(CMAKE_CXX_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
+# ENDIF()
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
@@ -108,5 +109,7 @@ target_include_directories(FreeRTOS PUBLIC
 add_subdirectory(${MAIN_DIRECTORY})
 
 # add libraries here (and in target_link_libraries under the main cmakelists)
-add_subdirectory(${CMAKE_SOURCE_DIR}/lib/RadioLib)
-add_subdirectory(${CMAKE_SOURCE_DIR}/lib/no-OS-FatFS-SD-SPI-RPi-Pico/FatFs_SPI build)
+IF (NOT SIMULATOR)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/lib/RadioLib)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/lib/no-OS-FatFS-SD-SPI-RPi-Pico/FatFs_SPI build)
+ENDIF()
