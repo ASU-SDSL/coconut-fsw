@@ -23,12 +23,14 @@ uint8_t rtc_get_year(i2c_inst_t *i2c, uint8_t* output);
 
 /**
  * Reads temp (C) from RTC and writes it to [output] 
+ * Returns 0 on success.
 */
-uint8_t rtc_read_temp(i2c_inst_t *i2c, float* output);
+uint8_t rtc_get_temp(i2c_inst_t *i2c, float* output);
 
 /**
  * Manually updates value in temp register. RTC auto-updates the temp
  * every 64 seconds.
+ * Returns 0 on success. 
 */
 uint8_t rtc_update_temp(i2c_inst_t *i2c);
 

@@ -35,7 +35,7 @@ int SCALE = 6842;
 // Not sure what this was for, should not be needed
 //uint i2c_init (i2c_inst_t *i2c, uint 100 * 1000) //initialization of i2c
 
-int config_mag(i2c_inst_t *i2c){
+int mag_config(i2c_inst_t *i2c){
     int success = 0;
     // set performance mode
     // xy - high performance mode (-10- ----)
@@ -67,63 +67,82 @@ int config_mag(i2c_inst_t *i2c){
     return success;
 }
 
-int16_t get_x_output(i2c_inst_t *i2c) { //defines function
+uint8_t mag_get_x(i2c_inst_t *i2c, int16_t* output) { //defines function
 
     uint8_t buf_low; //buf means buffer, allocates space for data to be entered in an 8 bit number (uint8_t)
-    i2c_read_from_register(i2c, SAD, OUT_X_L, &buf_low, 1); // taken from eps library, 0x28 is the location
+    if(i2c_read_from_register(i2c, SAD, OUT_X_L, &buf_low, 1)){
+        return 1; 
+    }
 
     uint8_t buf_high;
-    i2c_read_from_register(i2c, SAD, OUT_X_H, &buf_high, 1);
+    if(i2c_read_from_register(i2c, SAD, OUT_X_H, &buf_high, 1)){
+        return 1; 
+    }
 
     int16_t x_out = 0;// (int) buf_low | ((int) buf_high << 8); // or ?logic operator, basically makes 0 or 1 = 1
     x_out = ((x_out | buf_high) << 8) | buf_low;
 
-    return x_out;
+    *output = x_out; 
+
+    return 0;
 }
 
-int16_t get_y_output(i2c_inst_t *i2c) { //Y output
+uint8_t mag_get_y(i2c_inst_t *i2c, int16_t* output) { //Y output
 
     uint8_t buf_low;
-    i2c_read_from_register(i2c, SAD, OUT_Y_L, &buf_low, 1);
+    if(i2c_read_from_register(i2c, SAD, OUT_Y_L, &buf_low, 1)){
+        return 1;
+    }
 
     uint8_t buf_high;
-    i2c_read_from_register(i2c, SAD, OUT_Y_H, &buf_high, 1);
+    if(i2c_read_from_register(i2c, SAD, OUT_Y_H, &buf_high, 1)){
+        return 1; 
+    }
 
     int16_t y_out = 0; //(int) buf_low | ((int) buf_high << 8);
     y_out = ((y_out | buf_high) << 8) | buf_low;
 
-    return y_out;
+    *output = y_out;
+    return 0; 
 }
 
-int16_t get_z_output(i2c_inst_t *i2c){ //Z output
+uint8_t mag_get_z(i2c_inst_t *i2c, int16_t* output){ //Z output
 
     uint8_t buf_low;
-    i2c_read_from_register(i2c, SAD, OUT_Z_L, &buf_low, 1);
+    if(i2c_read_from_register(i2c, SAD, OUT_Z_L, &buf_low, 1)){
+        return 1;
+    }
 
     uint8_t buf_high;
-    i2c_read_from_register(i2c, SAD, OUT_Z_H, &buf_high, 1);
+    if(i2c_read_from_register(i2c, SAD, OUT_Z_H, &buf_high, 1)){
+        return 1; 
+    }
 
     int16_t z_out = 0; //(int) buf_low | ((int) buf_high << 8);
     z_out = ((z_out | buf_high) << 8) | buf_low;
-    return z_out;
-
+    *output = z_out;
+    return 0; 
 }
 
-int16_t get_temp_output(i2c_inst_t *i2c){ //Temperature output
+uint8_t mag_get_temp(i2c_inst_t *i2c, int16_t* output){ //Temperature output
 
     uint8_t buf_low;
-    i2c_read_from_register(i2c, SAD, MAG_TEMP_OUT_L, &buf_low, 1);
+    if(i2c_read_from_register(i2c, SAD, MAG_TEMP_OUT_L, &buf_low, 1)){
+        return 1; 
+    }
 
     uint8_t buf_high;
-    i2c_read_from_register(i2c, SAD, MAG_TEMP_OUT_H, &buf_high, 1);
+    if(i2c_read_from_register(i2c, SAD, MAG_TEMP_OUT_H, &buf_high, 1)){
+        return 1; 
+    }
 
     int16_t temp_out = 0; //(int) buf_low | ((int) buf_high << 8);
     temp_out = ((temp_out | buf_high) << 8) | buf_low;
-    return temp_out;
-
+    *output = temp_out;
+    return 0; 
 }
 
-uint8_t get_mag_status(i2c_inst_t *i2c) { //Indicates if data is available/overrun
+uint8_t mag_get_status(i2c_inst_t *i2c) { //Indicates if data is available/overrun
 
 	uint8_t buf;
 	i2c_read_from_register(i2c, SAD, STATUS_REG, &buf, 1);
@@ -141,7 +160,7 @@ int mag_test(){
     config_i2c0();
 
     // config mag
-    config_mag(i2c);
+    mag_config(i2c);
 
     // Wait
     // sleep_ms(2000);
@@ -149,25 +168,44 @@ int mag_test(){
     // Loop 1000 times
     for(int i = 0; i < 10; i++){
 
+        int16_t magbuf; 
         printf("Status: %d\n", get_mag_status(i2c));
         printf("Status (raw): %02x\n", get_mag_status(i2c));
 
-        printf("X output: %d\n", get_x_output(i2c));
-        printf("X output (gauss): %f\n", (float)get_x_output(i2c) / SCALE);
+        if(!mag_get_x(i2c, &magbuf)) {
+            printf("X output: %d\n", magbuf);
+            printf("X output (gauss): %f\n", (float)magbuf / SCALE);
+        }
+        else {
+            printf("Error reading x\n");
+        }
 
-        printf("Y output: %d\n", get_y_output(i2c));
-        printf("Y output (gauss): %f\n", (float)get_y_output(i2c) / SCALE);
+        if(!mag_get_y(i2c, &magbuf)) {
+            printf("Y output: %d\n", magbuf);
+            printf("Y output (gauss): %f\n", (float)magbuf / SCALE);
+        }
+        else {
+            printf("Error reading y\n");
+        }
 
-        printf("Z output: %d\n", get_z_output(i2c));
-        printf("Z output (gauss): %f\n", (float)get_z_output(i2c) / SCALE);
+        if(!mag_get_z(i2c, &magbuf)){ 
+            printf("Z output: %d\n", magbuf);
+            printf("Z output (gauss): %f\n", (float)magbuf / SCALE);
+        }
+        else {
+            printf("Error reading z\n"); 
+        }
 
-        printf("Get Temp Output: %d\n", get_temp_output(i2c));
-        printf("%x\n", MAG_TEMP_OUT_L);
+        if(!mag_get_temp(i2c, &magbuf)){
+            printf("Get Temp Output: %d\n", magbuf);
+            printf("%x\n", MAG_TEMP_OUT_L);
+        }
+        else {
+            printf("Error reading mag temp\n"); 
+        }
 
         // sleep_ms(500);
 
     }
-
-    
 
 }

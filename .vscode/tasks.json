@@ -3,8 +3,9 @@
     "tasks": [
         {
             "label": "buildnflash",
-            "command": "./deploy.sh",
-            "args": ["-g", "-b"],
+
+            "command": "./debug/buildnflashjtag.sh",
+
             "options": {
                 "cwd": "${workspaceFolder}"
             },
