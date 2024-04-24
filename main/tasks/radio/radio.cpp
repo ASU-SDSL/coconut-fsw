@@ -112,7 +112,7 @@ void init_radio()
     else
     {
         while (true){
-            printf("radio init_failed with code %d\n", radio_state);
+            printf("radio init failed with code %d\n", radio_state);
             sleep_ms(500);
         }
     }

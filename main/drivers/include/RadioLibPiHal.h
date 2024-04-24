@@ -32,6 +32,7 @@ public:
         gpio_put(PICO_DEFAULT_SPI_SCK_PIN, 1);
     }
 
+    // used in deconstructor 
     void term() override {
         spiEnd();
 
@@ -125,32 +126,28 @@ public:
         return (this->micros() - start);
     }
 
-    void spiBegin() {
+    void spiBegin() override {
         spi_init(_spi, _spi_speed);
         spi_set_format(_spi, 8, SPI_CPOL_0, SPI_CPHA_0, SPI_MSB_FIRST);
     }
 
-    void spiBeginTransaction() {
-        gpio_put(RADIO_NSS_PIN, 0); // pull cs down
+    void spiBeginTransaction() override {
+
     }
 
     // suspect
-    void spiTransfer(uint8_t *out, size_t len, uint8_t *in) {
+    void spiTransfer(uint8_t *out, size_t len, uint8_t *in) override {
         spi_write_read_blocking(_spi, in, out, len);
         //spi_write_blocking(_spi, out, len);
         //spi_read_blocking(_spi, 0, in, len);
     }
 
-    void spiEndTransaction() {
-        gpio_put(RADIO_NSS_PIN, 1); // put cs up 
+    void spiEndTransaction() override {
+
     }
 
-    void spiEnd() {
+    void spiEnd() override {
         spi_deinit(_spi);
-    }
-
-    void transmit() {
-
     }
 
 private:
