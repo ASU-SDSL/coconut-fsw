@@ -13,32 +13,19 @@ public:
     PiPicoHal(spi_inst_t *spi, uint32_t spi_speed = 2000000)
         : RadioLibHal(0, 1, 0, 1, 0, 1),  
           _spi(spi),
-          _spi_speed(spi_speed) { }
+          _spi_speed(spi_speed) {
+            printf("PiPicoHal Constructor\n");
+          }
 
     void init() override {
         stdio_init_all();
-
         spiBegin();
 
-        gpio_init(PICO_DEFAULT_SPI_TX_PIN);
-        gpio_set_dir(PICO_DEFAULT_SPI_TX_PIN, GPIO_OUT);
-        gpio_init(PICO_DEFAULT_SPI_RX_PIN);
-        gpio_set_dir(PICO_DEFAULT_SPI_RX_PIN, GPIO_IN);
-        gpio_init(RADIO_NSS_PIN);
-        gpio_set_dir(RADIO_NSS_PIN, GPIO_OUT); 
-
-        gpio_init(PICO_DEFAULT_SPI_SCK_PIN);
-        gpio_set_dir(PICO_DEFAULT_SPI_SCK_PIN, GPIO_OUT);
-        gpio_put(PICO_DEFAULT_SPI_SCK_PIN, 1);
     }
 
     // used in deconstructor 
     void term() override {
         spiEnd();
-
-        gpio_init(PICO_DEFAULT_SPI_SCK_PIN);
-        gpio_set_dir(PICO_DEFAULT_SPI_SCK_PIN, GPIO_OUT);
-        gpio_put(PICO_DEFAULT_SPI_SCK_PIN, 0);
     }
 
     void pinMode(uint32_t pin, uint32_t mode) override {
@@ -101,22 +88,16 @@ public:
 
     // suspect
     long pulseIn(uint32_t pin, uint32_t state, unsigned long timeout) override {
+        printf("pulseIn\n");
         if (pin == RADIOLIB_NC) {
             return 0;
         }
 
         gpio_set_dir(pin, GPIO_IN);
-
+        uint32_t start = this->micros();
         uint32_t curtick = this->micros();
         uint32_t timeoutMicros = timeout; // * 1000; 
 
-        // changed
-        while(gpio_get(pin) != state){ // wait for pulse to start
-            if((this->micros() - curtick) > timeoutMicros){
-                return 0; 
-            }
-        }
-        uint32_t start = this->micros();
         while (gpio_get(pin) == state) {
             if ((this->micros() - curtick) > timeoutMicros) {
                 return 0;
@@ -127,23 +108,20 @@ public:
     }
 
     void spiBegin() override {
+        printf("spiBegin\n");
         spi_init(_spi, _spi_speed);
         spi_set_format(_spi, 8, SPI_CPOL_0, SPI_CPHA_0, SPI_MSB_FIRST);
     }
 
     void spiBeginTransaction() override {
-
     }
 
     // suspect
     void spiTransfer(uint8_t *out, size_t len, uint8_t *in) override {
         spi_write_read_blocking(_spi, in, out, len);
-        //spi_write_blocking(_spi, out, len);
-        //spi_read_blocking(_spi, 0, in, len);
     }
 
     void spiEndTransaction() override {
-
     }
 
     void spiEnd() override {

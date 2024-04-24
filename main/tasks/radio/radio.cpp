@@ -4,6 +4,7 @@
 #include "radio.h"
 #include <FreeRTOS.h>
 #include "command.h"
+#include "PicoHal.h"
 
 #define ERR_NONE 0
 #define NULL_QUEUE_WAIT_TIME 100
@@ -59,9 +60,10 @@
  * if smt in queue send on radio
  */
 
-PiPicoHal *hal = new PiPicoHal(spi0); // can specify the speed here as an argument if desired
+//PiPicoHal *hal = new PiPicoHal(spi0); // can specify the speed here as an argument if desired
+PicoHal *picoHal = new PicoHal(spi0, PICO_DEFAULT_SPI_TX_PIN, PICO_DEFAULT_SPI_RX_PIN, PICO_DEFAULT_SPI_SCK_PIN);
 // Add interupt pin
-RFM98 radio = new Module(hal, RADIO_NSS_PIN, RADIO_IRQ_PIN, RADIO_NRST_PIN, RADIOLIB_NC); // RFM98 is an alias for SX1278
+RFM98 radio = new Module(picoHal, RADIO_NSS_PIN, RADIO_IRQ_PIN, RADIO_NRST_PIN, RADIOLIB_NC); // RFM98 is an alias for SX1278
 volatile bool packet_recieved = false;
 
 #ifdef __cplusplus
@@ -102,6 +104,7 @@ void radio_packet_recieve()
 
 void init_radio()
 {
+    sleep_ms(1000); // for debugging
     hal->init();
     int radio_state = radio.begin(); 
 
