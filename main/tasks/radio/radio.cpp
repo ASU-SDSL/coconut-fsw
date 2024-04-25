@@ -60,7 +60,6 @@
  * if smt in queue send on radio
  */
 
-//PiPicoHal *hal = new PiPicoHal(spi0); // can specify the speed here as an argument if desired
 PicoHal *picoHal = new PicoHal(spi0, PICO_DEFAULT_SPI_TX_PIN, PICO_DEFAULT_SPI_RX_PIN, PICO_DEFAULT_SPI_SCK_PIN);
 // Add interupt pin
 RFM98 radio = new Module(picoHal, RADIO_NSS_PIN, RADIO_IRQ_PIN, RADIO_NRST_PIN, RADIOLIB_NC); // RFM98 is an alias for SX1278
@@ -105,7 +104,6 @@ void radio_packet_recieve()
 void init_radio()
 {
     sleep_ms(1000); // for debugging
-    hal->init();
     int radio_state = radio.begin(); 
 
     if (radio_state == RADIOLIB_ERR_NONE)
