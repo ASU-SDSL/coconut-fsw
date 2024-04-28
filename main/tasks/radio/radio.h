@@ -34,6 +34,6 @@ extern "C"
 }
 #endif
 
-void radio_packet_recieve();
+void radio_packet_receive();
 void init_radio();
 void radio_task_cpp();

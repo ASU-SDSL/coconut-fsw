@@ -8,6 +8,13 @@
 #include <pico/stdlib.h>
 #include "hardware/spi.h"
 #include "hardware/timer.h"
+#include <map>
+
+std::map<uint32_t, void(*)(void)> irqs;
+void picoIRQ(uint gpio, uint32_t event_mask){
+  printf("picoIRQ with %d\n", gpio);
+  (irqs[gpio])();
+}
 
 // create a new Raspberry Pi Pico hardware abstraction 
 // layer using the Pico SDK
@@ -65,7 +72,10 @@ public:
       return;
     }
 
-    gpio_set_irq_enabled_with_callback(interruptNum, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, (gpio_irq_callback_t)interruptCb);
+    // // wrapped = interruptCb;
+    irqs[interruptNum] = interruptCb;
+
+    gpio_set_irq_enabled_with_callback(interruptNum, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, picoIRQ);//(gpio_irq_callback_t)interruptCb);
   }
 
   void detachInterrupt(uint32_t interruptNum) override {
@@ -74,6 +84,7 @@ public:
     }
 
     gpio_set_irq_enabled_with_callback(interruptNum, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, false, NULL);
+    irqs.erase(interruptNum);
   }
 
   void delay(unsigned long ms) override {
@@ -132,6 +143,14 @@ public:
   }
 
 private:
+  // static void (*wrapped)(void);
+  // static void picoIRQ(uint gpio, uint32_t event_mask){
+  //   PicoHal::wrapped();
+  // }
+  // static void setWrapped(void (*func)(void)){
+  //   PicoHal::wrapped = func;
+  // }
+
   // the HAL can contain any additional private members
   spi_inst_t *_spiChannel;
   uint32_t _spiSpeed;

@@ -82,22 +82,19 @@ extern "C"
         memcpy(heap_buf, buffer, size);
         new_buffer.payload_buffer = heap_buf;
         // Wait for queue to become available
-        printf("before queue waiting\n");
         while (!radio_queue)
         {
             vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
         }
-        printf("Queue Status: %d\n", !radio_queue);
-        printf("after queue waiting\n");
         xQueueSendToBack(radio_queue, &new_buffer, portMAX_DELAY);
-        printf("rqm finished\n");
     }
 #ifdef __cplusplus
 }
 #endif
 
-void radio_packet_recieve()
+void radio_packet_receive()
 {
+    printf("radio_packet_receive\n");
     packet_recieved = true;
 }
 
@@ -108,7 +105,7 @@ void init_radio()
 
     if (radio_state == RADIOLIB_ERR_NONE)
     {
-        printf("Success, radio initialized");
+        printf("Success, radio initialized\n");
     }
     else
     {
@@ -118,11 +115,11 @@ void init_radio()
         }
     }
 
-    radio.setPacketReceivedAction(radio_packet_recieve);
+    radio.setPacketReceivedAction(radio_packet_receive);
     int receive_state = radio.startReceive();
     if (receive_state == RADIOLIB_ERR_NONE)
     {
-        printf("Success, recieving...");
+        printf("Success, recieving...\n");
     }
     else
     {
@@ -142,7 +139,7 @@ void set_power_output(RFM98 radio_module, int8_t new_dbm) {
  */
 void radio_task_cpp()
 {
-    printf("Starting  Radio Task\n");
+    printf("Starting Radio Task\n");
     init_radio();
     radio_queue = xQueueCreate(RADIO_MAX_QUEUE_ITEMS, sizeof(radio_queue_operations_t)); // telemetry_queue_transmission_t));
     printf("Immediate queue status: %d\n", !radio_queue);
@@ -151,9 +148,10 @@ void radio_task_cpp()
 
     while (true)
     {
-        printf("radio loop \n"); 
+        //printf("radio loop \n"); 
         if (packet_recieved)
         {
+            printf("package received\n");
             //uint8_t *packet; needs memeory allocated to ti
             size_t packet_size = radio.getPacketLength();
             uint8_t packet[packet_size];
@@ -189,6 +187,7 @@ void radio_task_cpp()
         {
             switch (rec.operation_type) {
                 case TRANSMIT:
+                    printf("transmitting...\n");
                     radio.transmit(rec.data_buffer, rec.data_size);
                     vPortFree(rec.data_buffer);
                     break;
@@ -201,6 +200,6 @@ void radio_task_cpp()
             
         }
 
-        radio.startReceive();
+        // radio.startReceive();
     }
 }
