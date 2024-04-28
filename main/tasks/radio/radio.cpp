@@ -148,7 +148,6 @@ void radio_task_cpp()
 
     while (true)
     {
-        //printf("radio loop \n"); 
         if (packet_recieved)
         {
             printf("package received\n");
