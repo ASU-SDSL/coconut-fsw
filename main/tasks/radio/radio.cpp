@@ -189,6 +189,7 @@ void radio_task_cpp()
                 case TRANSMIT:
                     printf("transmitting...\n");
                     radio.transmit(rec.data_buffer, rec.data_size);
+                    radio.startReceive();
                     vPortFree(rec.data_buffer);
                     break;
 
@@ -200,6 +201,5 @@ void radio_task_cpp()
             
         }
 
-        // radio.startReceive();
     }
 }
