@@ -1,6 +1,5 @@
 #include <RadioLib.h>
 #include "RadioLibPiHal.h"
-// #include <SX1278.h>
 #include "radio.h"
 #include <FreeRTOS.h>
 #include "command.h"
@@ -62,7 +61,13 @@
 
 PicoHal *picoHal = new PicoHal(spi0, PICO_DEFAULT_SPI_TX_PIN, PICO_DEFAULT_SPI_RX_PIN, PICO_DEFAULT_SPI_SCK_PIN);
 // Add interupt pin
-RFM98 radio = new Module(picoHal, RADIO_NSS_PIN, RADIO_IRQ_PIN, RADIO_NRST_PIN, RADIOLIB_NC); // RFM98 is an alias for SX1278
+#ifdef RFM98
+RFM98 radio = new Module(picoHal, RADIO_NSS_PIN, RADIO_IRQ_PIN, RADIO_NRST_PIN, 26); //RADIOLIB_NC); // RFM98 is an alias for SX1278
+#endif
+#ifndef RFM98
+SX1268 radio = new Module(picoHal, RADIO_NSS_PIN, RADIO_IRQ_PIN, RADIO_NRST_PIN, 26);
+#endif 
+
 volatile bool packet_recieved = false;
 
 #ifdef __cplusplus
@@ -101,7 +106,12 @@ void radio_packet_receive()
 void init_radio()
 {
     sleep_ms(1000); // for debugging
+    #ifdef RFM98
     int radio_state = radio.begin(); 
+    #endif
+    #ifndef RFM98
+    int radio_state = radio.begin(434.0, 125.0, 9, 7, 18, 2, 8, 0.0, false);
+    #endif 
 
     if (radio_state == RADIOLIB_ERR_NONE)
     {
@@ -130,9 +140,16 @@ void init_radio()
     }
 }
 
+#ifdef RFM98
 void set_power_output(RFM98 radio_module, int8_t new_dbm) {
     radio_module.setOutputPower(new_dbm);
 }
+#endif
+#ifndef RFM98
+void set_power_output(SX126x radio_module, int8_t new_dbm) {
+    radio_module.setOutputPower(new_dbm);
+}
+#endif 
 
 /**
  * Monitor radio, write to SD card, and send stuff when needed
@@ -187,7 +204,10 @@ void radio_task_cpp()
             switch (rec.operation_type) {
                 case TRANSMIT:
                     printf("transmitting...\n");
+                    radio.clearPacketReceivedAction();
                     radio.transmit(rec.data_buffer, rec.data_size);
+                    //radio.readData(....)
+                    radio.setPacketReceivedAction(radio_packet_receive);
                     radio.startReceive();
                     vPortFree(rec.data_buffer);
                     break;
