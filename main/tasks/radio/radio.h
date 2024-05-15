@@ -5,9 +5,14 @@
 #include <stdint.h>
 
 
-#define RADIO_NSS_PIN 7
-#define RADIO_IRQ_PIN 17
-#define RADIO_NRST_PIN 22
+#define RADIO_SX_NSS_PIN 7
+#define RADIO_SX_IRQ_PIN 17
+#define RADIO_SX_NRST_PIN 22
+#define RADIO_SX_BUSY_PIN 26
+
+#define RADIO_RFM_NSS_PIN 8
+#define RADIO_RFM_IRQ_PIN 18
+#define RADIO_RFM_NRST_PIN 23
 
 #define RADIO_MAX_QUEUE_ITEMS 64
 
@@ -15,7 +20,9 @@ QueueHandle_t radio_queue;
 
 typedef enum operation_type {
     TRANSMIT,
-    SET_OUTPUT_POWER
+    SET_OUTPUT_POWER,
+    ENABLE_RFM98,
+    ENABLE_SX1268
 } operation_type_t;
 typedef struct radio_queue_operations {
     operation_type_t operation_type; // What opeartion to do, could be transmit, set power, etc

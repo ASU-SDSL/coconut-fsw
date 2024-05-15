@@ -61,14 +61,11 @@
 
 PicoHal *picoHal = new PicoHal(spi0, PICO_DEFAULT_SPI_TX_PIN, PICO_DEFAULT_SPI_RX_PIN, PICO_DEFAULT_SPI_SCK_PIN);
 // Add interupt pin
-#ifdef RFM98
-RFM98 radio = new Module(picoHal, RADIO_NSS_PIN, RADIO_IRQ_PIN, RADIO_NRST_PIN, 26); //RADIOLIB_NC); // RFM98 is an alias for SX1278
-#endif
-#ifndef RFM98
-SX1268 radio = new Module(picoHal, RADIO_NSS_PIN, RADIO_IRQ_PIN, RADIO_NRST_PIN, 26);
-#endif 
+RFM98 radioRFM = new Module(picoHal, RADIO_RFM_NSS_PIN, RADIO_RFM_IRQ_PIN, RADIO_RFM_NRST_PIN, RADIOLIB_NC); //RADIOLIB_NC); // RFM98 is an alias for SX1278
+SX1268 radioSX = new Module(picoHal, RADIO_SX_NSS_PIN, RADIO_SX_IRQ_PIN, RADIO_SX_NRST_PIN, RADIO_SX_BUSY_PIN); 
+PhysicalLayer* radio = &radioSX;
 
-volatile bool packet_recieved = false;
+volatile bool operation_done = false;
 
 #ifdef __cplusplus
 extern "C"
@@ -97,22 +94,21 @@ extern "C"
 }
 #endif
 
-void radio_packet_receive()
+void radio_operation_done()
 {
-    printf("radio_packet_receive\n");
-    packet_recieved = true;
+    printf("radio_operation_done\n");
+    operation_done = true;
 }
 
 void init_radio()
 {
     sleep_ms(1000); // for debugging
-    #ifdef RFM98
-    int radio_state = radio.begin(); 
-    #endif
-    #ifndef RFM98
-    int radio_state = radio.begin(434.0, 125.0, 9, 7, 18, 2, 8, 0.0, false);
-    #endif 
-
+    printf("First\n");
+    //int radio_state_RFM = radioRFM.begin();
+    printf("Second\n");
+    int radio_state = radioSX.begin(434.0, 125.0, 9, 7, 18, 2, 8, 0.0, false);
+    printf("Third\n");
+    
     if (radio_state == RADIOLIB_ERR_NONE)
     {
         printf("Success, radio initialized\n");
@@ -124,9 +120,11 @@ void init_radio()
             sleep_ms(500);
         }
     }
-
-    radio.setPacketReceivedAction(radio_packet_receive);
-    int receive_state = radio.startReceive();
+    printf("3.5\n");
+    radioSX.setPacketReceivedAction(radio_operation_done);
+    printf("Fourth\n");
+    int receive_state = radio->startReceive();
+    printf("Fifth\n");
     if (receive_state == RADIOLIB_ERR_NONE)
     {
         printf("Success, recieving...\n");
@@ -140,61 +138,62 @@ void init_radio()
     }
 }
 
-#ifdef RFM98
-void set_power_output(RFM98 radio_module, int8_t new_dbm) {
-    radio_module.setOutputPower(new_dbm);
+void set_power_output(PhysicalLayer* radio_module, int8_t new_dbm){
+    radio_module->setOutputPower(new_dbm); 
 }
-#endif
-#ifndef RFM98
-void set_power_output(SX126x radio_module, int8_t new_dbm) {
-    radio_module.setOutputPower(new_dbm);
-}
-#endif 
 
 /**
  * Monitor radio, write to SD card, and send stuff when needed
  */
 void radio_task_cpp()
 {
+    sleep_ms(1000); 
     printf("Starting Radio Task\n");
     init_radio();
     radio_queue = xQueueCreate(RADIO_MAX_QUEUE_ITEMS, sizeof(radio_queue_operations_t)); // telemetry_queue_transmission_t));
     printf("Immediate queue status: %d\n", !radio_queue);
-    //telemetry_queue_transmission_t rec;
     radio_queue_operations_t rec;
+    bool transmitting = false;
 
     while (true)
     {
-        if (packet_recieved)
+        if (operation_done)
         {
-            printf("package received\n");
-            //uint8_t *packet; needs memeory allocated to ti
-            size_t packet_size = radio.getPacketLength();
-            uint8_t packet[packet_size];
+            if(transmitting){
+                transmitting = false;
+                radio->startReceive(); 
+                operation_done = false; 
+            }
+            else {
+                printf("package received\n");
+                //uint8_t *packet; needs memeory allocated to ti
+                size_t packet_size = radio->getPacketLength();
+                uint8_t packet[packet_size];
 
-            int packet_state = radio.readData(packet, packet_size);
-            // acknowledge packet has been recieved 
-            packet_recieved = false;
+                int packet_state = radio->readData(packet, packet_size);
+                // acknowledge packet has been recieved 
+                operation_done = false;
 
-            if (packet_state == RADIOLIB_ERR_NONE)
-            {
-                // parse out sync bytes and grab packet with header
-                // create command.c function to read packet
-                printf("Recieved packet: ");
-                for(int i = 0; i < packet_size; i++){
-                    printf("%c", packet[i]);
+                if (packet_state == RADIOLIB_ERR_NONE)
+                {
+                    // parse out sync bytes and grab packet with header
+                    // create command.c function to read packet
+                    printf("Recieved packet: ");
+                    for(int i = 0; i < packet_size; i++){
+                        printf("%c", packet[i]);
+                    }
+                    printf("\n"); 
+                    //parse_radio_packet(packet, packet_size);
+                    // Check if command is to set output power of the radio
                 }
-                printf("\n"); 
-                //parse_radio_packet(packet, packet_size);
-                // Check if command is to set output power of the radio
-            }
-            else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
-            {
-                printf("CRC Error!!");
-            }
-            else
-            {
-                printf("Packet Reading failed");
+                else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
+                {
+                    printf("CRC Error!!");
+                }
+                else
+                {
+                    printf("Packet Reading failed");
+                }
             }
         }
 
@@ -204,11 +203,8 @@ void radio_task_cpp()
             switch (rec.operation_type) {
                 case TRANSMIT:
                     printf("transmitting...\n");
-                    radio.clearPacketReceivedAction();
-                    radio.transmit(rec.data_buffer, rec.data_size);
-                    //radio.readData(....)
-                    radio.setPacketReceivedAction(radio_packet_receive);
-                    radio.startReceive();
+                    radio->startTransmit(rec.data_buffer, rec.data_size);
+                    transmitting = true; 
                     vPortFree(rec.data_buffer);
                     break;
 
@@ -216,6 +212,23 @@ void radio_task_cpp()
                     set_power_output(radio, rec.data_buffer[0]);
                     vPortFree(rec.data_buffer);
                     break;
+                
+                case ENABLE_RFM98:
+                    if(radio == &radioRFM) break;
+                    radio->clearPacketReceivedAction();
+                    radio = &radioRFM;
+                    radio->setPacketReceivedAction(radio_operation_done);
+                    vPortFree(rec.data_buffer); 
+                    break;
+                
+                case ENABLE_SX1268:
+                    if(radio == &radioSX) break;
+                    radio->clearPacketReceivedAction();
+                    radio = &radioSX;
+                    radio->setPacketReceivedAction(radio_operation_done);
+                    vPortFree(rec.data_buffer); 
+                    break;
+
             }
             
         }
