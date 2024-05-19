@@ -143,13 +143,6 @@ public:
   }
 
 private:
-  // static void (*wrapped)(void);
-  // static void picoGeneralISR(uint gpio, uint32_t event_mask){
-  //   PicoHal::wrapped();
-  // }
-  // static void setWrapped(void (*func)(void)){
-  //   PicoHal::wrapped = func;
-  // }
 
   // the HAL can contain any additional private members
   spi_inst_t *_spiChannel;

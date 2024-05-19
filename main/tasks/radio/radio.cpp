@@ -8,7 +8,6 @@
 #define ERR_NONE 0
 #define NULL_QUEUE_WAIT_TIME 100
 
-
 // USER FUNCTIONS
 
 // void set_power_output_request(int new_db) {
@@ -103,28 +102,29 @@ void radio_operation_done()
 void init_radio()
 {
     sleep_ms(1000); // for debugging
-    printf("First\n");
-    //int radio_state_RFM = radioRFM.begin();
-    printf("Second\n");
+    printf("Resetting Radios...\n");
+    radioRFM.reset(); 
+    printf("RFM Reset.\n");
+    radioSX.reset(false);
+    printf("SX Reset.\n");
+    sleep_ms(50);
+
+    printf("1\n");
+    int radio_state_RFM = radioRFM.begin();
+    printf("2\n");
     int radio_state = radioSX.begin(434.0, 125.0, 9, 7, 18, 2, 8, 0.0, false);
-    printf("Third\n");
-    
-    if (radio_state == RADIOLIB_ERR_NONE)
-    {
-        printf("Success, radio initialized\n");
-    }
-    else
-    {
-        while (true){
-            printf("radio init failed with code %d\n", radio_state);
-            sleep_ms(500);
-        }
-    }
+    printf("3: RFM: %d SX: %d\n", radio_state_RFM, radio_state);
+    radio = &radioSX; 
+
     printf("3.5\n");
-    radioSX.setPacketReceivedAction(radio_operation_done);
-    printf("Fourth\n");
+    radioSX.setDio1Action(radio_operation_done); 
+    printf("after setDio1Action\n"); 
+    radioRFM.setPacketReceivedAction(radio_operation_done); 
+    printf("after rfm setPacketReceivedAction\n");
+
+    printf("4\n");
     int receive_state = radio->startReceive();
-    printf("Fifth\n");
+    printf("5\n");
     if (receive_state == RADIOLIB_ERR_NONE)
     {
         printf("Success, recieving...\n");
@@ -149,7 +149,7 @@ void radio_task_cpp()
 {
     sleep_ms(1000); 
     printf("Starting Radio Task\n");
-    init_radio();
+    //init_radio();
     radio_queue = xQueueCreate(RADIO_MAX_QUEUE_ITEMS, sizeof(radio_queue_operations_t)); // telemetry_queue_transmission_t));
     printf("Immediate queue status: %d\n", !radio_queue);
     radio_queue_operations_t rec;
@@ -160,6 +160,7 @@ void radio_task_cpp()
         if (operation_done)
         {
             if(transmitting){
+                printf("done transmitting\n"); 
                 transmitting = false;
                 radio->startReceive(); 
                 operation_done = false; 
