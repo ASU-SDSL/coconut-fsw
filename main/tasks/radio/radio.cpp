@@ -65,6 +65,8 @@ PicoHal *picoHal = new PicoHal(spi0, PICO_DEFAULT_SPI_TX_PIN, PICO_DEFAULT_SPI_R
 RFM98 radioRFM = new Module(picoHal, RADIO_RFM_NSS_PIN, RADIO_RFM_IRQ_PIN, RADIO_RFM_NRST_PIN, RADIOLIB_NC); //RADIOLIB_NC); // RFM98 is an alias for SX1278
 SX1268 radioSX = new Module(picoHal, RADIO_SX_NSS_PIN, RADIO_SX_IRQ_PIN, RADIO_SX_NRST_PIN, RADIO_SX_BUSY_PIN); 
 PhysicalLayer* radio = &radioSX;
+int radio_state_RFM = -1; 
+int radio_state_SX = -1; 
 
 volatile bool operation_done = false;
 
@@ -140,40 +142,22 @@ void radio_operation_done()
 
 void init_radio()
 {
-    // trying to blow the stack 
-    // RFM98 bomb = new Module(picoHal, RADIO_RFM_NSS_PIN, RADIO_RFM_IRQ_PIN, RADIO_RFM_NRST_PIN, RADIOLIB_NC); //RADIOLIB_NC); // RFM98 is an alias for SX1278
-    // printf("bomb"); 
-    // init_radio(); 
-
     sleep_ms(1000); // for debugging
-    // printf("Resetting Radios...\n");
-    // radioRFM.reset(); 
-    // printf("RFM Reset.\n");
-    // radioSX.reset(false);
-    // printf("SX Reset.\n");
-    // sleep_ms(50);
-
-    printf("Size of rfm98: %d sx1268: %d hal: %d queueItem: %d\n", sizeof(RFM98)/4, sizeof(SX1268)/4, sizeof(PicoHal)/4, sizeof(radio_queue_operations_t)/4 * 64);
-
-    // UBaseType_t wm = uxTaskGetStackHighWaterMark(NULL); 
-    // printf("Task Watermark: %d (in words)\n", wm);
 
     printf("1\n");
-    int radio_state_RFM = radioRFM.begin();
+    radio_state_RFM = radioRFM.begin();
     printf("2\n");
-    int radio_state = radioSX.begin(434.0, 125.0, 9, 7, 18, 2, 8, 0.0, false);
-    printf("3: RFM: %d SX: %d\n", radio_state_RFM, radio_state);
-    radio = &radioSX; 
+    radio_state_SX = radioSX.begin(434.0, 125.0, 9, 7, 18, 2, 8, 0.0, false);
+    printf("3: RFM: %d SX: %d\n", radio_state_RFM, radio_state_SX);
+    if(radio_state_SX == 0){
+        radio = &radioSX; 
+    }
+    else {
+        radio = &radioRFM; 
+    }
 
-    // printf("3.5\n");
-    // radioSX.setDio1Action(radio_operation_done); 
-    // printf("after setDio1Action\n"); 
-    // radioRFM.setPacketReceivedAction(radio_operation_done); 
-    // printf("after rfm setPacketReceivedAction\n");
     printf("3.5\n");
     
-    // wm = uxTaskGetStackHighWaterMark(NULL); 
-    // printf("Task Watermark: %d (in words)\n", wm);
     radio->setPacketReceivedAction(radio_operation_done); 
 
     printf("4\n");
@@ -204,8 +188,8 @@ void radio_task_cpp()
     sleep_ms(1000); 
     printf("Starting Radio Task\n");
     init_radio();
+
     radio_queue = xQueueCreate(RADIO_MAX_QUEUE_ITEMS, sizeof(radio_queue_operations_t)); // telemetry_queue_transmission_t));
-    printf("Immediate queue status: %d\n", !radio_queue);
     radio_queue_operations_t rec;
     bool transmitting = false;
 
@@ -270,18 +254,30 @@ void radio_task_cpp()
                 
                 case ENABLE_RFM98:
                     if(radio == &radioRFM) break;
-                    radio->clearPacketReceivedAction();
-                    radio = &radioRFM;
-                    radio->setPacketReceivedAction(radio_operation_done);
-                    // vPortFree(rec.data_buffer); 
+                    if(radio_state_RFM != 0){
+                        radio->clearPacketReceivedAction();
+                        radio = &radioRFM;
+                        radio->setPacketReceivedAction(radio_operation_done);
+                        // vPortFree(rec.data_buffer); 
+                    }
+                    else {
+                        printf("RFM is not connected\n");
+                        // transmit error code?
+                    }
                     break;
                 
                 case ENABLE_SX1268:
                     if(radio == &radioSX) break;
-                    radio->clearPacketReceivedAction();
-                    radio = &radioSX;
-                    radio->setPacketReceivedAction(radio_operation_done);
-                    // vPortFree(rec.data_buffer); 
+                    if(radio_state_SX == 0){
+                        radio->clearPacketReceivedAction();
+                        radio = &radioSX;
+                        radio->setPacketReceivedAction(radio_operation_done);
+                        // vPortFree(rec.data_buffer); 
+                    }
+                    else{
+                        printf("SX is not connected\n"); 
+                        // transmit error code? 
+                    }
                     break;
 
             }
