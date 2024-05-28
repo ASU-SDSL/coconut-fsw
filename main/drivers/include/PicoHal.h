@@ -32,7 +32,7 @@ public:
     }
 
   void init() override {
-    stdio_init_all();
+    //stdio_init_all(); as far as I can tell, enabling this unnecessarily (I think) takes up isr slots that are needed later  
     spiBegin();
   }
 

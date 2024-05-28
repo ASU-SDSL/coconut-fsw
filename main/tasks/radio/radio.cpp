@@ -78,18 +78,55 @@ extern "C"
     void radio_queue_message(char *buffer, size_t size)
     {
         // Create new transmission structure
-        telemetry_queue_transmission_t new_buffer;
-        new_buffer.payload_size = size;
+        // telemetry_queue_transmission_t new_buffer;
+        radio_queue_operations_t new_buffer; 
+        new_buffer.operation_type = operation_type_t::TRANSMIT;
+        new_buffer.data_size = size;
         // Allocate chunk on heap to copy buffer contents
-        auto heap_buf = static_cast<char *>(pvPortMalloc(size));
+        // auto heap_buf = static_cast<char *>(pvPortMalloc(size));
+        auto heap_buf = static_cast<uint8_t *>(pvPortMalloc(size));
         memcpy(heap_buf, buffer, size);
-        new_buffer.payload_buffer = heap_buf;
+        new_buffer.data_buffer = heap_buf;
         // Wait for queue to become available
         while (!radio_queue)
         {
             vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
         }
         xQueueSendToBack(radio_queue, &new_buffer, portMAX_DELAY);
+    }
+    void radio_set_transmit_power(uint8_t output_power)
+    {
+        radio_queue_operations_t new_buffer;
+        new_buffer.operation_type = operation_type_t::SET_OUTPUT_POWER;
+        new_buffer.data_size = 1; 
+        auto heap_buf = static_cast<uint8_t *>(pvPortMalloc(1));
+        memcpy(heap_buf, &output_power, 1); 
+        new_buffer.data_buffer = heap_buf; 
+        while(!radio_queue)
+        {
+            vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS); 
+        }
+        xQueueSendToBack(radio_queue, &new_buffer, portMAX_DELAY); 
+    }
+    void radio_set_module(operation_type_t op)
+    {
+        if(op == operation_type_t::SET_OUTPUT_POWER || op == operation_type_t::TRANSMIT){
+            return;
+        }
+
+        radio_queue_operations_t new_buffer;
+        if(op == operation_type_t::ENABLE_RFM98){ 
+            new_buffer.operation_type = operation_type_t::ENABLE_RFM98;
+        }
+        else{
+            new_buffer.operation_type = operation_type_t::ENABLE_SX1268;
+        }
+
+        while(!radio_queue)
+        {
+            vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS); 
+        }
+        xQueueSendToBack(radio_queue, &new_buffer, portMAX_DELAY); 
     }
 #ifdef __cplusplus
 }
@@ -118,8 +155,8 @@ void init_radio()
 
     printf("Size of rfm98: %d sx1268: %d hal: %d queueItem: %d\n", sizeof(RFM98)/4, sizeof(SX1268)/4, sizeof(PicoHal)/4, sizeof(radio_queue_operations_t)/4 * 64);
 
-    UBaseType_t wm = uxTaskGetStackHighWaterMark(NULL); 
-    printf("Task Watermark: %d (in words)\n", wm);
+    // UBaseType_t wm = uxTaskGetStackHighWaterMark(NULL); 
+    // printf("Task Watermark: %d (in words)\n", wm);
 
     printf("1\n");
     int radio_state_RFM = radioRFM.begin();
@@ -135,9 +172,9 @@ void init_radio()
     // printf("after rfm setPacketReceivedAction\n");
     printf("3.5\n");
     
-    wm = uxTaskGetStackHighWaterMark(NULL); 
-    printf("Task Watermark: %d (in words)\n", wm);
-    //radio->setPacketReceivedAction(radio_operation_done); 
+    // wm = uxTaskGetStackHighWaterMark(NULL); 
+    // printf("Task Watermark: %d (in words)\n", wm);
+    radio->setPacketReceivedAction(radio_operation_done); 
 
     printf("4\n");
     int receive_state = radio->startReceive();
@@ -231,21 +268,21 @@ void radio_task_cpp()
                     vPortFree(rec.data_buffer);
                     break;
                 
-                // case ENABLE_RFM98:
-                //     if(radio == &radioRFM) break;
-                //     radio->clearPacketReceivedAction();
-                //     radio = &radioRFM;
-                //     radio->setPacketReceivedAction(radio_operation_done);
-                //     vPortFree(rec.data_buffer); 
-                //     break;
+                case ENABLE_RFM98:
+                    if(radio == &radioRFM) break;
+                    radio->clearPacketReceivedAction();
+                    radio = &radioRFM;
+                    radio->setPacketReceivedAction(radio_operation_done);
+                    // vPortFree(rec.data_buffer); 
+                    break;
                 
-                // case ENABLE_SX1268:
-                //     if(radio == &radioSX) break;
-                //     radio->clearPacketReceivedAction();
-                //     radio = &radioSX;
-                //     radio->setPacketReceivedAction(radio_operation_done);
-                //     vPortFree(rec.data_buffer); 
-                //     break;
+                case ENABLE_SX1268:
+                    if(radio == &radioSX) break;
+                    radio->clearPacketReceivedAction();
+                    radio = &radioSX;
+                    radio->setPacketReceivedAction(radio_operation_done);
+                    // vPortFree(rec.data_buffer); 
+                    break;
 
             }
             
