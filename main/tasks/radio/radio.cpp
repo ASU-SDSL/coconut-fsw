@@ -58,15 +58,15 @@
  * if smt in queue send on radio
  */
 
-
+#define RADIO_STATE_NO_ATTEMPT 1 
 
 PicoHal *picoHal = new PicoHal(spi0, PICO_DEFAULT_SPI_TX_PIN, PICO_DEFAULT_SPI_RX_PIN, PICO_DEFAULT_SPI_SCK_PIN);
 // Add interupt pin
 RFM98 radioRFM = new Module(picoHal, RADIO_RFM_NSS_PIN, RADIO_RFM_IRQ_PIN, RADIO_RFM_NRST_PIN, RADIOLIB_NC); //RADIOLIB_NC); // RFM98 is an alias for SX1278
 SX1268 radioSX = new Module(picoHal, RADIO_SX_NSS_PIN, RADIO_SX_IRQ_PIN, RADIO_SX_NRST_PIN, RADIO_SX_BUSY_PIN); 
 PhysicalLayer* radio = &radioSX;
-int radio_state_RFM = -1; 
-int radio_state_SX = -1; 
+int radio_state_RFM = RADIO_STATE_NO_ATTEMPT; 
+int radio_state_SX = RADIO_STATE_NO_ATTEMPT; 
 
 volatile bool operation_done = false;
 
@@ -144,8 +144,10 @@ void init_radio()
 {
     sleep_ms(1000); // for debugging
 
+    // If the RFM is physically wired into the board it needs to call begin() before the SX1268
+    // my current theory as to why is that it before begin() it is polluting the SPI line
     printf("1\n");
-    radio_state_RFM = radioRFM.begin();
+    radio_state_RFM = radioRFM.begin();  
     printf("2\n");
     radio_state_SX = radioSX.begin(434.0, 125.0, 9, 7, 18, 2, 8, 0.0, false);
     printf("3: RFM: %d SX: %d\n", radio_state_RFM, radio_state_SX);
@@ -154,9 +156,9 @@ void init_radio()
     }
     else {
         radio = &radioRFM; 
-    }
+    } 
 
-    printf("3.5\n");
+    printf("3\n");
     
     radio->setPacketReceivedAction(radio_operation_done); 
 
@@ -165,13 +167,13 @@ void init_radio()
     printf("5\n");
     if (receive_state == RADIOLIB_ERR_NONE)
     {
-        printf("Success, recieving...\n");
+        printf("Success, receiving...\n");
     }
     else
     {
         printf("failed");
         while (true){
-            printf("recieve setup failed with code %d\n", receive_state);
+            printf("receive setup failed with code %d\n", receive_state);
         }
     }
 }
@@ -254,7 +256,7 @@ void radio_task_cpp()
                 
                 case ENABLE_RFM98:
                     if(radio == &radioRFM) break;
-                    if(radio_state_RFM != 0){
+                    if(radio_state_RFM == 0){
                         radio->clearPacketReceivedAction();
                         radio = &radioRFM;
                         radio->setPacketReceivedAction(radio_operation_done);
@@ -269,9 +271,9 @@ void radio_task_cpp()
                 case ENABLE_SX1268:
                     if(radio == &radioSX) break;
                     if(radio_state_SX == 0){
-                        radio->clearPacketReceivedAction();
-                        radio = &radioSX;
-                        radio->setPacketReceivedAction(radio_operation_done);
+                        radio->clearPacketReceivedAction(); 
+                        radio = &radioSX; 
+                        radio->setPacketReceivedAction(radio_operation_done); 
                         // vPortFree(rec.data_buffer); 
                     }
                     else{
