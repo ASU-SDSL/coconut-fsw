@@ -75,7 +75,8 @@ public:
     // // wrapped = interruptCb;
     isrs[interruptNum] = interruptCb;
 
-    gpio_set_irq_enabled_with_callback(interruptNum, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, picoGeneralISR);//(gpio_irq_callback_t)interruptCb);
+    //gpio_set_irq_enabled_with_callback(interruptNum, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, picoGeneralISR);//(gpio_irq_callback_t)interruptCb);
+    gpio_set_irq_enabled_with_callback(interruptNum, mode, true, picoGeneralISR);//(gpio_irq_callback_t)interruptCb);
   }
 
   void detachInterrupt(uint32_t interruptNum) override {

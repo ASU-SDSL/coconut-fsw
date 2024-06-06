@@ -4,7 +4,6 @@
 #include "queue.h"
 #include <stdint.h>
 
-
 #define RADIO_SX_NSS_PIN 7
 #define RADIO_SX_IRQ_PIN 17
 #define RADIO_SX_NRST_PIN 22
@@ -13,6 +12,18 @@
 #define RADIO_RFM_NSS_PIN 28
 #define RADIO_RFM_IRQ_PIN 15
 #define RADIO_RFM_NRST_PIN 27
+#define RADIO_RFM_DIO1_PIN 5
+
+// #define RADIO_SX_NSS_PIN 5
+// #define RADIO_SX_IRQ_PIN 22
+// #define RADIO_SX_NRST_PIN 20
+// #define RADIO_SX_BUSY_PIN 23
+
+// #define RADIO_RFM_NSS_PIN 17
+// #define RADIO_RFM_IRQ_PIN 27
+// #define RADIO_RFM_NRST_PIN 24
+// #define RADIO_RFM_DIO1_PIN 22
+
 
 #define RADIO_MAX_QUEUE_ITEMS 64
 
@@ -37,10 +48,13 @@ extern "C"
 #endif
     void radio_task(void *unused_arg);
     void radio_queue_message(char *buffer, size_t size);
+    void radio_set_transmit_power(uint8_t output_power); 
+    void radio_set_module(operation_type_t op); 
 #ifdef __cplusplus
 }
 #endif
 
-void radio_packet_receive();
+void radio_operation_done(); 
+// void set_power_output(PhysicalLayer* radio_module, int8_t new_dbm); 
 void init_radio();
 void radio_task_cpp();
