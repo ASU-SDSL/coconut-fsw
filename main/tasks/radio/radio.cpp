@@ -67,9 +67,6 @@ PhysicalLayer* radio = &radioSX;
 int radio_state_RFM = RADIO_STATE_NO_ATTEMPT; 
 int radio_state_SX = RADIO_STATE_NO_ATTEMPT; 
 
-volatile bool operation_done = false;
-volatile bool radio_receiving = false; 
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -134,20 +131,24 @@ extern "C"
 }
 #endif
 
-void radio_operation_done()
+// isrs
+volatile bool operation_done_RFM = false;
+volatile bool cad_detected_RFM = false; 
+volatile bool general_flag_SX = false; 
+
+void radio_operation_done_RFM()
 {
-    printf("radio_operation_done\n");
-    operation_done = true;
+    operation_done_RFM = true;
 }
 
-void radio_cad_detected(){
-    printf("radio_cad_detected\n"); 
+void radio_cad_detected_RFM(){
+    cad_detected_RFM = true; 
 }
 
-// void radio_cad_detected(){
-//     printf("radio_cad_detected");
-//     radio_receiving = true; 
-// }
+void radio_general_flag_SX(){
+    general_flag_SX = true; 
+}
+// end isrs
 
 void init_radio()
 {
@@ -160,27 +161,25 @@ void init_radio()
     printf("2\n");
     radio_state_SX = radioSX.begin(434.0, 125.0, 9, 7, 18, 2, 8, 0.0, false);
     printf("3: RFM: %d SX: %d\n", radio_state_RFM, radio_state_SX);
-    // if(radio_state_SX == 0){
-    //     radio = &radioSX;
-    //     radioRFM.sleep(); 
-    // }
-    // else {
-    //     radio = &radioRFM; 
-    //     radioSX.sleep(); 
-    // } 
-    radio = &radioRFM;
-    radioRFM.begin(); 
-    //radioSX.sleep(); 
+    if(radio_state_SX == 0){
+        radioSX.setDio1Action(radio_general_flag_SX);
+        radio = &radioSX;
+        radioRFM.sleep(); 
+    }
+    else {
+        radioRFM.begin(); 
+        radioRFM.setDio0Action(radio_cad_detected_RFM, GPIO_IRQ_EDGE_RISE);
+        radioRFM.setDio1Action(radio_operation_done_RFM, GPIO_IRQ_EDGE_RISE); 
+        radio = &radioRFM; 
+        radioSX.sleep(); 
+    } 
 
     printf("3.5\n");
-    
-    // radioRFM.setDio1Action(radio_cad_detected, 4);
-    radio->setPacketReceivedAction(radio_operation_done); 
 
     printf("4\n");
-    int receive_state = radio->startReceive();
+    int channel_scan_state = radio->startChannelScan();
     printf("5\n");
-    if (receive_state == RADIOLIB_ERR_NONE)
+    if (channel_scan_state == RADIOLIB_ERR_NONE)
     {
         printf("Success, receiving...\n");
     }
@@ -188,7 +187,7 @@ void init_radio()
     {
         printf("failed");
         while (true){
-            printf("receive setup failed with code %d\n", receive_state);
+            printf("receive setup failed with code %d\n", channel_scan_state);
         }
     }
 }
@@ -200,42 +199,48 @@ void set_power_output(PhysicalLayer* radio_module, int8_t new_dbm){
 /**
  * Monitor radio, write to SD card, and send stuff when needed
  */
-void radio_task_cpp()
-{
-    sleep_ms(1000); 
-    printf("Starting Radio Task\n");
-    init_radio();
+void radio_task_cpp(){
+    printf("Starting Radio Task\n"); 
+    init_radio(); 
 
-    radio_queue = xQueueCreate(RADIO_MAX_QUEUE_ITEMS, sizeof(radio_queue_operations_t)); // telemetry_queue_transmission_t));
-    radio_queue_operations_t rec;
-    bool transmitting = false;
+    radio_queue = xQueueCreate(RADIO_MAX_QUEUE_ITEMS, sizeof(radio_queue_operations_t));
+    radio_queue_operations_t rec; 
+    
+    bool receiving = false; 
+    bool transmitting = false; 
+    int state = 0; 
 
-    while (true)
-    {
-        if (operation_done)
-        {
-            if(transmitting){
-                printf("done transmitting\n\n"); 
-                transmitting = false;
-                radio->startReceive(); 
-                operation_done = false; 
+    while(true){
+        if(general_flag_SX || cad_detected_RFM || operation_done_RFM){
+            printf("general_flag_SX: %d cad_detected_RFM: %d operation_done_RFM: %d", general_flag_SX, cad_detected_RFM, operation_done_RFM);
+            // reset flags flags 
+            general_flag_SX = false;
+            cad_detected_RFM = false; 
+            operation_done_RFM = false; 
+            if(transmitting){ // radio was transmitting (interrupt signals finish)
+                transmitting = false; 
+                printf("starting channel scan... "); 
+                int state = radio->startChannelScan(); 
+                if(state == 0){
+                    printf("success\n");
+                }
+                else{
+                    printf("failed with code: %d\n", state); 
+                }
             }
-            else {
-                printf("package received\n");
-                radio_receiving = false; 
-                //uint8_t *packet; needs memeory allocated to ti
+            else if(receiving){ // radio was receiving (interrupt signals finish)
+                receiving = false; 
+
                 size_t packet_size = radio->getPacketLength();
                 uint8_t packet[packet_size];
 
                 int packet_state = radio->readData(packet, packet_size);
-                // acknowledge packet has been recieved 
-                operation_done = false;
 
                 if (packet_state == RADIOLIB_ERR_NONE)
                 {
                     // parse out sync bytes and grab packet with header
                     // create command.c function to read packet
-                    printf("Recieved packet: ");
+                    printf("Received packet: ");
                     for(int i = 0; i < packet_size; i++){
                         printf("%c", packet[i]);
                     }
@@ -245,70 +250,83 @@ void radio_task_cpp()
                 }
                 else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
                 {
-                    printf("CRC Error!!");
+                    printf("CRC Error!!\n");
                 }
                 else
                 {
-                    printf("Packet Reading failed");
+                    printf("Packet Reading failed\n");
+                }
+            }
+            else { // radio was scanning (interrupt signals CAD detected)
+                receiving = true; 
+
+                printf("CAD Detected, starting receive... "); 
+                state = radio->startReceive(); 
+                if(state == 0){
+                    printf("success\n"); 
+                }
+                else{
+                    printf("failed with code: %d\n", state); 
                 }
             }
         }
 
-        if(!radio_receiving){
-            // should maybe move to interrupt based transmit but may cause UB when combined with recieve interrupts
-            if (xQueueReceive(radio_queue, &rec, 0))
-            {
-                switch (rec.operation_type) {
-                    case TRANSMIT:
-                        printf("transmitting...\n");
-                        radio->startTransmit(rec.data_buffer, rec.data_size);
-                        transmitting = true;
-                        vPortFree(rec.data_buffer);
-                        break;
+        if(!transmitting && !receiving && xQueueReceive(radio_queue, &rec, 0))
+        {
+            switch (rec.operation_type) {
+                case TRANSMIT:
+                    printf("transmitting...\n");
+                    radio->startTransmit(rec.data_buffer, rec.data_size);
+                    transmitting = true;
+                    vPortFree(rec.data_buffer);
+                    break;
 
-                    case SET_OUTPUT_POWER:
-                        set_power_output(radio, rec.data_buffer[0]);
-                        vPortFree(rec.data_buffer);
-                        break;
-                    
-                    case ENABLE_RFM98:
-                        if(radio == &radioRFM) break;
-                        if(radio_state_RFM == 0){
-                            radio->clearPacketReceivedAction();
-                            radio->sleep(); 
-                            radio = &radioRFM;
-                            radio->standby(); 
-                            radio->setPacketReceivedAction(radio_operation_done);
-                            radio->startReceive(); 
-                            // vPortFree(rec.data_buffer); 
-                        }
-                        else {
-                            printf("RFM is not connected\n");
-                            // transmit error code?
-                        }
-                        break;
-                    
-                    case ENABLE_SX1268:
-                        if(radio == &radioSX) break;
-                        if(radio_state_SX == 0){
-                            radio->clearPacketReceivedAction(); 
-                            radio->sleep(); 
-                            radio = &radioSX; 
-                            radio->standby(); 
-                            radio->setPacketReceivedAction(radio_operation_done); 
-                            radio->startReceive(); 
-                            // vPortFree(rec.data_buffer); 
-                        }
-                        else{
-                            printf("SX is not connected\n"); 
-                            // transmit error code? 
-                        }
-                        break;
-
-                }
+                case SET_OUTPUT_POWER:
+                    set_power_output(radio, rec.data_buffer[0]);
+                    vPortFree(rec.data_buffer);
+                    break;
                 
+                case ENABLE_RFM98:
+                    if(radio == &radioRFM) break;
+
+                    if(radio_state_RFM == 0){
+                        radioSX.clearDio1Action(); 
+                        radioSX.sleep(); 
+                        radio = &radioRFM;
+                        radioRFM.standby(); 
+                        radioRFM.setDio0Action(radio_operation_done_RFM, GPIO_IRQ_EDGE_RISE);
+                        radioRFM.setDio1Action(radio_cad_detected_RFM, GPIO_IRQ_EDGE_RISE); 
+                        radio->startChannelScan(); 
+                        // vPortFree(rec.data_buffer); 
+                    }
+                    else {
+                        printf("RFM is not connected\n");
+                        // transmit error code?
+                    }
+                    
+                    break;
+                
+                case ENABLE_SX1268:
+                    if(radio == &radioSX) break;
+
+                    if(radio_state_SX == 0){
+                        radioRFM.clearDio0Action();
+                        radioRFM.clearDio1Action(); 
+                        radioRFM.sleep(); 
+                        radio = &radioSX; 
+                        radioSX.standby(); 
+                        radioSX.setDio1Action(radio_general_flag_SX);
+                        radioSX.startChannelScan(); 
+                        // vPortFree(rec.data_buffer); 
+                    }
+                    else{
+                        printf("SX is not connected\n"); 
+                        // transmit error code? 
+                    }
+
+                    break;
             }
         }
-
     }
+
 }

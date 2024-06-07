@@ -54,7 +54,6 @@ extern "C"
 }
 #endif
 
-void radio_operation_done(); 
 // void set_power_output(PhysicalLayer* radio_module, int8_t new_dbm); 
 void init_radio();
 void radio_task_cpp();
