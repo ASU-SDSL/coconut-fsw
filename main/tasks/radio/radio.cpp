@@ -3,6 +3,7 @@
 #include <FreeRTOS.h>
 #include "command.h"
 #include "PicoHal.h"
+#include <stdlib.h>
 
 #define ERR_NONE 0
 #define NULL_QUEUE_WAIT_TIME 100
@@ -58,6 +59,7 @@
  */
 
 #define RADIO_STATE_NO_ATTEMPT 1 
+#define RADIO_RECEIVE_TIMEOUT_MS 10000
 
 PicoHal *picoHal = new PicoHal(spi0, PICO_DEFAULT_SPI_TX_PIN, PICO_DEFAULT_SPI_RX_PIN, PICO_DEFAULT_SPI_SCK_PIN);
 // Add interupt pin
@@ -168,8 +170,8 @@ void init_radio()
     }
     else {
         radioRFM.begin(); 
-        radioRFM.setDio0Action(radio_cad_detected_RFM, GPIO_IRQ_EDGE_RISE);
-        radioRFM.setDio1Action(radio_operation_done_RFM, GPIO_IRQ_EDGE_RISE); 
+        radioRFM.setDio0Action(radio_operation_done_RFM, GPIO_IRQ_EDGE_RISE);
+        radioRFM.setDio1Action(radio_cad_detected_RFM, GPIO_IRQ_EDGE_RISE); 
         radio = &radioRFM; 
         radioSX.sleep(); 
     } 
@@ -209,14 +211,19 @@ void radio_task_cpp(){
     bool receiving = false; 
     bool transmitting = false; 
     int state = 0; 
+    unsigned long receive_start_time = to_ms_since_boot(get_absolute_time());
 
     while(true){
+        if(receiving && abs((long long)(to_ms_since_boot(get_absolute_time()) - receive_start_time)) > RADIO_RECEIVE_TIMEOUT_MS){
+            printf("receive timeout\n"); 
+            receiving = false; 
+        }
+
         if(general_flag_SX || cad_detected_RFM || operation_done_RFM){
-            printf("general_flag_SX: %d cad_detected_RFM: %d operation_done_RFM: %d", general_flag_SX, cad_detected_RFM, operation_done_RFM);
+            printf("general_flag_SX: %d cad_detected_RFM: %d operation_done_RFM: %d\n", general_flag_SX, cad_detected_RFM, operation_done_RFM);
+            printf("receiving: %d transmitting: %d \n", (int)receiving, (int)transmitting); 
             // reset flags flags 
-            general_flag_SX = false;
-            cad_detected_RFM = false; 
-            operation_done_RFM = false; 
+            
             if(transmitting){ // radio was transmitting (interrupt signals finish)
                 transmitting = false; 
                 printf("starting channel scan... "); 
@@ -256,12 +263,23 @@ void radio_task_cpp(){
                 {
                     printf("Packet Reading failed\n");
                 }
+
+                printf("Starting channel scan... ");
+                state = radio->startChannelScan();
+                if(state == 0){
+                    printf("success\n");
+                }
+                else {
+                    printf("failed with code: %d\n", state); 
+                }
             }
-            else { // radio was scanning (interrupt signals CAD detected)
+            
+            if(general_flag_SX || cad_detected_RFM) { // radio was scanning (interrupt signals CAD detected)
                 receiving = true; 
 
                 printf("CAD Detected, starting receive... "); 
                 state = radio->startReceive(); 
+                receive_start_time = to_ms_since_boot(get_absolute_time()); 
                 if(state == 0){
                     printf("success\n"); 
                 }
@@ -269,6 +287,10 @@ void radio_task_cpp(){
                     printf("failed with code: %d\n", state); 
                 }
             }
+
+            general_flag_SX = false;
+            cad_detected_RFM = false; 
+            operation_done_RFM = false; 
         }
 
         if(!transmitting && !receiving && xQueueReceive(radio_queue, &rec, 0))
