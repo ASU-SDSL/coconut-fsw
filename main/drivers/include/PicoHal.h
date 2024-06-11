@@ -12,7 +12,6 @@
 
 std::map<uint32_t, void(*)(void)> isrs;
 void picoGeneralISR(uint gpio, uint32_t event_mask){
-  printf("picoGeneralISR with %d\n", gpio);
   (isrs[gpio])();
 }
 
