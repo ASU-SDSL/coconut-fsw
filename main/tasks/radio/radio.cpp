@@ -200,6 +200,17 @@ void set_power_output(PhysicalLayer* radio_module, int8_t new_dbm){
     radio_module->setOutputPower(new_dbm); 
 }
 
+int parse_num(uint8_t * packet, size_t packet_size){
+    int num = 0; 
+    for(int i = 0; i < packet_size; i++){
+        if(packet[i] >= '0' && packet[i] <= '9'){
+            num = (num * 10) + (packet[i] - '0');
+        }
+    }
+
+    return num; 
+}
+
 /**
  * Monitor radio, write to SD card, and send stuff when needed
  */
@@ -249,6 +260,9 @@ void radio_task_cpp(){
                         printf("%c", packet[i]);
                     }
                     printf("\n"); 
+                    
+                    
+                    
                     //parse_radio_packet(packet, packet_size);
                     // Check if command is to set output power of the radio
                 }
@@ -259,6 +273,11 @@ void radio_task_cpp(){
                 else
                 {
                     printf("Packet Reading failed\n");
+                }
+
+                if(parse_num(packet, packet_size) % 5 == 0){
+                    radio_set_module(operation_type_t::ENABLE_SX1268); 
+                    printf("queued switch to SX1268\n");
                 }
 
                 receiving = false; 
@@ -313,6 +332,11 @@ void radio_task_cpp(){
                     printf("\n"); 
                     //parse_radio_packet(packet, packet_size);
                     // Check if command is to set output power of the radio
+
+                    if(parse_num(packet, packet_size) % 5 == 0){
+                        radio_set_module(operation_type_t::ENABLE_RFM98);
+                        printf("queued switch to RFM98\n"); 
+                    }
                 }
                 else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
                 {
@@ -370,6 +394,7 @@ void radio_task_cpp(){
                 
                 case ENABLE_RFM98:
                     if(radio == &radioRFM) break;
+                    printf("attempting to swap to RFM98...\n");
                     radio_state_RFM = radioRFM.begin(); 
                     if(radio_state_RFM == 0){
                         radioSX.clearDio1Action(); 
@@ -379,6 +404,7 @@ void radio_task_cpp(){
                         radioRFM.setDio0Action(radio_operation_done_RFM, GPIO_IRQ_EDGE_RISE);
                         radioRFM.setDio1Action(radio_cad_detected_RFM, GPIO_IRQ_EDGE_RISE); 
                         radio->startChannelScan(); 
+                        printf("success\n"); 
                         // vPortFree(rec.data_buffer); 
                     }
                     else {
@@ -397,6 +423,7 @@ void radio_task_cpp(){
                 
                 case ENABLE_SX1268:
                     if(radio == &radioSX) break;
+                    printf("attempting swap to SX1268...\n"); 
                     radio_state_SX = radioSX.begin(434.0, 125.0, 9, 7, 18, 2, 8, 0.0, false);
                     if(radio_state_SX == 0){
                         radioRFM.clearDio0Action();
@@ -406,6 +433,7 @@ void radio_task_cpp(){
                         radioSX.standby(); 
                         radioSX.setDio1Action(radio_general_flag_SX);
                         radioSX.startChannelScan(); 
+                        printf("success\n"); 
                         // vPortFree(rec.data_buffer); 
                     }
                     else{
