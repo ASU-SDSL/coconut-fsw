@@ -295,7 +295,7 @@ void radio_task_cpp(){
                 }
 
                 receiving = true; 
-            }
+            } 
             
             // restart channelScan - this definitely feels like it should be a continuous mode, but it's not
             if(!receiving && !transmitting){
