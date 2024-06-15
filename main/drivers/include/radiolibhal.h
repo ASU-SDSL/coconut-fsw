@@ -4,6 +4,7 @@
 #include "hardware/adc.h"
 #include "hardware/spi.h"
 #include "radio.h"
+#include "RadioLib.h"
 //#include <SX1278.h>
 
 class PiPicoHal : public RadioLibHal { 
