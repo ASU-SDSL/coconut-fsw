@@ -4,13 +4,11 @@
  * FREERTOS RUNTIME START
  */
 
-#define GSE_ENABLED
-
 int main() {
 
 
     // Initialize debug timer
-#ifdef TSDEBUG
+#if defined(DEBUG) && !defined(SIMULATOR)
     timer_hw->dbgpause = 0;
 #endif
 
@@ -25,21 +23,23 @@ int main() {
     // Arg 5+ are arguments to the function of the task
     logln_info("Initializing FreeRTOS Tasks...");
 
-    SemaphoreHandle_t sdMutex = xSemaphoreCreateMutex();
 
-    if (sdMutex == NULL) {
-        logln_error("Could not create SD mutex");
-        while (true);
-    }
-
-#ifdef GSE_ENABLED
     BaseType_t gse_task_status = xTaskCreate(gse_task, 
                                         "GSE", 
                                         256, 
-                                        &sdMutex,
+                                        NULL,
                                         1,
-                                        NULL);
-#endif                       
+                                        NULL);            
+         
+#ifndef SIMULATOR
+    // BaseType_t radio_task_status = xTaskCreate(radio_task, 
+    //                                      "RADIO", 
+    //                                      256, 
+    //                                      NULL, 
+    //                                      1,
+    //                                      NULL);
+#endif
+
     BaseType_t scheduler_task_status = xTaskCreate(steve_task, 
                                         "STEVE", 
                                         512, 

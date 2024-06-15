@@ -6,6 +6,7 @@
 
 #include "FreeRTOS.h"
 #include "queue.h"
+
 #include "command.h"
 #include "log.h"
 

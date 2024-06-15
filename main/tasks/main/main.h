@@ -11,12 +11,16 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-// Pico SDK
 #include "pico/stdlib.h"
-#include "pico/binary_info.h"
+
 // Project headers
 #include "gse.h"
+
+
+#ifndef SIMULATOR
 #include "radio.h"
+#endif
+
 #include "command.h"
 #include "telemetry.h"
 #include "log.h"
