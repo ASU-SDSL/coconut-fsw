@@ -211,6 +211,23 @@ int parse_num(uint8_t * packet, size_t packet_size){
     return num; 
 }
 
+void simpleParse(uint8_t* packet, uint8_t packet_size){
+    int code = parse_num(packet, packet_size);
+
+    switch(code){
+        case 0:
+            radio_set_module(operation_type_t::ENABLE_RFM98);
+            break;
+        case 1:
+            radio_set_module(operation_type_t::ENABLE_SX1268);
+            break;
+        case 2:
+            char msg[] = {'E', 'C', 'H', 'O', '!'};
+            radio_queue_message(msg, 5);
+            break; 
+    }    
+}
+
 /**
  * Monitor radio, write to SD card, and send stuff when needed
  */
@@ -261,6 +278,7 @@ void radio_task_cpp(){
                     }
                     printf("\n"); 
                     
+                    simpleParse(packet, packet_size); 
                     
                     
                     //parse_radio_packet(packet, packet_size);
@@ -273,11 +291,6 @@ void radio_task_cpp(){
                 else
                 {
                     printf("Packet Reading failed\n");
-                }
-
-                if(parse_num(packet, packet_size) % 5 == 0){
-                    radio_set_module(operation_type_t::ENABLE_SX1268); 
-                    printf("queued switch to SX1268\n");
                 }
 
                 receiving = false; 
@@ -333,10 +346,7 @@ void radio_task_cpp(){
                     //parse_radio_packet(packet, packet_size);
                     // Check if command is to set output power of the radio
 
-                    if(parse_num(packet, packet_size) % 5 == 0){
-                        radio_set_module(operation_type_t::ENABLE_RFM98);
-                        printf("queued switch to RFM98\n"); 
-                    }
+                    simpleParse(packet, packet_size); 
                 }
                 else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
                 {
