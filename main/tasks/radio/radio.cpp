@@ -211,20 +211,62 @@ int parse_num(uint8_t * packet, size_t packet_size){
     return num; 
 }
 
-void simpleParse(uint8_t* packet, uint8_t packet_size){
-    int code = parse_num(packet, packet_size);
+int parse_ccsds_num(uint8_t* packet, uint8_t packet_size){
+    packet += sizeof(ccsds_header_t);
+
+    return parse_num(packet, packet_size - sizeof(ccsds_header_t));
+}
+
+void parseRebound(PhysicalLayer* radio, uint8_t* packet, uint8_t packet_size){
+    int code = -1;
+    
+    if(packet_size > sizeof(ccsds_header_t)){
+        code = parse_ccsds_num(packet, packet_size); 
+    }
+    else {
+        code = parse_num(packet, packet_size);
+    }
+    sleep_ms(1000); 
 
     switch(code){
-        case 0:
-            radio_set_module(operation_type_t::ENABLE_RFM98);
-            break;
-        case 1:
-            radio_set_module(operation_type_t::ENABLE_SX1268);
-            break;
-        case 2:
+        case 0:{
+            printf("Returning stats\n"); 
+            float rssi = radio->getRSSI();
+            float snr = radio->getSNR(); 
+            float fe = 0;
+            if(radio == &radioSX){
+                fe = radioSX.getFrequencyError();
+            } 
+            else {
+                fe = radioRFM.getFrequencyError(); 
+            }
+
+            // 6 (header) + 64 (msg);
+            char buff[6+64];
+            buff[0] = 'A';
+            buff[1] = 'A';
+            buff[2] = 'A';
+            buff[3] = 'A';
+            buff[4] = 'A';
+            buff[5] = 64; // packet size
+
+            sprintf(buff+6, "%.2fdBm %.2fdB %.2fHz", rssi, snr, fe);
+            radio_queue_message(buff, sizeof(buff)); 
+
+            break; 
+        }
+        case 1:{
             char msg[] = {'E', 'C', 'H', 'O', '!'};
             radio_queue_message(msg, 5);
             break; 
+        }
+        case 2:
+            radio_set_module(operation_type_t::ENABLE_RFM98);
+            break;
+        case 3:
+            radio_set_module(operation_type_t::ENABLE_SX1268);
+            break;
+        
     }    
 }
 
@@ -277,9 +319,8 @@ void radio_task_cpp(){
                         printf("%c", packet[i]);
                     }
                     printf("\n"); 
-                    
-                    simpleParse(packet, packet_size); 
-                    
+
+                    parseRebound(radio, packet, packet_size);                     
                     
                     //parse_radio_packet(packet, packet_size);
                     // Check if command is to set output power of the radio
@@ -346,7 +387,7 @@ void radio_task_cpp(){
                     //parse_radio_packet(packet, packet_size);
                     // Check if command is to set output power of the radio
 
-                    simpleParse(packet, packet_size); 
+                    parseRebound(radio, packet, packet_size); 
                 }
                 else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
                 {
