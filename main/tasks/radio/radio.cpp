@@ -217,6 +217,12 @@ int parse_ccsds_num(uint8_t* packet, uint8_t packet_size){
     return parse_num(packet, packet_size - sizeof(ccsds_header_t));
 }
 
+/**
+ * 0 for stat echo
+ * 1 for "ECHO" echo
+ * 2 for switch to RFM98
+ * 3 for switch to SX1268
+ */
 void parseRebound(PhysicalLayer* radio, uint8_t* packet, uint8_t packet_size){
     int code = -1;
     
