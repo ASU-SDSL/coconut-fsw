@@ -23,7 +23,6 @@ int main() {
     // Arg 5+ are arguments to the function of the task
     logln_info("Initializing FreeRTOS Tasks...");
 
-
     BaseType_t gse_task_status = xTaskCreate(gse_task, 
                                         "GSE", 
                                         256, 
@@ -31,15 +30,6 @@ int main() {
                                         1,
                                         NULL);            
          
-#ifndef SIMULATOR
-    // BaseType_t radio_task_status = xTaskCreate(radio_task, 
-    //                                      "RADIO", 
-    //                                      256, 
-    //                                      NULL, 
-    //                                      1,
-    //                                      NULL);
-#endif
-
     BaseType_t scheduler_task_status = xTaskCreate(steve_task, 
                                         "STEVE", 
                                         512, 
@@ -61,14 +51,15 @@ int main() {
                                         1,
                                         NULL);
 
-//#ifndef GSE_ENABLED
+#ifndef SIMULATOR
     BaseType_t radio_task_status = xTaskCreate(radio_task, 
                                          "RADIO", 
                                          256, 
                                          NULL, 
                                          1,
                                          NULL);
-//#endif
+#endif
+
     // Start the FreeRTOS scheduler
     vTaskStartScheduler();
     
