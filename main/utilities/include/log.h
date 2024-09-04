@@ -2,6 +2,8 @@
 
 #include <stdarg.h>
 
+#include "telemetry.h"
+
 /* USER FUNCTIONS */
 
 // Initialization
