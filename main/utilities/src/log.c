@@ -27,9 +27,16 @@ void _log(char* str, ...) {
     va_list args;
     va_start(args, str);
 
-    // Writes to the debug log
-    // Currently just printf's to the USB UART port but we can make it send telemetry in the future
-    vprintf(str, args);
+    // alloc telemetry packet
+    log_telemetry_t *packet = pvPortMalloc(sizeof(log_telemetry_t) + MAX_LOG_STR_SIZE + 1);
 
+    // copy str to packet
+    size_t strsize = vsnprintf(packet->str, MAX_LOG_STR_SIZE, str, args);
+    packet->size = strsize;
+    
     va_end(args);
+
+    // send to telemetry task
+    send_telemetry(LOG, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
+
 }

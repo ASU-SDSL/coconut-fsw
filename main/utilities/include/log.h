@@ -2,7 +2,12 @@
 
 #include <stdarg.h>
 
+#include "FreeRTOS.h"
+
 #include "telemetry.h"
+
+/* DEFINES */
+#define MAX_LOG_STR_SIZE 0x1000U
 
 /* USER FUNCTIONS */
 
