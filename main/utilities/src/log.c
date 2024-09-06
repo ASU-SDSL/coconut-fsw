@@ -2,13 +2,6 @@
 #include <stdio.h>
 #include <pico/stdio.h>
 
-// TODO: Add ability to use format strings with these log messages
-
-void init_debug_log() {
-    // Enable UART over USB
-    stdio_init_all();
-}
-
 void print_banner() {
     logln(
         "=============================\n"
