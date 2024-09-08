@@ -1,7 +1,6 @@
 #include "rtc.h"
 #include "hardware/i2c.h"
 #include "pico/stdlib.h"
-#include "pico/binary_info.h"
 #include "i2c.h"
 
 // RTC I2C address
@@ -77,7 +76,7 @@ uint8_t rtc_update_temp(i2c_inst_t *i2c){
 }
 
 // returns 0 on success
-uint8_t rtc_read_temp(i2c_inst_t *i2c, float* output) {
+uint8_t rtc_get_temp(i2c_inst_t *i2c, float* output) {
 
     uint8_t tempUpper;
     if(i2c_read_from_register(i2c, RTC_ADDR, RTC_TEMP_REG_UPPER, &tempUpper, 1)){
@@ -181,13 +180,13 @@ void rtc_test() {
 
     // set time
     rtc_set_time(i2c, 20, 59, 0, 12, 31, 24);
-    sleep_ms(100);
+    // sleep_ms(100);
 
     for(int i = 0; i < 150; i++){
         float temp;
         rtc_update_temp(i2c);
-        rtc_read_temp(i2c, &temp);
-        // printf("RTC Temp: %f\n", temp);
+        rtc_get_temp(i2c, &temp);
+        printf("RTC Temp: %f\n", temp);
 
         uint8_t hour;
         uint8_t minute;
@@ -215,7 +214,8 @@ void rtc_test() {
         }
 
         // printf("RTC TimeStamp: \n%d:%d:%d %d/%d/%d \n", hour, minute, second, month, date, year);  
-        sleep_ms(1000);
+        // sleep_ms(1000);
+
     }
 
 }
