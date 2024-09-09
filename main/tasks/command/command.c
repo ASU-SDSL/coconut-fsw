@@ -8,8 +8,14 @@ void receive_command_byte_from_isr(char ch) {
     }
 }
 
-//if we recieve smt on uart and radio at the same time, this may cause UB as bytes can get mixed up
-//stopgap implementation, we should just parse the packet wholesale in the future
+void receive_command_byte(char ch) {
+    // Send to command queue
+    if (command_byte_queue) {
+        xQueueSendToBack(command_byte_queue, &ch, NULL);
+    }
+}
+
+// TODO: change this to receive_command_bytes to make names more uniform
 void parse_radio_packet(uint8_t* packet, size_t packet_size){
     if (command_byte_queue) {
         for (int i = 0; i < packet_size; i++ ){

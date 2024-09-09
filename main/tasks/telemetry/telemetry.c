@@ -19,6 +19,8 @@ void telemetry_task(void* unused_arg) {
     // Initialize telemetry queue
     telemetry_queue = xQueueCreate(TELEMETRY_MAX_QUEUE_ITEMS, sizeof(telemetry_queue_transmission_t));
     telemetry_queue_transmission_t telemetry;
+    // Send cool banner
+    print_banner();
     while (true) {
         // Wait on a message in the queue
         xQueueReceive(telemetry_queue, &telemetry, UART_QUEUE_CHECK_TIME);
@@ -46,7 +48,7 @@ void telemetry_task(void* unused_arg) {
         // Append payload to sync bytes and header
         memcpy(payload_buffer + header_size, telemetry.payload_buffer, telemetry.payload_size);
         // Send telemetry through UART
-        uart_queue_message(payload_buffer, total_payload_size);
+        gse_queue_message(payload_buffer, total_payload_size);
 
         // TODO: Send payload through radio
         radio_queue_message(payload_buffer, total_payload_size);
