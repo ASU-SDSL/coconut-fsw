@@ -19,6 +19,8 @@ void telemetry_task(void* unused_arg) {
     // Initialize telemetry queue
     telemetry_queue = xQueueCreate(TELEMETRY_MAX_QUEUE_ITEMS, sizeof(telemetry_queue_transmission_t));
     telemetry_queue_transmission_t telemetry;
+    // Send cool banner
+    print_banner();
     while (true) {
         // Wait on a message in the queue
         xQueueReceive(telemetry_queue, &telemetry, UART_QUEUE_CHECK_TIME);

@@ -32,4 +32,5 @@ void _log(char* str, ...) {
     // send to telemetry task
     send_telemetry(LOG, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
 
+    vPortFree(packet);
 }
