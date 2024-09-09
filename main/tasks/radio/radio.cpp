@@ -93,11 +93,9 @@ extern "C"
         memcpy(heap_buf, buffer, size);
         new_buffer.data_buffer = heap_buf;
         // Wait for queue to become available
-        while (!radio_queue)
-        {
-            vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
+        if (radio_queue) {
+            xQueueSendToBack(radio_queue, &new_buffer, portMAX_DELAY);
         }
-        xQueueSendToBack(radio_queue, &new_buffer, portMAX_DELAY);
     }
     void radio_set_transmit_power(uint8_t output_power)
     {
