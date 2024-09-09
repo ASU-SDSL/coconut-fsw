@@ -9,4 +9,4 @@ fi
 
 
 # Flash
-openocd -f interface/cmsis-dap.cfg -f ./debug/rp2040.cfg -c "adapter speed 5000" -s tcl -c "program ./build/main/COCONUTFSW.elf reset exit"
+openocd -f interface/cmsis-dap.cfg -f ./debug/rp2040.cfg -c "adapter speed 5000" -s tcl -c "program ./build/Debug/main/COCONUTFSW.elf reset exit"

@@ -17,6 +17,8 @@ Steps:
    1. `sudo cp debug/99-pico.rules /etc/udev/rules.d`
    2. `sudo udevadm control --reload`
    3. `sudo udevadm trigger`
-6. Run debug.sh and connect using gdb-multiarch OR use the VSCode debugging profile
-   1. This doc can be useful: https://mcuoneclipse.com/2023/10/22/debug-probes-for-rp2040-with-vs-code/
-   2. Make sure to install gdb-multiarch with `sudo apt install gdb-multiarch` as well
+6. Run `debug.sh` and connect using `gdb-multiarch` OR use the VSCode debugging profile
+   1. VSCode debugging profile is recommended in most cases
+   2. This doc can be useful: https://mcuoneclipse.com/2023/10/22/debug-probes-for-rp2040-with-vs-code/
+   3. Make sure to install gdb-multiarch with `sudo apt install gdb-multiarch` as well
+   4. To connect or test with gdb, run `gdb-multiarch ./build/Debug/main/COCONUTFSW.elf`
