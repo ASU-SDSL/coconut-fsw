@@ -12,17 +12,6 @@ int main() {
     timer_hw->dbgpause = 0;
 #endif
 
-    // Initialize debug logging
-    init_debug_log();
-
-    // Print cool banner
-    print_banner();
-    
-    // Set up the tasks/threads
-    // Arg 3 is the stack depth -- in words, not bytes
-    // Arg 5+ are arguments to the function of the task
-    logln_info("Initializing FreeRTOS Tasks...");
-
     BaseType_t gse_task_status = xTaskCreate(gse_task, 
                                         "GSE", 
                                         256, 

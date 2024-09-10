@@ -16,10 +16,10 @@ The GSE task.
 
 ## API Functions
 
-<details><summary><big>uart_queue_message()</big></summary>
+<details><summary><big>gse_queue_message()</big></summary>
 
 #### Description
-> Sends telemetry packet over serial line.
+> Sends telemetry data over serial line.
 
 #### Parameters
 > | Name | Type | Description |
@@ -35,19 +35,6 @@ The GSE task.
 
 ## Internal Functions
 ### Note: These functions should ***NEVER*** be run outside of `gse.c`
-
-<details><summary><big>uart_on_rx()</big></summary>
-
-#### Description
-> Function for uart interrupt handler.
-
-#### Parameters
-> None
-
-#### Returns
-> None
-
-</details>  
 
 <details><summary><big>uart_initialize()</big></summary>
 

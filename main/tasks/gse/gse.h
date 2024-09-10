@@ -3,6 +3,7 @@
 #include "pico/stdlib.h"
 #include "hardware/uart.h"
 #include "hardware/irq.h"
+#include "pico/stdio/driver.h"
 
 #include "FreeRTOS.h"
 #include "queue.h"
@@ -33,9 +34,7 @@ typedef struct telemetry_queue_transmission {
 
 QueueHandle_t uart0_queue;
 
-void uart_queue_message(char* buffer, size_t size);
-
-void uart_on_rx();
+void gse_queue_message(char* buffer, size_t size);
 
 void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq);
 
