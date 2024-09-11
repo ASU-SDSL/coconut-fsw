@@ -14,11 +14,11 @@
 #define MAX_BYTES 32768
 
 //PINS ON Raspberry Pi - to be set by electrical team.
-#define CS 13 
-#define SO 12 // MISO/SDO/SO are all same thing
+#define CS 9 
+#define SO 8 // MISO/SDO/SO are all same thing
 #define WP 3 
-#define SI 15 // MOSI/SDI/SI are all same thing
-#define SCK 14 
+#define SI 11 // MOSI/SDI/SI are all same thing
+#define SCK 10 
 #define HOLD 7 // Wired up to power supply
 #define GND 4 //Wired up to random place
 #define PS 8 // Wired up to random place
