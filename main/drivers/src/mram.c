@@ -31,11 +31,11 @@ void setup() {
     gpio_set_dir(CS, GPIO_OUT); 
     gpio_put(CS, 1);
 
-    //Setup other random pins specific to our device but not necessarily required for SPI
-    gpio_set_dir(WP,GPIO_OUT);
-    gpio_put(WP, 0);
-    gpio_set_dir(HOLD, GPIO_OUT);
-    gpio_put(HOLD, 1);
+    //Setup other random pins specific to our device but not necessarily required for SPI. On the PCB, these are not wired up to GPIO, so code is commented out.
+    // gpio_set_dir(WP,GPIO_OUT);
+    // gpio_put(WP, 0);
+    // gpio_set_dir(HOLD, GPIO_OUT);
+    // gpio_put(HOLD, 1);
 
     //Make sure device is initially awake
     send_simple_command(WAKE);
