@@ -1,5 +1,8 @@
 #include "mag.h"
 
+// enable i2c - pin 10
+static const uint8_t MAG_I2C_ENABLE = 10; 
+
 //Slave Address
 //static uint8_t SAD = 0x1E; Use if SDO/SA1 is connected to high
 static uint8_t SAD = 0x1C;
@@ -36,6 +39,10 @@ int SCALE = 6842;
 //uint i2c_init (i2c_inst_t *i2c, uint 100 * 1000) //initialization of i2c
 
 int mag_config(i2c_inst_t *i2c){
+    gpio_init(MAG_I2C_ENABLE); 
+    gpio_set_dir(MAG_I2C_ENABLE, GPIO_OUT);
+    gpio_put(MAG_I2C_ENABLE, 1); 
+
     int success = 0;
     // set performance mode
     // xy - high performance mode (-10- ----)
