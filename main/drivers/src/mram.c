@@ -51,15 +51,16 @@ void setup() {
     */
 }
 
-int address_write(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
+int address_write(const uint32_t addr, uint8_t* buf, const uint8_t nbytes) {
     if (nbytes <= 0) { return 0; }
 
     send_simple_command(WREN);
-
-    uint8_t arr[3] = {WRITE, addr >> 8, addr & 0xff};
+    uint32_t b_swapped = bswap_32(addr); //Byte swapping so bytes are taken out of big endian and can be sent in byte packets.
+    uint8_t* addr_ptr = (uint32_t)(&b_swapped); addr_ptr++; //Only 24-bit address, so skip first 8 bits.
+    uint8_t arr[4] = {WRITE, *(addr_ptr++), *(addr_ptr++), *(addr_ptr++)};
    
     gpio_put(CS, 0);
-    spi_write_blocking(SPI_BUS, arr, 3);
+    spi_write_blocking(SPI_BUS, arr, 4);
     spi_write_blocking(SPI_BUS, buf, nbytes);
     gpio_put(CS, 1);
 
@@ -78,13 +79,15 @@ int address_write(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
     return nbytes;
 }
 
-int read_bytes(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
+int read_bytes(const uint32_t addr, uint8_t* buf, const uint8_t nbytes) {
     if (nbytes <= 0) { return 0; }
 
+    uint32_t b_swapped = bswap_32(addr); //Byte swapping so bytes are taken out of big endian and can be sent in byte packets.
+    uint8_t* addr_ptr = (uint32_t)(&b_swapped); addr_ptr++; //Only 24-bit address, so skip first 8 bits.
+    uint8_t arr[4] = {WRITE, *(addr_ptr++), *(addr_ptr++), *(addr_ptr++)};
+    
     gpio_put(CS, 0);
-
-    uint8_t arr[3] = {READ, addr >> 8, addr & 0xff}; //Code to cast uint16 address into two bytes to be sent through SPI
-    spi_write_blocking(SPI_BUS, arr, 3); 
+    spi_write_blocking(SPI_BUS, arr, 4); 
     spi_read_blocking(SPI_BUS, 0, buf, nbytes);
     gpio_put(CS, 1);
     return nbytes;
@@ -113,13 +116,13 @@ void mram_testing() {
     setup();
 
     while(true) {
-        uint8_t my_buf[8] = {1, 9, 8, 4, 256, 33, 22, 1};
-        address_write(100, my_buf, 8);
+        uint8_t my_buf[8] = {3, 7, 5, 4, 255, 31, 22, 9};
+        address_write(300, my_buf, 8);
         
         //vTaskDelay(500);
 
         uint8_t output[8] = {0,0,0,0,0,0,0,0};
-        read_bytes(100, output, 8);
+        read_bytes(300, output, 8);
 
         printf("Writing: ");
         for (int i = 0; i < 8; i++)
