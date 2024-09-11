@@ -157,7 +157,6 @@ void radio_general_flag_SX(){
 void init_radio()
 {
     sleep_ms(1000); // for debugging
-    logln_info("Hello"); 
 
     // If the RFM is physically wired into the board it needs to call begin() before the SX1268
     // my current theory as to why is that it before begin() it is polluting the SPI line
