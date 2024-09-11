@@ -24,7 +24,8 @@ void gse_task(void *pvParameters) {
     telemetry_queue_transmission_t rec;
     while (true) {
         // Wait on bytes from stdin
-        char c = getchar();
+        char c = 0;
+        stdio_usb.in_chars(&c, 1);
         // Enable write LED
         gpio_put(LED_PIN, 1);
         // Send byte to command task

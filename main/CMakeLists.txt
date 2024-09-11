@@ -91,10 +91,11 @@ set (INTERNAL_INCLUDE_DIRS
 
 
 IF (SIMULATOR)
-    # enable fake picolib for simulator
+    # enable stubs for simulator
     set(INTERNAL_INCLUDE_DIRS
         ${INTERNAL_INCLUDE_DIRS}
         PRIVATE ${MAIN_DIRECTORY}/simulator/pico-sdk
+        PRIVATE ${MAIN_DIRECTORY}/simulator/tasks/radio
     )
 ELSE() 
     # enable radio module if not simulator

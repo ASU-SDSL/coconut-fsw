@@ -9,12 +9,8 @@
 #include <task.h>
 #include <semphr.h>
 
-
 #include "gse.h"
-#ifndef SIMULATOR
 #include "radio.h"
-#endif
-
 #include "state.h"
 
 #define TELEMETRY_SYNC_BYTES "\x35\x2E\xF8\x53"
