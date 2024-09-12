@@ -117,9 +117,12 @@ int i2c_scan() {
         if (reserved_addr(addr))
             ret = PICO_ERROR_GENERIC;
         else
-            ret = i2c_read_blocking(i2c_default, addr, &rxdata, 1, false);
+            ret = i2c_read_timeout_us(i2c_default, addr, &rxdata, 1, false, I2CTimeout_us);
 
-        printf(ret < 0 ? "." : "@");
+		if(ret == PICO_ERROR_GENERIC) printf("X");
+		else if(ret == PICO_ERROR_TIMEOUT) printf("T"); 	
+		else if(ret < 0) printf(".");
+		else printf("@");
         printf(addr % 16 == 15 ? "\n" : "  ");
     }
     printf("Done.\n");
