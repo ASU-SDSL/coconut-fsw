@@ -27,7 +27,7 @@ uint8_t vega_ant_deploy(i2c_inst_t* i2c){
     gpio_init(VEGA_ANT_GPIO_PIN);
     gpio_set_dir(VEGA_ANT_GPIO_PIN, GPIO_OUT);
     gpio_put(VEGA_ANT_GPIO_PIN, 1);
-    sleep_ms(200);
+    vTaskDelay(200/portTICK_PERIOD_MS);
     gpio_put(VEGA_ANT_GPIO_PIN, 0);
 
     return 0; 
