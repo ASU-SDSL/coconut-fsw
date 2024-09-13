@@ -34,6 +34,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/hw_config.c
     ${MAIN_DIRECTORY}/drivers/src/storage.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
+    ${MAIN_DIRECTORY}/drivers/src/mram.c
 )
 
 # build radio and sd only if simulator is disabled

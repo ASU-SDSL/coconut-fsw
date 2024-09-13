@@ -10,7 +10,6 @@
 #include "eps.h"
 #include "mag.h"
 #include <string.h>
-#include "filesystem.h"
 
 void uart_queue_message(char* buffer, size_t size) {
     // Create new transmission structure
@@ -61,6 +60,19 @@ void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq
 }
 
 void gse_task(void *pvParameters) {
+    /* vTaskDelay(2000);
+
+
+    printf("Get temp\n");
+    // uint8_t temp = rtc_test();
+
+    config_i2c0();
+
+    vTaskDelay(500);
+    printf("Starting RTC test...\n");
+    rtc_test();
+    printf("Finished RTC test.\n");
+
     // Initialize UART0
     uart_initialize(UART0_INSTANCE, UART0_TX_PIN, UART0_RX_PIN, UART0_IRQ);
 
@@ -89,6 +101,7 @@ void gse_task(void *pvParameters) {
         // Free buffer allocated in uart_queue_message
         vPortFree(rec.payload_buffer);
         // Disable write LED
-        gpio_put(LED_PIN, 0);
-    }
+        gpio_put(LED_PIN, 0); */
+        mram_testing();
+    // }
 }
