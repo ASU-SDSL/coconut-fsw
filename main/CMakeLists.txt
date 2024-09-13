@@ -33,7 +33,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
 )
 
-# build certain files only if simulator is disabled
+# build certain files depending on simulator build
 IF (NOT SIMULATOR) 
     set (SOURCES
         ${SOURCES}
