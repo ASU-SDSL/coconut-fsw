@@ -20,6 +20,9 @@ void print_banner();
 
 // Use these!
 
+#define logln(f_, ...) \
+    _log((f_), ##__VA_ARGS__); _log("\n");
+
 #define logln_info(f_, ...) \
     _log("[INFO] "); logln((f_), ##__VA_ARGS__);
 
@@ -29,9 +32,6 @@ void print_banner();
 #define logln_error(f_, ...) \
     _log("[ERROR] "); logln((f_), ##__VA_ARGS__);
 
-#define logln(f_, ...) \
-    _log((f_), ##__VA_ARGS__); _log("\n");
-
 /* INTERNAL FUNCTIONS */
 
-void _log(char* str, ...);
+void _log(const char* str, ...);

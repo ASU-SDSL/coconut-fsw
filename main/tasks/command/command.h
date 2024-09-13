@@ -34,6 +34,7 @@ typedef struct {
 QueueHandle_t command_byte_queue;
 typedef char command_byte_t;
 
+
 /* USER FUNCTIONS */
 void receive_command_byte_from_isr(char ch);
 

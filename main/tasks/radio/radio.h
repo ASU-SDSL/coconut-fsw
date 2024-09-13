@@ -6,6 +6,7 @@
 #include "queue.h"
 #include <stdint.h>
 
+
 // pinout for on breadboard
 // #define RADIO_SX_NSS_PIN 7
 // #define RADIO_SX_DIO1_PIN 17
@@ -45,6 +46,15 @@ typedef struct radio_queue_operations {
     size_t data_size; // Could be 0
 } radio_queue_operations_t;
 
+/* C FUNC DECLARATIONS */
+
+#ifdef __cplusplus
+extern "C" void _log(const char* str, ...);
+extern "C" void parse_radio_packet(uint8_t* packet, size_t packet_size);
+#endif
+
+#include "log.h"
+#include "command.h"
 
 #ifdef __cplusplus
 extern "C"
