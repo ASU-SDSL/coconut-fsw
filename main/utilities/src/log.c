@@ -16,7 +16,7 @@ void print_banner() {
     );
 }
 
-void _log(char* str, ...) {
+void _log(const char* str, ...) {
     va_list args;
     va_start(args, str);
 

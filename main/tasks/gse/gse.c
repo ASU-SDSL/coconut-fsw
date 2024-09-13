@@ -16,8 +16,8 @@ void gse_task(void *pvParameters) {
     // Initialize USB UART
     stdio_init_all();
 
-    mag_test(); 
-
+    i2c_scan(); 
+    
     // Initialize read LED
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
