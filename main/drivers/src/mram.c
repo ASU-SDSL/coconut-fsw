@@ -19,7 +19,7 @@ void send_simple_command(uint8_t cmd) {
 void initialize_mram() {
     stdio_init_all();
     spi_init(SPI_BUS, FREQ);
-    
+
     //Setup Serial Pins for SPI
     gpio_set_function(SO, GPIO_FUNC_SPI);
     gpio_set_function(SCK, GPIO_FUNC_SPI);
@@ -56,10 +56,6 @@ int write_bytes(uint32_t addr, uint8_t* buf, const uint8_t nbytes) {
 
 int read_bytes(uint32_t addr, uint8_t* buf, const uint8_t nbytes) {
     if (nbytes <= 0) { return 0; }
-
-    uint32_t b_swapped = bswap_32(addr); //Byte swapping so bytes are taken out of big endian and can be sent in byte packets.
-    uint8_t* addr_ptr = (uint32_t)(&b_swapped); addr_ptr++; //Only 24-bit address, so skip first 8 bits.
-    uint8_t arr[4] = {WRITE, *(addr_ptr++), *(addr_ptr++), *(addr_ptr++)};
     
     gpio_put(CS, 0);
 
