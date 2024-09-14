@@ -33,15 +33,20 @@ set(SOURCES
 
     ${MAIN_DIRECTORY}/drivers/src/storage.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
-    ${MAIN_DIRECTORY}/drivers/src/mram.c
 )
 
 # build certain files depending on simulator build
-IF (NOT SIMULATOR) 
+IF (SIMULATOR) 
+    set (SOURCES
+        ${SOURCES}
+        ${MAIN_DIRECTORY}/simulator/drivers/src/diskio.c
+    )
+ELSE()
     set (SOURCES
         ${SOURCES}
         ${MAIN_DIRECTORY}/drivers/src/diskio.c
         ${MAIN_DIRECTORY}/tasks/radio/radio.cpp
+        ${MAIN_DIRECTORY}/drivers/src/mram.c
     )
 ENDIF()
 
@@ -52,6 +57,7 @@ add_executable(${PROJECT_NAME}
 ## Link to built libraries
 set (LINK_LIBS
     FreeRTOS
+    FatFs
 )
 
 IF (SIMULATOR)
@@ -71,7 +77,6 @@ ELSE()
         hardware_adc
         hardware_i2c
         RadioLib
-        FatFs
     )
 ENDIF()
 
@@ -100,6 +105,7 @@ IF (SIMULATOR)
         ${INTERNAL_INCLUDE_DIRS}
         PRIVATE ${MAIN_DIRECTORY}/simulator/pico-sdk
         PRIVATE ${MAIN_DIRECTORY}/simulator/tasks/radio
+        PRIVATE ${MAIN_DIRECTORY}/simulator/drivers/include
     )
 ELSE() 
     # enable radio module if not simulator

@@ -1,4 +1,16 @@
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+
+#include "ff.h"
+#include "FreeRTOS.h"
 #include "diskio.h"
+
+static DSTATUS gStatus = STA_NOINIT;
+
+static BYTE *disk = NULL;
+
+#define NUM_SECTORS 128 
 
 // Inspired by https://stackoverflow.com/questions/77411723/how-do-i-use-a-ram-buffer-for-a-fatfs-filesystem
 

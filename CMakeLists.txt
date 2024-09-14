@@ -109,7 +109,7 @@ target_include_directories(FreeRTOS PUBLIC
 add_subdirectory(${MAIN_DIRECTORY})
 
 # add libraries here (and in target_link_libraries under the main cmakelists)
+add_subdirectory(${CMAKE_SOURCE_DIR}/lib/fatfs/ build)
 IF (NOT SIMULATOR)
     add_subdirectory(${CMAKE_SOURCE_DIR}/lib/RadioLib)
-    add_subdirectory(${CMAKE_SOURCE_DIR}/lib/fatfs/ build)
 ENDIF()
