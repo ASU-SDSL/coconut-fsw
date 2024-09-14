@@ -12,4 +12,5 @@ CMakeCache.txt
 CMakeLists.txt
 CMakeDoxyfile.in
 libFreeRTOS.a
-lib
+.vscode/c_cpp_properties.json
+.vscode/settings.json

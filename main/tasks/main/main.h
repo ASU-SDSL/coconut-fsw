@@ -25,6 +25,7 @@
 #include "telemetry.h"
 #include "log.h"
 #include "steve.h"
+#include "filesystem.h"
 
 // Function defs
 int main();

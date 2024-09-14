@@ -49,6 +49,14 @@ int main() {
                                          NULL);
 #endif
 
+
+    BaseType_t filesystem_task_status = xTaskCreate(sd_task,
+                                        "FILESYSTEM",
+                                        256,
+                                        NULL,
+                                        1,
+                                        NULL);
+                                        
     // Start the FreeRTOS scheduler
     vTaskStartScheduler();
     

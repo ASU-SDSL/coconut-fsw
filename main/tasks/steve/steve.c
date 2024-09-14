@@ -157,7 +157,7 @@ void run_steve_job(steve_job_t* job) {
     /* g_steve_context.mutex must be taken before using this function */
     // Run the job function
     job->func_ptr(job->arg_data);
-    // Check if it needs to be rescheduled (recurring job)
+    // Check if it needs to be reschedulesd (recurring job)
     if (job->recur_time > 0) {
         job->execute_time = get_uptime() + job->recur_time;
     }

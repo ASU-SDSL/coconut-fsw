@@ -18,6 +18,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/tasks/steve/steve.c
     ${MAIN_DIRECTORY}/tasks/command/command.c
     ${MAIN_DIRECTORY}/tasks/telemetry/telemetry.c
+    ${MAIN_DIRECTORY}/tasks/filesystem/filesystem.c
 
     ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
 
@@ -30,15 +31,17 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/rtc.c
     ${MAIN_DIRECTORY}/drivers/src/mag.c
 
+    ${MAIN_DIRECTORY}/drivers/src/storage.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
+    ${MAIN_DIRECTORY}/drivers/src/mram.c
 )
 
 # build certain files depending on simulator build
 IF (NOT SIMULATOR) 
     set (SOURCES
         ${SOURCES}
+        ${MAIN_DIRECTORY}/drivers/src/diskio.c
         ${MAIN_DIRECTORY}/tasks/radio/radio.cpp
-        ${MAIN_DIRECTORY}/drivers/src/hw_config.c
     )
 ENDIF()
 
@@ -68,7 +71,7 @@ ELSE()
         hardware_adc
         hardware_i2c
         RadioLib
-        FatFs_SPI
+        FatFs
     )
 ENDIF()
 
@@ -84,6 +87,7 @@ set (INTERNAL_INCLUDE_DIRS
     PRIVATE ${MAIN_DIRECTORY}/tasks/steve
     PRIVATE ${MAIN_DIRECTORY}/tasks/steve/jobs
     PRIVATE ${MAIN_DIRECTORY}/tasks/telemetry
+    PRIVATE ${MAIN_DIRECTORY}/tasks/filesystem
 
     PRIVATE ${MAIN_DIRECTORY}/utilities/include
     PRIVATE ${MAIN_DIRECTORY}/drivers/include
