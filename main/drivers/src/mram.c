@@ -16,7 +16,7 @@ void send_simple_command(uint8_t cmd) {
     gpio_put(CS, 1);
 }
 
-void setup() {
+void initialize_mram() {
     stdio_init_all();
     spi_init(SPI_BUS, FREQ);
     //TODO: See if we need to do anything to change SPI Mode to 0.
@@ -51,70 +51,48 @@ void setup() {
     */
 }
 
-int address_write(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
+int write_bytes(uint32_t addr, uint8_t* buf, const uint8_t nbytes) {
     if (nbytes <= 0) { return 0; }
 
     send_simple_command(WREN);
 
-    uint8_t arr[3] = {WRITE, addr >> 8, addr & 0xff};
+    uint32_t bendaddr = __builtin_bswap32(addr);
+    uint8_t *p_bendaddr = &bendaddr;
+
+    uint8_t arr[4] = {WRITE, p_bendaddr[0], p_bendaddr[1], p_bendaddr[2]};
    
     gpio_put(CS, 0);
-    spi_write_blocking(SPI_BUS, arr, 3);
+    spi_write_blocking(SPI_BUS, arr, 4);
     spi_write_blocking(SPI_BUS, buf, nbytes);
     gpio_put(CS, 1);
-
-    /*send_simple_command(WREN);
-    gpio_put(CS, 0);
-    //Trying two methods, send cmd, address, and data bytes separately; Or,make big array for all of them.
-    uint8_t cmd = WRITE;
-    spi_write_blocking(SPI_BUS, &cmd, 1);
-    // uint16_t big_endian_addr = ((addr & 0xFF) << 8) | (addr & 0xFF00);
-    uint8_t arr[2] = { addr >> 8, addr & 0xff }; // Code to cast uint16 address into two bytes
-    spi_write_blocking(SPI_BUS, arr, 2);
-    spi_write_blocking(SPI_BUS, buf, nbytes);*/
 
     send_simple_command(WRDI);
     
     return nbytes;
 }
 
-int read_bytes(const uint16_t addr, uint8_t* buf, const uint8_t nbytes) {
+int read_bytes(uint32_t addr, uint8_t* buf, const uint8_t nbytes) {
     if (nbytes <= 0) { return 0; }
 
     gpio_put(CS, 0);
 
-    uint8_t arr[3] = {READ, addr >> 8, addr & 0xff}; //Code to cast uint16 address into two bytes to be sent through SPI
-    spi_write_blocking(SPI_BUS, arr, 3); 
+    uint32_t bendaddr = __builtin_bswap32(addr);
+    uint8_t *p_bendaddr = &bendaddr;
+
+    uint8_t arr[4] = {READ, p_bendaddr[0], p_bendaddr[1], p_bendaddr[2]};
+
+    spi_write_blocking(SPI_BUS, arr, 4); 
     spi_read_blocking(SPI_BUS, 0, buf, nbytes);
     gpio_put(CS, 1);
     return nbytes;
 }
 
-//Determine whether to do padding or have memory wrap around like circular array with some half_packets
-int write_packet(uint8_t* buf) {
-    address_write(cur_addr, buf, PACKET_SIZE);
-    cur_addr += PACKET_SIZE;
-    if (cur_addr > MAX_BYTES) { cur_addr = memory_start; }
-    uint8_t arr[2] = {cur_addr / 0x100, cur_addr % 0x100}; // Code to cast uint16 address into two bytes
-    address_write(memory_start - 2, arr, 2); //Update current address in memory
-    return 1;
-}
-
-int read_packets(uint8_t* buf, int num_packets) {
-    if (num_packets <= 0) { return 0; }
-
-    uint16_t bytes_to_read = min(cur_addr - memory_start, num_packets * PACKET_SIZE);
-    uint16_t bytes_read = num_packets * PACKET_SIZE - bytes_to_read;
-    read_bytes(MAX_BYTES - bytes_read + 1, buf, bytes_read );
-    read_bytes(cur_addr - bytes_to_read + 1, buf + bytes_read, bytes_to_read);
-    return num_packets;
-}
 void mram_testing() {
-    setup();
+    initialize_mram();
 
     while(true) {
         uint8_t my_buf[8] = {1, 9, 8, 4, 256, 33, 22, 1};
-        address_write(100, my_buf, 8);
+        write_bytes(100, my_buf, 8);
         
         //vTaskDelay(500);
 
@@ -134,9 +112,7 @@ void mram_testing() {
             printf("%d ", output[i]);
         }
         printf("\n");
-        printf("This is revised function with 2 separate spi_write_blockings\n");
-
-        vTaskDelay(500);
+        vTaskDelay(200);
 
     }
 }
