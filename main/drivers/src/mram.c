@@ -19,8 +19,7 @@ void send_simple_command(uint8_t cmd) {
 void initialize_mram() {
     stdio_init_all();
     spi_init(SPI_BUS, FREQ);
-    //TODO: See if we need to do anything to change SPI Mode to 0.
-
+    
     //Setup Serial Pins for SPI
     gpio_set_function(SO, GPIO_FUNC_SPI);
     gpio_set_function(SCK, GPIO_FUNC_SPI);
@@ -31,24 +30,8 @@ void initialize_mram() {
     gpio_set_dir(CS, GPIO_OUT); 
     gpio_put(CS, 1);
 
-    //Setup other random pins specific to our device but not necessarily required for SPI
-    gpio_set_dir(WP,GPIO_OUT);
-    gpio_put(WP, 0);
-    gpio_set_dir(HOLD, GPIO_OUT);
-    gpio_put(HOLD, 1);
-
     //Make sure device is initially awake
     send_simple_command(WAKE);
-
-    /* //Add padding so that only a whole number of packets will fit into data storage. Padding should also be at least 2 bytes to allow for memory for cur_addr pointer.
-    memory_start = MAX_BYTES % PACKET_SIZE;
-    if (memory_start < 2) { memory_start += PACKET_SIZE; }
-    Documents/coconut/coconut-fsw$
-    //Set current address pointer based on whWRENat was last set in the two bytes before the start of packet memory. In case pointer was not set properly, the pointer will default to start of packet memory. 
-    uint8_t p[2];
-    read_bytes(memory_start - 2, p, 2);
-    cur_addr = max(p[0]*0x100 +p[1], memory_start);
-    */
 }
 
 int write_bytes(uint32_t addr, uint8_t* buf, const uint8_t nbytes) {
@@ -74,6 +57,10 @@ int write_bytes(uint32_t addr, uint8_t* buf, const uint8_t nbytes) {
 int read_bytes(uint32_t addr, uint8_t* buf, const uint8_t nbytes) {
     if (nbytes <= 0) { return 0; }
 
+    uint32_t b_swapped = bswap_32(addr); //Byte swapping so bytes are taken out of big endian and can be sent in byte packets.
+    uint8_t* addr_ptr = (uint32_t)(&b_swapped); addr_ptr++; //Only 24-bit address, so skip first 8 bits.
+    uint8_t arr[4] = {WRITE, *(addr_ptr++), *(addr_ptr++), *(addr_ptr++)};
+    
     gpio_put(CS, 0);
 
     uint32_t bendaddr = __builtin_bswap32(addr);
