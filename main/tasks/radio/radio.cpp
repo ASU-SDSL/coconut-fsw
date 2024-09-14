@@ -85,7 +85,7 @@ extern "C"
         // Create new transmission structure
         // telemetry_queue_transmission_t new_buffer;
         radio_queue_operations_t new_buffer; 
-        new_buffer.operation_type = operation_type_t::TRANSMIT;
+        new_buffer.operation_type = radio_operation_type_t::TRANSMIT;
         new_buffer.data_size = size;
         // Allocate chunk on heap to copy buffer contents
         // auto heap_buf = static_cast<char *>(pvPortMalloc(size));
@@ -102,7 +102,7 @@ extern "C"
     void radio_set_transmit_power(uint8_t output_power)
     {
         radio_queue_operations_t new_buffer;
-        new_buffer.operation_type = operation_type_t::SET_OUTPUT_POWER;
+        new_buffer.operation_type = radio_operation_type_t::SET_OUTPUT_POWER;
         new_buffer.data_size = 1; 
         auto heap_buf = static_cast<uint8_t *>(pvPortMalloc(1));
         memcpy(heap_buf, &output_power, 1); 
@@ -113,18 +113,18 @@ extern "C"
         }
         xQueueSendToBack(radio_queue, &new_buffer, portMAX_DELAY); 
     }
-    void radio_set_module(operation_type_t op)
+    void radio_set_module(radio_operation_type_t op)
     {
-        if(op == operation_type_t::SET_OUTPUT_POWER || op == operation_type_t::TRANSMIT){
+        if(op == radio_operation_type_t::SET_OUTPUT_POWER || op == radio_operation_type_t::TRANSMIT){
             return;
         }
 
         radio_queue_operations_t new_buffer;
-        if(op == operation_type_t::ENABLE_RFM98){ 
-            new_buffer.operation_type = operation_type_t::ENABLE_RFM98;
+        if(op == radio_operation_type_t::ENABLE_RFM98){ 
+            new_buffer.operation_type = radio_operation_type_t::ENABLE_RFM98;
         }
         else{
-            new_buffer.operation_type = operation_type_t::ENABLE_SX1268;
+            new_buffer.operation_type = radio_operation_type_t::ENABLE_SX1268;
         }
 
         while(!radio_queue)
@@ -278,10 +278,10 @@ void parseRebound(PhysicalLayer* radio, uint8_t* packet, uint8_t packet_size){
             break; 
         }
         case 2:
-            radio_set_module(operation_type_t::ENABLE_RFM98);
+            radio_set_module(radio_operation_type_t::ENABLE_RFM98);
             break;
         case 3:
-            radio_set_module(operation_type_t::ENABLE_SX1268);
+            radio_set_module(radio_operation_type_t::ENABLE_SX1268);
             break;
         
     }    

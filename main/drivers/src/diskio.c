@@ -9,9 +9,10 @@
 
 #include "ff.h"			/* Obtains integer types */
 #include "diskio.h"		/* Declarations of disk functions */
+#include "mram.h"
 
 /* Definitions of physical drive number for each drive */
-#define DEV_MRAM		0 // not sure what the drive # is, should be 0
+#define DEV_MRAM		0 /* not sure what the drive # is, should be 0 */
 #define SECTOR_SIZE 	512
 
 
@@ -22,9 +23,10 @@
 DSTATUS disk_status (BYTE pdrv) {
 	DSTATUS disk_status = STA_NOINIT;
 
+	// TODO: Update w/ global var
 	switch (pdrv) {
 	case DEV_MRAM :
-		disk_status = get_mram_status();
+		disk_status = ~STA_NOINIT;
 		break;
 	}
 
@@ -62,21 +64,23 @@ DRESULT disk_read (BYTE pdrv, BYTE *buff, LBA_t sector, UINT count){
 	int result;
 
 	switch (pdrv) {
-	case DEV_MRAM :
-		DWORD address = sector * SECTOR_SIZE;
+		case DEV_MRAM: {
+			DWORD address = sector * SECTOR_SIZE;
 
-		for(int i  = 0; i < count; i++) {
-			int result = read_bytes(address, buff, SECTOR_SIZE);
+			for(int i  = 0; i < count; i++) {
+				int result = read_bytes(address, buff, SECTOR_SIZE);
 
-			if(result != 0) {
-				return RES_ERROR;
+				if(result != 0) {
+					return RES_ERROR;
+				}
+
+				buff += SECTOR_SIZE;
+				address += SECTOR_SIZE;
 			}
-
-			buff += SECTOR_SIZE;
-			address += SECTOR_SIZE;
+			return RES_OK;
 		}
-
-		return RES_OK;
+		default:
+			break;
 	}
 	
 	return RES_PARERR;
@@ -97,21 +101,22 @@ DRESULT disk_write(BYTE pdrv, const BYTE *buff, LBA_t sector, UINT count) {
 	int result;
 
 	switch (pdrv) {
-	case DEV_MRAM :
-		DWORD address = sector * SECTOR_SIZE;
+		case DEV_MRAM: {
+			DWORD address = sector * SECTOR_SIZE;
+			for(int i = 0; i < count; i++) {
+				int result = write_bytes(address, buff, SECTOR_SIZE);
 
-		for(int i = 0; i < count; i++) {
-			int result = write_bytes(address, buff, SECTOR_SIZE);
+				if(result != 0) {
+					return RES_ERROR;
+				}
 
-			if(result != 0) {
-				return RES_ERROR;
+				buff += SECTOR_SIZE;
+				address += SECTOR_SIZE;
 			}
-
-			buff += SECTOR_SIZE;
-			address += SECTOR_SIZE;
+			return RES_OK;
 		}
-
-		return RES_OK;
+		default:
+			break;
 	}
 
 	return RES_PARERR;
@@ -132,16 +137,22 @@ DRESULT disk_ioctl (BYTE pdrv, BYTE cmd, void *buff) {
 
 	switch(cmd) {
 		case GET_SECTOR_COUNT:
-
+			break;
 		case GET_SECTOR_SIZE:
-
+			break;
 		case CTRL_SYNC:
-
+			break;
 		case GET_BLOCK_SIZE:
-
+			break;
 		case CTRL_TRIM:
+			break;
 	} 
 
 	return RES_PARERR;
 }
 
+DWORD get_fattime(void) {
+	// TODO: add actual timestamp
+    // 0 will make the file timestamp invalid, works but obviously not ideal
+    return 0;
+}

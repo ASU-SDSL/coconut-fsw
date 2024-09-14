@@ -20,15 +20,15 @@ TODO:   sd card driver does not look finished, so finish the driver to read and 
 /* Types and Globals */
 
 // enum to define different file system operations
-typedef enum operation_type {
+typedef enum fs_operation_type {
     WRITE,
     READ
-} operation_type_t;
+} fs_operation_type_t;
 
 // struct to represent operations passed to the queue
 // TODO: come up with actual struct def
 typedef struct filesystem_queue_operations {
-    operation_type_t operation_type;
+    fs_operation_type_t operation_type;
     const char* file_name;
     char* text_to_write;
     char* read_buffer;

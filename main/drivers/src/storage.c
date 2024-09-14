@@ -1,7 +1,4 @@
 #include "storage.h"
-#include "ff.h"
-#include "sd_card.h"
-#include "log.h"
 
 
 /*
@@ -17,11 +14,13 @@ void sd_write(const char* fileName, const char* text, int append_flag) {
     int ret;
 
     // Initialize SD card
-    if (!sd_init_driver()) {
-        for(;;) {
-            logln_info("ERROR: Could not initialize SD card\r\n");
-        }
-    }
+
+    // MITCH: Commented out so we can build b4 switch to mram
+    // if (!sd_init_driver()) {
+    //     for(;;) {
+    //         logln_info("ERROR: Could not initialize SD card\r\n");
+    //     }
+    // }
     
 
     int file_open_flags = FA_WRITE | FA_CREATE_ALWAYS;

@@ -31,7 +31,6 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/rtc.c
     ${MAIN_DIRECTORY}/drivers/src/mag.c
 
-    ${MAIN_DIRECTORY}/drivers/src/hw_config.c
     ${MAIN_DIRECTORY}/drivers/src/storage.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
     ${MAIN_DIRECTORY}/drivers/src/mram.c
@@ -41,8 +40,8 @@ set(SOURCES
 IF (NOT SIMULATOR) 
     set (SOURCES
         ${SOURCES}
+        ${MAIN_DIRECTORY}/drivers/src/diskio.c
         ${MAIN_DIRECTORY}/tasks/radio/radio.cpp
-        ${MAIN_DIRECTORY}/drivers/src/hw_config.c
     )
 ENDIF()
 
@@ -72,7 +71,7 @@ ELSE()
         hardware_adc
         hardware_i2c
         RadioLib
-        FatFs_SPI
+        FatFs
     )
 ENDIF()
 
