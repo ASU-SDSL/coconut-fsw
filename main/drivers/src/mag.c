@@ -48,7 +48,7 @@ int mag_config(i2c_inst_t *i2c){
     // printf("writing to CTRL_REG1: %02x\n", buf);
     success += i2c_write_to_register(i2c, SAD, CTRL_REG1, &buf, 1);
     i2c_read_from_register(i2c, SAD, CTRL_REG1, &buf, 1);
-    printf("%x\n", buf);
+    // printf("%x\n", buf);
 
     // z - high performance mode (---- 10--)
     success += i2c_read_from_register(i2c, SAD, CTRL_REG4, &buf, 1);
@@ -166,11 +166,11 @@ int mag_test(){
     // sleep_ms(2000);
 
     // Loop 1000 times
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 100; i++){
 
         int16_t magbuf; 
-        printf("Status: %d\n", get_mag_status(i2c));
-        printf("Status (raw): %02x\n", get_mag_status(i2c));
+        printf("Status: %d\n", mag_get_status(i2c));
+        printf("Status (raw): %02x\n", mag_get_status(i2c));
 
         if(!mag_get_x(i2c, &magbuf)) {
             printf("X output: %d\n", magbuf);
@@ -198,7 +198,8 @@ int mag_test(){
 
         if(!mag_get_temp(i2c, &magbuf)){
             printf("Get Temp Output: %d\n", magbuf);
-            printf("%x\n", MAG_TEMP_OUT_L);
+            printf("Get Temp Output Translated: %f\n", (float)magbuf / 256 + 25);
+            printf("%x\n", magbuf);
         }
         else {
             printf("Error reading mag temp\n"); 
