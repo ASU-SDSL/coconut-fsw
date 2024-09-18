@@ -127,6 +127,41 @@ void _delete(const char *file_name) {
     }
 }
 
+void _list(const char *dir_name) {
+    DIR dir;
+    FRESULT fr;
+ 
+    fr = f_opendir(&dir, dir_name);
+ 
+    if (fr != FR_OK) {
+        logln_error("Failed to open directory %s during ls (%d)\n", dir_name, fr);
+        return;
+    }
+ 
+    for (;;) {
+        FILINFO fno;
+
+        fr = f_readdir(&dir, &fno);    
+        
+        if (fr != FR_OK) {
+            printf("Failed to read directory %s during ls (%d)\n", dir_name, fr);
+            return;
+        }
+        
+        if (fno.fname[0] == 0) {
+            return;
+        }
+
+        logln("%s\n", dir);
+        logln("\t%c%c%c%c\t%10d\t%s/%s",
+            ((fno.fattrib & AM_DIR) ? 'D' : '-'),
+            ((fno.fattrib & AM_RDO) ? 'R' : '-'),
+            ((fno.fattrib & AM_SYS) ? 'S' : '-'),
+            ((fno.fattrib & AM_HID) ? 'H' : '-'),
+            (int)fno.fsize, dir_name, fno.fname);
+    }
+}
+
 void filesystem_task(void* unused_arg) {
     //have a queue and other threads will queue up on operations
     //this thread will go through the queue and execute operations, if there are any
@@ -138,9 +173,8 @@ void filesystem_task(void* unused_arg) {
     // }
 
     // make filesystem
-    int res;
     void* buf = pvPortMalloc(0x400);
-    res = f_mkfs("", NULL, buf, 0x400);    
+    FRESULT fr = f_mkfs("", NULL, buf, 0x400);    
     vPortFree(buf);
 
     // while(true) {
@@ -149,16 +183,30 @@ void filesystem_task(void* unused_arg) {
     // }
     
     // mount disk
+    logln_info("Mounting filesystem...\n");
     FATFS fs; 
-    FRESULT fr = f_mount(&fs, "0:", 1);
+    fr = f_mount(&fs, "0:", 1);
     while (fr != FR_OK) {
         logln_error("Could not mount filesystem (%d)\n", fr);
     }
-
-    // read file
     
 
     // write file
+    char *test_filepath = "/test.txt";
+    char *test_filecontents = "test\n";
+    _write(test_filepath, test_filecontents, 0, strlen(test_filecontents));
+
+    // read file
+    char outbuf[0x10];
+    size_t bytes_read = _read(test_filepath, outbuf, sizeof(outbuf));
+    logln_info("Read %d bytes from %s: %s\n", bytes_read, test_filepath, outbuf);
+
+    // ls
+    for (;;) {
+        _list("/");
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
+
 
     // // init queue and other stuff
     // filesystem_queue = xQueueCreate(FILESYSTEM_QUEUE_LENGTH, sizeof(filesystem_queue_operations_t));

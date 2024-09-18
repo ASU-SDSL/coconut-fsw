@@ -58,6 +58,6 @@ void delete_file(const char* file_name);
 size_t _write(const char *file_name, const uint8_t *data, bool append_flag, size_t size);
 size_t _read(const char *file_name, char* result_buffer, size_t size);
 void _delete(const char *file_name);
-
+void _list(const char *dir_name);
 // Main Task
 void filesystem_task(void* unused_arg);
