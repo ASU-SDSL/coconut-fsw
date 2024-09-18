@@ -10,7 +10,7 @@ static DSTATUS gStatus = STA_NOINIT;
 
 static BYTE *disk = NULL;
 
-#define NUM_SECTORS 128 
+#define NUM_SECTORS 256
 
 // Inspired by https://stackoverflow.com/questions/77411723/how-do-i-use-a-ram-buffer-for-a-fatfs-filesystem
 
