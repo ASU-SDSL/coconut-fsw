@@ -17,6 +17,25 @@
                 "isDefault": true
             },
             "detail": "Build and flash the Coconut Flight Software"
+        },
+        {
+            "label": "buildsimulator",
+
+            "command": "./deploy.sh",
+
+            "args": ["-b", "-s"], // build and simulator flags
+
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Build and the Coconut Flight Software Simulator"
         }
     ]
 }
