@@ -15,8 +15,6 @@ void gse_queue_message(char* buffer, size_t size) {
 void gse_task(void *pvParameters) {
     // Initialize USB UART
     stdio_init_all();
-
-    i2c_scan(); 
     
     // Initialize read LED
     gpio_init(LED_PIN);
