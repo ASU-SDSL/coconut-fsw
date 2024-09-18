@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unistd.h>
+#include <stdio.h>
 
 struct stdio_driver {
     void (*out_chars)(const char *buf, int len);
@@ -12,7 +13,13 @@ struct stdio_driver {
 typedef struct stdio_driver stdio_driver_t;
 
 static int stdio_usb_in_chars(char *buf, int length) {
-    return read(0, buf, length);
+    // return fread(buf, 0, length, stdin);
+    size_t size = -1;
+    do {
+        size = read(0, buf, length);
+        // size = fread();
+    } while (size == -1);
+    return size;
 }
 
 static void stdio_usb_out_chars(const char *buf, int length) {
