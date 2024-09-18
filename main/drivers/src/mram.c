@@ -34,7 +34,7 @@ void initialize_mram() {
     send_simple_command(WAKE);
 }
 
-int write_bytes(uint32_t addr, uint8_t* buf, const uint8_t nbytes) {
+int write_bytes(uint32_t addr, const uint8_t* buf, const uint8_t nbytes) {
     if (nbytes <= 0) { return 0; }
 
     send_simple_command(WREN);

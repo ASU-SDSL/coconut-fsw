@@ -13,7 +13,8 @@
 
 /* Definitions of physical drive number for each drive */
 #define DEV_MRAM		0 /* not sure what the drive # is, should be 0 */
-#define SECTOR_SIZE 	512
+#define DEVICE_SIZE 	4 * 1024 * 1024 /* 4Mb */
+#define BLOCK_SIZE 	512U
 
 
 /*-----------------------------------------------------------------------*/
@@ -43,9 +44,10 @@ DSTATUS disk_initialize (BYTE pdrv) {
 	DSTATUS initialization_status = STA_NOINIT;
 
 	switch (pdrv) {
-	case DEV_MRAM :
-		initialization_status = initialize_mram();
-		break;
+		case DEV_MRAM:
+			initialize_mram();
+			initialization_status = ~STA_NOINIT;
+			break;
 	}
 
 	return initialization_status;
@@ -65,17 +67,17 @@ DRESULT disk_read (BYTE pdrv, BYTE *buff, LBA_t sector, UINT count){
 
 	switch (pdrv) {
 		case DEV_MRAM: {
-			DWORD address = sector * SECTOR_SIZE;
+			DWORD address = sector * BLOCK_SIZE;
 
 			for(int i  = 0; i < count; i++) {
-				int result = read_bytes(address, buff, SECTOR_SIZE);
+				int result = read_bytes(address, buff, BLOCK_SIZE);
 
 				if(result != 0) {
 					return RES_ERROR;
 				}
 
-				buff += SECTOR_SIZE;
-				address += SECTOR_SIZE;
+				buff += BLOCK_SIZE;
+				address += BLOCK_SIZE;
 			}
 			return RES_OK;
 		}
@@ -102,16 +104,16 @@ DRESULT disk_write(BYTE pdrv, const BYTE *buff, LBA_t sector, UINT count) {
 
 	switch (pdrv) {
 		case DEV_MRAM: {
-			DWORD address = sector * SECTOR_SIZE;
+			DWORD address = sector * BLOCK_SIZE;
 			for(int i = 0; i < count; i++) {
-				int result = write_bytes(address, buff, SECTOR_SIZE);
+				int result = write_bytes(address, buff, BLOCK_SIZE);
 
 				if(result != 0) {
 					return RES_ERROR;
 				}
 
-				buff += SECTOR_SIZE;
-				address += SECTOR_SIZE;
+				buff += BLOCK_SIZE;
+				address += BLOCK_SIZE;
 			}
 			return RES_OK;
 		}
@@ -133,22 +135,28 @@ DRESULT disk_write(BYTE pdrv, const BYTE *buff, LBA_t sector, UINT count) {
 /* buff - Buffer to send/receive control data */
 DRESULT disk_ioctl (BYTE pdrv, BYTE cmd, void *buff) {
 	DRESULT res;
-	int result;
 
 	switch(cmd) {
 		case GET_SECTOR_COUNT:
+			*(DWORD*)buff = DEVICE_SIZE / BLOCK_SIZE;
 			break;
 		case GET_SECTOR_SIZE:
+			*(DWORD*)buff = BLOCK_SIZE;
+    		res = RES_OK;
 			break;
 		case CTRL_SYNC:
+    		res = RES_OK;
 			break;
 		case GET_BLOCK_SIZE:
+			*(DWORD*)buff = BLOCK_SIZE;
+			res = RES_OK;
 			break;
-		case CTRL_TRIM:
+		default:
+			res = RES_PARERR;
 			break;
 	} 
 
-	return RES_PARERR;
+	return res;
 }
 
 DWORD get_fattime(void) {

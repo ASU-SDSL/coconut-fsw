@@ -1,5 +1,7 @@
 #include "storage.h"
 
+// TODO: move to filesystem task
+
 
 /*
 TODO:   we want to minimize the size of critical sections, so it might be good to incorporate f_sync into read and write ops

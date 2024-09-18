@@ -8,6 +8,7 @@ TODO:   sd card driver does not look finished, so finish the driver to read and 
 #pragma once
 
 #include "storage.h"
+#include "ff.h"
 #include <semphr.h>
 #include "queue.h"
 #include "FreeRTOS.h"
@@ -62,4 +63,4 @@ void delete_file(const char* file_name);
 
 
 // Main Task
-void sd_task(void* unused_arg);
+void filesystem_task(void* unused_arg);

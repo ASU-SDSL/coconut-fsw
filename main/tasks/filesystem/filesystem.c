@@ -56,42 +56,58 @@ void read_file(const char* file_name, char* result_buffer) {
 //     xSemaphoreGive(sd_mutex);
 // }
 
-void sd_task(void* unused_arg) {
+void filesystem_task(void* unused_arg) {
     //have a queue and other threads will queue up on operations
     //this thread will go through the queue and execute operations, if there are any
     //keeps looping until new operations are in queue
 
-    // init queue and other stuff
-    filesystem_queue = xQueueCreate(FILESYSTEM_QUEUE_LENGTH, sizeof(filesystem_queue_operations_t));
-    if(filesystem_queue == NULL) {
-        // TODO: Find a better solution to handling queue creation failure
-        vTaskDelete(NULL);
+    for (int i = 0; i < 10; i++) {
+        logln_info("Im boutta blow\n");
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
-    logln_info("Queue created\r\n");
 
-    // start inf loop
-    filesystem_queue_operations_t received_operation;
-    while(1) {
-        // check queue for queued operation
-        // wait forever until an operation is in queue
-        xQueueReceive(filesystem_queue, &received_operation, EMPTY_QUEUE_WAIT_TIME);
+    // make filesystem
+    int res;
+    void* buf = pvPortMalloc(0x200);
+    res = f_mkfs(0, NULL, buf, 0x200);    
+    vPortFree(buf);
 
-        // if operation is in queue, execute it
-        switch (received_operation.operation_type) {
-            case WRITE:
-                // execute write operation
-                sd_write(received_operation.file_name, received_operation.text_to_write, 0);
-                break;
-            case READ:
-                // execute read operation
-                sd_read(received_operation.file_name, received_operation.read_buffer);
-                break;
-            default:
-                // TODO: figure out proper way to handle this error
-                break;
-        }
+    while(true) {
+        logln_info("FS create status: %d\n", res);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
+
+    // // init queue and other stuff
+    // filesystem_queue = xQueueCreate(FILESYSTEM_QUEUE_LENGTH, sizeof(filesystem_queue_operations_t));
+    // if(filesystem_queue == NULL) {
+    //     // TODO: Find a better solution to handling queue creation failure
+    //     vTaskDelete(NULL);
+    // }
+    // logln_info("Queue created\r\n");
+
+    // // start inf loop
+    // filesystem_queue_operations_t received_operation;
+    // while(1) {
+    //     // check queue for queued operation
+    //     // wait forever until an operation is in queue
+    //     xQueueReceive(filesystem_queue, &received_operation, EMPTY_QUEUE_WAIT_TIME);
+
+    //     // if operation is in queue, execute it
+    //     switch (received_operation.operation_type) {
+    //         case WRITE:
+    //             // execute write operation
+    //             sd_write(received_operation.file_name, received_operation.text_to_write, 0);
+    //             break;
+    //         case READ:
+    //             // execute read operation
+    //             sd_read(received_operation.file_name, received_operation.read_buffer);
+    //             break;
+    //         default:
+    //             // TODO: figure out proper way to handle this error
+    //             break;
+    //     }
 
         
 
-    }
+    // }
 }
