@@ -202,12 +202,18 @@ void filesystem_task(void* unused_arg) {
     logln_info("Read %d bytes from %s: %s\n", bytes_read, test_filepath, outbuf);
 
     // ls
-    for (;;) {
-        _list("/");
+    _list("/");
+
+    // delete
+    logln_info("Deleting file %s\n", test_filepath);
+    _delete(test_filepath);
+
+    // ls
+    _list("/");
+
+    for(;;) {
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
-
-
     // // init queue and other stuff
     // filesystem_queue = xQueueCreate(FILESYSTEM_QUEUE_LENGTH, sizeof(filesystem_queue_operations_t));
     // if(filesystem_queue == NULL) {
