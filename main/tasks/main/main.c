@@ -50,7 +50,7 @@ int main() {
 #endif
 
 
-    BaseType_t filesystem_task_status = xTaskCreate(sd_task,
+    BaseType_t filesystem_task_status = xTaskCreate(filesystem_task,
                                         "FILESYSTEM",
                                         256,
                                         NULL,
