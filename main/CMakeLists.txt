@@ -31,7 +31,6 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/rtc.c
     ${MAIN_DIRECTORY}/drivers/src/mag.c
 
-    ${MAIN_DIRECTORY}/drivers/src/storage.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
 )
 

@@ -11,7 +11,6 @@
 #include <semphr.h>
 #include "log.h"
 #include "state.h"
-#include "storage.h"
 #include "mag.h"
 #include "eps.h"
 #include "timing.h"
