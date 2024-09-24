@@ -2,7 +2,6 @@
 #include "pico/stdlib.h"
 #include "ff.h"
 
-#include "storage.h"
 #include "gse.h"
 #include "command.h"
 #include "rtc.h"
