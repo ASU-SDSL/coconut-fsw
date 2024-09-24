@@ -16,11 +16,15 @@ void process_ftp(uint8_t* payload, uint32_t payload_size) {
     ftp_state state;
     uint8_t* curr = payload; // payload cursor
 
+    if (payload_size < 4) return;
+
     uint8_t tx_id = get8(curr); curr++;
     ftp_operation_t op = get8(curr); curr++;
 
     uint16_t creds_length = get16(curr); curr += 2;
     char* creds = curr; curr += creds_length;
+
+    if (payload_size < 4 + creds_length) return;
 
     // If new transaction
     if (tx_id == 0xFF && op != CONTINUE) {
@@ -35,8 +39,13 @@ void process_ftp(uint8_t* payload, uint32_t payload_size) {
         // else reply = appropriate error
         // jump to end
 
+        if (payload_size < 6 + creds_length) return;
+
         state.path_length = get16(curr); curr += 2;
         state.path = curr; curr += state.path_length;
+
+        if (payload_size < 6 + creds_length + state.path_length) return;
+
         state.file_size = get32(curr); curr += 4;
 
         // TODO: Do whatever the operation told you to
