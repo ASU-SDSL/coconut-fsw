@@ -15,8 +15,7 @@ void receive_command_byte(char ch) {
     }
 }
 
-// TODO: change this to receive_command_bytes to make names more uniform
-void parse_radio_packet(uint8_t* packet, size_t packet_size){
+void receive_command_bytes(uint8_t* packet, size_t packet_size) {
     if (command_byte_queue) {
         for (int i = 0; i < packet_size; i++ ){
             xQueueSendToBack(command_byte_queue, &packet[i], portMAX_DELAY);

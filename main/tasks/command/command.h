@@ -36,10 +36,11 @@ typedef char command_byte_t;
 
 /* USER FUNCTIONS */
 void receive_command_byte_from_isr(char ch);
+void receive_command_byte(char ch);
+void receive_command_bytes(uint8_t* packet, size_t packet_size);
 
 /* INTERNAL FUNCTIONS */
 void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t payload_size);
-void parse_radio_packet(uint8_t* packet, size_t packet_size);
 
 // Main Task
 void command_task(void* unused_arg);

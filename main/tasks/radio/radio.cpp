@@ -346,7 +346,7 @@ void radio_task_cpp(){
 
                     parseRebound(radio, packet, packet_size);                     
                     
-                    //parse_radio_packet(packet, packet_size);
+                    //receive_command_bytes(packet, packet_size);
                     // Check if command is to set output power of the radio
                 }
                 #if RADIO_LOGGING
@@ -420,7 +420,7 @@ void radio_task_cpp(){
                     }
                     printf("\n"); 
                     #endif
-                    //parse_radio_packet(packet, packet_size);
+                    //receive_command_bytes(packet, packet_size);
                     // Check if command is to set output power of the radio
 
                     parseRebound(radio, packet, packet_size); 
