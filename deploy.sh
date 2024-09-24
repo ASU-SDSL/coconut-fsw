@@ -83,9 +83,15 @@ if [[ ${do_build} -eq 1 ]]; then
     build_path=build/${build_string}
     uf2_path="${build_path}/main/COCONUTFSW.uf2"
     if [[ ${simulator_build} -eq 1 ]]; then
-        cmake -S . -B ${build_path} -D "CMAKE_C_COMPILER:FILEPATH=$(which gcc)" -D CMAKE_BUILD_TYPE:STRING="Debug" -DSIMULATOR:BOOL=ON
+        cmake -S . -B ${build_path} \
+            -D "CMAKE_C_COMPILER:FILEPATH=$(which clang)" \
+            -D "CMAKE_CXX_COMPILER:FILEPATH=$(which clang++)" \
+            -D CMAKE_BUILD_TYPE:STRING="Debug" -DSIMULATOR:BOOL=ON 
     else
-        cmake -S . -B ${build_path} -D "CMAKE_C_COMPILER:FILEPATH=$(which arm-none-eabi-gcc)" -D CMAKE_BUILD_TYPE:STRING="${build_string}" 
+        cmake -S . -B ${build_path} \
+            -D "CMAKE_C_COMPILER:FILEPATH=$(which arm-none-eabi-gcc)" \
+            -D "CMAKE_CXX_COMPILER:FILEPATH=$(which arm-none-eabi-g++)" \
+            -D CMAKE_BUILD_TYPE:STRING="${build_string}" 
     fi
     
     err=$?

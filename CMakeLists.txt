@@ -25,21 +25,11 @@ set(MAIN_DIRECTORY "${CMAKE_SOURCE_DIR}/main")
 set(COMMON_CODE_DIRECTORY "${CMAKE_SOURCE_DIR}/freertos/Common")
 
 ## Set flags and directory variables
-
-# Simulator
-# IF (SIMULATOR)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcommon")
-# ELSE()
-#     # RP2040
-#     set(CMAKE_C_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
-#     set(CMAKE_CXX_FLAGS "-fcommon -march=armv6-m -mcpu=cortex-m0plus")
-# ENDIF()
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcommon")
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
-set(FREERTOS_CFG_DIRECTORY "${CMAKE_SOURCE_DIR}/freertos")
-set(FREERTOS_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/FreeRTOS-Kernel")
 
 # Name the project
 project(${PROJECT_NAME}
@@ -48,6 +38,8 @@ project(${PROJECT_NAME}
 )
 
 # Add FreeRTOS as a library
+set(FREERTOS_CFG_DIRECTORY "${CMAKE_SOURCE_DIR}/freertos")
+set(FREERTOS_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/FreeRTOS-Kernel")
 set (FREERTOS_SOURCE_FILES
     ${FREERTOS_SRC_DIRECTORY}/event_groups.c
     ${FREERTOS_SRC_DIRECTORY}/list.c

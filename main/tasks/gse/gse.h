@@ -38,4 +38,4 @@ void gse_queue_message(char* buffer, size_t size);
 
 void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq);
 
-void gse_task();
+void gse_task(void *pvParameters);
