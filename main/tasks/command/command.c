@@ -1,4 +1,5 @@
 #include "command.h"
+#include "ftp.h"
 
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
@@ -46,6 +47,9 @@ void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t 
             break;
         case LIST_STEVE_TASKS:
             print_debug_exec_times();
+            break;
+        case FILE_TRANSFER_PROTOCOL:
+            process_ftp(payload_buf, payload_size);
             break;
         default:
             logln_error("Received command with unknown APID: %hu", header.apid);
