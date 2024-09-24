@@ -44,7 +44,7 @@ void process_ftp(uint8_t* payload, uint32_t payload_size) {
         state.path_length = get16(curr); curr += 2;
         state.path = curr; curr += state.path_length;
 
-        if (payload_size < 6 + creds_length + state.path_length) return;
+        if (payload_size < 10 + creds_length + state.path_length) return;
 
         state.file_size = get32(curr); curr += 4;
 
