@@ -61,6 +61,20 @@ bool create_path(char* path, uint16_t len) {
 }
 
 /**
+ * Get sequence number associated with a path
+ */
+uint16_t get_seq_id(char* path, uint16_t len) {
+    return 0;
+}
+
+/**
+ * Store sequence number associated with a path
+ */
+bool save_seq_id(uint16_t seq_id, char* path, uint16_t len) {
+    return true;
+}
+
+/**
  * Main task
  */
 void ftp_task(void* unused_arg) {
@@ -89,15 +103,18 @@ void ftp_task(void* unused_arg) {
         state.creds = curr; curr += state.creds_length;
         state.path = curr; curr += state.path_length;
 
+        // Check valid credentials
         if (!valid_creds(state.creds, state.creds_length)) {
             // reply = create_reply(invalid_creds)
             goto reply;
         }
 
+        // Check user permissions for path
         uint8_t perms = get_perms(state.path, state.path_length, state.creds, state.creds_length);
         bool exists = path_exists(state.path, state.path_length);
 
         // TODO: Do whatever the operation told you to
+        // Replies should also contain file path and/or user so nodes know who each reply is for
         switch (state.op) {
             case FTP_REMOVE:
                 if (exists && (perms & PERM_DELETE)) {
@@ -142,19 +159,50 @@ void ftp_task(void* unused_arg) {
                 }
                 break;
             case FTP_APPEND:
-                // hydrate state
-                // f_handle = append(state.path, state.file_size)
-                // reply = success(state.path)
-                // else reply = appropriate error
+                uint16_t seq_id = get_seq_id(state.path, state.path_length);
+
+                if (exists && (perms & PERM_UPDATE)) {
+                    // f_handle = create_handle(state.path, state.path_length, APPEND)
+                    // if (write(f_handle, curr, size - 5 - state.creds_length - staet.path_length)) {
+                    //     reply = create_reply(app_ack)
+                    // }
+                    // else {
+                    //     reply = creaet_reply(app_fail)
+                    // }
+                } else {
+                    if (!exists) {
+                        // reply = create_reply(does_not_exist)
+                    } else {
+                        // reply = create_reply(app_not_allowed)
+                    }
+                }
 
                 // store state
+                bool saved = save_seq_id(seq_id, state.path, state.path_length);
+
+                if (!saved) {
+                    // oh no
+                }
+
                 break;
             case FTP_COPY:
-                // if (exists(state.path))
-                // f_handle = open(state.path)
-                // reply, read_size = copy(f_handle)
-                // state.offset += read_size
-                // else reply = appropriate error
+                if (exists && (perms & PERM_READ)) {
+                    // f_handle = create_handle(state.path, state.path_length, READ_ONLY)
+                    // offset = get32(curr) // COPY should contain file offset as the additional payload, 32 bits
+                    // results = read(f_handle, offset, MAX_SIZE ie 1024)
+                    // if (results.valid) {
+                    //     reply = create_reply(read_ack, results.buffer, results.size)
+                    // }
+                    // else {
+                    //     reply = create_reply(read_fail)
+                    // }
+                } else {
+                    if (!exists) {
+                        // reply = create_reply(does_not_exist)
+                    } else {
+                        // reply = create_reply(read_not_allowed)
+                    }
+                }
                 break;
             default:
                 break;
