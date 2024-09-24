@@ -31,28 +31,35 @@ void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t 
         case STORE_GROUNDNODE_DATA:
             // TODO: Implement
             logln_error("STORE_GROUNDNODE_DATA unimplemented");
+            vPortFree(payload_buf);
             break;
         case CHANGE_HEARTBEAT_TELEM_RATE:
             if (payload_size < sizeof(change_heartbeat_telem_rate_t)) break;
             change_heartbeat_telem_rate_t* args = (change_heartbeat_telem_rate_t*)payload_buf;
             edit_steve_job_recur_time(HEARTBEAT_JOB_NAME, args->ms);
+            vPortFree(payload_buf);
             break;
         case REQUEST_DOWNLINK_GROUNDNODE_DATA:
             // TODO: Implement
             logln_error("REQUEST_DOWNLINK_GROUNDNODE_DATA unimplemented");
+            vPortFree(payload_buf);
             break;
         case REQUEST_DOWNLINK_TELEMETRY_DATA:
             // TODO: Implement
             logln_error("REQUEST_DOWNLINK_TELEMETRY_DATA unimplemented");
+            vPortFree(payload_buf);
             break;
         case LIST_STEVE_TASKS:
             print_debug_exec_times();
+            vPortFree(payload_buf);
             break;
         case FILE_TRANSFER_PROTOCOL:
-            process_ftp(payload_buf, payload_size);
+            // Do not free payload_buf to allow reuse
+            ftp_queue_message(payload_buf, payload_size);
             break;
         default:
             logln_error("Received command with unknown APID: %hu", header.apid);
+            vPortFree(payload_buf);
     }
 }
 
@@ -106,7 +113,5 @@ void command_task(void* unused_arg) {
         }
         // Parse packet payload
         parse_command_packet(header, payload_buf, payload_size);
-        // Free payload buffer
-        vPortFree(payload_buf);
     }
 }

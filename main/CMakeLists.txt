@@ -18,13 +18,13 @@ set(SOURCES
     ${MAIN_DIRECTORY}/tasks/steve/steve.c
     ${MAIN_DIRECTORY}/tasks/command/command.c
     ${MAIN_DIRECTORY}/tasks/telemetry/telemetry.c
+    ${MAIN_DIRECTORY}/tasks/ftp/ftp.c
 
     ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
 
     ${MAIN_DIRECTORY}/utilities/src/ccsds.c
     ${MAIN_DIRECTORY}/utilities/src/log.c
     ${MAIN_DIRECTORY}/utilities/src/timing.c
-    ${MAIN_DIRECTORY}/utilities/src/ftp.c
 
     ${MAIN_DIRECTORY}/drivers/src/i2c.c
     ${MAIN_DIRECTORY}/drivers/src/eps.c
@@ -86,6 +86,7 @@ set (INTERNAL_INCLUDE_DIRS
     PRIVATE ${MAIN_DIRECTORY}/tasks/steve
     PRIVATE ${MAIN_DIRECTORY}/tasks/steve/jobs
     PRIVATE ${MAIN_DIRECTORY}/tasks/telemetry
+    PRIVATE ${MAIN_DIRECTORY}/tasks/ftp
 
     PRIVATE ${MAIN_DIRECTORY}/utilities/include
     PRIVATE ${MAIN_DIRECTORY}/drivers/include
