@@ -75,6 +75,13 @@ bool save_seq_id(uint16_t seq_id, char* path, uint16_t len) {
 }
 
 /**
+ * Clear sequence number associated with a path
+ */
+bool clear_seq_id(char* path, uint16_t len) {
+    return true;
+}
+
+/**
  * Main task
  */
 void ftp_task(void* unused_arg) {
@@ -102,6 +109,8 @@ void ftp_task(void* unused_arg) {
 
         state.creds = curr; curr += state.creds_length;
         state.path = curr; curr += state.path_length;
+
+        size_t payload_size = size - 5 - state.creds_length - state.path_length;
 
         // Check valid credentials
         if (!valid_creds(state.creds, state.creds_length)) {
@@ -159,11 +168,30 @@ void ftp_task(void* unused_arg) {
                 }
                 break;
             case FTP_APPEND:
-                uint16_t seq_id = get_seq_id(state.path, state.path_length);
+                if (payload_size < 2) goto end;
+
+                uint16_t curr_seq_id = get16(curr); curr += 2; // APPEND should contain sequence number as first 2 bytes of FTP payload
+
+                // Some mechanism to allow GSE to reset state
+                if (curr_seq_id == 0xFFFF) {
+                    if (clear_seq_id(state.path, state.path_length)) {
+                        // reply = create_reply(app_ack)
+                    } else {
+                        // reply = create_reply(app_fail)
+                    }
+                    goto reply;
+                }
+
+                uint16_t seq_id = get_seq_id(state.path, state.path_length); // Should retrieve next expected sequence number (ie curr_seq_id + 1)
+
+                if (curr_seq_id != seq_id) {
+                    // reply = create_reply(app_ack)
+                    goto reply;
+                }
 
                 if (exists && (perms & PERM_UPDATE)) {
                     // f_handle = create_handle(state.path, state.path_length, APPEND)
-                    // if (write(f_handle, curr, size - 5 - state.creds_length - staet.path_length)) {
+                    // if (write(f_handle, curr, payload_size - 2)) {
                     //     reply = create_reply(app_ack)
                     // }
                     // else {
@@ -186,9 +214,11 @@ void ftp_task(void* unused_arg) {
 
                 break;
             case FTP_COPY:
+                if (payload_size < 4) goto end;
+
                 if (exists && (perms & PERM_READ)) {
                     // f_handle = create_handle(state.path, state.path_length, READ_ONLY)
-                    // offset = get32(curr) // COPY should contain file offset as the additional payload, 32 bits
+                    // offset = get32(curr) // COPY should contain file offset in bytes as the FTP payload, 32 bits
                     // results = read(f_handle, offset, MAX_SIZE ie 1024)
                     // if (results.valid) {
                     //     reply = create_reply(read_ack, results.buffer, results.size)
