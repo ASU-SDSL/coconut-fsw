@@ -41,6 +41,13 @@ void write_file(const char* file_name, char* text_to_write) {
 
 
 /* INTERNAL FUNCTIONS */
+size_t _mkfs() {
+    void* buf = pvPortMalloc(0x400);
+    FRESULT fr = f_mkfs("", NULL, buf, 0x400);    
+    vPortFree(buf);
+    return fr;
+}
+
 size_t _write(const char* file_name, const uint8_t *data, bool append_flag, size_t size) {
     FRESULT fr;
     FIL fil;
