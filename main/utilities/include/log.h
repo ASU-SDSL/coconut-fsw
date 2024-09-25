@@ -21,16 +21,16 @@ void print_banner();
 // Use these!
 
 #define logln_info(f_, ...) \
-    logln("[INFO] %s", (f_), ##__VA_ARGS__);
+    _log("[INFO] "); logln((f_), ##__VA_ARGS__);
 
 #define logln_warn(f_, ...) \
-    logln("[WARN] %s", (f_), ##__VA_ARGS__);
+    _log("[WARN] "); logln((f_), ##__VA_ARGS__);
 
 #define logln_error(f_, ...) \
-    logln("[ERROR] %s", (f_), ##__VA_ARGS__);
+    _log("[ERROR] "); logln((f_), ##__VA_ARGS__);
 
 #define logln(f_, ...) \
-    _log("%s\n", (f_), ##__VA_ARGS__);
+    _log((f_), ##__VA_ARGS__); _log("\n");
 
 /* INTERNAL FUNCTIONS */
 
