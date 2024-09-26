@@ -43,6 +43,7 @@ void read_file(const char* file_name, char* result_buffer);
 void write_file(const char* file_name, char* text_to_write);
 
 /* Internal Functions */
+size_t _mkfs();
 size_t _read(const char *file_name, char* result_buffer, size_t size);
 size_t _write(const char *file_name, const uint8_t *data, bool append_flag, size_t size);
 void _delete(const char *file_name);
