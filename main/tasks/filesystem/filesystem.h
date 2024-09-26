@@ -27,6 +27,7 @@ typedef struct filesystem_queue_operations {
     const char* file_name;
     char* text_to_write;
     char* read_buffer;
+    size_t size;
 } filesystem_queue_operations_t;
 
 typedef enum mounting_options {

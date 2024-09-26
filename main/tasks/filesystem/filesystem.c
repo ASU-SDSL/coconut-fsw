@@ -66,7 +66,7 @@ size_t _write(const char* file_name, const uint8_t *data, bool append_flag, size
     // Close file
     fr = f_close(&fil);
     while (fr != FR_OK) {
-        logln_info("ERROR: Could not close file after write: %s (%d)\n", file_name, fr);
+        logln_info("Could not close file after write: %s (%d)\n", file_name, fr);
     }
     return bytes_written;
 }
@@ -171,10 +171,10 @@ void filesystem_task(void* unused_arg) {
     //this thread will go through the queue and execute operations, if there are any
     //keeps looping until new operations are in queue
 
-    // for (int i = 0; i < 10; i++) {
-    //     logln_info("Im boutta blow\n");
-    //     vTaskDelay(1000 / portTICK_PERIOD_MS);
-    // }
+    for (int i = 0; i < 5; i++) {
+        logln_info("Im boutta blow\n");
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
 
     // make filesystem
     void* buf = pvPortMalloc(0x400);
@@ -182,7 +182,7 @@ void filesystem_task(void* unused_arg) {
     vPortFree(buf);
 
     // while(true) {
-    //     logln_info("FS create status: %d\n", res);
+        logln_info("FS create status: %d\n", fr);
     //     vTaskDelay(1000 / portTICK_PERIOD_MS);
     // }
     
@@ -192,45 +192,40 @@ void filesystem_task(void* unused_arg) {
     fr = f_mount(&fs, "0:", 1);
     while (fr != FR_OK) {
         logln_error("Could not mount filesystem (%d)\n", fr);
-    }
-    
-    _test();
-
-    for(;;) {
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
-    // // init queue and other stuff
-    // filesystem_queue = xQueueCreate(FILESYSTEM_QUEUE_LENGTH, sizeof(filesystem_queue_operations_t));
-    // if(filesystem_queue == NULL) {
-    //     // TODO: Find a better solution to handling queue creation failure
-    //     vTaskDelete(NULL);
-    // }
-    // logln_info("Queue created\r\n");
+    
 
-    // // start inf loop
-    // filesystem_queue_operations_t received_operation;
-    // while(1) {
-    //     // check queue for queued operation
-    //     // wait forever until an operation is in queue
-    //     xQueueReceive(filesystem_queue, &received_operation, EMPTY_QUEUE_WAIT_TIME);
+    _test();
 
-        // // if operation is in queue, execute it
-        // switch (received_operation.operation_type) {
-        //     case MAKE_FILESYSTEM:
-        //         make_filesystem();
-        //         break;
-        //     case READ:
-        //         read_file(received_operation.file_name, received_operation.read_buffer);
-        //         break;
-        //     case WRITE:
-        //         write_file(received_operation.file_name, received_operation.text_to_write, 0);
-        //         break;
-        //     default:
-        //         // TODO: figure out proper way to handle this error
-        //         break;
-        // }
+    // init queue and other stuff
+    filesystem_queue = xQueueCreate(FILESYSTEM_QUEUE_LENGTH, sizeof(filesystem_queue_operations_t));
+    if(filesystem_queue == NULL) {
+        // TODO: Find a better solution to handling queue creation failure
+        vTaskDelete(NULL);
+    }
 
-        
+    // start inf loop
+    filesystem_queue_operations_t received_operation;
+    while(1) {
+        // check queue for queued operation
+        // wait forever until an operation is in queue
+        xQueueReceive(filesystem_queue, &received_operation, EMPTY_QUEUE_WAIT_TIME);
 
-    // }
+        // if operation is in queue, execute it
+        switch (received_operation.operation_type) {
+            case MAKE_FILESYSTEM:
+                make_filesystem();
+                break;
+            case READ:
+                _read(received_operation.file_name, received_operation.read_buffer, received_operation.size);
+                break;
+            case WRITE:
+                _write(received_operation.file_name, received_operation.text_to_write, 0, received_operation.size);
+                break;
+            default:
+                logln_error("Unrecognized file operation: %d\n", received_operation.operation_type);
+                break;
+        }
+    }
 }
