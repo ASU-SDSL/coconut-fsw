@@ -29,8 +29,7 @@ void gse_task(void *pvParameters) {
         // Enable write LED
         gpio_put(LED_PIN, 1);
         // Wait on bytes from stdin
-        char c = 0;
-        stdio_usb.in_chars(&c, 1);
+        char c = getchar();
         // Disable write LED
         gpio_put(LED_PIN, 0); 
         // Send byte to command task

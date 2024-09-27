@@ -41,12 +41,12 @@ int main() {
                                         NULL);
 
 #ifndef SIMULATOR
-    BaseType_t radio_task_status = xTaskCreate(radio_task, 
-                                         "RADIO", 
-                                         256, 
-                                         NULL, 
-                                         1,
-                                         NULL);
+    // BaseType_t radio_task_status = xTaskCreate(radio_task, 
+    //                                      "RADIO", 
+    //                                      256, 
+    //                                      NULL, 
+    //                                      1,
+    //                                      NULL);
 #endif
 
 
