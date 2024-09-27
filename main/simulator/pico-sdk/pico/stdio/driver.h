@@ -1,7 +1,6 @@
 #pragma once
 
 #include <unistd.h>
-#include <stdio.h>
 
 struct stdio_driver {
     void (*out_chars)(const char *buf, int len);
@@ -26,6 +25,9 @@ static void stdio_usb_out_chars(const char *buf, int length) {
     write(1, buf, length);
 }
 
+int getchar() {
+    return 0;
+}
 
 static stdio_driver_t stdio_usb = {
     .out_chars = stdio_usb_out_chars,

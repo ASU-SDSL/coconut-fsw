@@ -3,7 +3,6 @@
 
 #include "hardware/i2c.h"
 #include "hardware/gpio.h"
-#include <stdio.h>
 #include <stdint.h>
 #include "i2c.h"
 #include <FreeRTOS.h>

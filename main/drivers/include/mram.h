@@ -4,7 +4,6 @@
 #include "hardware/gpio.h"
 #include "log.h"
 #include "pico/stdlib.h" //Probably need this
-#include <stdio.h>
 #include <stdlib.h> 
 
 //Project specific constants
