@@ -6,8 +6,8 @@ Steps:
    3. `./configure`
    4. `make`
    5. `sudo make install`
-   6. Tested with this commit: https://github.com/openocd-org/openocd/commit/9ea7f3d647c8ecf6b0f1424002dfc3f4504a162c
-      1. `git checkout 9ea7f3d647c8ecf6b0f1424002dfc3f4504a162c` in the root coconut-fsw dir
+   6. Tested with this commit: https://github.com/openocd-org/openocd/commit/ad216136180e0cd482f414eb072c9dd25dd1c559
+      1. `git checkout ad216136180e0cd482f414eb072c9dd25dd1c559` in the root coconut-fsw dir
 2. ~~Put "set USE_CORE 0" inside "/usr/local/share/openocd/scripts/target/rp2040.cfg" or just replace it with the rp2040.cfg in this folder~~
    1. Should not have to do this anymore, made it use the `./debug/rp2040.cfg` config by default
 3. Connect the PicoProbe to the board you want to debug
