@@ -11,10 +11,12 @@
 #include "diskio.h"		/* Declarations of disk functions */
 #include "mram.h"
 
+static DSTATUS gStatus = STA_NOINIT;
+
 /* Definitions of physical drive number for each drive */
 #define DEV_MRAM		0 /* not sure what the drive # is, should be 0 */
 #define DEVICE_SIZE 	4 * 1024 * 1024 /* 4Mb */
-#define BLOCK_SIZE 	512U
+#define BLOCK_SIZE 		512
 
 
 /*-----------------------------------------------------------------------*/
@@ -22,16 +24,7 @@
 /*-----------------------------------------------------------------------*/
 
 DSTATUS disk_status (BYTE pdrv) {
-	DSTATUS disk_status = STA_NOINIT;
-
-	// TODO: Update w/ global var
-	switch (pdrv) {
-	case DEV_MRAM :
-		disk_status = ~STA_NOINIT;
-		break;
-	}
-
-	return disk_status;
+	return gStatus;
 }
 
 
@@ -46,7 +39,7 @@ DSTATUS disk_initialize (BYTE pdrv) {
 	switch (pdrv) {
 		case DEV_MRAM:
 			initialize_mram();
-			initialization_status = ~STA_NOINIT;
+			initialization_status &= ~STA_NOINIT;
 			break;
 	}
 
@@ -69,16 +62,19 @@ DRESULT disk_read (BYTE pdrv, BYTE *buff, LBA_t sector, UINT count){
 		case DEV_MRAM: {
 			DWORD address = sector * BLOCK_SIZE;
 
-			for(int i  = 0; i < count; i++) {
-				int result = read_bytes(address, buff, BLOCK_SIZE);
 
-				if(result != 0) {
-					return RES_ERROR;
-				}
+			read_bytes(address, buff, count * BLOCK_SIZE);
 
-				buff += BLOCK_SIZE;
-				address += BLOCK_SIZE;
-			}
+			// for(int i  = 0; i < count; i++) {
+			// 	int result = read_bytes(address, buff, BLOCK_SIZE);
+
+			// 	if(result != 0) {
+			// 		return RES_ERROR;
+			// 	}
+
+			// 	buff += BLOCK_SIZE;
+			// 	address += BLOCK_SIZE;
+			// }
 			return RES_OK;
 		}
 		default:
@@ -105,16 +101,17 @@ DRESULT disk_write(BYTE pdrv, const BYTE *buff, LBA_t sector, UINT count) {
 	switch (pdrv) {
 		case DEV_MRAM: {
 			DWORD address = sector * BLOCK_SIZE;
-			for(int i = 0; i < count; i++) {
-				int result = write_bytes(address, buff, BLOCK_SIZE);
+			write_bytes(address, buff, count * BLOCK_SIZE);
+			// for(int i = 0; i < count; i++) {
+			// 	int result = write_bytes(address, buff, BLOCK_SIZE);
 
-				if(result != 0) {
-					return RES_ERROR;
-				}
+			// 	if(result != 0) {
+			// 		return RES_ERROR;
+			// 	}
 
-				buff += BLOCK_SIZE;
-				address += BLOCK_SIZE;
-			}
+			// 	buff += BLOCK_SIZE;
+			// 	address += BLOCK_SIZE;
+			// }
 			return RES_OK;
 		}
 		default:
