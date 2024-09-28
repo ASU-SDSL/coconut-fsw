@@ -1,5 +1,4 @@
 #include "log.h"
-#include <stdio.h>
 #include <pico/stdio.h>
 
 void print_banner() {

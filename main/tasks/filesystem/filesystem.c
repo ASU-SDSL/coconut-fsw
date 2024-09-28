@@ -198,7 +198,7 @@ void filesystem_task(void* unused_arg) {
     FATFS fs; 
     fr = f_mount(&fs, "0:", 1);
     while (fr != FR_OK) {
-        logln_error("Could not mount filesystem (%d)\n", fr);
+        logln_error("Could not mount filesystem (%d)", fr);
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
     
