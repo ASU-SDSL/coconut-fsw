@@ -17,7 +17,6 @@ void send_simple_command(uint8_t cmd) {
 }
 
 void initialize_mram() {
-    stdio_init_all();
     spi_init(SPI_BUS, FREQ);
 
     //Setup Serial Pins for SPI

@@ -4,9 +4,6 @@
 [submodule "deps/FreeRTOS-Kernel"]
 	path = lib/FreeRTOS-Kernel
 	url = https://github.com/FreeRTOS/FreeRTOS-Kernel
-[submodule "deps/pico-sdk"]
-	path = lib/pico-sdk
-	url = https://github.com/raspberrypi/pico-sdk
 [submodule "deps/spacepacket"]
 	path = lib/spacepacket
 	url = https://github.com/yuasatakayuki/CCSDSLibrary
@@ -16,3 +13,6 @@
 [submodule "lib/fatfs"]
 	path = lib/fatfs
 	url = https://github.com/ASU-SDSL/fatfs.git
+[submodule "lib/pico-sdk"]
+	path = lib/pico-sdk
+	url = https://github.com/ASU-SDSL/pico-sdk

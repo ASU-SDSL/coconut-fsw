@@ -1,7 +1,6 @@
 #pragma once
 
-#include "pico/stdlib.h"
-
+#include <stdlib.h>
 #include <string.h>
 
 #include <FreeRTOS.h>
