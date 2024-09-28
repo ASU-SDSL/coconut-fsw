@@ -30,8 +30,8 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/eps.c
     ${MAIN_DIRECTORY}/drivers/src/rtc.c
     ${MAIN_DIRECTORY}/drivers/src/mag.c
-
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
+    ${MAIN_DIRECTORY}/drivers/src/usb_uart.c
 )
 
 # build certain files depending on simulator build

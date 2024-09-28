@@ -1,14 +1,13 @@
 #pragma once
 
-#include "pico/stdlib.h"
-#include "hardware/uart.h"
-#include "hardware/irq.h"
-#include "pico/stdio/driver.h"
+#include <string.h>
 
 #include "FreeRTOS.h"
 #include "queue.h"
 
 #include "command.h"
+#include "rtc.h"
+#include "eps.h"
 #include "log.h"
 
 #define BAUD_RATE 115200
