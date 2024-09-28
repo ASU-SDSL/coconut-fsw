@@ -31,7 +31,6 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/rtc.c
     ${MAIN_DIRECTORY}/drivers/src/mag.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
-    ${MAIN_DIRECTORY}/drivers/src/usb_uart.c
 )
 
 # build certain files depending on simulator build
@@ -39,6 +38,7 @@ IF (SIMULATOR)
     set (SOURCES
         ${SOURCES}
         ${MAIN_DIRECTORY}/simulator/drivers/src/diskio.c
+        ${MAIN_DIRECTORY}/simulator/drivers/src/usb_uart.c
     )
 ELSE()
     set (SOURCES
@@ -46,6 +46,7 @@ ELSE()
         ${MAIN_DIRECTORY}/drivers/src/diskio.c
         ${MAIN_DIRECTORY}/tasks/radio/radio.cpp
         ${MAIN_DIRECTORY}/drivers/src/mram.c
+        ${MAIN_DIRECTORY}/drivers/src/usb_uart.c
     )
 ENDIF()
 
@@ -104,7 +105,6 @@ IF (SIMULATOR)
         ${INTERNAL_INCLUDE_DIRS}
         PRIVATE ${MAIN_DIRECTORY}/simulator/pico-sdk
         PRIVATE ${MAIN_DIRECTORY}/simulator/tasks/radio
-        PRIVATE ${MAIN_DIRECTORY}/simulator/drivers/include
     )
 ELSE() 
     # enable radio module if not simulator
