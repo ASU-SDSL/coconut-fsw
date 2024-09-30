@@ -42,7 +42,7 @@ int write_bytes(uint32_t addr, const uint8_t* buf, const uint8_t nbytes) {
     uint32_t bendaddr = __builtin_bswap32(addr);
     uint8_t *p_bendaddr = &bendaddr;
 
-    uint8_t arr[4] = {WRITE, p_bendaddr[0], p_bendaddr[1], p_bendaddr[2]};
+    uint8_t arr[4] = {WRITE, p_bendaddr[1], p_bendaddr[2], p_bendaddr[3]};
    
     gpio_put(CS, 0);
     spi_write_blocking(SPI_BUS, arr, 4);
@@ -62,7 +62,7 @@ int read_bytes(uint32_t addr, uint8_t* buf, const uint8_t nbytes) {
     uint32_t bendaddr = __builtin_bswap32(addr);
     uint8_t *p_bendaddr = &bendaddr;
 
-    uint8_t arr[4] = {READ, p_bendaddr[0], p_bendaddr[1], p_bendaddr[2]};
+    uint8_t arr[4] = {READ, p_bendaddr[1], p_bendaddr[2], p_bendaddr[3]};
 
     spi_write_blocking(SPI_BUS, arr, 4); 
     spi_read_blocking(SPI_BUS, 0, buf, nbytes);
