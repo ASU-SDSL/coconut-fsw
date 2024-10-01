@@ -10,11 +10,12 @@
 #include "vega_ant.h"
 
 #define HEARTBEAT_JOB_NAME "heartbeat_telemetry"
-#define HEARTBEAT_TELEMETRY_DEFAULT_INTERVAL 30
+#define HEARTBEAT_TELEMETRY_DEFAULT_INTERVAL 5
 
 typedef struct __attribute__((__packed__)) {
-    payload_state_t state;
-    TickType_t uptime;
+    uint64_t sync_bytes;
+    uint8_t state;
+    uint64_t uptime;
     uint8_t hour;
     uint8_t minute;
     uint8_t second;
