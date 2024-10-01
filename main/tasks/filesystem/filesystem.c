@@ -48,7 +48,7 @@ size_t _mkfs() {
     return fr;
 }
 
-size_t _write(const char* file_name, const uint8_t *data, bool append_flag, size_t size) {
+size_t _fwrite(const char* file_name, const uint8_t *data, bool append_flag, size_t size) {
     FRESULT fr;
     FIL fil;
 
@@ -78,7 +78,7 @@ size_t _write(const char* file_name, const uint8_t *data, bool append_flag, size
     return bytes_written;
 }
 
-size_t _read(const char *file_name, char *result_buffer, size_t size) { 
+size_t _fread(const char *file_name, char *result_buffer, size_t size) { 
     // this function takes in a buffer where the result will be placed
     // the caller of this function is responsible for allocating the space for this buffer
     FRESULT fr;
@@ -107,7 +107,7 @@ size_t _read(const char *file_name, char *result_buffer, size_t size) {
     return bytes_read;
 }
 
-void _delete(const char *file_name) {
+void _fdelete(const char *file_name) {
     FRESULT fr;
 
     fr = f_unlink(file_name);
@@ -116,7 +116,7 @@ void _delete(const char *file_name) {
     }
 }
 
-void _list(const char *dir_name) {
+void _flist(const char *dir_name) {
     DIR dir;
     FRESULT fr;
  
@@ -155,22 +155,22 @@ void _test() {
     // write file
     char *test_filepath = "/test.txt";
     char *test_filecontents = "test\n";
-    _write(test_filepath, test_filecontents, 0, strlen(test_filecontents));
+    _fwrite(test_filepath, test_filecontents, 0, strlen(test_filecontents));
 
     // read file
     char outbuf[0x10];
-    size_t bytes_read = _read(test_filepath, outbuf, sizeof(outbuf));
+    size_t bytes_read = _fread(test_filepath, outbuf, sizeof(outbuf));
     logln_info("Read %d bytes from %s: %s\n", bytes_read, test_filepath, outbuf);
 
     // ls
-    _list("/");
+    _flist("/");
 
     // delete
     logln_info("Deleting file %s\n", test_filepath);
-    _delete(test_filepath);
+    _fdelete(test_filepath);
 
     // ls
-    _list("/");
+    _flist("/");
 }
 
 void filesystem_task(void* unused_arg) {
@@ -222,13 +222,13 @@ void filesystem_task(void* unused_arg) {
         // if operation is in queue, execute it
         switch (received_operation.operation_type) {
             case MAKE_FILESYSTEM:
-                make_filesystem();
+                _mkfs();
                 break;
             case READ:
-                _read(received_operation.file_name, received_operation.read_buffer, received_operation.size);
+                _fread(received_operation.file_name, received_operation.read_buffer, received_operation.size);
                 break;
             case WRITE:
-                _write(received_operation.file_name, received_operation.text_to_write, 0, received_operation.size);
+                _fwrite(received_operation.file_name, received_operation.text_to_write, 0, received_operation.size);
                 break;
             default:
                 logln_error("Unrecognized file operation: %d\n", received_operation.operation_type);

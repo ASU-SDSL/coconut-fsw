@@ -5,6 +5,7 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 
+#include "usb_uart.h"
 #include "command.h"
 #include "rtc.h"
 #include "eps.h"

@@ -44,10 +44,10 @@ void write_file(const char* file_name, char* text_to_write);
 
 /* Internal Functions */
 size_t _mkfs();
-size_t _read(const char *file_name, char* result_buffer, size_t size);
-size_t _write(const char *file_name, const uint8_t *data, bool append_flag, size_t size);
-void _delete(const char *file_name);
-void _list(const char *dir_name);
+size_t _fread(const char *file_name, char* result_buffer, size_t size);
+size_t _fwrite(const char *file_name, const uint8_t *data, bool append_flag, size_t size);
+void _fdelete(const char *file_name);
+void _flist(const char *dir_name);
 void _test();
 
 // Main Task
