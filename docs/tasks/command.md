@@ -30,13 +30,27 @@ The command task.
 #### Parameters
 > | Name | Type | Description |
 > | ---- | ---- | ----------- |
-> | ch | char | byte that is received from isr |
+> | ch | char | command byte from isr |
 
 #### Returns
 > None
 
 </details>
 
+<details><summary><big>receive_command_byte()</big></summary>
+
+#### Description
+> Receives a single byte from RTOS task. Only use this function from RTOS tasks.
+
+#### Parameters
+> | Name | Type | Description |
+> | ---- | ---- | ----------- |
+> | ch | char | command byte |
+
+#### Returns
+> None
+
+</details>
 
 ## Internal Functions
 ### Note: These functions should ***NEVER*** be run outside of `command.c`

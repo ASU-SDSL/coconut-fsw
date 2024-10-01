@@ -38,4 +38,4 @@ For debugging, you have two options:
 4. `scripts` Contains any testing/automation scripts unrelated to building
 5. `.vscode` Contains VSCode extension configuration info and debugger setup
 6. `docs` Contains markdown documents describing API functions and internal functions of certain subsystems
-7. `build` Contains output from the build process (`build/main/COCONUTFSW.uf2` is the main firmware output binary)
+7. `build` Contains output from the build process (`build/Release/main/COCONUTFSW.uf2` is the main firmware output binary)

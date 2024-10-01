@@ -63,7 +63,7 @@ void write(SemaphoreHandle_t* mutex) {
 
         // Loop forever doing nothing
         while (true) {
-            sleep_ms(1000);
+            // sleep_ms(1000);
         }
     }
     xSemaphoreGive(mutex);

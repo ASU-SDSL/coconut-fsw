@@ -19,6 +19,8 @@ void telemetry_task(void* unused_arg) {
     // Initialize telemetry queue
     telemetry_queue = xQueueCreate(TELEMETRY_MAX_QUEUE_ITEMS, sizeof(telemetry_queue_transmission_t));
     telemetry_queue_transmission_t telemetry;
+    // Send cool banner
+    print_banner();
     while (true) {
         // Wait on a message in the queue
         xQueueReceive(telemetry_queue, &telemetry, UART_QUEUE_CHECK_TIME);
@@ -33,23 +35,24 @@ void telemetry_task(void* unused_arg) {
         header.packet_sequence_count = g_packet_sequence_number++;
         header.packet_length = telemetry.payload_size - 1; // 4.1.3.5.3 in spacepacket standard says packet_length - 1
         // Encode spacepacket header into bytes
-        size_t header_size = sizeof(TELEMETRY_SYNC_BYTES) + CCSDS_ENCODED_HEADER_SIZE;
+        size_t header_size = TELEMETRY_SYNC_SIZE + CCSDS_ENCODED_HEADER_SIZE;
         size_t total_payload_size = header_size + telemetry.payload_size;
         char* payload_buffer = pvPortMalloc(total_payload_size);
         // Write sync bytes first
-        memcpy(payload_buffer, TELEMETRY_SYNC_BYTES, sizeof(TELEMETRY_SYNC_BYTES));
+        memcpy(payload_buffer, TELEMETRY_SYNC_BYTES, TELEMETRY_SYNC_SIZE);
         // Write spacepacket header after sync bytes
-        if (!encode_ccsds_header(header, payload_buffer + sizeof(TELEMETRY_SYNC_BYTES))) {
+        if (!encode_ccsds_header(header, payload_buffer + TELEMETRY_SYNC_SIZE)) {
             logln_error("Failed to encode SpacePacket header!");
             continue;
         }
         // Append payload to sync bytes and header
         memcpy(payload_buffer + header_size, telemetry.payload_buffer, telemetry.payload_size);
         // Send telemetry through UART
-        uart_queue_message(payload_buffer, total_payload_size);
+        gse_queue_message(payload_buffer, total_payload_size);
 
         // TODO: Send payload through radio
-        // radio_queue_message(payload_buffer, total_payload_size);
+        radio_queue_message(payload_buffer, total_payload_size);
+        
         // Free buffers
         vPortFree(payload_buffer);
         vPortFree(telemetry.payload_buffer);

@@ -2,6 +2,13 @@
 
 #include <stdarg.h>
 
+#include "FreeRTOS.h"
+
+#include "telemetry.h"
+
+/* DEFINES */
+#define MAX_LOG_STR_SIZE 0x1000U
+
 /* USER FUNCTIONS */
 
 // Initialization
@@ -14,16 +21,16 @@ void print_banner();
 // Use these!
 
 #define logln_info(f_, ...) \
-    _log("[INFO] "); logln((f_), ##__VA_ARGS__);
+    _log("[INFO] " f_, ##__VA_ARGS__);
 
 #define logln_warn(f_, ...) \
-    _log("[WARN] "); logln((f_), ##__VA_ARGS__);
+    _log("[WARN] " f_, ##__VA_ARGS__);
 
 #define logln_error(f_, ...) \
-    _log("[ERROR] "); logln((f_), ##__VA_ARGS__);
+    _log("[ERROR] " f_, ##__VA_ARGS__);
 
 #define logln(f_, ...) \
-    _log((f_), ##__VA_ARGS__); _log("\n");
+    _log(f_ "\n", ##__VA_ARGS__);
 
 /* INTERNAL FUNCTIONS */
 

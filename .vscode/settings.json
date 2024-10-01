@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "stdlib.h": "c",
+        "freertos.h": "c",
+        "mag.h": "c",
+        "command.h": "c",
+        "radio.h": "c",
+        "telemetry.h": "c"
+    }
+}
