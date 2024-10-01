@@ -132,6 +132,17 @@ ENDIF()
 # Build fuzzers
 IF (SIMULATOR)
 
+    # Build options for simulator
+    
+    # target_compile_options(${PROJECT_NAME}
+    #     PRIVATE -g -fsanitize=address
+    # )
+
+    # target_link_libraries(${PROJECT_NAME}
+    #     PRIVATE -fsanitize=address
+    #     ${LINK_LIBS}
+    # )
+
     # Command Fuzzer
     set(COMMAND_FUZZER_NAME "command_fuzzer")
 
@@ -154,6 +165,7 @@ IF (SIMULATOR)
         ${MAIN_DIRECTORY}/drivers/src/eps.c
         ${MAIN_DIRECTORY}/drivers/src/rtc.c
         ${MAIN_DIRECTORY}/drivers/src/mag.c
+        ${MAIN_DIRECTORY}/drivers/src/usb_uart.c
 
         ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
 
