@@ -10,7 +10,6 @@ void gse_task(void *pvParameters) {
     stdio_init_all();
 
     // Start listening for USB UART bytes
-    telemetry_queue_transmission_t rec;
     while (true) {
         // Wait on bytes from stdin
         char c;

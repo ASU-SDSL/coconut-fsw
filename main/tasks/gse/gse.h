@@ -21,8 +21,6 @@ typedef struct telemetry_queue_transmission {
     size_t payload_size;
 } telemetry_queue_transmission_t;
 
-QueueHandle_t uart0_queue;
-
 void gse_queue_message(char* buffer, size_t size);
 
 void gse_task();
