@@ -38,7 +38,7 @@
 
 void setup();
 void send_simple_command(uint8_t cmd);
-int write_bytes(const uint32_t addr, const uint8_t* buf, const uint8_t nbytes);
-int read_bytes(const uint32_t addr, uint8_t* buf, const uint8_t nbytes);
+int write_bytes(const uint32_t addr, const uint8_t* buf, const uint32_t nbytes);
+int read_bytes(const uint32_t addr, uint8_t* buf, const uint32_t nbytes);
 void mram_testing();
 
