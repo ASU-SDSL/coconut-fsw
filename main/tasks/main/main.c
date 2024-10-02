@@ -52,7 +52,7 @@ int main() {
 
     BaseType_t filesystem_task_status = xTaskCreate(filesystem_task,
                                         "FILESYSTEM",
-                                        256,
+                                        512,
                                         NULL,
                                         1,
                                         NULL);
