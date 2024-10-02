@@ -33,7 +33,7 @@ void initialize_mram() {
     send_simple_command(WAKE);
 }
 
-int write_bytes(uint32_t addr, const uint8_t* buf, const uint8_t nbytes) {
+int write_bytes(uint32_t addr, const uint8_t* buf, const uint32_t nbytes) {
     if (nbytes == 0) { return 0; }
 
     send_simple_command(WREN);
@@ -53,7 +53,7 @@ int write_bytes(uint32_t addr, const uint8_t* buf, const uint8_t nbytes) {
     return nbytes;
 }
 
-int read_bytes(uint32_t addr, uint8_t* buf, const uint8_t nbytes) {
+int read_bytes(uint32_t addr, uint8_t* buf, const uint32_t nbytes) {
     if (nbytes == 0) { return 0; }
     
     gpio_put(CS, 0);

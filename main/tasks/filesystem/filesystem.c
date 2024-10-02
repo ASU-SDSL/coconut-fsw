@@ -179,17 +179,22 @@ void filesystem_task(void* unused_arg) {
     //keeps looping until new operations are in queue
 
     for (int i = 0; i < 5; i++) {
-        logln_info("Im boutta blow\n");
+        logln_info("Im boutta blow");
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
+
+    // void* buf = pvPortMalloc(0x400);
+    // FRESULT fr = test_diskio(0, 3, buf, 0x400);
+    // vPortFree(buf);
 
     // make filesystem
     void* buf = pvPortMalloc(0x400);
     FRESULT fr = f_mkfs("", NULL, buf, 0x400);    
     vPortFree(buf);
 
+    logln_info("FS create status: %d\n", fr);
     // while(true) {
-        logln_info("FS create status: %d\n", fr);
+    //     // logln_info("FS create status: %d\n", fr);
     //     vTaskDelay(1000 / portTICK_PERIOD_MS);
     // }
     
@@ -205,6 +210,10 @@ void filesystem_task(void* unused_arg) {
 
     _test();
 
+    while (fr != FR_OK) {
+        logln_error("Could not mount filesystem (%d)", fr);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
     // init queue and other stuff
     filesystem_queue = xQueueCreate(FILESYSTEM_QUEUE_LENGTH, sizeof(filesystem_queue_operations_t));
     if(filesystem_queue == NULL) {

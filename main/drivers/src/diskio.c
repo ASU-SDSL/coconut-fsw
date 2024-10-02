@@ -18,7 +18,7 @@ static DSTATUS gStatus = STA_NOINIT;
 
 /* Definitions of physical drive number for each drive */
 #define DEV_MRAM		0 /* not sure what the drive # is, should be 0 */
-#define DEVICE_SIZE 	4 * 1024 * 1024 /* 4Mb */
+#define DEVICE_SIZE 	500000 /* 0.5Mb */
 #define BLOCK_SIZE 		512
 
 
@@ -37,16 +37,15 @@ DSTATUS disk_status (BYTE pdrv) {
 /*-----------------------------------------------------------------------*/
 
 DSTATUS disk_initialize (BYTE pdrv) {
-	DSTATUS initialization_status = STA_NOINIT;
 
 	switch (pdrv) {
 		case DEV_MRAM:
 			initialize_mram();
-			initialization_status &= ~STA_NOINIT;
+			gStatus &= ~STA_NOINIT;
 			break;
 	}
 
-	return initialization_status;
+	return gStatus;
 }
 
 
@@ -66,18 +65,14 @@ DRESULT disk_read (BYTE pdrv, BYTE *buff, LBA_t sector, UINT count){
 			DWORD address = sector * BLOCK_SIZE;
 
 
-			read_bytes(address, buff, count * BLOCK_SIZE);
+			// read_bytes(address, buff, count * BLOCK_SIZE);
 
-			// for(int i  = 0; i < count; i++) {
-			// 	int result = read_bytes(address, buff, BLOCK_SIZE);
+			for(int i  = 0; i < count; i++) {
+				int result = read_bytes(address, buff, BLOCK_SIZE);
 
-			// 	if(result != 0) {
-			// 		return RES_ERROR;
-			// 	}
-
-			// 	buff += BLOCK_SIZE;
-			// 	address += BLOCK_SIZE;
-			// }
+				buff += BLOCK_SIZE;
+				address += BLOCK_SIZE;
+			}
 			return RES_OK;
 		}
 		default:
@@ -104,17 +99,13 @@ DRESULT disk_write(BYTE pdrv, const BYTE *buff, LBA_t sector, UINT count) {
 	switch (pdrv) {
 		case DEV_MRAM: {
 			DWORD address = sector * BLOCK_SIZE;
-			write_bytes(address, buff, count * BLOCK_SIZE);
-			// for(int i = 0; i < count; i++) {
-			// 	int result = write_bytes(address, buff, BLOCK_SIZE);
+			// write_bytes(address, buff, count * BLOCK_SIZE);
+			for(int i = 0; i < count; i++) {
+				int result = write_bytes(address, buff, BLOCK_SIZE);
 
-			// 	if(result != 0) {
-			// 		return RES_ERROR;
-			// 	}
-
-			// 	buff += BLOCK_SIZE;
-			// 	address += BLOCK_SIZE;
-			// }
+				buff += BLOCK_SIZE;
+				address += BLOCK_SIZE;
+			}
 			return RES_OK;
 		}
 		default:
@@ -139,6 +130,7 @@ DRESULT disk_ioctl (BYTE pdrv, BYTE cmd, void *buff) {
 	switch(cmd) {
 		case GET_SECTOR_COUNT:
 			*(DWORD*)buff = DEVICE_SIZE / BLOCK_SIZE;
+			res = RES_OK;
 			break;
 		case GET_SECTOR_SIZE:
 			*(DWORD*)buff = BLOCK_SIZE;
