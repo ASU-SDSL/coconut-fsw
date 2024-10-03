@@ -5,9 +5,6 @@ void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
     heartbeat_telemetry_t payload;
 
-    // Sync bytes
-    payload.sync_bytes = 0x352EF853;
-
     // State data
     payload.state = (uint8_t)g_payload_state;
     payload.uptime = (uint64_t)get_uptime();
