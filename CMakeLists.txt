@@ -55,8 +55,8 @@ IF(SIMULATOR)
     # Simulator
     set(FREERTOS_SOURCE_FILES
         ${FREERTOS_SOURCE_FILES}
-        ${FREERTOS_SRC_DIRECTORY}/portable/ThirdParty/GCC/Posix/port.c
-        ${FREERTOS_SRC_DIRECTORY}/portable/ThirdParty/GCC/Posix/utils/wait_for_event.c
+        ${CMAKE_SOURCE_DIR}/freertos/portable/ThirdParty/GCC/Posix/port.c
+        ${CMAKE_SOURCE_DIR}/freertos/portable/ThirdParty/GCC/Posix/utils/wait_for_event.c
     )
 ELSE()
     # RP2040
@@ -82,8 +82,8 @@ IF (SIMULATOR)
     # Simulator
     set(FREERTOS_INCLUDE_FILES
         ${FREERTOS_INCLUDE_FILES}
-        ${FREERTOS_SRC_DIRECTORY}/portable/ThirdParty/GCC/Posix
-        ${FREERTOS_SRC_DIRECTORY}/portable/ThirdParty/GCC/Posix/utils
+        ${CMAKE_SOURCE_DIR}/freertos/portable/ThirdParty/GCC/Posix
+        ${CMAKE_SOURCE_DIR}/freertos/portable/ThirdParty/GCC/Posix/utils
     )
 ELSE()
     # RP2040
