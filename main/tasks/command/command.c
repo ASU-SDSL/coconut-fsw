@@ -62,8 +62,8 @@ void command_task(void* unused_arg) {
             command_byte_t command_byte = 0;
             xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
             
-            logln_info("Byte Received: 0x%x", command_byte);
-            logln_info("Checking Sync Byte: 0x%x", COMMAND_SYNC_BYTES[sync_index]);
+            logln_info("Byte Received: 0x%hhx", command_byte);
+            logln_info("Checking Sync Byte: 0x%hhx", COMMAND_SYNC_BYTES[sync_index]);
 
             // check if current sync index byte matches
             if (command_byte != COMMAND_SYNC_BYTES[sync_index]) {

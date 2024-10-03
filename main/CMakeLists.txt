@@ -173,11 +173,11 @@ IF (SIMULATOR)
     )
 
     target_compile_options(${COMMAND_FUZZER_NAME}
-        PRIVATE -g -fsanitize=fuzzer,address
+        PRIVATE -g -fsanitize=fuzzer
     )
 
     target_link_libraries(${COMMAND_FUZZER_NAME}
-        PRIVATE -fsanitize=fuzzer,address
+        PRIVATE -fsanitize=fuzzer
         ${LINK_LIBS}
     )
 

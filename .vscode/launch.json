@@ -64,6 +64,10 @@
                     "description": "Set Disassembly Flavor to Intel",
                     "text": "-gdb-set disassembly-flavor intel",
                     "ignoreFailures": true
+                },
+                {
+                    "description": "Disable SIGALRM handler in gdb",
+                    "text": "handle SIGALRM pass noprint"
                 }
             ]
         },

@@ -178,10 +178,10 @@ void filesystem_task(void* unused_arg) {
     //this thread will go through the queue and execute operations, if there are any
     //keeps looping until new operations are in queue
 
-    for (int i = 0; i < 5; i++) {
-        logln_info("Im boutta blow");
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-    }
+    // for (int i = 0; i < 5; i++) {
+    //     logln_info("Im boutta blow");
+    //     vTaskDelay(1000 / portTICK_PERIOD_MS);
+    // }
 
     // void* buf = pvPortMalloc(0x400);
     // FRESULT fr = test_diskio(0, 3, buf, 0x400);
@@ -208,12 +208,6 @@ void filesystem_task(void* unused_arg) {
     }
     
 
-    _test();
-
-    while (fr != FR_OK) {
-        logln_error("Could not mount filesystem (%d)", fr);
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-    }
     // init queue and other stuff
     filesystem_queue = xQueueCreate(FILESYSTEM_QUEUE_LENGTH, sizeof(filesystem_queue_operations_t));
     if(filesystem_queue == NULL) {

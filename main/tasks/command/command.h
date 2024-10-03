@@ -3,6 +3,7 @@
 #include "pico/stdlib.h"
 
 #include <string.h>
+#include <stdint.h>
 
 #include <FreeRTOS.h>
 #include <task.h>
@@ -31,7 +32,7 @@ typedef struct {
 
 // Internal Command Thread Structs
 QueueHandle_t command_byte_queue;
-typedef char command_byte_t;
+typedef uint8_t command_byte_t;
 
 /* USER FUNCTIONS */
 void receive_command_byte_from_isr(char ch);
