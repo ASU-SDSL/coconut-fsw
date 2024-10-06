@@ -78,7 +78,7 @@
 #include "utils/wait_for_event.h"
 /*-----------------------------------------------------------*/
 
-#define SIG_RESUME    SIGUSR1
+#define SIG_RESUME SIGUSR2
 
 typedef struct THREAD
 {
@@ -245,7 +245,6 @@ BaseType_t xPortStartScheduler( void )
 
     /* Start the first task. */
     vPortStartFirstTask();
-
     /* Wait until signaled by vPortEndScheduler(). */
     while( xSchedulerEnd != pdTRUE )
     {
@@ -394,7 +393,7 @@ static void * prvTimerTickHandler( void * arg )
          * preemption (if enabled)
          */
         Thread_t * thread = prvGetThreadFromTask( xTaskGetCurrentTaskHandle() );
-        pthread_kill( thread->pthread, SIGUSR1 );
+        pthread_kill( thread->pthread, SIGURG );
         usleep( portTICK_RATE_MICROSECONDS );
     }
 
@@ -598,7 +597,7 @@ static void prvSetupSignalsAndSchedulerPolicy( void )
     sigtick.sa_handler = vPortSystemTickHandler;
     sigfillset( &sigtick.sa_mask );
 
-    iRet = sigaction( SIGUSR1, &sigtick, NULL );
+    iRet = sigaction( SIGURG, &sigtick, NULL );
 
     if( iRet == -1 )
     {
