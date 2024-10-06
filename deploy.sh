@@ -61,6 +61,9 @@ for arg in "$@"; do
         debug_build=1
     elif [[ "$check_arg" = "--sim" || "$check_arg" = "-s" ]]; then # enable debug build
         simulator_build=1
+    elif [[ "$check_arg" = "--afl" || "$check_arg" = "-a" ]]; then # enable fuzzer build
+        fuzzer_build=1
+        simulator_build=1
     fi
 done
 
@@ -74,6 +77,8 @@ if [[ ${do_build} -eq 1 ]]; then
     build_string="Release"
     if [[ ${debug_build} -eq 1 ]]; then
         build_string="Debug"
+    elif [[ ${fuzzer_build} -eq 1 ]]; then
+        build_string="Fuzzer"
     elif [[ ${simulator_build} -eq 1 ]]; then
         build_string="Simulator"
     fi
@@ -82,7 +87,14 @@ if [[ ${do_build} -eq 1 ]]; then
     # generate cmake files
     build_path=build/${build_string}
     uf2_path="${build_path}/main/COCONUTFSW.uf2"
-    if [[ ${simulator_build} -eq 1 ]]; then
+
+    if [[ ${fuzzer_build} -eq 1 ]]; then
+        export AFL_LLVM_THREADSAFE_INST=1
+        cmake -S . -B ${build_path} \
+            -D "CMAKE_C_COMPILER:FILEPATH=$(which afl-clang-fast)" \
+            -D "CMAKE_CXX_COMPILER:FILEPATH=$(which afl-clang-fast++)" \
+            -D CMAKE_BUILD_TYPE:STRING="Debug" -DSIMULATOR:BOOL=ON 
+    elif [[ ${simulator_build} -eq 1 ]]; then
         cmake -S . -B ${build_path} \
             -D "CMAKE_C_COMPILER:FILEPATH=$(which clang)" \
             -D "CMAKE_CXX_COMPILER:FILEPATH=$(which clang++)" \
@@ -91,7 +103,7 @@ if [[ ${do_build} -eq 1 ]]; then
         cmake -S . -B ${build_path} \
             -D "CMAKE_C_COMPILER:FILEPATH=$(which arm-none-eabi-gcc)" \
             -D "CMAKE_CXX_COMPILER:FILEPATH=$(which arm-none-eabi-g++)" \
-            -D CMAKE_BUILD_TYPE:STRING="${build_string}" 
+            -D CMAKE_BUILD_TYPE:STRING="${build_string}"
     fi
     
     err=$?

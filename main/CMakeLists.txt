@@ -146,6 +146,8 @@ IF (SIMULATOR)
     # Command Fuzzer
     set(COMMAND_FUZZER_NAME "command_fuzzer")
 
+    # set(ENV{AFL_LLVM_THREADSAFE_INST} 1)
+
     add_executable(${COMMAND_FUZZER_NAME}
         ${MAIN_DIRECTORY}/test/fuzz/command_fuzzer.cpp
 
@@ -173,11 +175,11 @@ IF (SIMULATOR)
     )
 
     target_compile_options(${COMMAND_FUZZER_NAME}
-        PRIVATE -g -fsanitize=fuzzer
+        PRIVATE -g -fsanitize=fuzzer,address
     )
 
     target_link_libraries(${COMMAND_FUZZER_NAME}
-        PRIVATE -fsanitize=fuzzer
+        PRIVATE -fsanitize=fuzzer,address
         ${LINK_LIBS}
     )
 

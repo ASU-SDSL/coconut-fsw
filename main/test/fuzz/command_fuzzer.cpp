@@ -5,6 +5,7 @@
 #include <string.h>
 #include <time.h>
 #include <sys/stat.h>
+#include <signal.h>
 
 
 #include "FreeRTOS.h"
@@ -53,12 +54,18 @@ extern "C" void fuzzer_task(void *input) {
   // Send commands
   receive_command_bytes(fuzzinput->data, fuzzinput->size);
   // Wait
-  vTaskDelay(100 / portTICK_PERIOD_MS);
+  vTaskDelay(100);
   // End process
-  vTaskEndScheduler();
+  // vTaskEndScheduler();
+  exit(0);
+  // while(true){vTaskDelay(1 / portTICK_PERIOD_MS);}
+  
 }
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, uint32_t Size) {
+  // Close stdin and stdout
+  close(1);
+  close(2);
   // Start tasks 
   // TaskHandle_t gse_task_handle;
   // BaseType_t gse_task_status = xTaskCreate(gse_task, 
@@ -122,23 +129,24 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, uint32_t Size) {
 
   // Start the FreeRTOS scheduler
   vTaskStartScheduler();
+  printf("lol");
   // Cleanup
   vPortFree(buf);
   // Kill threads
   // vPortCancelThread(fuzzer_task_handle);
-  vTaskDelete(fuzzer_task_handle);
+  // vTaskDelete(fuzzer_task_handle);
 
   // vPortCancelThread(scheduler_task_handle);
-  vTaskDelete(scheduler_task_handle);
+  // vTaskDelete(scheduler_task_handle);
 
   // vPortCancelThread(command_task_handle);
-  vTaskDelete(command_task_handle);
+  // vTaskDelete(command_task_handle);
 
   // vPortCancelThread(telemetry_task_handle);
-  vTaskDelete(telemetry_task_handle);
+  // vTaskDelete(telemetry_task_handle);
 
   // vPortCancelThread(filesystem_task_handle);  
-  vTaskDelete(filesystem_task_handle);
+  // vTaskDelete(filesystem_task_handle);
 
   // vPortCancelThread(gse_task_handle);
   // vTaskDelete(gse_task_handle);  
@@ -146,6 +154,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, uint32_t Size) {
 }
 
 // int main(int argc, char** argv) {
+  
 //   char fopenstr[3] = {'r', 'b', '\x00'};
 //   FILE *fileptr = fopen(argv[1], fopenstr);  // Open the file in binary mode
 //   struct stat st;
@@ -154,6 +163,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, uint32_t Size) {
 //   void *buf = malloc(filelen);
 //   fread(buf, filelen, 1, fileptr); // Read in the entire file
 //   LLVMFuzzerTestOneInput((const uint8_t *)buf, filelen);
+//   free(buf);
 //   return 0;
 // }
 
