@@ -130,7 +130,7 @@ IF (NOT SIMULATOR)
 ENDIF()
 
 # Build fuzzers
-IF (SIMULATOR)
+IF (FUZZER)
 
     # Build options for simulator
     

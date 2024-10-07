@@ -63,9 +63,9 @@ extern "C" void fuzzer_task(void *input) {
 }
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, uint32_t Size) {
-  // Close stdin and stdout
-  close(1);
-  close(2);
+  // Close stdout and stderr
+  // close(1);
+  // close(2);
   // Start tasks 
   // TaskHandle_t gse_task_handle;
   // BaseType_t gse_task_status = xTaskCreate(gse_task, 
@@ -153,19 +153,18 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, uint32_t Size) {
   return 0;
 }
 
-// int main(int argc, char** argv) {
-  
-//   char fopenstr[3] = {'r', 'b', '\x00'};
-//   FILE *fileptr = fopen(argv[1], fopenstr);  // Open the file in binary mode
-//   struct stat st;
-//   lstat(argv[1], &st);
-//   size_t filelen = st.st_size;
-//   void *buf = malloc(filelen);
-//   fread(buf, filelen, 1, fileptr); // Read in the entire file
-//   LLVMFuzzerTestOneInput((const uint8_t *)buf, filelen);
-//   free(buf);
-//   return 0;
-// }
+int main(int argc, char** argv) {
+  char fopenstr[3] = {'r', 'b', '\x00'};
+  FILE *fileptr = fopen(argv[1], fopenstr);  // Open the file in binary mode
+  struct stat st;
+  lstat(argv[1], &st);
+  size_t filelen = st.st_size;
+  void *buf = malloc(filelen);
+  fread(buf, filelen, 1, fileptr); // Read in the entire file
+  LLVMFuzzerTestOneInput((const uint8_t *)buf, filelen);
+  free(buf);
+  return 0;
+}
 
 
 ////// First Iteration
