@@ -48,7 +48,7 @@
             "request": "launch",
             "preLaunchTask": "buildsimulator",
             "program": "${workspaceFolder}/build/Simulator/main/COCONUTFSW",
-            "args": [],
+            // "args": [ "1", "<", "${workspaceFolder}/packet.bin"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
@@ -65,10 +65,6 @@
                     "text": "-gdb-set disassembly-flavor intel",
                     "ignoreFailures": true
                 },
-                {
-                    "description": "Disable SIGALRM handler in gdb",
-                    "text": "handle SIGALRM pass noprint"
-                }
             ]
         },
     ]
