@@ -188,3 +188,11 @@ IF (FUZZER)
     )
 
 ENDIF()
+
+# Build unit tests
+IF (SIMULATOR)
+    set (CMAKE_MODULE_PATH ${MAIN_DIRECTORY}/test/unit)
+    include(create_test)
+
+    add_subdirectory(${MAIN_DIRECTORY}/test/unit/steve)
+ENDIF()
