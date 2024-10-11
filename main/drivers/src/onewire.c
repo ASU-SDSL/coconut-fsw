@@ -1,6 +1,6 @@
 // source file for one wire
-void config_onewire() {
-  
+void setup() {
+  int64_t ROM_CODE = ; //get rom code 
 }
 float getTempC() {
     sendCommand(MATCH_ROM, CONVERT_T, !selectedPowerMode);
@@ -29,4 +29,8 @@ float getTempC() {
     }
 
     return temp / 16.0;
+}
+int alarm() {
+  // add code later
+  return 0;
 }
