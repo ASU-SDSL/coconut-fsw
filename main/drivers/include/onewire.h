@@ -2,7 +2,11 @@
 #pragma once
 
 #include <byteswap.h>
-#include <OneWire.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "pico/stdlib.h"
+#include "hardware/gpio.h"
+#include "log.h"
 
 #define SERIAL_NUM 64
 #define ROM_CODE 64
