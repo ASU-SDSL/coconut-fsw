@@ -1,13 +1,10 @@
-[submodule ".deps/FreeRTOS-Kernel"]
-	path = .deps/FreeRTOS-Kernel
-	url = https://github.com/FreeRTOS/FreeRTOS-Kernel
-[submodule "deps/FreeRTOS-Kernel"]
+[submodule "lib/FreeRTOS-Kernel"]
 	path = lib/FreeRTOS-Kernel
 	url = https://github.com/FreeRTOS/FreeRTOS-Kernel
-[submodule "deps/spacepacket"]
+[submodule "lib/spacepacket"]
 	path = lib/spacepacket
 	url = https://github.com/yuasatakayuki/CCSDSLibrary
-[submodule "deps/RadioLib"]
+[submodule "lib/RadioLib"]
 	path = lib/RadioLib
 	url = https://github.com/jgromes/RadioLib
 [submodule "lib/fatfs"]
