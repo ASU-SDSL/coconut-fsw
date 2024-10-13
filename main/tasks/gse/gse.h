@@ -5,6 +5,8 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 
+#include <pico/stdio.h>
+
 #include "usb_uart.h"
 #include "command.h"
 #include "rtc.h"

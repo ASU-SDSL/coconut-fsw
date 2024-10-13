@@ -6,6 +6,8 @@
 
 #include "telemetry.h"
 
+#include <pico/stdio.h>
+
 /* DEFINES */
 #define MAX_LOG_STR_SIZE 0x1000U
 

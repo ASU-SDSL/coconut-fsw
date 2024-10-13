@@ -96,8 +96,8 @@ if [[ ${do_build} -eq 1 ]]; then
             -D CMAKE_BUILD_TYPE:STRING="Debug" -DSIMULATOR:BOOL=ON -DFUZZER:BOOL=ON
     elif [[ ${simulator_build} -eq 1 ]]; then
         cmake -S . -B ${build_path} \
-            -D "CMAKE_C_COMPILER:FILEPATH=$(which clang)" \
-            -D "CMAKE_CXX_COMPILER:FILEPATH=$(which clang++)" \
+            -D "CMAKE_C_COMPILER:FILEPATH=$(which gcc)" \
+            -D "CMAKE_CXX_COMPILER:FILEPATH=$(which g++)" \
             -D CMAKE_BUILD_TYPE:STRING="Debug" -DSIMULATOR:BOOL=ON 
     else
         cmake -S . -B ${build_path} \

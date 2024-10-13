@@ -1,5 +1,5 @@
 #pragma once
 
-void stdio_init_all() {
+static void stdio_init_all() {
     return;
 }

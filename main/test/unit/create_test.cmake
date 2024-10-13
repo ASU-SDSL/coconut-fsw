@@ -1,3 +1,4 @@
+# Inspired by https://github.com/aws/amazon-freertos/blob/main/tools/cmock/create_test.cmake
 
 #function to create the test executable
 function(create_test test_name
@@ -10,7 +11,7 @@ function(create_test test_name
     get_filename_component(test_src_absolute ${test_src} ABSOLUTE)
     add_custom_command(OUTPUT ${test_name}_runner.c
                   COMMAND ruby
-                    ${CMAKE_SOURCE_DIR}/deps/CMock/vendor/unity/auto/generate_test_runner.rb
+                    ${CMAKE_SOURCE_DIR}/lib/CMock/vendor/unity/auto/generate_test_runner.rb
                     ${CMAKE_SOURCE_DIR}/main/test/unit/project.yml
                     ${test_src_absolute}
                     ${test_name}_runner.c
@@ -20,7 +21,7 @@ function(create_test test_name
     set_target_properties(${test_name} PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
             INSTALL_RPATH_USE_LINK_PATH TRUE
-            LINK_FLAGS " \
+            LINK_FLAGS " -lgcov \
                 -Wl,-rpath,${CMAKE_BINARY_DIR}/lib \
                 -Wl,-rpath,${CMAKE_CURRENT_BINARY_DIR}/lib"
         )
@@ -30,16 +31,17 @@ function(create_test test_name
         )
     target_link_directories(${test_name} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
-# link all libraries sent through parameters
+    # link all libraries sent through parameters
     foreach(link IN LISTS link_list)
+        message(${link})
         target_link_libraries(${test_name} ${link})
     endforeach()
 
-# add dependency to all the dep_list parameter
+    # add dependency to all the dep_list parameter
     foreach(dependency IN LISTS dep_list)
         add_dependencies(${test_name} ${dependency})
     endforeach()
-    target_link_libraries(${test_name} -lgcov)
+    target_link_libraries(${test_name} -lgcov libunity.a)
 
     target_link_directories(${test_name}  PUBLIC
                             ${CMAKE_CURRENT_BINARY_DIR}/lib
@@ -108,7 +110,7 @@ function(create_mock_list mock_name
         add_custom_command (
                   OUTPUT ${mocks_dir}/mock_${mock_file_name}.c
                   COMMAND ruby
-                  ${CMAKE_SOURCE_DIR}/deps/CMock/lib/cmock.rb
+                  ${CMAKE_SOURCE_DIR}/lib/CMock/lib/cmock.rb
                   -o${cmock_config} ${mock_file_abs}
                   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
                 )
@@ -148,15 +150,15 @@ function(create_real_library target
     set_target_properties(${target} PROPERTIES
                 COMPILE_FLAGS "-Wextra -Wpedantic \
                     -fprofile-arcs -ftest-coverage -fprofile-generate \
-                    -include portableDefs.h -Wno-unused-but-set-variable"
+                    -Wno-unused-but-set-variable"
                 LINK_FLAGS "-fprofile-arcs -ftest-coverage \
-                    -fprofile-generate "
+                    -fprofile-generate"
                 ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib
             )
-    add_dependencies(${target} ${mock_name})
-    target_link_libraries(${target}
-                    -l${mock_name}
-                    -lgcov
-            )
-
+    IF (${mock_name})
+        add_dependencies(${target} ${mock_name})
+        target_link_libraries(${target}
+                        -l${mock_name}
+                )
+    ENDIF()
 endfunction()

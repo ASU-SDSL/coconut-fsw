@@ -30,11 +30,11 @@
     - PRIVILEGED_FUNCTION
     - portDONT_DISCARD
   :treat_externs: :include
-  :includes_c_pre_header:
-    - "portableDefs.h"
-  :includes_h_pre_orig_header:
-    - "portableDefs.h"
-  :includes:
-    - "portableDefs.h"
-    - "projdefs.h"
-    - "task.h"
+  # :includes_c_pre_header:
+  #   # - "portableDefs.h"
+  # :includes_h_pre_orig_header:
+  #   # - "portableDefs.h"
+  # :includes:
+  #   # - "portableDefs.h"
+  #   # - "projdefs.h"
+  #   # - "task.h"

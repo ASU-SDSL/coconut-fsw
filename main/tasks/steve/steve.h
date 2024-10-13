@@ -1,7 +1,5 @@
 #pragma once
 
-#include "pico/stdlib.h"
-
 #include <string.h>
 #include <stdbool.h>
 
