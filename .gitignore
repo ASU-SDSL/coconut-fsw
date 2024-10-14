@@ -8,7 +8,6 @@ generated
 pioasm
 Makefile
 CMakeCache.txt
-CMakeLists.txt
 CMakeDoxyfile.in
 CMakeDoxygenDefaults.cmake
 pico_sdk_import.cmake
