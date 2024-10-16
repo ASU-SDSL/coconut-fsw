@@ -5,7 +5,6 @@
 #include <string.h>
 #include <time.h>
 #include <sys/stat.h>
-#include <signal.h>
 
 
 #include "FreeRTOS.h"
@@ -54,7 +53,7 @@ extern "C" void fuzzer_task(void *input) {
   // Send commands
   receive_command_bytes(fuzzinput->data, fuzzinput->size);
   // Wait
-  vTaskDelay(100);
+  vTaskDelay(100 / portTICK_PERIOD_MS);
   // End process
   // vTaskEndScheduler();
   exit(0);

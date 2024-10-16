@@ -13,30 +13,78 @@ void make_filesystem() {
 
 // this function takes in a buffer as a parameter to store the result from the read
 // the caller is responsible for allocating memory for this buffer and freeing the memory
-void read_file(const char* file_name, char* result_buffer) {
-    filesystem_queue_operations_t new_read_operation;
-    new_read_operation.operation_type = READ;
-    new_read_operation.file_name = file_name;
-    new_read_operation.read_buffer = result_buffer;
+void read_file(const char* file_name, char* result_buffer, size_t size) {
+    filesystem_queue_operations_t new_file_operation;
+    new_file_operation.operation_type = READ;
+    new_file_operation.file_operation.read_op.file_name = file_name;
+    new_file_operation.file_operation.read_op.read_buffer = result_buffer;
+    new_file_operation.file_operation.read_op.size = size;
 
     while(filesystem_queue == NULL) {
         vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
     }
-    xQueueSendToBack(filesystem_queue, &new_read_operation, portMAX_DELAY);
+    xQueueSendToBack(filesystem_queue, &new_file_operation, portMAX_DELAY);
 
-    // TODO: Block here until file read is finished
+    // Block here until file read is finished
+    xSemaphoreTake(filesystem_mutex, portMAX_DELAY);
 }
 
-void write_file(const char* file_name, char* text_to_write) {
-    filesystem_queue_operations_t new_write_operation;
-    new_write_operation.operation_type = WRITE;
-    new_write_operation.file_name = file_name;
-    new_write_operation.text_to_write = text_to_write;
+void write_file(const char* file_name, char* text_to_write, size_t size, bool append_flag) {
+    filesystem_queue_operations_t new_file_operation;
+    new_file_operation.operation_type = WRITE;
+    new_file_operation.file_operation.write_op.file_name = file_name;
+    new_file_operation.file_operation.write_op.text_to_write = text_to_write;
+    new_file_operation.file_operation.write_op.size = size;
+    new_file_operation.file_operation.write_op.append_flag = append_flag;
 
     while(filesystem_queue == NULL) {
         vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
     }
-    xQueueSendToBack(filesystem_queue, &new_write_operation, portMAX_DELAY);
+    xQueueSendToBack(filesystem_queue, &new_file_operation, portMAX_DELAY);
+}
+
+void list_directory(const char* directory_name) {
+    filesystem_queue_operations_t new_file_operation;
+    new_file_operation.operation_type = LIST_DIRECTORY;
+    new_file_operation.file_operation.ls_op.directory_name = directory_name;
+    
+    while(filesystem_queue == NULL) {
+        vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
+    }
+    xQueueSendToBack(filesystem_queue, &new_file_operation, portMAX_DELAY);
+}
+
+void delete_file(const char* file_name) {
+    filesystem_queue_operations_t new_file_operation;
+    new_file_operation.operation_type = DELETE;
+    new_file_operation.file_operation.delete_op.file_name = file_name;
+
+    while(filesystem_queue == NULL) {
+        vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
+    }
+    xQueueSendToBack(filesystem_queue, &new_file_operation, portMAX_DELAY);
+}
+
+void make_directory(const char* directory_name) {
+    filesystem_queue_operations_t new_file_operation;
+    new_file_operation.operation_type = MAKE_DIRECTORY;
+    new_file_operation.file_operation.mkdir_op.directory_name = directory_name;
+
+    while(filesystem_queue == NULL) {
+        vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
+    }
+    xQueueSendToBack(filesystem_queue, &new_file_operation, portMAX_DELAY);
+}
+
+void touch(const char* file_name) {
+    write_file(file_name, "", 0, 0);
+}
+
+void cat(const char* file_name) {
+    char* result_buffer = pvPortMalloc(CAT_SIZE_LIMIT);
+    read_file(file_name, result_buffer, CAT_SIZE_LIMIT);
+    logln_info("%s", result_buffer);
+    vPortFree(result_buffer);
 }
 
 
@@ -48,7 +96,7 @@ size_t _mkfs() {
     return fr;
 }
 
-size_t _fwrite(const char* file_name, const uint8_t *data, bool append_flag, size_t size) {
+size_t _fwrite(const char* file_name, const uint8_t *data, size_t size, bool append_flag) {
     FRESULT fr;
     FIL fil;
 
@@ -133,7 +181,7 @@ void _flist(const char *dir_name) {
         fr = f_readdir(&dir, &fno);    
         
         if (fr != FR_OK) {
-            printf("Failed to read directory %s during ls (%d)\n", dir_name, fr);
+            logln_error("Failed to read directory %s during ls (%d)\n", dir_name, fr);
             return;
         }
         
@@ -148,6 +196,15 @@ void _flist(const char *dir_name) {
             ((fno.fattrib & AM_SYS) ? 'S' : '-'),
             ((fno.fattrib & AM_HID) ? 'H' : '-'),
             (int)fno.fsize, dir_name, fno.fname);
+    }
+}
+
+void _fmkdir(const char *dir_name) {
+    FRESULT fr;
+
+    fr = f_mkdir(dir_name);
+    if (fr != FR_OK) {
+        logln_error("Failed to make directory %s during mkdir (%d)\n", dir_name, fr);
     }
 }
 
@@ -178,37 +235,30 @@ void filesystem_task(void* unused_arg) {
     //this thread will go through the queue and execute operations, if there are any
     //keeps looping until new operations are in queue
 
-    // for (int i = 0; i < 5; i++) {
-    //     logln_info("Im boutta blow");
-    //     vTaskDelay(1000 / portTICK_PERIOD_MS);
-    // }
-
-    // void* buf = pvPortMalloc(0x400);
-    // FRESULT fr = test_diskio(0, 3, buf, 0x400);
-    // vPortFree(buf);
-
     // make filesystem
-    void* buf = pvPortMalloc(0x400);
-    FRESULT fr = f_mkfs("", NULL, buf, 0x400);    
-    vPortFree(buf);
+    FATFS fs;
+    FRESULT fr;
 
-    logln_info("FS create status: %d\n", fr);
-    // while(true) {
-    //     // logln_info("FS create status: %d\n", fr);
-    //     vTaskDelay(1000 / portTICK_PERIOD_MS);
-    // }
+    logln_info("Making filesystem...\n");
+    void* buf = pvPortMalloc(0x400);
+    fr = f_mkfs("", NULL, buf, 0x400);    
+    vPortFree(buf);
+    while (fr != FR_OK) {
+        logln_error("Could not make filesystem (%d)", fr);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
     
     // mount disk
     logln_info("Mounting filesystem...\n");
-    FATFS fs; 
     fr = f_mount(&fs, "0:", 1);
     while (fr != FR_OK) {
         logln_error("Could not mount filesystem (%d)", fr);
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
-    
 
     // init queue and other stuff
+    filesystem_mutex = xSemaphoreCreateMutex();
+    xSemaphoreTake(filesystem_mutex, portMAX_DELAY);
     filesystem_queue = xQueueCreate(FILESYSTEM_QUEUE_LENGTH, sizeof(filesystem_queue_operations_t));
     if(filesystem_queue == NULL) {
         // TODO: Find a better solution to handling queue creation failure
@@ -228,10 +278,22 @@ void filesystem_task(void* unused_arg) {
                 _mkfs();
                 break;
             case READ:
-                _fread(received_operation.file_name, received_operation.read_buffer, received_operation.size);
+                _fread(received_operation.file_operation.read_op.file_name, received_operation.file_operation.read_op.read_buffer, 
+                    received_operation.file_operation.read_op.size);
+                xSemaphoreGive(filesystem_mutex);
                 break;
             case WRITE:
-                _fwrite(received_operation.file_name, received_operation.text_to_write, 0, received_operation.size);
+                _fwrite(received_operation.file_operation.write_op.file_name, received_operation.file_operation.write_op.text_to_write, 
+                    received_operation.file_operation.write_op.size, received_operation.file_operation.write_op.append_flag);
+                break;
+            case LIST_DIRECTORY:
+                _flist(received_operation.file_operation.ls_op.directory_name);
+                break;
+            case DELETE:
+                _fdelete(received_operation.file_operation.delete_op.file_name);
+                break;
+            case MAKE_DIRECTORY:
+                _fmkdir(received_operation.file_operation.mkdir_op.directory_name);
                 break;
             default:
                 logln_error("Unrecognized file operation: %d\n", received_operation.operation_type);
