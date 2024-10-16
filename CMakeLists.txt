@@ -6,14 +6,15 @@ set(PROJECT_NAME "COCONUTFSW")
 
 # Add build options
 option(SIMULATOR "Enables simulator build" OFF)
-IF (SIMULATOR)
+option(FUZZER "Enables fuzzer build" OFF)
+IF (SIMULATOR OR FUZZER)
     # add preprocessor define so we can see this within C files
-    message(STATUS "Debugging enabled for ${PROJECT_NAME}")
+    message(STATUS "Added SIMULATOR define for ${PROJECT_NAME}")
     add_definitions(-DSIMULATOR) 
 ENDIF()
 
 # Include the Pico SDK
-IF (NOT SIMULATOR)
+IF (NOT SIMULATOR AND NOT FUZZER)
     include(pico_sdk_import.cmake) # - uses environment variable PICO_SDK_PATH
     pico_sdk_init() # Initialise the Pico SDK
 ENDIF()
@@ -51,7 +52,7 @@ set (FREERTOS_SOURCE_FILES
 )
 
 # Add FreeRTOS source files
-IF(SIMULATOR)
+IF(SIMULATOR OR FUZZER)
     # Simulator
     set(FREERTOS_SOURCE_FILES
         ${FREERTOS_SOURCE_FILES}
@@ -78,7 +79,7 @@ set(FREERTOS_INCLUDE_FILES
 )
 
 # Setup FreeRTOS Includes
-IF (SIMULATOR)
+IF (SIMULATOR OR FUZZER)
     # Simulator
     set(FREERTOS_INCLUDE_FILES
         ${FREERTOS_INCLUDE_FILES}
@@ -102,6 +103,10 @@ add_subdirectory(${MAIN_DIRECTORY})
 
 # add libraries here (and in target_link_libraries under the main cmakelists)
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/fatfs/ build)
-IF (NOT SIMULATOR)
+IF (NOT SIMULATOR AND NOT FUZZER)
     add_subdirectory(${CMAKE_SOURCE_DIR}/lib/RadioLib)
+ENDIF()
+
+IF (FUZZER)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/lib/AFLplusplus-protobuf-mutator)
 ENDIF()

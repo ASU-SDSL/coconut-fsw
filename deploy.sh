@@ -93,7 +93,7 @@ if [[ ${do_build} -eq 1 ]]; then
         cmake -S . -B ${build_path} \
             -D "CMAKE_C_COMPILER:FILEPATH=$(which afl-clang-fast)" \
             -D "CMAKE_CXX_COMPILER:FILEPATH=$(which afl-clang-fast++)" \
-            -D CMAKE_BUILD_TYPE:STRING="Debug" -DSIMULATOR:BOOL=ON -DFUZZER:BOOL=ON
+            -D CMAKE_BUILD_TYPE:STRING="Debug" -DFUZZER:BOOL=ON
     elif [[ ${simulator_build} -eq 1 ]]; then
         cmake -S . -B ${build_path} \
             -D "CMAKE_C_COMPILER:FILEPATH=$(which gcc)" \
@@ -109,7 +109,7 @@ if [[ ${do_build} -eq 1 ]]; then
     err=$?
     
     # build
-    cmake --build ${build_path}
+    cmake --build ${build_path} -j $(nproc)
     err=$?
 fi
 

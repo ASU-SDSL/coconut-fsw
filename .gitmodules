@@ -16,3 +16,6 @@
 [submodule "lib/CMock"]
 	path = lib/CMock
 	url = https://github.com/ThrowTheSwitch/CMock.git
+[submodule "lib/AFLplusplus-protobuf-mutator"]
+	path = lib/AFLplusplus-protobuf-mutator
+	url = https://github.com/P1umer/AFLplusplus-protobuf-mutator.git

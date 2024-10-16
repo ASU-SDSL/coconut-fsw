@@ -34,7 +34,7 @@ set(SOURCES
 )
 
 # build certain files depending on simulator build
-IF (SIMULATOR) 
+IF (SIMULATOR OR FUZZER) 
     set (SOURCES
         ${SOURCES}
         ${MAIN_DIRECTORY}/simulator/drivers/src/diskio.c
@@ -61,7 +61,7 @@ set (LINK_LIBS
     FatFs
 )
 
-IF (SIMULATOR)
+IF (SIMULATOR OR FUZZER)
     # add pthread for freertos unix port
     set (LINK_LIBS
         ${LINK_LIBS}
@@ -100,7 +100,7 @@ set (INTERNAL_INCLUDE_DIRS
 )
 
 
-IF (SIMULATOR)
+IF (SIMULATOR OR FUZZER)
     # enable stubs for simulator
     set(INTERNAL_INCLUDE_DIRS
         ${INTERNAL_INCLUDE_DIRS}
@@ -121,7 +121,7 @@ target_include_directories(${PROJECT_NAME}
 
 # Enable/disable STDIO via USB/UART
 #   Similar to above situation, only use picolib if building for flight hardwares
-IF (NOT SIMULATOR)
+IF (NOT SIMULATOR AND NOT FUZZER)
     include_directories(${MAIN_DIRECTORY}../deps/RadioLib)
     pico_enable_stdio_uart(${PROJECT_NAME} 0)
     pico_enable_stdio_usb(${PROJECT_NAME} 1)
@@ -131,62 +131,7 @@ ENDIF()
 
 # Build fuzzers
 IF (FUZZER)
-
-    # Build options for simulator
-    
-    # target_compile_options(${PROJECT_NAME}
-    #     PRIVATE -g -fsanitize=address
-    # )
-
-    # target_link_libraries(${PROJECT_NAME}
-    #     PRIVATE -fsanitize=address
-    #     ${LINK_LIBS}
-    # )
-
-    # Command Fuzzer
-    set(COMMAND_FUZZER_NAME "command_fuzzer")
-
-    # set(ENV{AFL_LLVM_THREADSAFE_INST} 1)
-
-    add_executable(${COMMAND_FUZZER_NAME}
-        ${MAIN_DIRECTORY}/test/fuzz/command_fuzzer.cpp
-
-        ${MAIN_DIRECTORY}/tasks/gse/gse.c
-        ${MAIN_DIRECTORY}/tasks/steve/steve.c
-        ${MAIN_DIRECTORY}/tasks/command/command.c
-        ${MAIN_DIRECTORY}/tasks/telemetry/telemetry.c
-        ${MAIN_DIRECTORY}/tasks/filesystem/filesystem.c
-
-        ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
-
-        ${MAIN_DIRECTORY}/utilities/src/ccsds.c
-        ${MAIN_DIRECTORY}/utilities/src/log.c
-        ${MAIN_DIRECTORY}/utilities/src/timing.c
-
-        ${MAIN_DIRECTORY}/drivers/src/i2c.c
-        ${MAIN_DIRECTORY}/drivers/src/eps.c
-        ${MAIN_DIRECTORY}/drivers/src/rtc.c
-        ${MAIN_DIRECTORY}/drivers/src/mag.c
-        ${MAIN_DIRECTORY}/drivers/src/usb_uart.c
-
-        ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
-
-        ${MAIN_DIRECTORY}/simulator/drivers/src/diskio.c
-    )
-
-    target_compile_options(${COMMAND_FUZZER_NAME}
-        PRIVATE -g -fsanitize=fuzzer,address
-    )
-
-    target_link_libraries(${COMMAND_FUZZER_NAME}
-        PRIVATE -fsanitize=fuzzer,address
-        ${LINK_LIBS}
-    )
-
-    target_include_directories(${COMMAND_FUZZER_NAME}
-        ${INTERNAL_INCLUDE_DIRS}
-    )
-
+    add_subdirectory(${MAIN_DIRECTORY}/test/fuzz)
 ENDIF()
 
 # Build unit tests

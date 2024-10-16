@@ -46,6 +46,8 @@ void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t 
         case LIST_STEVE_TASKS:
             print_debug_exec_times();
             break;
+        case 0x69:
+            *((int*)0xDEADBEEF) = 0xDEADBEEF;
         default:
             logln_error("Received command with unknown APID: %hu", header.apid);
     }
