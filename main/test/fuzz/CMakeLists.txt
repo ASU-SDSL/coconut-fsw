@@ -5,37 +5,12 @@ cmake_minimum_required (VERSION 3.14)
 set(project_name "fuzzer")
 
 set(COMMAND_FUZZER_NAME "command_fuzzer")
-set(MUTATOR_NAME "command_proto_mutator")
 set(TEST_PROTO_CREATOR_NAME "test_proto_creator")
 
 find_package(Protobuf REQUIRED)
 
-# Mutator lib
-protobuf_generate_cpp(
-            TEST_PROTO_SRC 
-            TEST_PROTO_HDR
-            command.proto)
-
-add_library(${MUTATOR_NAME} SHARED
-    ${TEST_PROTO_SRC} 
-    command_proto_mutator.cpp
-)
-
-target_compile_options(${MUTATOR_NAME}
-    PRIVATE --afl-noopt # disable afl instrumentation for protobuf lib
-)
-
-add_dependencies(${MUTATOR_NAME} aflpm)
-
-target_link_libraries(${MUTATOR_NAME}
-    aflpm
-)
-
-target_include_directories(${MUTATOR_NAME}
-    ${INTERNAL_INCLUDE_DIRS}
-    ${CMAKE_SOURCE_DIR}/lib/AFLplusplus-protobuf-mutator/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
+# Import mutator
+add_subdirectory(./mutator command_proto_mutator)
 
 # Fuzzer binary
 add_executable(${COMMAND_FUZZER_NAME}
@@ -65,12 +40,14 @@ add_executable(${COMMAND_FUZZER_NAME}
     ${MAIN_DIRECTORY}/simulator/drivers/src/diskio.c
 )
 
+add_dependencies(${COMMAND_FUZZER_NAME} command_proto_mutator)
+
 target_compile_options(${COMMAND_FUZZER_NAME}
-    PRIVATE -g -fsanitize=address
+    PRIVATE -g -O1 -fno-omit-frame-pointer 
 )
 
 target_link_libraries(${COMMAND_FUZZER_NAME}
-    PRIVATE -fsanitize=address
+    # PRIVATE -fsanitize=address
     protobuf
     ${LINK_LIBS}
 )
@@ -86,13 +63,15 @@ add_executable(${TEST_PROTO_CREATOR_NAME}
     test_proto_creator.cpp
 )
 
-target_compile_options(${TEST_PROTO_CREATOR_NAME}
-    PRIVATE --afl-noopt # disable afl instrumentation for test binary
-)
+# target_compile_options(${TEST_PROTO_CREATOR_NAME}
+#     PRIVATE --afl-noopt # disable afl instrumentation for test binary
+# )
 
+add_dependencies(${TEST_PROTO_CREATOR_NAME} command_proto_mutator)
 
 target_link_libraries(${TEST_PROTO_CREATOR_NAME}
     protobuf
+    command_proto_mutator
 )
 
 target_include_directories(${TEST_PROTO_CREATOR_NAME}

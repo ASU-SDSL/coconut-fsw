@@ -53,7 +53,7 @@ extern "C" void fuzzer_task(void *input) {
   // Send commands
   receive_command_bytes(fuzzinput->data, fuzzinput->size);
   // Wait
-  vTaskDelay(100 / portTICK_PERIOD_MS);
+  vTaskDelay(10);
   // End process
   // vTaskEndScheduler();
   exit(0);
