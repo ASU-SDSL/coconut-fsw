@@ -177,7 +177,7 @@ void _flist(const char *dir_name) {
         fr = f_readdir(&dir, &fno);    
         
         if (fr != FR_OK) {
-            printf("Failed to read directory %s during ls (%d)\n", dir_name, fr);
+            logln_error("Failed to read directory %s during ls (%d)\n", dir_name, fr);
             return;
         }
         
