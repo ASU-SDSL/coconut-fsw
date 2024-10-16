@@ -26,6 +26,7 @@ void read_file(const char* file_name, char* result_buffer, size_t size) {
     xQueueSendToFront(filesystem_queue, &new_file_operation, portMAX_DELAY);
 
     // TODO: Block here until file read is finished
+    xSemaphoreTake(filesystem_mutex, portMAX_DELAY);
 }
 
 void write_file(const char* file_name, char* text_to_write, size_t size, bool append_flag) {
@@ -80,7 +81,10 @@ void touch(const char* file_name) {
 }
 
 void cat(const char* file_name) {
-    // read_file(file_name, );
+    char* result_buffer = pvPortMalloc(CAT_SIZE_LIMIT);
+    read_file(file_name, result_buffer, CAT_SIZE_LIMIT);
+    logln_info("Read %d characters from %s: %s", CAT_SIZE_LIMIT, file_name, result_buffer);
+    vPortFree(result_buffer);
 }
 
 
@@ -275,6 +279,7 @@ void filesystem_task(void* unused_arg) {
             case READ:
                 _fread(received_operation.file_operation.read_op.file_name, received_operation.file_operation.read_op.read_buffer, 
                     received_operation.file_operation.read_op.size);
+                    xSemaphoreGive(filesystem_mutex);
                 break;
             case WRITE:
                 _fwrite(received_operation.file_operation.write_op.file_name, received_operation.file_operation.write_op.text_to_write, 

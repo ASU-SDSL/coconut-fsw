@@ -14,6 +14,7 @@
 #define EMPTY_QUEUE_WAIT_TIME portMAX_DELAY
 #define NULL_QUEUE_WAIT_TIME 100
 #define MRAM_DRIVE_NUMBER 0
+#define CAT_SIZE_LIMIT 128
 
 /* Types and Globals */
 typedef enum fs_operation_type {
@@ -27,7 +28,7 @@ typedef enum fs_operation_type {
 
 typedef struct read_operation {
     const char* file_name;
-    const char* read_buffer;
+    char* read_buffer;
     size_t size;
 } read_operation_t;
 
