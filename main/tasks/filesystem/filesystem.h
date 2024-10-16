@@ -87,7 +87,7 @@ void cat(const char* file_name);
 /* Internal Functions */
 size_t _mkfs();
 size_t _fread(const char *file_name, char* result_buffer, size_t size);
-size_t _fwrite(const char *file_name, const uint8_t *data, bool append_flag, size_t size);
+size_t _fwrite(const char *file_name, const uint8_t *data, size_t size, bool append_flag);
 void _fdelete(const char *file_name);
 void _flist(const char *dir_name);
 void _fmkdir(const char *dir_name);

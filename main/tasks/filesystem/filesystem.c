@@ -23,9 +23,9 @@ void read_file(const char* file_name, char* result_buffer, size_t size) {
     while(filesystem_queue == NULL) {
         vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
     }
-    xQueueSendToFront(filesystem_queue, &new_file_operation, portMAX_DELAY);
+    xQueueSendToBack(filesystem_queue, &new_file_operation, portMAX_DELAY);
 
-    // TODO: Block here until file read is finished
+    // Block here until file read is finished
     xSemaphoreTake(filesystem_mutex, portMAX_DELAY);
 }
 
@@ -83,7 +83,7 @@ void touch(const char* file_name) {
 void cat(const char* file_name) {
     char* result_buffer = pvPortMalloc(CAT_SIZE_LIMIT);
     read_file(file_name, result_buffer, CAT_SIZE_LIMIT);
-    logln_info("Read %d characters from %s: %s", CAT_SIZE_LIMIT, file_name, result_buffer);
+    logln_info("%s", result_buffer);
     vPortFree(result_buffer);
 }
 
@@ -96,7 +96,7 @@ size_t _mkfs() {
     return fr;
 }
 
-size_t _fwrite(const char* file_name, const uint8_t *data, bool append_flag, size_t size) {
+size_t _fwrite(const char* file_name, const uint8_t *data, size_t size, bool append_flag) {
     FRESULT fr;
     FIL fil;
 
@@ -258,6 +258,7 @@ void filesystem_task(void* unused_arg) {
 
     // init queue and other stuff
     filesystem_mutex = xSemaphoreCreateMutex();
+    xSemaphoreTake(filesystem_mutex, portMAX_DELAY);
     filesystem_queue = xQueueCreate(FILESYSTEM_QUEUE_LENGTH, sizeof(filesystem_queue_operations_t));
     if(filesystem_queue == NULL) {
         // TODO: Find a better solution to handling queue creation failure
@@ -279,11 +280,11 @@ void filesystem_task(void* unused_arg) {
             case READ:
                 _fread(received_operation.file_operation.read_op.file_name, received_operation.file_operation.read_op.read_buffer, 
                     received_operation.file_operation.read_op.size);
-                    xSemaphoreGive(filesystem_mutex);
+                xSemaphoreGive(filesystem_mutex);
                 break;
             case WRITE:
                 _fwrite(received_operation.file_operation.write_op.file_name, received_operation.file_operation.write_op.text_to_write, 
-                    received_operation.file_operation.write_op.size, 0);
+                    received_operation.file_operation.write_op.size, received_operation.file_operation.write_op.append_flag);
                 break;
             case LIST_DIRECTORY:
                 _flist(received_operation.file_operation.ls_op.directory_name);
