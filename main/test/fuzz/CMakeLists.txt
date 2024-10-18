@@ -1,20 +1,12 @@
 project ("coconut fuzzers")
 cmake_minimum_required (VERSION 3.14)
 
-# ====================  Define your project name (edit) ========================
 set(project_name "fuzzer")
 
 set(COMMAND_FUZZER_NAME "command_fuzzer")
-set(TEST_PROTO_CREATOR_NAME "test_proto_creator")
-
-find_package(Protobuf REQUIRED)
-
-# Import mutator
-add_subdirectory(./mutator command_proto_mutator)
 
 # Fuzzer binary
 add_executable(${COMMAND_FUZZER_NAME}
-    ${TEST_PROTO_SRC}
     command_fuzzer.cpp
 
     ${MAIN_DIRECTORY}/tasks/gse/gse.c
@@ -40,41 +32,15 @@ add_executable(${COMMAND_FUZZER_NAME}
     ${MAIN_DIRECTORY}/simulator/drivers/src/diskio.c
 )
 
-add_dependencies(${COMMAND_FUZZER_NAME} command_proto_mutator)
-
 target_compile_options(${COMMAND_FUZZER_NAME}
-    PRIVATE -g -O1 -fno-omit-frame-pointer 
+    PRIVATE -g -O1 -fsanitize=address -fno-omit-frame-pointer 
 )
 
 target_link_libraries(${COMMAND_FUZZER_NAME}
-    # PRIVATE -fsanitize=address
-    protobuf
+    PRIVATE -fsanitize=address
     ${LINK_LIBS}
 )
 
 target_include_directories(${COMMAND_FUZZER_NAME}
     ${INTERNAL_INCLUDE_DIRS}
-    ${Protobuf_INCLUDE_DIRS} 
-)
-
-# Testing binary
-add_executable(${TEST_PROTO_CREATOR_NAME}
-    ${TEST_PROTO_SRC} 
-    test_proto_creator.cpp
-)
-
-# target_compile_options(${TEST_PROTO_CREATOR_NAME}
-#     PRIVATE --afl-noopt # disable afl instrumentation for test binary
-# )
-
-add_dependencies(${TEST_PROTO_CREATOR_NAME} command_proto_mutator)
-
-target_link_libraries(${TEST_PROTO_CREATOR_NAME}
-    protobuf
-    command_proto_mutator
-)
-
-target_include_directories(${TEST_PROTO_CREATOR_NAME}
-    ${INTERNAL_INCLUDE_DIRS}
-    ${CMAKE_CURRENT_BINARY_DIR}
 )

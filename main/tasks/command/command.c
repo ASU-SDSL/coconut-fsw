@@ -46,14 +46,14 @@ void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t 
         case LIST_STEVE_TASKS:
             print_debug_exec_times();
             break;
-        case 0x69:
+        case 5:
             *((int*)0xDEADBEEF) = 0xDEADBEEF;
             break;
-        case FILE_LS:
-            if (payload_size < sizeof(file_ls_t)) break;
-            file_ls_t* ls_args = (file_ls_t*)payload_buf;
-            list_directory(ls_args->path);
-            break;
+        // case FILE_LS:
+        //     if (payload_size < sizeof(file_ls_t)) break;
+        //     file_ls_t* ls_args = (file_ls_t*)payload_buf;
+        //     list_directory(ls_args->path);
+        //     break;
         case FILE_MKDIR:
             if (payload_size < sizeof(file_mkdir_t)) break;
             file_mkdir_t* mkdir_args = (file_mkdir_t*)payload_buf;
@@ -102,12 +102,11 @@ void command_task(void* unused_arg) {
             command_byte_t command_byte = 0;
             xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
             
-            logln_info("Byte Received: 0x%hhx", command_byte);
-            logln_info("Checking Sync Byte: 0x%hhx", COMMAND_SYNC_BYTES[sync_index]);
+            // logln_info("Byte Received: 0x%hhx", command_byte);
 
             // check if current sync index byte matches
             uint8_t check_byte = COMMAND_SYNC_BYTES[sync_index];
-            logln_info("Comparing with Sync Byte %d: 0x%hhx", sync_index, check_byte);
+            // logln_info("Comparing with Sync Byte %d: 0x%hhx", sync_index, check_byte);
             if (command_byte != check_byte) {
                 // match unsuccessful
                 sync_index = 0;
@@ -122,7 +121,7 @@ void command_task(void* unused_arg) {
             sync_index += 1;
         }
         // We've succesfully received all sync bytes if we've reached here
-        logln_info("Received all sync bytes!");
+        // logln_info("Received all sync bytes!");
         // TODO: Add better error checks and handling here
         // Gather spacepacket header bytes
         uint8_t spacepacket_header_bytes[6];
