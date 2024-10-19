@@ -89,11 +89,12 @@ if [[ ${do_build} -eq 1 ]]; then
     uf2_path="${build_path}/main/COCONUTFSW.uf2"
 
     if [[ ${fuzzer_build} -eq 1 ]]; then
+	# use Release here because otherwise you have to include protobufd instead of protobuf
         export AFL_LLVM_THREADSAFE_INST=1
         cmake -S . -B ${build_path} \
             -D "CMAKE_C_COMPILER:FILEPATH=$(which afl-clang-fast)" \
             -D "CMAKE_CXX_COMPILER:FILEPATH=$(which afl-clang-fast++)" \
-            -D CMAKE_BUILD_TYPE:STRING="Debug" -DFUZZER:BOOL=ON
+            -D CMAKE_BUILD_TYPE:STRING="Release" -DFUZZER:BOOL=ON
     elif [[ ${simulator_build} -eq 1 ]]; then
         cmake -S . -B ${build_path} \
             -D "CMAKE_C_COMPILER:FILEPATH=$(which gcc)" \
