@@ -46,14 +46,11 @@ void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t 
         case LIST_STEVE_TASKS:
             print_debug_exec_times();
             break;
-        case 5:
-            *((int*)0xDEADBEEF) = 0xDEADBEEF;
+        case FILE_LS:
+            if (payload_size < sizeof(file_ls_t)) break;
+            file_ls_t* ls_args = (file_ls_t*)payload_buf;
+            list_directory(ls_args->path);
             break;
-        // case FILE_LS:
-        //     if (payload_size < sizeof(file_ls_t)) break;
-        //     file_ls_t* ls_args = (file_ls_t*)payload_buf;
-        //     list_directory(ls_args->path);
-        //     break;
         case FILE_MKDIR:
             if (payload_size < sizeof(file_mkdir_t)) break;
             file_mkdir_t* mkdir_args = (file_mkdir_t*)payload_buf;
