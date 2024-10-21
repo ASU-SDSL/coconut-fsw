@@ -312,95 +312,23 @@ void radio_task_cpp(){
         // receiving split into 2 different if statements, they can probably be combined 
         // but for now, split is better for testing
 
-        // receiving with RFM98
-        if(radio == &radioRFM && (cad_detected_RFM || operation_done_RFM)){
-            if(transmitting){ // radio was transmitting (interrupt signals finish)
-                transmitting = false; 
-                #if RADIO_LOGGING
-                logln_info("Done.\n");
-                #endif
-            }
-            if(receiving){ // radio was receiving (interrupt signals finish)
-                cad_detected_RFM = false;
-                operation_done_RFM = false; 
-                
-                size_t packet_size = radio->getPacketLength();
-                uint8_t packet[packet_size];
-
-                int packet_state = radio->readData(packet, packet_size);
-
-                if (packet_state == RADIOLIB_ERR_NONE)
-                {
-                    // parse out sync bytes and grab packet with header
-                    // create command.c function to read packet
-                    #if RADIO_LOGGING
-                    logln_info("Received packet: ");
-                    for(int i = 0; i < packet_size; i++){
-                        logln_info("%c", packet[i]);
-                    }
-                    logln_info("\n"); 
-                    #endif
-
-                    parseRebound(radio, packet, packet_size);                     
-                    
-                    // parse_radio_packet(packet, packet_size);
-                    // Check if command is to set output power of the radio
-                }
-                #if RADIO_LOGGING
-                else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
-                {
-                    logln_info("CRC Error!!\n");
-
-                }
-                else
-                {
-                    logln_info("Packet Reading failed\n");
-                }
-                #endif
-
-                receiving = false; 
-            }
-
-            if(!receiving && !transmitting && cad_detected_RFM) { // radio was scanning (interrupt signals CAD detected)
-                #if RADIO_LOGGING_CAD
-                logln_info("CAD Detected, starting receive... "); 
-                #endif
-                state = radio->startReceive(); 
-                receive_start_time = to_ms_since_boot(get_absolute_time()); 
-                #if RADIO_LOGGING_CAD
-                if(state == 0){
-                    logln_info("success\n"); 
-                }
-                else{
-                    logln_info("receive failed with code: %d\n", state); 
-                }
-                #endif
-
-                receiving = true; 
-            } 
-            
-            // restart channelScan - this definitely feels like it should be a continuous mode, but it's not
-            if(!receiving && !transmitting){
-                state = radio->startChannelScan();
-            }
-
-            // reset flags
-            cad_detected_RFM = false; 
-            operation_done_RFM = false; 
-        }
-
-        // receiving with SX1268
-        if(radio == &radioSX && general_flag_SX){
+        if(cad_detected_RFM || operation_done_RFM || general_flag_SX){
+            // clear flags 
             general_flag_SX = false;
+            cad_detected_RFM = false;
+            operation_done_RFM = false; 
 
+            // handle finished transmission
             if(transmitting){
                 transmitting = false; 
                 #if RADIO_LOGGING
                 logln_info("Done.\n"); 
-                #endif
+                #endif 
             }
-            else if(receiving){
 
+            // handle finished receive 
+            else if(receiving){
+                
                 size_t packet_size = radio->getPacketLength();
                 uint8_t packet[packet_size];
 
@@ -433,41 +361,222 @@ void radio_task_cpp(){
                 }
                 #endif
 
+                // clear receiving flag 
                 receiving = false; 
-            } else {
-                state = radioSX.getChannelScanResult(); 
-
-                if(state == RADIOLIB_LORA_DETECTED){
+            }
+            // handle other interrupts (CAD done)
+            // this is the main difference between the 2 modules 
+            else {
+                if(radio == &radioRFM && cad_detected_RFM){
                     #if RADIO_LOGGING_CAD
-                    logln_info("CAD Detected, starting receive... ");
+                    logln_info("CAD Detected, starting receive... "); 
                     #endif
-                    state = radio->startReceive();
+                    state = radio->startReceive(); 
+                    receive_start_time = to_ms_since_boot(get_absolute_time()); 
                     #if RADIO_LOGGING_CAD
                     if(state == 0){
-                        logln_info("success\n");
+                        logln_info("success\n"); 
                     }
-                    else {
-                        logln_info("SX scan failed with code: %d\n", state);
+                    else{
+                        logln_info("receive failed with code: %d\n", state); 
                     }
                     #endif
-                    receive_start_time = to_ms_since_boot(get_absolute_time());
-                    receiving = true; 
-                }
-                #if RADIO_LOGGING
-                else if (state == RADIOLIB_CHANNEL_FREE) {
-                    //logln_info("channel free\n"); 
-                }
-                else {
-                    logln_info("failed with code: %d\n", state); 
-                }
-                #endif
 
+                    receiving = true;
+                }
+                else { // radio is radioSX 
+                    state = radioSX.getChannelScanResult(); // not a PhysicalLayer function
+
+                    if(state == RADIOLIB_LORA_DETECTED){
+                        #if RADIO_LOGGING_CAD
+                        logln_info("CAD Detected, starting receive... ");
+                        #endif
+                        state = radio->startReceive();
+                        #if RADIO_LOGGING_CAD
+                        if(state == 0){
+                            logln_info("success\n");
+                        }
+                        else {
+                            logln_info("SX scan failed with code: %d\n", state);
+                        }
+                        #endif
+                        receive_start_time = to_ms_since_boot(get_absolute_time());
+                        receiving = true; 
+                    }
+                    #if RADIO_LOGGING
+                    else if (state == RADIOLIB_CHANNEL_FREE) {
+                        //logln_info("channel free\n"); 
+                    }
+                    else {
+                        logln_info("failed with code: %d\n", state); 
+                    }
+                    #endif
+                }
             }
 
-            if(!receiving && !transmitting){
+            if(!receiving && !transmitting) {
                 state = radio->startChannelScan(); 
             }
         }
+
+        // //-------------------------------------------------------------------------------
+        // // receiving with RFM98
+        // if(radio == &radioRFM && (cad_detected_RFM || operation_done_RFM)){
+        //     if(transmitting){ // radio was transmitting (interrupt signals finish)
+        //         transmitting = false; 
+        //         #if RADIO_LOGGING
+        //         logln_info("Done.\n");
+        //         #endif
+        //     }
+        //     if(receiving){ // radio was receiving (interrupt signals finish)
+        //         cad_detected_RFM = false;
+        //         operation_done_RFM = false; 
+                
+        //         size_t packet_size = radio->getPacketLength();
+        //         uint8_t packet[packet_size];
+
+        //         int packet_state = radio->readData(packet, packet_size);
+
+        //         if (packet_state == RADIOLIB_ERR_NONE)
+        //         {
+        //             // parse out sync bytes and grab packet with header
+        //             // create command.c function to read packet
+        //             #if RADIO_LOGGING
+        //             logln_info("Received packet: ");
+        //             for(int i = 0; i < packet_size; i++){
+        //                 logln_info("%c", packet[i]);
+        //             }
+        //             logln_info("\n"); 
+        //             #endif
+
+        //             parseRebound(radio, packet, packet_size);                     
+                    
+        //             // parse_radio_packet(packet, packet_size);
+        //             // Check if command is to set output power of the radio
+        //         }
+        //         #if RADIO_LOGGING
+        //         else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
+        //         {
+        //             logln_info("CRC Error!!\n");
+
+        //         }
+        //         else
+        //         {
+        //             logln_info("Packet Reading failed\n");
+        //         }
+        //         #endif
+
+        //         receiving = false; 
+        //     }
+
+        //     if(!receiving && !transmitting && cad_detected_RFM) { // radio was scanning (interrupt signals CAD detected)
+        //         #if RADIO_LOGGING_CAD
+        //         logln_info("CAD Detected, starting receive... "); 
+        //         #endif
+        //         state = radio->startReceive(); 
+        //         receive_start_time = to_ms_since_boot(get_absolute_time()); 
+        //         #if RADIO_LOGGING_CAD
+        //         if(state == 0){
+        //             logln_info("success\n"); 
+        //         }
+        //         else{
+        //             logln_info("receive failed with code: %d\n", state); 
+        //         }
+        //         #endif
+
+        //         receiving = true; 
+        //     } 
+            
+        //     // restart channelScan - this definitely feels like it should be a continuous mode, but it's not
+        //     if(!receiving && !transmitting){
+        //         state = radio->startChannelScan();
+        //     }
+
+        //     // reset flags
+        //     cad_detected_RFM = false; 
+        //     operation_done_RFM = false; 
+        // }
+
+        // // receiving with SX1268
+        // if(radio == &radioSX && general_flag_SX){
+        //     general_flag_SX = false;
+
+        //     if(transmitting){
+        //         transmitting = false; 
+        //         #if RADIO_LOGGING
+        //         logln_info("Done.\n"); 
+        //         #endif
+        //     }
+        //     else if(receiving){
+
+        //         size_t packet_size = radio->getPacketLength();
+        //         uint8_t packet[packet_size];
+
+        //         int packet_state = radio->readData(packet, packet_size);
+
+        //         if (packet_state == RADIOLIB_ERR_NONE)
+        //         {
+        //             // parse out sync bytes and grab packet with header
+        //             // create command.c function to read packet
+        //             #if RADIO_LOGGING
+        //             logln_info("Received packet: ");
+        //             for(int i = 0; i < packet_size; i++){
+        //                 logln_info("%c", packet[i]);
+        //             }
+        //             logln_info("\n"); 
+        //             #endif
+        //             //parse_radio_packet(packet, packet_size);
+        //             // Check if command is to set output power of the radio
+
+        //             parseRebound(radio, packet, packet_size); 
+        //         }
+        //         #if RADIO_LOGGING
+        //         else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
+        //         {
+        //             logln_info("CRC Error!!\n");
+        //         }
+        //         else
+        //         {
+        //             logln_info("Packet Reading failed\n");
+        //         }
+        //         #endif
+
+        //         receiving = false; 
+        //     } else {
+        //         state = radioSX.getChannelScanResult(); 
+
+        //         if(state == RADIOLIB_LORA_DETECTED){
+        //             #if RADIO_LOGGING_CAD
+        //             logln_info("CAD Detected, starting receive... ");
+        //             #endif
+        //             state = radio->startReceive();
+        //             #if RADIO_LOGGING_CAD
+        //             if(state == 0){
+        //                 logln_info("success\n");
+        //             }
+        //             else {
+        //                 logln_info("SX scan failed with code: %d\n", state);
+        //             }
+        //             #endif
+        //             receive_start_time = to_ms_since_boot(get_absolute_time());
+        //             receiving = true; 
+        //         }
+        //         #if RADIO_LOGGING
+        //         else if (state == RADIOLIB_CHANNEL_FREE) {
+        //             //logln_info("channel free\n"); 
+        //         }
+        //         else {
+        //             logln_info("failed with code: %d\n", state); 
+        //         }
+        //         #endif
+
+        //     }
+
+        //     if(!receiving && !transmitting){
+        //         state = radio->startChannelScan(); 
+        //     }
+        // }
+        // //----------------------------------------------------------------------------------------------
 
         if(!transmitting && !receiving && xQueueReceive(radio_queue, &rec, 0))
         {
