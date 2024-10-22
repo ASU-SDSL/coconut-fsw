@@ -174,12 +174,12 @@ void init_radio()
         }
         else {
             #if RADIO_LOGGING
-            logln_info("Errors RFM: %d SX: %d\n", radio_state_RFM, radio_state_SX);
+            printf("Errors RFM: %d SX: %d\n", radio_state_RFM, radio_state_SX);
             #endif 
         }
     }
     #if RADIO_LOGGING
-    logln_info("States --> RFM: %d SX: %d\n", radio_state_RFM, radio_state_SX);
+    printf("States --> RFM: %d SX: %d\n", radio_state_RFM, radio_state_SX);
     #endif
 
     int channel_scan_state = radio->startChannelScan();
@@ -187,14 +187,14 @@ void init_radio()
     if (channel_scan_state == RADIOLIB_ERR_NONE)
     {
         #if RADIO_LOGGING
-        logln_info("Success, scanning...\n");
+        printf("Success, scanning...\n");
         #endif
     }
     else
     {
         while (true){
             #if RADIO_LOGGING
-            logln_info("receive setup failed with code %d\n", channel_scan_state);
+            printf("receive setup failed with code %d\n", channel_scan_state);
             #endif
         }
     }
@@ -241,7 +241,7 @@ void parseRebound(PhysicalLayer* radio, uint8_t* packet, uint8_t packet_size){
     switch(code){
         case 0:{
             #if RADIO_LOGGING
-            logln_info("Returning stats\n"); 
+            printf("Returning stats\n"); 
             #endif
             float rssi = radio->getRSSI();
             float snr = radio->getSNR(); 
@@ -287,7 +287,7 @@ void parseRebound(PhysicalLayer* radio, uint8_t* packet, uint8_t packet_size){
  */
 void radio_task_cpp(){
     #if RADIO_LOGGING
-    logln_info("Starting Radio Task\n"); 
+    printf("Starting Radio Task\n"); 
     #endif
     init_radio(); 
 
@@ -303,7 +303,7 @@ void radio_task_cpp(){
         // stop radio from getting stuck in receive mode
         if(receiving && abs((long long)(to_ms_since_boot(get_absolute_time()) - receive_start_time)) > RADIO_RECEIVE_TIMEOUT_MS){
             #if RADIO_LOGGING
-            logln_info("receive timeout\n"); 
+            printf("receive timeout\n"); 
             #endif
             receiving = false;
             radio->startChannelScan();
@@ -322,7 +322,7 @@ void radio_task_cpp(){
             if(transmitting){
                 transmitting = false; 
                 #if RADIO_LOGGING
-                logln_info("Done.\n"); 
+                printf("Done.\n"); 
                 #endif 
             }
 
@@ -339,11 +339,11 @@ void radio_task_cpp(){
                     // parse out sync bytes and grab packet with header
                     // create command.c function to read packet
                     #if RADIO_LOGGING
-                    logln_info("Received packet: ");
+                    printf("Received packet: ");
                     for(int i = 0; i < packet_size; i++){
-                        logln_info("%c", packet[i]);
+                        printf("%c", packet[i]);
                     }
-                    logln_info("\n"); 
+                    printf("\n"); 
                     #endif
                     //parse_radio_packet(packet, packet_size);
                     // Check if command is to set output power of the radio
@@ -353,11 +353,11 @@ void radio_task_cpp(){
                 #if RADIO_LOGGING
                 else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
                 {
-                    logln_info("CRC Error!!\n");
+                    printf("CRC Error!!\n");
                 }
                 else
                 {
-                    logln_info("Packet Reading failed\n");
+                    printf("Packet Reading failed\n");
                 }
                 #endif
 
@@ -369,16 +369,16 @@ void radio_task_cpp(){
             else {
                 if(radio == &radioRFM && cad_detected_RFM){
                     #if RADIO_LOGGING_CAD
-                    logln_info("CAD Detected, starting receive... "); 
+                    printf("CAD Detected, starting receive... "); 
                     #endif
                     state = radio->startReceive(); 
                     receive_start_time = to_ms_since_boot(get_absolute_time()); 
                     #if RADIO_LOGGING_CAD
                     if(state == 0){
-                        logln_info("success\n"); 
+                        printf("success\n"); 
                     }
                     else{
-                        logln_info("receive failed with code: %d\n", state); 
+                        printf("receive failed with code: %d\n", state); 
                     }
                     #endif
 
@@ -389,15 +389,15 @@ void radio_task_cpp(){
 
                     if(state == RADIOLIB_LORA_DETECTED){
                         #if RADIO_LOGGING_CAD
-                        logln_info("CAD Detected, starting receive... ");
+                        printf("CAD Detected, starting receive... ");
                         #endif
                         state = radio->startReceive();
                         #if RADIO_LOGGING_CAD
                         if(state == 0){
-                            logln_info("success\n");
+                            printf("success\n");
                         }
                         else {
-                            logln_info("SX scan failed with code: %d\n", state);
+                            printf("SX scan failed with code: %d\n", state);
                         }
                         #endif
                         receive_start_time = to_ms_since_boot(get_absolute_time());
@@ -405,10 +405,10 @@ void radio_task_cpp(){
                     }
                     #if RADIO_LOGGING
                     else if (state == RADIOLIB_CHANNEL_FREE) {
-                        //logln_info("channel free\n"); 
+                        //printf("channel free\n"); 
                     }
                     else {
-                        logln_info("failed with code: %d\n", state); 
+                        printf("failed with code: %d\n", state); 
                     }
                     #endif
                 }
@@ -425,7 +425,7 @@ void radio_task_cpp(){
         //     if(transmitting){ // radio was transmitting (interrupt signals finish)
         //         transmitting = false; 
         //         #if RADIO_LOGGING
-        //         logln_info("Done.\n");
+        //         printf("Done.\n");
         //         #endif
         //     }
         //     if(receiving){ // radio was receiving (interrupt signals finish)
@@ -442,11 +442,11 @@ void radio_task_cpp(){
         //             // parse out sync bytes and grab packet with header
         //             // create command.c function to read packet
         //             #if RADIO_LOGGING
-        //             logln_info("Received packet: ");
+        //             printf("Received packet: ");
         //             for(int i = 0; i < packet_size; i++){
-        //                 logln_info("%c", packet[i]);
+        //                 printf("%c", packet[i]);
         //             }
-        //             logln_info("\n"); 
+        //             printf("\n"); 
         //             #endif
 
         //             parseRebound(radio, packet, packet_size);                     
@@ -457,12 +457,12 @@ void radio_task_cpp(){
         //         #if RADIO_LOGGING
         //         else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
         //         {
-        //             logln_info("CRC Error!!\n");
+        //             printf("CRC Error!!\n");
 
         //         }
         //         else
         //         {
-        //             logln_info("Packet Reading failed\n");
+        //             printf("Packet Reading failed\n");
         //         }
         //         #endif
 
@@ -471,16 +471,16 @@ void radio_task_cpp(){
 
         //     if(!receiving && !transmitting && cad_detected_RFM) { // radio was scanning (interrupt signals CAD detected)
         //         #if RADIO_LOGGING_CAD
-        //         logln_info("CAD Detected, starting receive... "); 
+        //         printf("CAD Detected, starting receive... "); 
         //         #endif
         //         state = radio->startReceive(); 
         //         receive_start_time = to_ms_since_boot(get_absolute_time()); 
         //         #if RADIO_LOGGING_CAD
         //         if(state == 0){
-        //             logln_info("success\n"); 
+        //             printf("success\n"); 
         //         }
         //         else{
-        //             logln_info("receive failed with code: %d\n", state); 
+        //             printf("receive failed with code: %d\n", state); 
         //         }
         //         #endif
 
@@ -504,7 +504,7 @@ void radio_task_cpp(){
         //     if(transmitting){
         //         transmitting = false; 
         //         #if RADIO_LOGGING
-        //         logln_info("Done.\n"); 
+        //         printf("Done.\n"); 
         //         #endif
         //     }
         //     else if(receiving){
@@ -519,11 +519,11 @@ void radio_task_cpp(){
         //             // parse out sync bytes and grab packet with header
         //             // create command.c function to read packet
         //             #if RADIO_LOGGING
-        //             logln_info("Received packet: ");
+        //             printf("Received packet: ");
         //             for(int i = 0; i < packet_size; i++){
-        //                 logln_info("%c", packet[i]);
+        //                 printf("%c", packet[i]);
         //             }
-        //             logln_info("\n"); 
+        //             printf("\n"); 
         //             #endif
         //             //parse_radio_packet(packet, packet_size);
         //             // Check if command is to set output power of the radio
@@ -533,11 +533,11 @@ void radio_task_cpp(){
         //         #if RADIO_LOGGING
         //         else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
         //         {
-        //             logln_info("CRC Error!!\n");
+        //             printf("CRC Error!!\n");
         //         }
         //         else
         //         {
-        //             logln_info("Packet Reading failed\n");
+        //             printf("Packet Reading failed\n");
         //         }
         //         #endif
 
@@ -547,15 +547,15 @@ void radio_task_cpp(){
 
         //         if(state == RADIOLIB_LORA_DETECTED){
         //             #if RADIO_LOGGING_CAD
-        //             logln_info("CAD Detected, starting receive... ");
+        //             printf("CAD Detected, starting receive... ");
         //             #endif
         //             state = radio->startReceive();
         //             #if RADIO_LOGGING_CAD
         //             if(state == 0){
-        //                 logln_info("success\n");
+        //                 printf("success\n");
         //             }
         //             else {
-        //                 logln_info("SX scan failed with code: %d\n", state);
+        //                 printf("SX scan failed with code: %d\n", state);
         //             }
         //             #endif
         //             receive_start_time = to_ms_since_boot(get_absolute_time());
@@ -563,10 +563,10 @@ void radio_task_cpp(){
         //         }
         //         #if RADIO_LOGGING
         //         else if (state == RADIOLIB_CHANNEL_FREE) {
-        //             //logln_info("channel free\n"); 
+        //             //printf("channel free\n"); 
         //         }
         //         else {
-        //             logln_info("failed with code: %d\n", state); 
+        //             printf("failed with code: %d\n", state); 
         //         }
         //         #endif
 
@@ -583,7 +583,7 @@ void radio_task_cpp(){
             switch (rec.operation_type) {
                 case TRANSMIT:
                     #if RADIO_LOGGING
-                    logln_info("transmitting...\n");
+                    printf("transmitting...\n");
                     #endif
                     radio->startTransmit(rec.data_buffer, rec.data_size);
                     transmitting = true;
@@ -598,7 +598,7 @@ void radio_task_cpp(){
                 case ENABLE_RFM98:
                     if(radio == &radioRFM) break;
                     #if RADIO_LOGGING
-                    logln_info("attempting to swap to RFM98...\n");
+                    printf("attempting to swap to RFM98...\n");
                     #endif
                     radio_state_RFM = radioRFM.begin(); 
                     if(radio_state_RFM == 0){
@@ -610,18 +610,18 @@ void radio_task_cpp(){
                         radioRFM.setDio1Action(radio_cad_detected_RFM, GPIO_IRQ_EDGE_RISE); 
                         radio->startChannelScan(); 
                         #if RADIO_LOGGING
-                        logln_info("success\n"); 
+                        printf("success\n"); 
                         #endif
                         // vPortFree(rec.data_buffer); 
                     }
                     else {
                         #if RADIO_LOGGING
-                        logln_info("RFM is not connected\n"); 
+                        printf("RFM is not connected\n"); 
                         #endif
                         radio_state_SX = radioSX.begin(434.0, 125.0, 9, 7, 18, 2, 8, 0.0, false);
                         if(radio_state_SX != 0){
                             #if RADIO_LOGGING
-                            logln_info("switch back to SX1268 failed with code: %d\n", radio_state_SX);
+                            printf("switch back to SX1268 failed with code: %d\n", radio_state_SX);
                             #endif
                         }
                         else {
@@ -635,7 +635,7 @@ void radio_task_cpp(){
                 case ENABLE_SX1268:
                     if(radio == &radioSX) break;
                     #if RADIO_LOGGING
-                    logln_info("attempting swap to SX1268...\n"); 
+                    printf("attempting swap to SX1268...\n"); 
                     #endif
                     radio_state_SX = radioSX.begin(434.0, 125.0, 9, 7, 18, 2, 8, 0.0, false);
                     if(radio_state_SX == 0){
@@ -647,18 +647,18 @@ void radio_task_cpp(){
                         radioSX.setDio1Action(radio_general_flag_SX);
                         radioSX.startChannelScan(); 
                         #if RADIO_LOGGING
-                        logln_info("success\n"); 
+                        printf("success\n"); 
                         #endif
                         // vPortFree(rec.data_buffer); 
                     }
                     else{
                         #if RADIO_LOGGING
-                        logln_info("SX is not connected\n"); 
+                        printf("SX is not connected\n"); 
                         #endif
                         radio_state_RFM = radioRFM.begin(); 
                         if(radio_state_RFM != 0){
                             #if RADIO_LOGGING
-                            logln_info("switch back failed with code: %d\n", radio_state_RFM);
+                            printf("switch back failed with code: %d\n", radio_state_RFM);
                             #endif
                         }
                         else {
