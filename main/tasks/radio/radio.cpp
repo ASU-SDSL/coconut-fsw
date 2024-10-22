@@ -313,11 +313,6 @@ void radio_task_cpp(){
         // but for now, split is better for testing
 
         if(cad_detected_RFM || operation_done_RFM || general_flag_SX){
-            // clear flags 
-            general_flag_SX = false;
-            cad_detected_RFM = false;
-            operation_done_RFM = false; 
-
             // handle finished transmission
             if(transmitting){
                 transmitting = false; 
@@ -384,7 +379,7 @@ void radio_task_cpp(){
 
                     receiving = true;
                 }
-                else { // radio is radioSX 
+                else if(radio == &radioSX) { // radio is radioSX 
                     state = radioSX.getChannelScanResult(); // not a PhysicalLayer function
 
                     if(state == RADIOLIB_LORA_DETECTED){
@@ -417,6 +412,11 @@ void radio_task_cpp(){
             if(!receiving && !transmitting) {
                 state = radio->startChannelScan(); 
             }
+
+            // clear flags 
+            general_flag_SX = false;
+            cad_detected_RFM = false;
+            operation_done_RFM = false; 
         }
 
         // //-------------------------------------------------------------------------------
