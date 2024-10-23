@@ -33,10 +33,11 @@ void read_file(const char* file_name, char* result_buffer, size_t size) {
 
 void write_file(const char* file_name, char* text_to_write, size_t size, bool append_flag) {
     if (strlen(file_name)+1 > MAX_PATH_SIZE) return;
+    if (size > MAX_WRITE_CONTENTS_SIZE) return;
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = WRITE;
     strncpy(new_file_operation.file_operation.write_op.file_name, file_name, MAX_PATH_SIZE);
-    memcpy(new_file_operation.file_operation.write_op.text_to_write, text_to_write, MIN(MAX_WRITE_CONTENTS_SIZE, size));
+    memcpy(new_file_operation.file_operation.write_op.text_to_write, text_to_write, size);
     new_file_operation.file_operation.write_op.size = size;
     new_file_operation.file_operation.write_op.append_flag = append_flag;
 
