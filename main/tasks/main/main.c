@@ -35,7 +35,7 @@ int main() {
     
     BaseType_t telemetry_task_status = xTaskCreate(telemetry_task,
                                         "TELEMETRY",
-                                        256,
+                                        1024,
                                         NULL,
                                         1,
                                         NULL);
@@ -52,7 +52,7 @@ int main() {
 
     BaseType_t filesystem_task_status = xTaskCreate(filesystem_task,
                                         "FILESYSTEM",
-                                        512,
+                                        1024,
                                         NULL,
                                         1,
                                         NULL);

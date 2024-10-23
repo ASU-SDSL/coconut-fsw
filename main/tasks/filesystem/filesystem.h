@@ -16,6 +16,9 @@
 #define MRAM_DRIVE_NUMBER 0
 #define CAT_SIZE_LIMIT 128
 
+#define MAX_PATH_SIZE 0x100
+#define MAX_WRITE_CONTENTS_SIZE 0x100
+
 /* Types and Globals */
 typedef enum fs_operation_type {
     MAKE_FILESYSTEM,
@@ -27,28 +30,28 @@ typedef enum fs_operation_type {
 } fs_operation_type_t;
 
 typedef struct read_operation {
-    const char* file_name;
+    const char file_name[MAX_PATH_SIZE];
     char* read_buffer;
     size_t size;
 } read_operation_t;
 
 typedef struct write_operation {
-    const char* file_name;
-    char* text_to_write;
+    const char file_name[MAX_PATH_SIZE];
+    char text_to_write[MAX_WRITE_CONTENTS_SIZE];
     size_t size;
     bool append_flag;
 } write_operation_t;
 
 typedef struct list_directory_operation {
-    const char* directory_name;
+    const char directory_name[MAX_PATH_SIZE];
 } list_directory_operation_t;
 
 typedef struct delete_operation {
-    const char* file_name;
+    const char file_name[MAX_PATH_SIZE];
 } delete_operation_t;
 
 typedef struct make_directory_operation {
-    const char* directory_name;
+    const char* directory_name[MAX_PATH_SIZE];
 } make_directory_operation_t;
 
 typedef union file_operation_union{
@@ -62,7 +65,6 @@ typedef union file_operation_union{
 typedef struct filesystem_queue_operations {
     fs_operation_type_t operation_type;
     file_operation_union_t file_operation;
-    
 } filesystem_queue_operations_t;
 
 typedef enum mounting_options {
