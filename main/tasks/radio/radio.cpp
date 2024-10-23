@@ -273,9 +273,15 @@ void parseRebound(PhysicalLayer* radio, uint8_t* packet, uint8_t packet_size){
             break; 
         }
         case 2:
+            #if RADIO_LOGGING
+                printf("attempting to switch to RFM98\n"); 
+            #endif
             radio_set_module(operation_type_t::ENABLE_RFM98);
             break;
         case 3:
+            #if RADIO_LOGGING 
+                printf("attempting to switch to SX1268\n"); 
+            #endif 
             radio_set_module(operation_type_t::ENABLE_SX1268);
             break;
         
@@ -392,7 +398,7 @@ void radio_task_cpp(){
                             printf("success\n");
                         }
                         else {
-                            printf("SX scan failed with code: %d\n", state);
+                            printf("SX start receive failed with code: %d\n", state);
                         }
                         #endif
                         receive_start_time = to_ms_since_boot(get_absolute_time());
@@ -403,7 +409,7 @@ void radio_task_cpp(){
                         //printf("channel free\n"); 
                     }
                     else {
-                        printf("failed with code: %d\n", state); 
+                        printf("SX scan failed with code: %d\n", state); 
                     }
                     #endif
                 }
