@@ -14,9 +14,11 @@ void make_filesystem() {
 // this function takes in a buffer as a parameter to store the result from the read
 // the caller is responsible for allocating memory for this buffer and freeing the memory
 void read_file(const char* file_name, char* result_buffer, size_t size) {
+    if (strlen(file_name)+1 > MAX_PATH_SIZE) return;
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = READ;
-    new_file_operation.file_operation.read_op.file_name = file_name;
+    strncpy(new_file_operation.file_operation.read_op.file_name, file_name, MAX_PATH_SIZE);
+
     new_file_operation.file_operation.read_op.read_buffer = result_buffer;
     new_file_operation.file_operation.read_op.size = size;
 
@@ -30,10 +32,11 @@ void read_file(const char* file_name, char* result_buffer, size_t size) {
 }
 
 void write_file(const char* file_name, char* text_to_write, size_t size, bool append_flag) {
+    if (strlen(file_name)+1 > MAX_PATH_SIZE) return;
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = WRITE;
-    new_file_operation.file_operation.write_op.file_name = file_name;
-    new_file_operation.file_operation.write_op.text_to_write = text_to_write;
+    strncpy(new_file_operation.file_operation.write_op.file_name, file_name, MAX_PATH_SIZE);
+    memcpy(new_file_operation.file_operation.write_op.text_to_write, text_to_write, MIN(MAX_WRITE_CONTENTS_SIZE, size));
     new_file_operation.file_operation.write_op.size = size;
     new_file_operation.file_operation.write_op.append_flag = append_flag;
 
@@ -44,9 +47,10 @@ void write_file(const char* file_name, char* text_to_write, size_t size, bool ap
 }
 
 void list_directory(const char* directory_name) {
+    if (strlen(directory_name)+1 > MAX_PATH_SIZE) return;
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = LIST_DIRECTORY;
-    new_file_operation.file_operation.ls_op.directory_name = directory_name;
+    strncpy(new_file_operation.file_operation.ls_op.directory_name, directory_name, MAX_PATH_SIZE);
     
     while(filesystem_queue == NULL) {
         vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
@@ -55,9 +59,10 @@ void list_directory(const char* directory_name) {
 }
 
 void delete_file(const char* file_name) {
+    if (strlen(file_name)+1 > MAX_PATH_SIZE) return;
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = DELETE;
-    new_file_operation.file_operation.delete_op.file_name = file_name;
+    strncpy(new_file_operation.file_operation.delete_op.file_name, file_name, MAX_PATH_SIZE);
 
     while(filesystem_queue == NULL) {
         vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
@@ -66,9 +71,10 @@ void delete_file(const char* file_name) {
 }
 
 void make_directory(const char* directory_name) {
+    if (strlen(directory_name)+1 > MAX_PATH_SIZE) return;
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = MAKE_DIRECTORY;
-    new_file_operation.file_operation.mkdir_op.directory_name = directory_name;
+    strncpy(new_file_operation.file_operation.mkdir_op.directory_name, directory_name, MAX_PATH_SIZE);
 
     while(filesystem_queue == NULL) {
         vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
@@ -105,14 +111,15 @@ size_t _fwrite(const char* file_name, const uint8_t *data, size_t size, bool app
 
     // Open file for writing 
     fr = f_open(&fil, file_name, file_open_flags);
-    while (fr != FR_OK) {
+    if (fr != FR_OK) {
         logln_info("ERROR: Could not open file before write: %s (%d)\n", file_name, fr);
+        return 0;
     }
 
     // Write something to file
     size_t bytes_written;
     fr = f_write(&fil, data, size, &bytes_written);
-    if (fr) {
+    if (fr != FR_OK) {
         logln_error("Could not write to file: %s (%d)\n", file_name, fr);
         f_close(&fil);
         return 0;
@@ -120,8 +127,9 @@ size_t _fwrite(const char* file_name, const uint8_t *data, size_t size, bool app
 
     // Close file
     fr = f_close(&fil);
-    while (fr != FR_OK) {
+    if (fr != FR_OK) {
         logln_info("Could not close file after write: %s (%d)\n", file_name, fr);
+        return 0;
     }
     return bytes_written;
 }
