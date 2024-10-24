@@ -18,6 +18,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/tasks/steve/steve.c
     ${MAIN_DIRECTORY}/tasks/command/command.c
     ${MAIN_DIRECTORY}/tasks/telemetry/telemetry.c
+    ${MAIN_DIRECTORY}/tasks/filesystem/filesystem.c
 
     ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
 
@@ -29,17 +30,23 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/eps.c
     ${MAIN_DIRECTORY}/drivers/src/rtc.c
     ${MAIN_DIRECTORY}/drivers/src/mag.c
-
-    ${MAIN_DIRECTORY}/drivers/src/hw_config.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
 )
 
-# build radio and sd only if simulator is disabled
-IF (NOT SIMULATOR) 
+# build certain files depending on simulator build
+IF (SIMULATOR) 
     set (SOURCES
         ${SOURCES}
+        ${MAIN_DIRECTORY}/simulator/drivers/src/diskio.c
+        ${MAIN_DIRECTORY}/simulator/drivers/src/usb_uart.c
+    )
+ELSE()
+    set (SOURCES
+        ${SOURCES}
+        ${MAIN_DIRECTORY}/drivers/src/diskio.c
         ${MAIN_DIRECTORY}/tasks/radio/radio.cpp
-        ${MAIN_DIRECTORY}/drivers/src/hw_config.c
+        ${MAIN_DIRECTORY}/drivers/src/mram.c
+        ${MAIN_DIRECTORY}/drivers/src/usb_uart.c
     )
 ENDIF()
 
@@ -47,9 +54,11 @@ add_executable(${PROJECT_NAME}
     ${SOURCES}
 )
 
+
 ## Link to built libraries
 set (LINK_LIBS
     FreeRTOS
+    FatFs
 )
 
 IF (SIMULATOR)
@@ -69,7 +78,6 @@ ELSE()
         hardware_adc
         hardware_i2c
         RadioLib
-        FatFs_SPI
     )
 ENDIF()
 
@@ -85,6 +93,7 @@ set (INTERNAL_INCLUDE_DIRS
     PRIVATE ${MAIN_DIRECTORY}/tasks/steve
     PRIVATE ${MAIN_DIRECTORY}/tasks/steve/jobs
     PRIVATE ${MAIN_DIRECTORY}/tasks/telemetry
+    PRIVATE ${MAIN_DIRECTORY}/tasks/filesystem
 
     PRIVATE ${MAIN_DIRECTORY}/utilities/include
     PRIVATE ${MAIN_DIRECTORY}/drivers/include
@@ -92,10 +101,11 @@ set (INTERNAL_INCLUDE_DIRS
 
 
 IF (SIMULATOR)
-    # enable fake picolib for simulator
+    # enable stubs for simulator
     set(INTERNAL_INCLUDE_DIRS
         ${INTERNAL_INCLUDE_DIRS}
         PRIVATE ${MAIN_DIRECTORY}/simulator/pico-sdk
+        PRIVATE ${MAIN_DIRECTORY}/simulator/tasks/radio
     )
 ELSE() 
     # enable radio module if not simulator
@@ -119,3 +129,60 @@ IF (NOT SIMULATOR)
     pico_add_extra_outputs(${PROJECT_NAME})
 ENDIF()
 
+# Build fuzzers
+IF (SIMULATOR)
+
+    # Build options for simulator
+    
+    # target_compile_options(${PROJECT_NAME}
+    #     PRIVATE -g -fsanitize=address
+    # )
+
+    # target_link_libraries(${PROJECT_NAME}
+    #     PRIVATE -fsanitize=address
+    #     ${LINK_LIBS}
+    # )
+
+    # Command Fuzzer
+    set(COMMAND_FUZZER_NAME "command_fuzzer")
+
+    add_executable(${COMMAND_FUZZER_NAME}
+        ${MAIN_DIRECTORY}/test/fuzz/command_fuzzer.cpp
+
+        ${MAIN_DIRECTORY}/tasks/gse/gse.c
+        ${MAIN_DIRECTORY}/tasks/steve/steve.c
+        ${MAIN_DIRECTORY}/tasks/command/command.c
+        ${MAIN_DIRECTORY}/tasks/telemetry/telemetry.c
+        ${MAIN_DIRECTORY}/tasks/filesystem/filesystem.c
+
+        ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
+
+        ${MAIN_DIRECTORY}/utilities/src/ccsds.c
+        ${MAIN_DIRECTORY}/utilities/src/log.c
+        ${MAIN_DIRECTORY}/utilities/src/timing.c
+
+        ${MAIN_DIRECTORY}/drivers/src/i2c.c
+        ${MAIN_DIRECTORY}/drivers/src/eps.c
+        ${MAIN_DIRECTORY}/drivers/src/rtc.c
+        ${MAIN_DIRECTORY}/drivers/src/mag.c
+        ${MAIN_DIRECTORY}/drivers/src/usb_uart.c
+
+        ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
+
+        ${MAIN_DIRECTORY}/simulator/drivers/src/diskio.c
+    )
+
+    target_compile_options(${COMMAND_FUZZER_NAME}
+        PRIVATE -g -fsanitize=fuzzer
+    )
+
+    target_link_libraries(${COMMAND_FUZZER_NAME}
+        PRIVATE -fsanitize=fuzzer
+        ${LINK_LIBS}
+    )
+
+    target_include_directories(${COMMAND_FUZZER_NAME}
+        ${INTERNAL_INCLUDE_DIRS}
+    )
+
+ENDIF()

@@ -1,4 +1,4 @@
-# Command
+# COMMAND
 The command task.
 
 

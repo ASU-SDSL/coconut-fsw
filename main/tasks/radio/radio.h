@@ -33,14 +33,14 @@
 
 QueueHandle_t radio_queue;
 
-typedef enum operation_type {
+typedef enum radio_operation_type {
     TRANSMIT,
     SET_OUTPUT_POWER,
     ENABLE_RFM98,
     ENABLE_SX1268
-} operation_type_t;
+} radio_operation_type_t;
 typedef struct radio_queue_operations {
-    operation_type_t operation_type; // What opeartion to do, could be transmit, set power, etc
+    radio_operation_type_t operation_type; // What opeartion to do, could be transmit, set power, etc
     uint8_t* data_buffer; // If extra data is needed for this operation, like if the operation is transmit then the data will be the buffer to transmit
     size_t data_size; // Could be 0
 } radio_queue_operations_t;
@@ -53,7 +53,7 @@ extern "C"
     void radio_task(void *unused_arg);
     void radio_queue_message(char *buffer, size_t size);
     void radio_set_transmit_power(uint8_t output_power); 
-    void radio_set_module(operation_type_t op); 
+    void radio_set_module(radio_operation_type_t op); 
 #ifdef __cplusplus
 }
 #endif

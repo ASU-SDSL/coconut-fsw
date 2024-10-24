@@ -19,15 +19,6 @@ int main() {
                                         1,
                                         NULL);            
          
-#ifndef SIMULATOR
-    // BaseType_t radio_task_status = xTaskCreate(radio_task, 
-    //                                      "RADIO", 
-    //                                      256, 
-    //                                      NULL, 
-    //                                      1,
-    //                                      NULL);
-#endif
-
     BaseType_t scheduler_task_status = xTaskCreate(steve_task, 
                                         "STEVE", 
                                         512, 
@@ -44,19 +35,28 @@ int main() {
     
     BaseType_t telemetry_task_status = xTaskCreate(telemetry_task,
                                         "TELEMETRY",
-                                        256,
+                                        1024,
                                         NULL,
                                         1,
                                         NULL);
 
-//#ifndef GSE_ENABLED
-    BaseType_t radio_task_status = xTaskCreate(radio_task, 
-                                         "RADIO", 
-                                         256, 
-                                         NULL, 
-                                         1,
-                                         NULL);
-//#endif
+#ifndef SIMULATOR
+    // BaseType_t radio_task_status = xTaskCreate(radio_task, 
+    //                                      "RADIO", 
+    //                                      256, 
+    //                                      NULL, 
+    //                                      1,
+    //                                      NULL);
+#endif
+
+
+    BaseType_t filesystem_task_status = xTaskCreate(filesystem_task,
+                                        "FILESYSTEM",
+                                        1024,
+                                        NULL,
+                                        1,
+                                        NULL);
+                                        
     // Start the FreeRTOS scheduler
     vTaskStartScheduler();
     
