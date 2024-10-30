@@ -33,6 +33,7 @@ typedef struct read_operation {
     const char file_name[MAX_PATH_SIZE];
     char* read_buffer;
     size_t size;
+    size_t *out_size;
 } read_operation_t;
 
 typedef struct write_operation {
@@ -78,7 +79,7 @@ QueueHandle_t filesystem_queue;
 
 /* User Functions */
 void make_filesystem();
-void read_file(const char* file_name, char* result_buffer, size_t size);
+size_t read_file(const char* file_name, char* result_buffer, size_t size);
 void write_file(const char* file_name, char* text_to_write, size_t size, bool append_flag);
 void list_directory(const char* directory_name);
 void delete_file(const char* file_name);
