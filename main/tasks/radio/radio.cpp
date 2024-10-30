@@ -276,13 +276,13 @@ void parseRebound(PhysicalLayer* radio, uint8_t* packet, uint8_t packet_size){
             #if RADIO_LOGGING
                 printf("attempting to switch to RFM98\n"); 
             #endif
-            radio_set_module(operation_type_t::ENABLE_RFM98);
+            radio_set_module(radio_operation_type_t::ENABLE_RFM98);
             break;
         case 3:
             #if RADIO_LOGGING 
                 printf("attempting to switch to SX1268\n"); 
             #endif 
-            radio_set_module(operation_type_t::ENABLE_SX1268);
+            radio_set_module(radio_operation_type_t::ENABLE_SX1268);
             break;
         
     }    
