@@ -2,7 +2,6 @@
 
 #include "pico/stdlib.h"
 
-#include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 
@@ -10,6 +9,7 @@
 #include <task.h>
 #include <semphr.h>
 #include "log.h"
+#include "state.h"
 #include "mag.h"
 #include "eps.h"
 #include "timing.h"
