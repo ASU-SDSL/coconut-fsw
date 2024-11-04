@@ -92,14 +92,15 @@ int getVShunt(i2c_inst_t *i2c,
 }
 
 int getVShunt_raw(i2c_inst_t *i2c,
+				const uint8_t addr,
 				uint16_t *output_buf) {
 	uint8_t buf[2];
 
-	if(i2c_read_from_register(i2c, INA219_ADDR, REG_SHUNT, buf, 2)){
+	if(i2c_read_from_register(i2c, addr, REG_SHUNT, buf, 2)){
 		return 1;
 	}
 
-	uint16_t bufComb = buf[0];
+	uint16_t bufComb = buf[0]; 
 	bufComb = (bufComb << 8) | buf[1];
 
 	// printf("raw vshunt: %d\n", bufComb);

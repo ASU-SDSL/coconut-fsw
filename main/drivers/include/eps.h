@@ -9,6 +9,13 @@
 
 #include "i2c.h"
 
+#define INA1_ADDR 0x42
+#define INA2_ADDR 0x43
+#define INA3_ADDR 0x7
+#define INA4_ADDR 0x3
+#define INA5_ADDR 0x6
+
+
 /*
 * See https://github.com/adafruit/Adafruit_INA219/ for reference
 */
@@ -43,6 +50,7 @@ int getVShunt(i2c_inst_t *i2c,
 * Returns status of operation (0 = success)
 */
 int getVShunt_raw(i2c_inst_t *i2c,
+                    const uint8_t addr,
                     uint16_t *output_buf);
 
 /*

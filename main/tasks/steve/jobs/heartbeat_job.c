@@ -30,16 +30,70 @@ void heartbeat_telemetry_job(void* unused) {
     if(!rtc_get_temp(i2c, &rtcTemp)) payload.rtcTemp = rtcTemp;
     else payload.rtcTemp = rtcTemp; 
 
-    // EPS data
-    uint16_t epsbuf;
-    if(!getVShunt_raw(i2c, &epsbuf)) payload.eps_shunt = epsbuf;
-    else payload.eps_shunt = UINT16_MAX;
-    if(!getVBus_raw(i2c, &epsbuf)) payload.eps_vbus = epsbuf;
-    else payload.eps_vbus = UINT16_MAX; 
-    if(!getCurrent_raw(i2c, &epsbuf)) payload.eps_current = epsbuf; 
-    else payload.eps_current = UINT16_MAX; 
-    if(!getPower_raw(i2c, &epsbuf)) payload.eps_power = epsbuf;
-    else payload.eps_power = UINT16_MAX; 
+    FILE *f;
+    f = fopen("x.log", "a+");
+    if (f == NULL) { /* Something is wrong   */}
+    fprintf(f, "I'm logging something ...\n");
+
+    // INA900 data
+    uint16_t ina900buf;
+    if(!getVShunt_raw(i2c, INA1_ADDR, &ina900buf)) payload.ina900_shunt = ina900buf;
+    else payload.ina900_shunt = UINT16_MAX;
+    if(!getVBus_raw(i2c, INA1_ADDR, &ina900buf)) payload.ina900_vbus = ina900buf;
+    else payload.ina900_vbus = UINT16_MAX; 
+    if(!getCurrent_raw(i2c, INA1_ADDR, &ina900buf)) payload.ina900_current = ina900buf; 
+    else payload.ina900_current = UINT16_MAX; 
+    if(!getPower_raw(i2c, INA1_ADDR, &ina900buf)) payload.ina900_power = ina900buf;
+    else payload.ina900_power = UINT16_MAX; 
+
+    logln_info("INA1 shunt: %ld", payload.ina900_shunt);
+    logln_info("INA1 vbus: %ld", payload.ina900_vbus);
+    logln_info("INA1 current: %ld", payload.ina900_current);
+    logln_info("INA1 power: %ld", payload.ina900_power);
+
+    // INA1000 data
+    uint16_t ina1000buf;
+    if(!getVShunt_raw(i2c, INA2_ADDR, &ina1000buf)) payload.ina1000_shunt = ina1000buf;
+    else payload.ina1000_shunt = UINT16_MAX;
+    if(!getVBus_raw(i2c, INA2_ADDR, &ina1000buf)) payload.ina1000_vbus = ina1000buf;
+    else payload.ina1000_vbus = UINT16_MAX; 
+    if(!getCurrent_raw(i2c, INA2_ADDR, &ina1000buf)) payload.ina1000_current = ina1000buf; 
+    else payload.ina1000_current = UINT16_MAX; 
+    if(!getPower_raw(i2c, INA2_ADDR, &ina1000buf)) payload.ina1000_power = ina1000buf;
+    else payload.ina1000_power = UINT16_MAX; 
+
+    // INA1100 data
+    uint16_t ina1100buf;
+    if(!getVShunt_raw(i2c, INA3_ADDR, &ina1100buf)) payload.ina1100_shunt = ina1100buf;
+    else payload.ina1100_shunt = UINT16_MAX;
+    if(!getVBus_raw(i2c, INA3_ADDR, &ina1100buf)) payload.ina1100_vbus = ina1100buf;
+    else payload.ina1100_vbus = UINT16_MAX; 
+    if(!getCurrent_raw(i2c, INA3_ADDR, &ina1100buf)) payload.ina1100_current = ina1100buf; 
+    else payload.ina1100_current = UINT16_MAX; 
+    if(!getPower_raw(i2c, INA3_ADDR, &ina1100buf)) payload.ina1100_power = ina1100buf;
+    else payload.ina1100_power = UINT16_MAX; 
+
+    // INA1200 data
+    uint16_t ina1200buf;
+    if(!getVShunt_raw(i2c, INA4_ADDR, &ina1200buf)) payload.ina1200_shunt = ina1200buf;
+    else payload.ina1200_shunt = UINT16_MAX;
+    if(!getVBus_raw(i2c, INA4_ADDR, &ina1200buf)) payload.ina1200_vbus = ina1200buf;
+    else payload.ina1200_vbus = UINT16_MAX; 
+    if(!getCurrent_raw(i2c, INA4_ADDR, &ina1200buf)) payload.ina1200_current = ina1200buf; 
+    else payload.ina1200_current = UINT16_MAX; 
+    if(!getPower_raw(i2c, INA4_ADDR, &ina1200buf)) payload.ina1200_power = ina1200buf;
+    else payload.ina1200_power = UINT16_MAX; 
+
+    // INA1300 data
+    uint16_t ina1300buf;
+    if(!getVShunt_raw(i2c, INA5_ADDR, &ina1300buf)) payload.ina1300_shunt = ina1300buf;
+    else payload.ina1300_shunt = UINT16_MAX;
+    if(!getVBus_raw(i2c, INA5_ADDR, &ina1300buf)) payload.ina1300_vbus = ina1300buf;
+    else payload.ina1300_vbus = UINT16_MAX; 
+    if(!getCurrent_raw(i2c, INA5_ADDR, &ina1300buf)) payload.ina1300_current = ina1300buf; 
+    else payload.ina1300_current = UINT16_MAX; 
+    if(!getPower_raw(i2c, INA5_ADDR, &ina1300buf)) payload.ina1300_power = ina1300buf;
+    else payload.ina1300_power = UINT16_MAX;
 
     // Mag data
     int16_t magbuf; 
