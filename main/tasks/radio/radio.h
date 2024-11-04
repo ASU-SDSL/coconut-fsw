@@ -18,7 +18,7 @@
 #define RADIO_RFM_NRST_PIN 22
 #define RADIO_RFM_DIO1_PIN 26
 
-// pinout for on pcb
+// // pinout for on pcb
 // #define RADIO_SX_NSS_PIN 5
 // #define RADIO_SX_DIO1_PIN 22
 // #define RADIO_SX_NRST_PIN 24

@@ -61,6 +61,7 @@
  */
 #define RADIO_STATE_NO_ATTEMPT 1 
 #define RADIO_RECEIVE_TIMEOUT_MS 1000
+#define RADIO_TRANSMIT_TIMEOUT_MS 2000
 
 PicoHal *picoHal = new PicoHal(spi0, PICO_DEFAULT_SPI_TX_PIN, PICO_DEFAULT_SPI_RX_PIN, PICO_DEFAULT_SPI_SCK_PIN);
 // Add interupt pin
@@ -195,6 +196,7 @@ void init_radio()
         while (true){
             #if RADIO_LOGGING
             printf("receive setup failed with code %d\n", channel_scan_state);
+            sleep_ms(1000); 
             #endif
         }
     }
@@ -303,15 +305,22 @@ void radio_task_cpp(){
     bool receiving = false; 
     bool transmitting = false; 
     int state = 0; 
-    unsigned long receive_start_time = to_ms_since_boot(get_absolute_time());
+    unsigned long operation_start_time = to_ms_since_boot(get_absolute_time());
 
     while(true){
         // stop radio from getting stuck in receive mode
-        if(receiving && abs((long long)(to_ms_since_boot(get_absolute_time()) - receive_start_time)) > RADIO_RECEIVE_TIMEOUT_MS){
+        if(receiving && abs((long long)(to_ms_since_boot(get_absolute_time()) - operation_start_time)) > RADIO_RECEIVE_TIMEOUT_MS){
             #if RADIO_LOGGING
             printf("receive timeout\n"); 
             #endif
             receiving = false;
+            radio->startChannelScan();
+        }
+        if(transmitting && abs((long long)(to_ms_since_boot(get_absolute_time()) - operation_start_time)) > RADIO_TRANSMIT_TIMEOUT_MS){
+            #if RADIO_LOGGING
+            printf("transmit timeout\n"); 
+            #endif
+            transmitting = false;
             radio->startChannelScan();
         }
 
@@ -373,7 +382,7 @@ void radio_task_cpp(){
                     printf("CAD Detected, starting receive... "); 
                     #endif
                     state = radio->startReceive(); 
-                    receive_start_time = to_ms_since_boot(get_absolute_time()); 
+                    operation_start_time = to_ms_since_boot(get_absolute_time()); 
                     #if RADIO_LOGGING_CAD
                     if(state == 0){
                         printf("success\n"); 
@@ -401,7 +410,7 @@ void radio_task_cpp(){
                             printf("SX start receive failed with code: %d\n", state);
                         }
                         #endif
-                        receive_start_time = to_ms_since_boot(get_absolute_time());
+                        operation_start_time = to_ms_since_boot(get_absolute_time());
                         receiving = true; 
                     }
                     #if RADIO_LOGGING
@@ -591,7 +600,13 @@ void radio_task_cpp(){
                     #if RADIO_LOGGING
                     printf("transmitting...\n");
                     #endif
-                    radio->startTransmit(rec.data_buffer, rec.data_size);
+                    state = radio->startTransmit(rec.data_buffer, rec.data_size);
+                    #if RADIO_LOGGING
+                    if(state != 0){
+                        printf("Transmit failed with code: %d\n", state); 
+                    }
+                    #endif
+                    operation_start_time = to_ms_since_boot(get_absolute_time()); 
                     transmitting = true;
                     vPortFree(rec.data_buffer);
                     break;
