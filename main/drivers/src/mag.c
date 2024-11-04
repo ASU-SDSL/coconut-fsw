@@ -169,8 +169,8 @@ int mag_test(){
     for(int i = 0; i < 10; i++){
 
         int16_t magbuf; 
-        printf("Status: %d\n", get_mag_status(i2c));
-        printf("Status (raw): %02x\n", get_mag_status(i2c));
+        // printf("Status: %d\n", get_mag_status(i2c));
+        // printf("Status (raw): %02x\n", get_mag_status(i2c));
 
         if(!mag_get_x(i2c, &magbuf)) {
             printf("X output: %d\n", magbuf);

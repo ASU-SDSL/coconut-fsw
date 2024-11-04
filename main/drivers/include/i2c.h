@@ -3,7 +3,6 @@
 #include "hardware/i2c.h"
 #include "hardware/gpio.h"
 
-#include <stdio.h>
 #include <stdint.h>
 
 #define I2CSpeed 100000 // Default of 100k

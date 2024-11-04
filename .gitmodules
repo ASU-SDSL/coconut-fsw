@@ -1,18 +1,15 @@
-[submodule ".deps/FreeRTOS-Kernel"]
-	path = .deps/FreeRTOS-Kernel
-	url = https://github.com/FreeRTOS/FreeRTOS-Kernel
-[submodule "deps/FreeRTOS-Kernel"]
+[submodule "lib/FreeRTOS-Kernel"]
 	path = lib/FreeRTOS-Kernel
 	url = https://github.com/FreeRTOS/FreeRTOS-Kernel
-[submodule "deps/spacepacket"]
+[submodule "lib/spacepacket"]
 	path = lib/spacepacket
 	url = https://github.com/yuasatakayuki/CCSDSLibrary
-[submodule "deps/RadioLib"]
+[submodule "lib/RadioLib"]
 	path = lib/RadioLib
 	url = https://github.com/jgromes/RadioLib
-[submodule "deps/no-OS-FatFS-SD-SPI-RPi-Pico"]
-	path = lib/no-OS-FatFS-SD-SPI-RPi-Pico
-	url = https://github.com/carlk3/no-OS-FatFS-SD-SPI-RPi-Pico
+[submodule "lib/fatfs"]
+	path = lib/fatfs
+	url = https://github.com/ASU-SDSL/fatfs.git
 [submodule "lib/pico-sdk"]
 	path = lib/pico-sdk
 	url = https://github.com/ASU-SDSL/pico-sdk
