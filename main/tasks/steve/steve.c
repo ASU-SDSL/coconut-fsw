@@ -217,6 +217,7 @@ void initialize_steve() {
 void steve_task(void* unused_arg) {
     // Setup STEVE jobs and state
     initialize_steve();
+
     // Run main task loop
     while (true) {
         // Take mutex
