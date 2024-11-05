@@ -4,7 +4,7 @@
 void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
     heartbeat_telemetry_t payload;
-
+/*
     // State data
     payload.state = (uint8_t)g_payload_state;
     payload.uptime = (uint64_t)get_uptime();
@@ -28,12 +28,6 @@ void heartbeat_telemetry_job(void* unused) {
     else payload.year = UINT8_MAX;
     float rtcTemp = 5500;
     if(!rtc_get_temp(i2c, &rtcTemp)) payload.rtcTemp = rtcTemp;
-    else payload.rtcTemp = rtcTemp; 
-
-    FILE *f;
-    f = fopen("x.log", "a+");
-    if (f == NULL) { /* Something is wrong   */}
-    fprintf(f, "I'm logging something ...\n");
 
     // INA900 data
     uint16_t ina900buf;
@@ -114,6 +108,7 @@ void heartbeat_telemetry_job(void* unused) {
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
 
     // Logging
-    iteration_counter += 1;
-    logln_info("Heartbeat %ld", iteration_counter);
+    iteration_counter += 1;*/
+    //logln_info("Heartbeat %ld", iteration_counter);
+    logln_info("TEST");
 }

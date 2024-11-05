@@ -68,6 +68,7 @@ int getVBus(i2c_inst_t *i2c,
 * Returns status of operation (0 = success)
 */
 int getVBus_raw(i2c_inst_t *i2c,
+                const uint8_t addr,
                 uint16_t *output_buf);
 
 /*
@@ -86,6 +87,7 @@ int getPower(i2c_inst_t *i2c,
 * Returns status of operation (0 = success)
 */
 int getPower_raw(i2c_inst_t *i2c,
+                    const uint8_t addr,
                     uint16_t *output_buf);
 
 /*
@@ -104,6 +106,7 @@ int getCurrent(i2c_inst_t *i2c,
 * Returns status of operation (0 = success)
 */
 int getCurrent_raw(i2c_inst_t *i2c,
+                    const uint8_t addr,
                     uint16_t *output_buf);
                         
 /*
