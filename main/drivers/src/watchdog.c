@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdint.h>
 #include "pico/stdlib.h"    //Include Pico SDK
 #include "watchdog.h"

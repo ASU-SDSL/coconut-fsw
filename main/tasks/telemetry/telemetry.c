@@ -23,7 +23,7 @@ void telemetry_task(void* unused_arg) {
     print_banner();
     while (true) {
         // Wait on a message in the queue
-        xQueueReceive(telemetry_queue, &telemetry, UART_QUEUE_CHECK_TIME);
+        xQueueReceive(telemetry_queue, &telemetry, TELEMETRY_CHECK_DELAY_MS);
         // Create spacepacket header
         ccsds_header_t header;
         // Fill spacepacket header
@@ -51,7 +51,7 @@ void telemetry_task(void* unused_arg) {
         gse_queue_message(payload_buffer, total_payload_size);
 
         // TODO: Send payload through radio
-        radio_queue_message(payload_buffer, total_payload_size);
+        //radio_queue_message(payload_buffer, total_payload_size);
         
         // Free buffers
         vPortFree(payload_buffer);

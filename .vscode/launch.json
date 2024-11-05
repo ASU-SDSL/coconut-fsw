@@ -22,11 +22,6 @@
                 "${workspaceRoot}/debug/rp2040.cfg"
             ],
             "runToEntryPoint": "main", 
-            // "preLaunchCommands": [
-            //     "monitor init",
-            //     "monitor reset init",
-            //     "monitor halt",
-            // ],
             "postLaunchCommands": [
                 "monitor arm semihosting enable",
             ],
@@ -46,6 +41,35 @@
                 ]
             },
             "showDevDebugOutput": "raw",
+        },
+        {
+            "name": "Coconut Simulator Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "buildsimulator",
+            "program": "${workspaceFolder}/build/Simulator/main/COCONUTFSW",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Disable SIGALRM handler in gdb",
+                    "text": "handle SIGALRM pass noprint"
+                }
+            ]
         },
     ]
 }

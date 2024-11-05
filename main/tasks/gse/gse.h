@@ -1,14 +1,14 @@
 #pragma once
 
-#include "pico/stdlib.h"
-#include "hardware/uart.h"
-#include "hardware/irq.h"
-#include "pico/stdio/driver.h"
+#include <string.h>
 
 #include "FreeRTOS.h"
 #include "queue.h"
 
+#include "usb_uart.h"
 #include "command.h"
+#include "rtc.h"
+#include "eps.h"
 #include "log.h"
 
 #define UART_MAX_QUEUE_ITEMS 64
@@ -21,10 +21,6 @@ typedef struct telemetry_queue_transmission {
     size_t payload_size;
 } telemetry_queue_transmission_t;
 
-QueueHandle_t uart0_queue;
-
 void gse_queue_message(char* buffer, size_t size);
-
-void uart_initialize(uart_inst_t* uart_instance, int tx_pin, int rx_pin, int irq);
 
 void gse_task();
