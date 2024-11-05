@@ -7,13 +7,16 @@ void heartbeat_telemetry_job(void* unused) {
 
     // State data
     payload.state = (uint8_t)g_payload_state;
-    payload.uptime = (uint64_t)get_uptime();
+    payload.uptime = (uint32_t)get_uptime();
+
+    logln_info("Uptime hex from struct: %#010x\n", payload.uptime);
+    logln_info("Uptime hex from func: %#050x\n", (uint32_t)get_uptime());
 
     // i2c instance
     i2c_inst_t *i2c = i2c0;
 
     // timestamp
-    uint8_t rtcbuf; 
+    uint8_t rtcbuf;
     if(!rtc_get_hour(i2c, &rtcbuf)) payload.hour = rtcbuf; 
     else payload.hour = UINT8_MAX;
     if(!rtc_get_minute(i2c, &rtcbuf)) payload.minute = rtcbuf; 
@@ -59,7 +62,13 @@ void heartbeat_telemetry_job(void* unused) {
     // Send it
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
 
+    uint8_t* ptr = (uint8_t*) &payload;
+    for(int i = 0; i < sizeof(payload); i++) {
+        log_gen("%02x", ptr[i]);
+    }
+    log_gen("\n");
+
     // Logging
     iteration_counter += 1;
-    logln_info("Heartbeat %ld", iteration_counter);
+    logln_info("Heartbeat %ld - uptime: %d", iteration_counter, (uint32_t)get_uptime());
 }
