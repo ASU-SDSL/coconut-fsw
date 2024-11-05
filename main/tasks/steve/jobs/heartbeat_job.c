@@ -4,7 +4,7 @@
 void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
     heartbeat_telemetry_t payload;
-/*
+
     // State data
     payload.state = (uint8_t)g_payload_state;
     payload.uptime = (uint64_t)get_uptime();
@@ -44,7 +44,7 @@ void heartbeat_telemetry_job(void* unused) {
     logln_info("INA1 vbus: %ld", payload.ina900_vbus);
     logln_info("INA1 current: %ld", payload.ina900_current);
     logln_info("INA1 power: %ld", payload.ina900_power);
-
+/*
     // INA1000 data
     uint16_t ina1000buf;
     if(!getVShunt_raw(i2c, INA2_ADDR, &ina1000buf)) payload.ina1000_shunt = ina1000buf;
