@@ -13,7 +13,7 @@ void heartbeat_telemetry_job(void* unused) {
     logln_info("Uptime hex from func: %#050x\n", (uint32_t)get_uptime());
 
     // i2c instance
-    i2c_inst_t *i2c = i2c0;
+    i2c_inst_t *i2c = i2c1;
 
     // timestamp
     uint8_t rtcbuf;

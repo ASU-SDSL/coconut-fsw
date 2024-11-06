@@ -2,6 +2,7 @@
 #include "hardware/i2c.h"
 #include "pico/stdlib.h"
 #include "i2c.h"
+#include "log.h"
 
 // RTC I2C address
 #define RTC_ADDR 0x68  // Replace with the correct RTC address
@@ -121,7 +122,9 @@ uint8_t rtc_get_minute(i2c_inst_t *i2c, uint8_t* output){
 
 // returns 0 on success
 uint8_t rtc_get_hour(i2c_inst_t *i2c, uint8_t* output){
+    logln_info("Here1");
     if(i2c_read_from_register(i2c, RTC_ADDR, RTC_HOURS_REG, output, 1)){
+        logln_info("err here"); 
         return 1;
     }
     if(*output & (0b1 << 6)){ // if bit 6 is high then read as 12h hour 
@@ -133,6 +136,7 @@ uint8_t rtc_get_hour(i2c_inst_t *i2c, uint8_t* output){
         *output = ((*output & 0b00001111) + (10 * (1 && (*output & 0b00010000)) + (20 * (1 && (*output & 0b00100000))))) % 24;
     }
 
+    logln_info("here");
     return 0; 
 }
 
