@@ -4,6 +4,20 @@ cmake_minimum_required(VERSION 3.14)
 set(BUILD_NUMBER "1")
 set(PROJECT_NAME "COCONUTFSW")
 
+# Read in password and hash it
+set(PASSWORD "COCONUT")
+set(PASSWORD_PATH ${CMAKE_CURRENT_LIST_DIR}/.password)
+if (EXISTS ${PASSWORD_PATH})
+    file(READ ${PASSWORD_PATH} PASSWORD)
+    message(STATUS "Found password \"${PASSWORD}\"")
+else()
+    # set default password if no password.txt exists
+    message(STATUS "No password found in ${PASSWORD_PATH}, using default password \"${PASSWORD}\"")
+endif ()
+execute_process(COMMAND bash "-c" "echo '${PASSWORD}' | sha256sum | head -c 64 | tr -d '\n'" OUTPUT_VARIABLE HASHED_PASSWORD)
+message(STATUS "SHA256 Hashed Password: \"${HASHED_PASSWORD}\"")
+add_definitions(-DCOMMAND_PASSWORD="${HASHED_PASSWORD}")
+
 # Add build options
 option(SIMULATOR "Enables simulator build" OFF)
 IF (SIMULATOR)
