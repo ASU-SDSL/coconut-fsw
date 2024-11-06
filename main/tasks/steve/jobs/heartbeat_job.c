@@ -9,9 +9,6 @@ void heartbeat_telemetry_job(void* unused) {
     payload.state = (uint8_t)g_payload_state;
     payload.uptime = (uint32_t)get_uptime();
 
-    logln_info("Uptime hex from struct: %#010x\n", payload.uptime);
-    logln_info("Uptime hex from func: %#050x\n", (uint32_t)get_uptime());
-
     // i2c instance
     i2c_inst_t *i2c = i2c1;
 
@@ -61,12 +58,6 @@ void heartbeat_telemetry_job(void* unused) {
 
     // Send it
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
-
-    uint8_t* ptr = (uint8_t*) &payload;
-    for(int i = 0; i < sizeof(payload); i++) {
-        log_gen("%02x", ptr[i]);
-    }
-    log_gen("\n");
 
     // Logging
     iteration_counter += 1;

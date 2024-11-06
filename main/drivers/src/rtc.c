@@ -91,8 +91,12 @@ uint8_t rtc_get_temp(i2c_inst_t *i2c, float* output) {
     // printf("Upper: 0x%x Lower 0x%x\n", tempUpper, tempLower);
     // printf("Upper: %d Lower %f\n", ((int)tempUpper), ((0.5) * (1 && (tempLower & 0b10000000)) + (0.25 * (1 && (tempLower & 0b010000000)))));
 
-    //      2'C integer        fixed point decimal 
-    *output = ((int)tempUpper) + ((0.5) * (1 && (tempLower & 0b10000000)) + (0.25 * (1 && (tempLower & 0b010000000))));
+    // Upper byte includes whole number, lower includes decimal
+    // source - https://github.com/NorthernWidget/DS3231/blob/095b6f760192c3e2359d8b6d14f03e096e584155/DS3231.cpp#L436
+    int formatted_temp = (int)(tempUpper << 8) | (tempLower & 0xC);
+    logln_info("\nTemp int: 0x%08x\n", formatted_temp);
+    *output = (float) formatted_temp / 256.0;
+    logln_info("\nTemp: %f - 0x%08x\n", *output, (uint32_t)*output);
 
     return 0;
 }
@@ -122,11 +126,7 @@ uint8_t rtc_get_minute(i2c_inst_t *i2c, uint8_t* output){
 
 // returns 0 on success
 uint8_t rtc_get_hour(i2c_inst_t *i2c, uint8_t* output){
-    logln_info("Here1");
-    if(i2c_read_from_register(i2c, RTC_ADDR, RTC_HOURS_REG, output, 1)){
-        logln_info("err here"); 
-        return 1;
-    }
+    if(i2c_read_from_register(i2c, RTC_ADDR, RTC_HOURS_REG, output, 1)){ return 1; }
     if(*output & (0b1 << 6)){ // if bit 6 is high then read as 12h hour 
                 //   ones place             add ten if ten bit              add 12 if am/pm bit is pm (1 is am)
         *output = ((*output & 0b00001111) + (10 * (1 && (*output & 0b00010000))) + (12 * (1 && ((*output) & 0b00100000)))) % 24;
@@ -136,7 +136,6 @@ uint8_t rtc_get_hour(i2c_inst_t *i2c, uint8_t* output){
         *output = ((*output & 0b00001111) + (10 * (1 && (*output & 0b00010000)) + (20 * (1 && (*output & 0b00100000))))) % 24;
     }
 
-    logln_info("here");
     return 0; 
 }
 
@@ -180,7 +179,7 @@ void rtc_test() {
     i2c_inst_t *i2c = i2c0;
 
     // Setup i2c
-    config_i2c0();
+    config_i2c1();
 
     // set time
     rtc_set_time(i2c, 20, 59, 0, 12, 31, 24);

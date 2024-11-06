@@ -2,7 +2,7 @@
 
 //Slave Address
 //static uint8_t SAD = 0x1E; Use if SDO/SA1 is connected to high
-static uint8_t SAD = 0x1C;
+static uint8_t SAD = 0x1E;
 
 //Registers
 static const uint8_t WHO_AM_I = 0x0F;
@@ -157,7 +157,7 @@ int mag_test(){
     i2c_inst_t *i2c = i2c0;
 
     // Setup i2c
-    config_i2c0();
+    config_i2c1();
 
     // config mag
     mag_config(i2c);

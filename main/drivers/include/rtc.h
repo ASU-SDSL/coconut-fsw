@@ -3,6 +3,8 @@
 #include "hardware/i2c.h"
 #include <stdint.h>
 
+// Module: DS3231 - datasheet: https://www.elecrow.com/download/DS3231.pdf?srsltid=AfmBOoqeXQdxPk0yC-QR_5l1YSoJ2DDCTgk_9zDA_0T4oqLn5cb0tx7o
+
 /**
  * Set the RTC's date and time, asumes 24h input. 
  * Returns 0 on success

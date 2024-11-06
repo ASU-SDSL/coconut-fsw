@@ -15,7 +15,7 @@
 /*
 * Configure i2c0 speed and pins
 */
-void config_i2c0();
+void config_i2c1();
 
 /* 
 * Write [reg] and [buf] to i2c device, [reg] is just inserted before [buf]

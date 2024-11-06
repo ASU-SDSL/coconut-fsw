@@ -1,10 +1,10 @@
 #include "i2c.h"
 #include "log.h"
 
-void config_i2c0() {
+void config_i2c1() {
    
     // Ports
-    i2c_init(i2c0, I2CSpeed);
+    i2c_init(i2c1, I2CSpeed);
 
 	// Set SCL and SDA to I2C0 pins defined in i2c.h
     gpio_set_function(I2C1_SDA_GPIO, GPIO_FUNC_I2C);
@@ -40,22 +40,13 @@ int i2c_read_from_register(	i2c_inst_t *i2c,
 							uint8_t *buf,
 							const uint8_t nbytes){
 
-	if (nbytes < 1) { 
-		logln_info("here5");
-		return 1;
-	}
+	if (nbytes < 1) { return 1; }
 
 	int bytes_written = i2c_write_timeout_us(i2c, addr, &reg, 1, true, I2CTimeout_us);
-	if (bytes_written != 1) { 
-		logln_info("here6");
-		return 1; 
-	} // return error
+	if (bytes_written != 1) { return 1; } // return error
 
 	int num_bytes_read = i2c_read_timeout_us(i2c, addr, buf, nbytes, false, I2CTimeout_us);
-	if (num_bytes_read != nbytes) { 
-		logln_info("here7");
-		return 1;
-	}
+	if (num_bytes_read != nbytes) { return 1; }
 
 	return 0; // no errors
 }
