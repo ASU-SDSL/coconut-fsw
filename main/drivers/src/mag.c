@@ -1,4 +1,5 @@
 #include "mag.h"
+#include "log.h"
 
 //Slave Address
 //static uint8_t SAD = 0x1E; Use if SDO/SA1 is connected to high
@@ -30,10 +31,7 @@ static const uint8_t INT_THIS_H = 0x33;
  * scale (for range of 4 gauss (default)) - divide xyz outputs by the scale to get 
  * readings in gauss
 */
-int SCALE = 6842; 
-
-// Not sure what this was for, should not be needed
-//uint i2c_init (i2c_inst_t *i2c, uint 100 * 1000) //initialization of i2c
+int SCALE = 6842;
 
 int mag_config(i2c_inst_t *i2c){
     int success = 0;
@@ -139,6 +137,7 @@ uint8_t mag_get_temp(i2c_inst_t *i2c, int16_t* output){ //Temperature output
     int16_t temp_out = 0; //(int) buf_low | ((int) buf_high << 8);
     temp_out = ((temp_out | buf_high) << 8) | buf_low;
     *output = temp_out;
+
     return 0; 
 }
 

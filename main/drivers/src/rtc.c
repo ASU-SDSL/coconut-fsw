@@ -94,9 +94,7 @@ uint8_t rtc_get_temp(i2c_inst_t *i2c, float* output) {
     // Upper byte includes whole number, lower includes decimal
     // source - https://github.com/NorthernWidget/DS3231/blob/095b6f760192c3e2359d8b6d14f03e096e584155/DS3231.cpp#L436
     int formatted_temp = (int)(tempUpper << 8) | (tempLower & 0xC);
-    logln_info("\nTemp int: 0x%08x\n", formatted_temp);
     *output = (float) formatted_temp / 256.0;
-    logln_info("\nTemp: %f - 0x%08x\n", *output, (uint32_t)*output);
 
     return 0;
 }

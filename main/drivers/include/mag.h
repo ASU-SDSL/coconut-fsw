@@ -8,6 +8,8 @@
 #include "log.h"
 #include "i2c.h"
 
+// Module: LIS3MDLTR
+
 /**
  * Configures the Magnetometer for High performance (xyz),
  * data rate of 155Hz, range +/- 4 gauss, and continuous-conversion

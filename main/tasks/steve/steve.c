@@ -220,6 +220,7 @@ void steve_task(void* unused_arg) {
 
     // Steve is the only task that uses i2c for now, so initialize it here - in future missions, we probably want to have a separate i2c task
     config_i2c1();
+    mag_config(i2c1);
 
     // Run main task loop
     while (true) {
