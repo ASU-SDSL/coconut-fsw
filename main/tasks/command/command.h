@@ -19,7 +19,7 @@
 #define COMMAND_MAX_QUEUE_ITEMS 0x200
 #define COMMAND_SYNC_BYTES "\x35\x2E\xF8\x53"
 
-#define PASSWORD_LENGTH 64U
+#define PASSWORD_LENGTH 8U
 
 // Command Structs and Types
 typedef enum command_apid {

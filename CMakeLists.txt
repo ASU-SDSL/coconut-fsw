@@ -14,9 +14,10 @@ else()
     # set default password if no password.txt exists
     message(STATUS "No password found in ${PASSWORD_PATH}, using default password \"${PASSWORD}\"")
 endif ()
-execute_process(COMMAND bash "-c" "echo '${PASSWORD}' | sha256sum | head -c 64 | tr -d '\n'" OUTPUT_VARIABLE HASHED_PASSWORD)
+# save first 8 bytes of hash to use as password
+execute_process(COMMAND bash "-c" "echo '${PASSWORD}' | sha256sum | head -c 16 | sed 's/../\\\\x&/g'" OUTPUT_VARIABLE HASHED_PASSWORD)
 message(STATUS "SHA256 Hashed Password: \"${HASHED_PASSWORD}\"")
-add_definitions(-DCOMMAND_PASSWORD="${HASHED_PASSWORD}")
+add_definitions("-DCOMMAND_PASSWORD=\"${HASHED_PASSWORD}\"")
 
 # Add build options
 option(SIMULATOR "Enables simulator build" OFF)
