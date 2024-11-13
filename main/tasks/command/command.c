@@ -33,6 +33,7 @@ void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t 
         case CHANGE_HEARTBEAT_TELEM_RATE:
             if (payload_size < sizeof(change_heartbeat_telem_rate_t)) break;
             change_heartbeat_telem_rate_t* heartbeat_tr_args = (change_heartbeat_telem_rate_t*)payload_buf;
+            if (check_password(heartbeat_tr_args->password) == false) break;
             edit_steve_job_recur_time(HEARTBEAT_JOB_NAME, heartbeat_tr_args->ms);
             break;
         case REQUEST_DOWNLINK_GROUNDNODE_DATA:
@@ -49,43 +50,60 @@ void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t 
         case FILE_LS:
             if (payload_size < sizeof(file_ls_t)) break;
             file_ls_t* ls_args = (file_ls_t*)payload_buf;
+            if (check_password(ls_args->password) == false) break;
             list_directory(ls_args->path);
             break;
         case FILE_MKDIR:
             if (payload_size < sizeof(file_mkdir_t)) break;
             file_mkdir_t* mkdir_args = (file_mkdir_t*)payload_buf;
+            if (check_password(mkdir_args->password) == false) break;
             make_directory(mkdir_args->path);
             break;
         case FILE_CAT:
             if (payload_size < sizeof(file_cat_t)) break;
             file_cat_t* cat_args = (file_cat_t*)payload_buf;
+            if (check_password(cat_args->password) == false) break;
             cat(cat_args->path);
             break;
         case FILE_DELETE: 
             if (payload_size < sizeof(file_delete_t)) break;
             file_delete_t* delete_args = (file_delete_t*)payload_buf;
+            if (check_password(delete_args->password) == false) break;
             delete_file(delete_args->path);
             break;
         case FILE_APPEND:
             if (payload_size < sizeof(file_append_t)) break;
             file_append_t* append_args = (file_append_t*)payload_buf;
+            if (check_password(append_args->password) == false) break;
             if (append_args->data_len > (payload_size - sizeof(file_append_t))) { break; }
             write_file(append_args->path, append_args->data, append_args->data_len, true);
             break;
         case FILE_TOUCH:
             if (payload_size < sizeof(file_touch_t)) break;
             file_touch_t* touch_args = (file_touch_t*)payload_buf;
+            if (check_password(touch_args->password) == false) break;
             touch(touch_args->path);
             break;
         case FILE_MKFS:
             if (payload_size < sizeof(file_mkfs_t)) break;
             file_mkfs_t* mkfs_args = (file_mkfs_t*)payload_buf;
-            if (mkfs_args->confirm != 1) { break; }
+            if (check_password(mkfs_args->password) == false) break;
+            if (mkfs_args->confirm != 1) break;
             make_filesystem();
             break;
         default:
             logln_error("Received command with unknown APID: %hu", header.apid);
     }
+}
+
+bool check_password(const char* password_buf) {
+    // Returns true if password_buf and COMMAND_PASSWORD match
+    // COMMAND_PASSWORD is defined in base dir CMakeLists.txt
+    bool password_match = memcmp(password_buf, COMMAND_PASSWORD, PASSWORD_LENGTH) == 0;
+    if (!password_match) {
+        logln_error("Failed to authenticate admin password!");
+    }
+    return password_match;
 }
 
 void command_task(void* unused_arg) {
