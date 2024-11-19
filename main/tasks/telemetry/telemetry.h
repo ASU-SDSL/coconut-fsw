@@ -35,8 +35,8 @@ typedef struct __attribute__((__packed__)) {
 } log_telemetry_t;
 
 typedef struct __attribute__((__packed__)) {
-    payload_state_t state;
-    TickType_t uptime;
+    uint8_t state;
+    uint32_t uptime;
     uint8_t hour;
     uint8_t minute;
     uint8_t second;

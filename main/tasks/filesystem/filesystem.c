@@ -13,14 +13,17 @@ void make_filesystem() {
 
 // this function takes in a buffer as a parameter to store the result from the read
 // the caller is responsible for allocating memory for this buffer and freeing the memory
-void read_file(const char* file_name, char* result_buffer, size_t size) {
-    if (strlen(file_name)+1 > MAX_PATH_SIZE) return;
+size_t read_file(const char* file_name, char* result_buffer, size_t size) {
+    if (strnlen(file_name, MAX_PATH_SIZE)+1 > MAX_PATH_SIZE) return 0;
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = READ;
     strncpy(new_file_operation.file_operation.read_op.file_name, file_name, MAX_PATH_SIZE);
 
+    size_t out_size = 0;
+
     new_file_operation.file_operation.read_op.read_buffer = result_buffer;
     new_file_operation.file_operation.read_op.size = size;
+    new_file_operation.file_operation.read_op.out_size = &out_size;
 
     while(filesystem_queue == NULL) {
         vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
@@ -29,10 +32,13 @@ void read_file(const char* file_name, char* result_buffer, size_t size) {
 
     // Block here until file read is finished
     xSemaphoreTake(filesystem_mutex, portMAX_DELAY);
+
+    // Return size
+    return out_size;
 }
 
 void write_file(const char* file_name, char* text_to_write, size_t size, bool append_flag) {
-    if (strlen(file_name)+1 > MAX_PATH_SIZE) return;
+    if (strnlen(file_name, MAX_PATH_SIZE)+1 > MAX_PATH_SIZE) return;
     if (size > MAX_WRITE_CONTENTS_SIZE) return;
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = WRITE;
@@ -48,7 +54,7 @@ void write_file(const char* file_name, char* text_to_write, size_t size, bool ap
 }
 
 void list_directory(const char* directory_name) {
-    if (strlen(directory_name)+1 > MAX_PATH_SIZE) return;
+    if (strnlen(directory_name, MAX_PATH_SIZE)+1 > MAX_PATH_SIZE) return;
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = LIST_DIRECTORY;
     strncpy(new_file_operation.file_operation.ls_op.directory_name, directory_name, MAX_PATH_SIZE);
@@ -60,7 +66,7 @@ void list_directory(const char* directory_name) {
 }
 
 void delete_file(const char* file_name) {
-    if (strlen(file_name)+1 > MAX_PATH_SIZE) return;
+    if (strnlen(file_name, MAX_PATH_SIZE)+1 > MAX_PATH_SIZE) return;
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = DELETE;
     strncpy(new_file_operation.file_operation.delete_op.file_name, file_name, MAX_PATH_SIZE);
@@ -72,7 +78,7 @@ void delete_file(const char* file_name) {
 }
 
 void make_directory(const char* directory_name) {
-    if (strlen(directory_name)+1 > MAX_PATH_SIZE) return;
+    if (strnlen(directory_name, MAX_PATH_SIZE)+1 > MAX_PATH_SIZE) return;
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = MAKE_DIRECTORY;
     strncpy(new_file_operation.file_operation.mkdir_op.directory_name, directory_name, MAX_PATH_SIZE);
@@ -89,8 +95,9 @@ void touch(const char* file_name) {
 
 void cat(const char* file_name) {
     char* result_buffer = pvPortMalloc(CAT_SIZE_LIMIT);
-    read_file(file_name, result_buffer, CAT_SIZE_LIMIT);
-    logln_info("%s", result_buffer);
+    size_t read_size = read_file(file_name, result_buffer, CAT_SIZE_LIMIT);
+    if (read_size == 0) return;
+    _write_log(result_buffer, read_size);
     vPortFree(result_buffer);
 }
 
@@ -286,11 +293,13 @@ void filesystem_task(void* unused_arg) {
             case MAKE_FILESYSTEM:
                 _mkfs();
                 break;
-            case READ:
-                _fread(received_operation.file_operation.read_op.file_name, received_operation.file_operation.read_op.read_buffer, 
-                    received_operation.file_operation.read_op.size);
+            case READ: {
+                size_t read_size = _fread(received_operation.file_operation.read_op.file_name, 
+                    received_operation.file_operation.read_op.read_buffer, received_operation.file_operation.read_op.size);
+                *received_operation.file_operation.read_op.out_size = read_size;
                 xSemaphoreGive(filesystem_mutex);
                 break;
+            }
             case WRITE:
                 _fwrite(received_operation.file_operation.write_op.file_name, received_operation.file_operation.write_op.text_to_write, 
                     received_operation.file_operation.write_op.size, received_operation.file_operation.write_op.append_flag);

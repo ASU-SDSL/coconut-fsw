@@ -7,13 +7,13 @@ void heartbeat_telemetry_job(void* unused) {
 
     // State data
     payload.state = (uint8_t)g_payload_state;
-    payload.uptime = (uint64_t)get_uptime();
+    payload.uptime = (uint32_t)get_uptime();
 
     // i2c instance
-    i2c_inst_t *i2c = i2c0;
+    i2c_inst_t *i2c = i2c1;
 
     // timestamp
-    uint8_t rtcbuf; 
+    uint8_t rtcbuf;
     if(!rtc_get_hour(i2c, &rtcbuf)) payload.hour = rtcbuf; 
     else payload.hour = UINT8_MAX;
     if(!rtc_get_minute(i2c, &rtcbuf)) payload.minute = rtcbuf; 
@@ -44,7 +44,7 @@ void heartbeat_telemetry_job(void* unused) {
     logln_info("INA1 vbus: %ld", payload.ina900_vbus);
     logln_info("INA1 current: %ld", payload.ina900_current);
     logln_info("INA1 power: %ld", payload.ina900_power);
-/*
+
     // INA1000 data
     uint16_t ina1000buf;
     if(!getVShunt_raw(i2c, INA2_ADDR, &ina1000buf)) payload.ina1000_shunt = ina1000buf;
@@ -108,7 +108,6 @@ void heartbeat_telemetry_job(void* unused) {
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
 
     // Logging
-    iteration_counter += 1;*/
-    //logln_info("Heartbeat %ld", iteration_counter);
-    logln_info("TEST");
+    iteration_counter += 1;
+    logln_info("Heartbeat %ld - uptime: %d", iteration_counter, (uint32_t)get_uptime());
 }
