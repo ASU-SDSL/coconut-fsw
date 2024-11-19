@@ -61,7 +61,7 @@
  */
 #define RADIO_STATE_NO_ATTEMPT 1 
 #define RADIO_RECEIVE_TIMEOUT_MS 1000
-#define RADIO_TRANSMIT_TIMEOUT_MS 2000
+#define RADIO_TRANSMIT_TIMEOUT_MS 10000
 
 PicoHal *picoHal = new PicoHal(spi0, PICO_DEFAULT_SPI_TX_PIN, PICO_DEFAULT_SPI_RX_PIN, PICO_DEFAULT_SPI_SCK_PIN);
 // Add interupt pin
@@ -158,7 +158,7 @@ void init_radio()
 
     // If the RFM is physically wired into the board it needs to call begin() before the SX1268
     // my current theory as to why is that it before begin() it is polluting the SPI line
-    radio_state_RFM = radioRFM.begin();  
+    radio_state_RFM = radioRFM.begin(434.0, 125.0, 9, 7, 18, -3, 8, 0);
 
     if(radio_state_RFM == 0){
         radioRFM.setDio0Action(radio_operation_done_RFM, GPIO_IRQ_EDGE_RISE);

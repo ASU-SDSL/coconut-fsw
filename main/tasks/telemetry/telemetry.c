@@ -48,7 +48,7 @@ void telemetry_task(void* unused_arg) {
         // Append payload to sync bytes and header
         memcpy(payload_buffer + header_size, telemetry.payload_buffer, telemetry.payload_size);
         // Send telemetry through UART
-        gse_queue_message(payload_buffer, total_payload_size);
+        //gse_queue_message(payload_buffer, total_payload_size);
 
         // TODO: Send payload through radio
         radio_queue_message(payload_buffer, total_payload_size);
