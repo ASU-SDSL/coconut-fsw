@@ -6,14 +6,14 @@ void heartbeat_telemetry_job(void* unused) {
     heartbeat_telemetry_t payload;
 
     // State data
-    payload.state = g_payload_state;
-    payload.uptime = get_uptime();
+    payload.state = (uint8_t)g_payload_state;
+    payload.uptime = (uint32_t)get_uptime();
 
     // i2c instance
-    i2c_inst_t *i2c = i2c0;
+    i2c_inst_t *i2c = i2c1;
 
     // timestamp
-    uint8_t rtcbuf; 
+    uint8_t rtcbuf;
     if(!rtc_get_hour(i2c, &rtcbuf)) payload.hour = rtcbuf; 
     else payload.hour = UINT8_MAX;
     if(!rtc_get_minute(i2c, &rtcbuf)) payload.minute = rtcbuf; 
@@ -61,5 +61,5 @@ void heartbeat_telemetry_job(void* unused) {
 
     // Logging
     iteration_counter += 1;
-    logln_info("Heartbeat %ld", iteration_counter);
+    logln_info("Heartbeat %ld - uptime: %d", iteration_counter, (uint32_t)get_uptime());
 }
