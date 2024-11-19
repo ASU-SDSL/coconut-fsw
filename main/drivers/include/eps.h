@@ -8,11 +8,12 @@
 
 #include "i2c.h"
 
-#define INA1_ADDR 0x42
-#define INA2_ADDR 0x43
-#define INA3_ADDR 0x7
-#define INA4_ADDR 0x3
-#define INA5_ADDR 0x6
+#define INA0_ADDR 0x40
+#define INA1_ADDR 0x41
+#define INA2_ADDR 0x42
+#define INA3_ADDR 0x43
+#define INA4_ADDR 0x44
+#define INA5_ADDR 0x45
 
 
 /*
