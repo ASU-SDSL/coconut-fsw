@@ -1,13 +1,14 @@
 #include "i2c.h"
+#include "log.h"
 
-void config_i2c0() {
+void config_i2c1() {
    
     // Ports
-    i2c_init(i2c0, I2CSpeed);
+    i2c_init(i2c1, I2CSpeed);
 
 	// Set SCL and SDA to I2C0 pins defined in i2c.h
-    gpio_set_function(I2C0_SDA_GPIO, GPIO_FUNC_I2C);
-    gpio_set_function(I2C0_SCL_GPIO, GPIO_FUNC_I2C);
+    gpio_set_function(I2C1_SDA_GPIO, GPIO_FUNC_I2C);
+    gpio_set_function(I2C1_SCL_GPIO, GPIO_FUNC_I2C);
     //bi_decl(bi_2pins_with_func(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C)); I don't think this is needed, just provides more info in the binary
 
 }

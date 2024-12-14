@@ -34,3 +34,11 @@ void _log(const char *str, ...) {
     vPortFree(packet);
     
 }
+
+
+void _write_log(const char *bytes, size_t size) {
+    log_telemetry_t packet;
+    memcpy(packet.str, bytes, size);
+    packet.size = size;
+    send_telemetry(LOG, (char*)&packet, sizeof(log_telemetry_t) + size);
+}

@@ -14,3 +14,4 @@ CMakeDoxyfile.in
 libFreeRTOS.a
 .vscode/c_cpp_properties.json
 .vscode/settings.json
+.password

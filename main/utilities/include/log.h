@@ -20,8 +20,9 @@ void print_banner();
 
 // Use these!
 
-#define logln(f_, ...) \
-    _log((f_), ##__VA_ARGS__); _log("\n");
+// Used for general printing to console
+#define log_gen(f_, ...) \
+    logln(f_, ##__VA_ARGS__);
 
 #define logln_info(f_, ...) \
     logln("[INFO] " f_, ##__VA_ARGS__);

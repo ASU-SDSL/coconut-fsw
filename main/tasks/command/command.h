@@ -4,6 +4,7 @@
 
 #include <string.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 #include <FreeRTOS.h>
 #include <task.h>
@@ -17,6 +18,8 @@
 
 #define COMMAND_MAX_QUEUE_ITEMS 0x200
 #define COMMAND_SYNC_BYTES "\x35\x2E\xF8\x53"
+
+#define PASSWORD_LENGTH 8U
 
 // Command Structs and Types
 typedef enum command_apid {
@@ -35,36 +38,44 @@ typedef enum command_apid {
 } command_apid_t;
 
 typedef struct __attribute__((__packed__)) {
+    char password[PASSWORD_LENGTH];
     uint32_t ms;
 } change_heartbeat_telem_rate_t;
 
 typedef struct __attribute__((__packed__)) {
+    char password[PASSWORD_LENGTH];
     char path[0x100];
 } file_ls_t;
 
 typedef struct __attribute__((__packed__)) {
+    char password[PASSWORD_LENGTH];
     char path[0x100];
 } file_mkdir_t;
 
 typedef struct __attribute__((__packed__)) {
+    char password[PASSWORD_LENGTH];
     char path[0x100];
 } file_cat_t;
 
 typedef struct __attribute__((__packed__)) {
+    char password[PASSWORD_LENGTH];
     char path[0x100];
 } file_delete_t;
 
 typedef struct __attribute__((__packed__)) {
+    char password[PASSWORD_LENGTH];
     char path[0x100];
     uint16_t data_len;
     uint8_t data[];
 } file_append_t;
 
 typedef struct __attribute__((__packed__)) {
+    char password[PASSWORD_LENGTH];
     char path[0x100];
 } file_touch_t;
 
 typedef struct __attribute__((__packed__)) {
+    char password[PASSWORD_LENGTH];
     uint8_t confirm;
 } file_mkfs_t;
 
@@ -80,6 +91,7 @@ void receive_command_bytes(uint8_t* packet, size_t packet_size);
 
 /* INTERNAL FUNCTIONS */
 void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t payload_size);
+bool check_password(const char* password_buf);
 
 // Main Task
 void command_task(void* unused_arg);

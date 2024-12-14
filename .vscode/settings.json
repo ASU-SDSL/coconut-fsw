@@ -5,6 +5,8 @@
         "mag.h": "c",
         "command.h": "c",
         "radio.h": "c",
-        "telemetry.h": "c"
+        "telemetry.h": "c",
+        "heartbeat_job.h": "c",
+        "log.h": "c"
     }
 }

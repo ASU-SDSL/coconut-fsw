@@ -1,3 +1,5 @@
+#! /bin/python3 -u
+
 from spacepackets.ccsds.spacepacket import SpacePacketHeader, PacketType
 import serial
 import sys
@@ -5,7 +7,7 @@ import sys
 # Initialize serial port
 # ttyUSB0 for cmd/tlm spacepackets bytes
 # ttyACM0 (usb-c) for logging messages
-ser = serial.Serial('/dev/ttyACM1', baudrate=115200)
+ser = serial.Serial('/dev/ttyACM0', baudrate=115200)
 
 # ## Create change telem rate payload
 # spacepacket_header = SpacePacketHeader(
@@ -26,8 +28,10 @@ ser = serial.Serial('/dev/ttyACM1', baudrate=115200)
 
 ### Touch file
 sync_bytes = b"\x35\x2E\xF8\x53"
-payload = b"/lol.txt" 
-payload += (b"\x00" * (0x101 - len(payload)))
+payload = b"\xe6\x2a\xfa\x31\x47\x75\xef\x95" # password
+path = b"/lol.txt"
+payload += path # path
+payload += (b"\x00" * (0x101 - len(path)))
 spacepacket_header = SpacePacketHeader(
     packet_type=PacketType.TC, apid=10, seq_count=0, data_len=len(payload)-1)
 header_bytes = spacepacket_header.pack()
@@ -36,8 +40,10 @@ ser.write(final_cmd)
 
 ### Ls file
 sync_bytes = b"\x35\x2E\xF8\x53"
-payload = b"/"
-payload += (b"\x00" * (0x101 - len(payload)))
+payload = b"\xe6\x2a\xfa\x31\x47\x75\xef\x95" # password
+path = b"/"
+payload += path # path
+payload += (b"\x00" * (0x101 - len(path)))
 spacepacket_header = SpacePacketHeader(
     packet_type=PacketType.TC, apid=5, seq_count=0, data_len=len(payload)-1)
 header_bytes = spacepacket_header.pack()
