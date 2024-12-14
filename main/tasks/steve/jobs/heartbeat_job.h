@@ -8,6 +8,7 @@
 #include "mag.h"
 #include "rtc.h"
 #include "vega_ant.h"
+#include "radio.h"
 
 #define HEARTBEAT_JOB_NAME "heartbeat_telemetry"
 #define HEARTBEAT_TELEMETRY_DEFAULT_INTERVAL 10

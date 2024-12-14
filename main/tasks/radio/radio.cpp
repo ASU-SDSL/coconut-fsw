@@ -68,6 +68,7 @@ PicoHal *picoHal = new PicoHal(spi0, PICO_DEFAULT_SPI_TX_PIN, PICO_DEFAULT_SPI_R
 RFM98 radioRFM = new Module(picoHal, RADIO_RFM_NSS_PIN, RADIO_RFM_DIO0_PIN, RADIO_RFM_NRST_PIN, RADIO_RFM_DIO1_PIN); //RADIOLIB_NC); // RFM98 is an alias for SX1278
 SX1268 radioSX = new Module(picoHal, RADIO_SX_NSS_PIN, RADIO_SX_DIO1_PIN, RADIO_SX_NRST_PIN, RADIO_SX_BUSY_PIN); 
 PhysicalLayer* radio = &radioSX;
+
 int radio_state_RFM = RADIO_STATE_NO_ATTEMPT; 
 int radio_state_SX = RADIO_STATE_NO_ATTEMPT; 
 
@@ -128,6 +129,15 @@ extern "C"
             vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS); 
         }
         xQueueSendToBack(radio_queue, &new_buffer, portMAX_DELAY); 
+    }
+    bool radio_which(){
+        return (radio == &radioRFM); 
+    }
+    uint16_t radio_get_RFM_state(){
+        return radio_state_RFM; 
+    }
+    uint16_t radio_get_SX_state(){
+        return radio_state_SX; 
     }
 #ifdef __cplusplus
 }

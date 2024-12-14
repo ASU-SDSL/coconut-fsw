@@ -73,6 +73,9 @@ extern "C"
     void radio_queue_message(char *buffer, size_t size);
     void radio_set_transmit_power(uint8_t output_power); 
     void radio_set_module(radio_operation_type_t op); 
+    bool radio_which(); 
+    uint16_t radio_get_RFM_state(); 
+    uint16_t radio_get_SX_state(); 
 #ifdef __cplusplus
 }
 #endif
