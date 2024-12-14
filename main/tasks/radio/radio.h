@@ -6,7 +6,6 @@
 #include "queue.h"
 #include <stdint.h>
 
-
 // pinout for on breadboard
 // #define RADIO_SX_NSS_PIN 28
 // #define RADIO_SX_DIO1_PIN 15
@@ -29,6 +28,16 @@
 #define RADIO_RFM_NRST_PIN 20
 #define RADIO_RFM_DIO1_PIN 29
 
+#define RADIO_FREQ 434.0
+#define RADIO_BW 125.0
+#define RADIO_SF 9
+#define RADIO_CR 7
+#define RADIO_SYNC_WORD 18
+#define RADIO_INITIAL_POWER 2
+#define RADIO_PREAMBLE_LEN 8
+#define RADIO_RFM_GAIN 0
+#define RADIO_SX_TXCO_VOLT 0.0
+#define RADIO_SX_USE_REG_LDO false
 
 #define RADIO_MAX_QUEUE_ITEMS 64
 
