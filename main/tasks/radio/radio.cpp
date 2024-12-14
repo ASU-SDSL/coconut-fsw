@@ -172,20 +172,42 @@ void radio_panic(){
             #if RADIO_LOGGING
             printf("Attempting to switch to RFM98...\n");
             #endif
+            // try to clean up if possible
+            radioSX.clearDio1Action(); 
+
+            // initialize RFM98
             radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, RADIO_INITIAL_POWER, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
             radio = &radioRFM;
+            if(radio_state_RFM == 0){
+                radioRFM.standby(); 
+                radioRFM.setDio0Action(radio_operation_done_RFM, GPIO_IRQ_EDGE_RISE);
+                radioRFM.setDio1Action(radio_cad_detected_RFM, GPIO_IRQ_EDGE_RISE); 
+                radio->startChannelScan(); 
+            }
+            
         } else {
             #if RADIO_LOGGING
-            printf("Attempting to switch to SX1268...");
+            printf("Attempting to switch to SX1268...\n");
             #endif
-            radio_state_SX = radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, RADIO_INITIAL_POWER, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+            // try to clean up if possible 
+            radioRFM.clearDio0Action();
+            radioRFM.clearDio1Action(); 
+
+            // initialize SX1268
+            radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, RADIO_INITIAL_POWER, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
             radio = &radioSX; 
+            if(radio_state_SX == 0){
+                radioSX.standby(); 
+                radioSX.setDio1Action(radio_general_flag_SX);
+                radio->startChannelScan(); 
+            }
         }
         sleep_ms(15000); // wait 15 seconds between tries 
     }
 
     #if RADIO_LOGGING
-    printf("Resolved.\n");
+    if(radio == &radioSX) printf("Resolved to SX1268.\n");
+    else printf("Resolved to RFM98.\n");
     #endif
 }
 
@@ -346,8 +368,6 @@ void radio_task_cpp(){
     unsigned long operation_start_time = to_ms_since_boot(get_absolute_time());
 
     while(true){
-        // check states
-        
 
         // stop radio from getting stuck in receive mode
         if(receiving && abs((long long)(to_ms_since_boot(get_absolute_time()) - operation_start_time)) > RADIO_RECEIVE_TIMEOUT_MS){
@@ -484,9 +504,10 @@ void radio_task_cpp(){
                     #endif
                     state = radio->startTransmit(rec.data_buffer, rec.data_size);
                     #if RADIO_LOGGING
-                    if(state != 0){
+                    while(state != 0){
                         printf("Transmit failed with code: %d\n", state); 
-                        
+                        radio_panic(); 
+                        state = radio->startTransmit(rec.data_buffer, rec.data_size);
                     }
                     #endif
                     operation_start_time = to_ms_since_boot(get_absolute_time()); 
@@ -550,7 +571,7 @@ void radio_task_cpp(){
                         radio = &radioSX; 
                         radioSX.standby(); 
                         radioSX.setDio1Action(radio_general_flag_SX);
-                        radioSX.startChannelScan(); 
+                        radio->startChannelScan(); 
                         #if RADIO_LOGGING
                         printf("success\n"); 
                         #endif
