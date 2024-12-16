@@ -1,3 +1,4 @@
+# EXPERIMENTAL, RECOMMENDED TO USE NATIVE LINUX BUILD
 # Build firmware inside the container
 docker build . -t coconut_fsw
 
