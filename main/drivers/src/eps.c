@@ -236,7 +236,7 @@ int getCurrent_raw(i2c_inst_t *i2c,
 }
 
 void eps_test() {
-	printf("STARTING EPS TEST\n");
+	logln_info("STARTING EPS TEST\n");
 
 	// Ports
 	i2c_inst_t *i2c = i2c0;
@@ -262,15 +262,15 @@ void eps_test() {
 	// i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 	// printf("0x%02x\r\n", data);
 
-	printf("CALIBRATING\n");
+	logln_info("CALIBRATING\n");
 	calibrate(i2c);
 
 
-	printf("CONFIGURING\n");
+	logln_info("CONFIGURING\n");
 	config(i2c);
 
 
-	printf("STARTING TEST\n");
+	logln_info("STARTING TEST\n");
 
 	// Loop 10 times
 	// for(int i = 0; i < 20; i++){
