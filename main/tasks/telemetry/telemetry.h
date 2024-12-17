@@ -1,21 +1,9 @@
 #pragma once
 
-#include <stdlib.h>
-#include <string.h>
-
-#include <FreeRTOS.h>
-#include <task.h>
-#include <semphr.h>
-
-#include "gse.h"
-#include "radio.h"
-#include "state.h"
-
 #define TELEMETRY_SYNC_BYTES "\x35\x2E\xF8\x53"
 #define TELEMETRY_SYNC_SIZE 4U
 #define TELEMETRY_MAX_QUEUE_ITEMS 128
 #define TELEMETRY_CHECK_DELAY_MS portMAX_DELAY
-
 
 uint16_t g_packet_sequence_number;
 

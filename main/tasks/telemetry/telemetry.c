@@ -1,4 +1,18 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+#include <FreeRTOS.h>
+#include <task.h>
+#include <semphr.h>
+
+#include "gse.h"
+#include "radio.h"
+#include "state.h"
 #include "telemetry.h"
+#include "ccsds.h"
+#include "log.h"
 
 void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t payload_size) {
     // Build transmission buffer struct

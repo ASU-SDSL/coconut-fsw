@@ -5,6 +5,7 @@
 #include "PicoHal.h"
 #include <stdlib.h>
 #include "log.h"
+#include "gse.h"
 
 #define ERR_NONE 0
 #define NULL_QUEUE_WAIT_TIME 100
