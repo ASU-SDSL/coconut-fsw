@@ -1,5 +1,12 @@
-#include "log.h"
 #include <pico/stdio.h>
+#include <stdarg.h>
+
+#include "FreeRTOS.h"
+#include "queue.h"
+#include "task.h"
+
+#include "telemetry.h"
+#include "log.h"
 
 void print_banner() {
     logln(
@@ -15,8 +22,14 @@ void print_banner() {
     );
 }
 
-void _log(const char *str, ...) {
+// returns a global ptr into FreeRTOS task structs, do not modify or free
+const char *get_current_task_name() {
+    TaskStatus_t xTaskDetails;
+    vTaskGetInfo(xTaskGetCurrentTaskHandle(), &xTaskDetails, pdFALSE, eInvalid );
+    return xTaskDetails.pcTaskName;
+}
 
+void _log(const char *str, ...) {
     // alloc telemetry packet
     log_telemetry_t *packet = pvPortMalloc(sizeof(log_telemetry_t) + MAX_LOG_STR_SIZE + 1);
 
@@ -28,11 +41,15 @@ void _log(const char *str, ...) {
     packet->size = strsize;
     va_end(args);
 
+#ifdef SIMULATOR
+    // write to stdout
+    write(1, packet->str, strsize);
+#else
     // send to telemetry task
     send_telemetry(LOG, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
+#endif
 
     vPortFree(packet);
-    
 }
 
 

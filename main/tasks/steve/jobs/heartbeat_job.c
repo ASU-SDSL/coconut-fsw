@@ -1,9 +1,21 @@
-#include "heartbeat_job.h"
+#include <stdint.h>
 
+#include "FreeRTOS.h"
+#include "queue.h"
+
+#include "state.h"
+#include "telemetry.h"
+#include "eps.h"
+#include "mag.h"
+#include "rtc.h"
+#include "vega_ant.h"
+#include "heartbeat_job.h"
 
 void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
     heartbeat_telemetry_t payload;
+
+    logln_info("%s", get_current_task_name());
 
     // State data
     payload.state = (uint8_t)g_payload_state;

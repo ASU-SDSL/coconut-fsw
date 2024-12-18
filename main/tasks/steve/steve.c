@@ -1,3 +1,19 @@
+
+#include "pico/stdlib.h"
+
+#include <string.h>
+#include <stdbool.h>
+
+#include <FreeRTOS.h>
+#include <task.h>
+#include "log.h"
+#include "state.h"
+#include "mag.h"
+#include "eps.h"
+#include "timing.h"
+
+#include "heartbeat_job.h"
+
 #include "steve.h"
 
 /* 
