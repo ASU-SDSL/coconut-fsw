@@ -24,21 +24,21 @@ void receive_command_byte_from_isr(char ch) {
 }
 
 void receive_command_byte(char ch) {
-    // Send to command queue
-    if (command_byte_queue) {
-        xQueueSendToBack(command_byte_queue, &ch, NULL);
+    // Wait for command queue
+    while (!command_byte_queue) {
+        vTaskDelay(1);
     }
+    // Send to command queue
+    xQueueSendToBack(command_byte_queue, &ch, NULL);
 }
 
 void receive_command_bytes(uint8_t* packet, size_t packet_size) {
-    if (command_byte_queue) {
-        for (int i = 0; i < packet_size; i++ ){
-            xQueueSendToBack(command_byte_queue, &packet[i], portMAX_DELAY);
-        }
+    for (int i = 0; i < packet_size; i++ ){
+        receive_command_byte(packet[i]);
     }
 }
 
-void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
+void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
     logln_info("Received command with APID: %hu", header.apid);
     switch (header.apid) {
         case UPLOAD_USER_DATA:
@@ -136,12 +136,12 @@ void command_task(void* unused_arg) {
             // stall thread until we get a byte
             command_byte_t command_byte = 0;
             xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
-            
             logln_info("Byte Received: 0x%hhx", command_byte);
-            logln_info("Checking Sync Byte: 0x%hhx", COMMAND_SYNC_BYTES[sync_index]);
 
             // check if current sync index byte matches
-            if (command_byte != COMMAND_SYNC_BYTES[sync_index]) {
+            uint8_t check_byte = COMMAND_SYNC_BYTES[sync_index];
+            logln_info("Comparing with Sync Byte %d: 0x%hhx", sync_index, check_byte);
+            if (command_byte != check_byte) {
                 // match unsuccessful
                 sync_index = 0;
                 continue;
@@ -155,14 +155,19 @@ void command_task(void* unused_arg) {
             sync_index += 1;
         }
         // We've succesfully received all sync bytes if we've reached here
+        logln_info("Received all sync bytes!");
         // TODO: Add better error checks and handling here
         // Gather spacepacket header bytes
-        uint8_t spacepacket_header_bytes[6];
-        for (int i = 0; i < CCSDS_ENCODED_HEADER_SIZE; i++) {
+        uint8_t spacepacket_header_bytes[SPACEPACKET_ENCODED_HEADER_SIZE];
+        for (int i = 0; i < sizeof(spacepacket_header_bytes); i++) {
             xQueueReceive(command_byte_queue, &spacepacket_header_bytes[i], portMAX_DELAY);
         }
         // Parse spacepacket header
-        ccsds_header_t header = parse_ccsds_header(spacepacket_header_bytes);
+        spacepacket_header_t header;
+        if (decode_spacepacket_header(spacepacket_header_bytes, sizeof(spacepacket_header_bytes), &header) == -1) {
+            logln_error("Failed to decode SpacePacket header!");
+            continue;
+        }
         // Allocate correct size buffer
         size_t payload_size = header.packet_length + 1; // 4.1.3.5.3 transmits data size field as payload_length - 1
         uint8_t* payload_buf = pvPortMalloc(payload_size);
