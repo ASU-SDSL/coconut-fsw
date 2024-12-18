@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include "log.h"
 #include "gse.h"
+#include "spacepacket.h"
 
 #define ERR_NONE 0
 #define NULL_QUEUE_WAIT_TIME 100
@@ -220,9 +221,9 @@ int parse_num(uint8_t * packet, size_t packet_size){
 }
 
 int parse_ccsds_num(uint8_t* packet, uint8_t packet_size){
-    packet += sizeof(ccsds_header_t);
+    packet += SPACEPACKET_ENCODED_HEADER_SIZE;
 
-    return parse_num(packet, packet_size - sizeof(ccsds_header_t));
+    return parse_num(packet, packet_size - SPACEPACKET_ENCODED_HEADER_SIZE);
 }
 
 /**
@@ -234,7 +235,7 @@ int parse_ccsds_num(uint8_t* packet, uint8_t packet_size){
 void parseRebound(PhysicalLayer* radio, uint8_t* packet, uint8_t packet_size){
     int code = -1;
     
-    if(packet_size > sizeof(ccsds_header_t)){
+    if(packet_size > SPACEPACKET_ENCODED_HEADER_SIZE){
         code = parse_ccsds_num(packet, packet_size); 
     }
     else {

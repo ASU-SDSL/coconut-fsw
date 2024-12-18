@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-#include "ccsds.h"
+#include "spacepacket.h"
 #include "user_auth.h"
 
 #define COMMAND_MAX_QUEUE_ITEMS 0x200
@@ -96,7 +96,7 @@ void receive_command_byte(char ch);
 void receive_command_bytes(uint8_t* packet, size_t packet_size);
 
 /* INTERNAL FUNCTIONS */
-void parse_command_packet(ccsds_header_t header, uint8_t* payload_buf, uint32_t payload_size);
+void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size);
 
 // Main Task
 void command_task(void* unused_arg);
