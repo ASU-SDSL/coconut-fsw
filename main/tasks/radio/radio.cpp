@@ -62,6 +62,7 @@
 #define RADIO_STATE_NO_ATTEMPT 1 
 #define RADIO_RECEIVE_TIMEOUT_MS 1000
 #define RADIO_TRANSMIT_TIMEOUT_MS 10000
+#define RADIO_NO_CONTACT_PANIC_TIME_MS (1000UL * 60 * 60 * 24 * 7) //  7 days in ms
 
 PicoHal *picoHal = new PicoHal(spi0, PICO_DEFAULT_SPI_TX_PIN, PICO_DEFAULT_SPI_RX_PIN, PICO_DEFAULT_SPI_SCK_PIN);
 // Add interupt pin
@@ -70,7 +71,9 @@ SX1268 radioSX = new Module(picoHal, RADIO_SX_NSS_PIN, RADIO_SX_DIO1_PIN, RADIO_
 PhysicalLayer* radio = &radioSX;
 
 int radio_state_RFM = RADIO_STATE_NO_ATTEMPT; 
-int radio_state_SX = RADIO_STATE_NO_ATTEMPT; 
+int radio_state_SX = RADIO_STATE_NO_ATTEMPT;
+
+uint32_t radio_now = 0; 
 
 #ifdef __cplusplus
 extern "C"
@@ -139,6 +142,9 @@ extern "C"
     uint16_t radio_get_SX_state(){
         return radio_state_SX; 
     }
+    uint32_t radio_get_now(){
+        return radio_now; 
+    }
 #ifdef __cplusplus
 }
 #endif
@@ -162,6 +168,7 @@ void radio_general_flag_SX(){
 }
 // end isrs
 
+// toggle the radio until one of them works
 void radio_panic(){
     #if RADIO_LOGGING
     printf("No working radios, panicking...\n");
@@ -350,6 +357,8 @@ void parseRebound(PhysicalLayer* radio, uint8_t* packet, uint8_t packet_size){
     }    
 }
 
+
+
 /**
  * Monitor radio, write to SD card, and send stuff when needed
  */
@@ -365,19 +374,26 @@ void radio_task_cpp(){
     bool receiving = false; 
     bool transmitting = false; 
     int state = 0; 
-    unsigned long operation_start_time = to_ms_since_boot(get_absolute_time());
+    uint32_t operation_start_time = to_ms_since_boot(get_absolute_time());
+    uint32_t last_receive_time = to_ms_since_boot(get_absolute_time()); 
 
     while(true){
+        // save now time since boot 
+        radio_now = to_ms_since_boot(get_absolute_time());
+        // if there's been no contect for a long time, try to switch radios 
+        if(abs((long long)(radio_now - last_receive_time)) > RADIO_NO_CONTACT_PANIC_TIME_MS){
+            radio_panic(); 
+        }
 
-        // stop radio from getting stuck in receive mode
-        if(receiving && abs((long long)(to_ms_since_boot(get_absolute_time()) - operation_start_time)) > RADIO_RECEIVE_TIMEOUT_MS){
+        // check operation duration to avoid hanging in an operation mode 
+        if(receiving && abs((long long)(radio_now - operation_start_time)) > RADIO_RECEIVE_TIMEOUT_MS){
             #if RADIO_LOGGING
             printf("receive timeout\n"); 
             #endif
             receiving = false;
             radio->startChannelScan();
         }
-        if(transmitting && abs((long long)(to_ms_since_boot(get_absolute_time()) - operation_start_time)) > RADIO_TRANSMIT_TIMEOUT_MS){
+        else if(transmitting && abs((long long)(radio_now - operation_start_time)) > RADIO_TRANSMIT_TIMEOUT_MS){
             #if RADIO_LOGGING
             printf("transmit timeout\n"); 
             #endif
@@ -385,9 +401,7 @@ void radio_task_cpp(){
             radio->startChannelScan();
         }
 
-        // receiving split into 2 different if statements, they can probably be combined 
-        // but for now, split is better for testing
-
+        // handle interrupt flags 
         if(cad_detected_RFM || operation_done_RFM || general_flag_SX){
             // handle finished transmission
             if(transmitting){
@@ -407,6 +421,7 @@ void radio_task_cpp(){
 
                 if (packet_state == RADIOLIB_ERR_NONE)
                 {
+                    last_receive_time = to_ms_since_boot(get_absolute_time()); 
                     // parse out sync bytes and grab packet with header
                     // create command.c function to read packet
                     #if RADIO_LOGGING

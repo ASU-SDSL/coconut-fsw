@@ -76,6 +76,7 @@ extern "C"
     bool radio_which(); 
     uint16_t radio_get_RFM_state(); 
     uint16_t radio_get_SX_state(); 
+    uint32_t radio_get_now();
 #ifdef __cplusplus
 }
 #endif
