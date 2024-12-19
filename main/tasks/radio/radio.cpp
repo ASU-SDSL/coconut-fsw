@@ -73,8 +73,6 @@ PhysicalLayer* radio = &radioSX;
 int radio_state_RFM = RADIO_STATE_NO_ATTEMPT; 
 int radio_state_SX = RADIO_STATE_NO_ATTEMPT;
 
-uint32_t radio_now = 0; 
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -141,9 +139,6 @@ extern "C"
     }
     uint16_t radio_get_SX_state(){
         return radio_state_SX; 
-    }
-    uint32_t radio_get_now(){
-        return radio_now; 
     }
 #ifdef __cplusplus
 }
@@ -379,7 +374,7 @@ void radio_task_cpp(){
 
     while(true){
         // save now time since boot 
-        radio_now = to_ms_since_boot(get_absolute_time());
+        uint32_t radio_now = to_ms_since_boot(get_absolute_time());
         // if there's been no contect for a long time, try to switch radios 
         if(abs((long long)(radio_now - last_receive_time)) > RADIO_NO_CONTACT_PANIC_TIME_MS){
             radio_panic(); 

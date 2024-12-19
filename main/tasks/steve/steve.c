@@ -222,22 +222,8 @@ void steve_task(void* unused_arg) {
     config_i2c1();
     mag_config(i2c1);
 
-    uint32_t last_radio_check_in = radio_get_now(); 
     // Run main task loop
     while (true) {
-        // if radio_now hasn't been updated in 65536 milliseconds (arbitrary)
-        // then it must be frozen so end it and start a new one
-        if(to_ms_since_boot(get_absolute_time()) & 0xFFFF == 0){
-            vTaskDelete((TaskHandle_t)xTaskGetHandle("RADIO"));
-
-            xTaskCreate(radio_task, 
-                        "RADIO", 
-                        256, 
-                        NULL, 
-                        1,
-                        NULL); 
-        }
-
         // Take mutex
         xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
         // Check each job to see if it needs to be executed
