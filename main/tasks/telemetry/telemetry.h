@@ -1,21 +1,9 @@
 #pragma once
 
-#include <stdlib.h>
-#include <string.h>
-
-#include <FreeRTOS.h>
-#include <task.h>
-#include <semphr.h>
-
-#include "gse.h"
-#include "radio.h"
-#include "state.h"
-
 #define TELEMETRY_SYNC_BYTES "\x35\x2E\xF8\x53"
 #define TELEMETRY_SYNC_SIZE 4U
 #define TELEMETRY_MAX_QUEUE_ITEMS 128
 #define TELEMETRY_CHECK_DELAY_MS portMAX_DELAY
-
 
 uint16_t g_packet_sequence_number;
 
@@ -44,19 +32,39 @@ typedef struct __attribute__((__packed__)) {
     uint8_t date;
     uint8_t year;
     float rtcTemp; 
-    uint16_t eps_shunt;
-    uint16_t eps_vbus;
-    uint16_t eps_power;
-    uint16_t eps_current;
+    uint16_t ina0_shunt;
+    uint16_t ina0_vbus;
+    uint16_t ina0_power;
+    uint16_t ina0_current;
+    uint16_t ina1_shunt; 
+    uint16_t ina1_vbus;
+    uint16_t ina1_power;
+    uint16_t ina1_current;
+    uint16_t ina2_shunt; 
+    uint16_t ina2_vbus;
+    uint16_t ina2_power;
+    uint16_t ina2_current;
+    uint16_t ina3_shunt; 
+    uint16_t ina3_vbus;
+    uint16_t ina3_power;
+    uint16_t ina3_current;
+    uint16_t ina4_shunt; 
+    uint16_t ina4_vbus;
+    uint16_t ina4_power;
+    uint16_t ina4_current;
+    uint16_t ina5_shunt; 
+    uint16_t ina5_vbus;
+    uint16_t ina5_power;
+    uint16_t ina5_current;
     int16_t mag_x;
     int16_t mag_y;
     int16_t mag_z;
     int16_t mag_temp;
     uint8_t vega_ant_status;
 
-    bool which_radio; // 1 for RFM
     int16_t rfm_state; 
     int16_t sx_state; 
+    uint8_t which_radio; // 1 for RFM
 } heartbeat_telemetry_t;
 
 /* USER FUNCTIONS */

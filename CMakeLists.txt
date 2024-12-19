@@ -5,19 +5,19 @@ set(BUILD_NUMBER "1")
 set(PROJECT_NAME "COCONUTFSW")
 
 # Read in password and hash it
-set(PASSWORD "COCONUT")
-set(PASSWORD_PATH ${CMAKE_CURRENT_LIST_DIR}/.password)
-if (EXISTS ${PASSWORD_PATH})
-    file(READ ${PASSWORD_PATH} PASSWORD)
-    message(STATUS "Found password \"${PASSWORD}\"")
+set(ADMIN_TOKEN "COCONUT")
+set(TOKEN_PATH ${CMAKE_CURRENT_LIST_DIR}/.token)
+if (EXISTS ${TOKEN_PATH})
+    file(READ ${TOKEN_PATH} ADMIN_TOKEN)
+    message(STATUS "Found admin token: \"${ADMIN_TOKEN}\"")
 else()
     # set default password if no password.txt exists
-    message(STATUS "No password found in ${PASSWORD_PATH}, using default password \"${PASSWORD}\"")
+    message(STATUS "No admin token found in ${TOKEN_PATH}, using default token \"${ADMIN_TOKEN}\"")
 endif ()
 # save first 8 bytes of hash to use as password
-execute_process(COMMAND bash "-c" "echo '${PASSWORD}' | sha256sum | head -c 16 | sed 's/../\\\\x&/g'" OUTPUT_VARIABLE HASHED_PASSWORD)
-message(STATUS "SHA256 Hashed Password: \"${HASHED_PASSWORD}\"")
-add_definitions("-DCOMMAND_PASSWORD=\"${HASHED_PASSWORD}\"")
+execute_process(COMMAND bash "-c" "echo '${ADMIN_TOKEN}' | sha256sum | head -c 16 | sed 's/../\\\\x&/g'" OUTPUT_VARIABLE HASHED_TOKEN)
+message(STATUS "SHA256 Hashed Token: \"${HASHED_TOKEN}\"")
+add_definitions("-DADMIN_TOKEN=\"${HASHED_TOKEN}\"")
 
 # Add build options
 option(SIMULATOR "Enables simulator build" OFF)
@@ -117,6 +117,7 @@ add_subdirectory(${MAIN_DIRECTORY})
 
 # add libraries here (and in target_link_libraries under the main cmakelists)
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/fatfs/ build)
+add_subdirectory(${CMAKE_SOURCE_DIR}/lib/libspacepacket/)
 IF (NOT SIMULATOR)
     add_subdirectory(${CMAKE_SOURCE_DIR}/lib/RadioLib)
 ENDIF()

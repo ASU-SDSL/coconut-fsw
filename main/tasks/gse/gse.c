@@ -1,3 +1,13 @@
+#include <string.h>
+
+#include "FreeRTOS.h"
+#include "queue.h"
+
+#include "usb_uart.h"
+#include "command.h"
+#include "rtc.h"
+#include "eps.h"
+#include "log.h"
 #include "gse.h"
 
 void gse_queue_message(char* buffer, size_t size) {

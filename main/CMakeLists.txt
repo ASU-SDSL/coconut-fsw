@@ -22,9 +22,9 @@ set(SOURCES
 
     ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
 
-    ${MAIN_DIRECTORY}/utilities/src/ccsds.c
     ${MAIN_DIRECTORY}/utilities/src/log.c
     ${MAIN_DIRECTORY}/utilities/src/timing.c
+    ${MAIN_DIRECTORY}/utilities/src/user_auth.c
 
     ${MAIN_DIRECTORY}/drivers/src/i2c.c
     ${MAIN_DIRECTORY}/drivers/src/eps.c
@@ -59,6 +59,7 @@ add_executable(${PROJECT_NAME}
 set (LINK_LIBS
     FreeRTOS
     FatFs
+    libspacepacket
 )
 
 IF (SIMULATOR)
@@ -157,9 +158,9 @@ IF (SIMULATOR)
 
         ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
 
-        ${MAIN_DIRECTORY}/utilities/src/ccsds.c
         ${MAIN_DIRECTORY}/utilities/src/log.c
         ${MAIN_DIRECTORY}/utilities/src/timing.c
+        ${MAIN_DIRECTORY}/utilities/src/user_auth.c
 
         ${MAIN_DIRECTORY}/drivers/src/i2c.c
         ${MAIN_DIRECTORY}/drivers/src/eps.c

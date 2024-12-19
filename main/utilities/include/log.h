@@ -1,11 +1,5 @@
 #pragma once
 
-#include <stdarg.h>
-
-#include "FreeRTOS.h"
-
-#include "telemetry.h"
-
 /* DEFINES */
 #define MAX_LOG_STR_SIZE 0x1000U
 
@@ -35,6 +29,8 @@ void print_banner();
 
 #define logln(f_, ...) \
     _log(f_ "\n", ##__VA_ARGS__);
+
+const char *get_current_task_name();
 
 /* INTERNAL FUNCTIONS */
 
