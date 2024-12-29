@@ -135,6 +135,8 @@ void heartbeat_telemetry_job(void* unused) {
 
     // Logging
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
+    for(int i = 0; i < 10; i++)
+        logln_info("asfd**********************************************************************************************************************************************************************************************************asdf"); 
     
     iteration_counter += 1;
     logln_info("Heartbeat %ld - uptime: %d", iteration_counter, (uint32_t)get_uptime());

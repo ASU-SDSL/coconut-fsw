@@ -188,6 +188,7 @@ void radio_panic(){
                 radioRFM.setDio0Action(radio_operation_done_RFM, GPIO_IRQ_EDGE_RISE);
                 radioRFM.setDio1Action(radio_cad_detected_RFM, GPIO_IRQ_EDGE_RISE); 
                 radio->startChannelScan(); 
+                break; // avoid sleep 
             }
             
         } else {
@@ -205,9 +206,12 @@ void radio_panic(){
                 radioSX.standby(); 
                 radioSX.setDio1Action(radio_general_flag_SX);
                 radio->startChannelScan(); 
-            }
+                break; // avoid sleep 
+            } 
+            
         }
-        sleep_ms(15000); // wait 15 seconds between tries 
+        printf("SX: %d RFM: %d\n", radio_state_SX, radio_state_RFM); 
+        sleep_ms(15000); // wait 15 seconds between tries
     }
 
     #if RADIO_LOGGING
@@ -405,6 +409,7 @@ void radio_task_cpp(){
             if(transmitting){
                 transmitting = false; 
                 #if RADIO_LOGGING
+                if(radio == &radioRFM) printf("Rate: %f\n", radioRFM.getDataRate()); 
                 printf("Done.\n"); 
                 #endif 
             }
