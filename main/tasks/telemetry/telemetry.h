@@ -58,6 +58,8 @@ typedef struct __attribute__((__packed__)) {
     uint16_t ina5_vbus;
     uint16_t ina5_power;
     uint16_t ina5_current;
+    float max17048Voltage;
+    float max17048Percentage;
     int16_t mag_x;
     int16_t mag_y;
     int16_t mag_z;

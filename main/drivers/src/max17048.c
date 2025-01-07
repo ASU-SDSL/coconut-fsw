@@ -46,7 +46,7 @@ int max17048Wake(i2c_inst_t *i2c) {
     }
     // Write a 0 to the 5th bit (EnSleep)
     buf[0] &= ~(1 << 5);
-    status = i2c_write_to_register(i2c, MAX17048_I2C_ADDR, REG_MODE, buf, 2);
+    status = i2c_write_to_register(i2c, MAX17048_I2C_ADDR, REG_MODE, buf, 1);
     if (status != 0) { return MAX17048_WRITE_ERROR; }
 
     // Set sleep to 0 - reuse buf
@@ -55,7 +55,7 @@ int max17048Wake(i2c_inst_t *i2c) {
     if (status != 0) { return MAX17048_READ_ERROR; }
     // Write a 0 to the 7th bit (Sleep)
     buf[1] &= ~(1 << 7);
-    status = i2c_write_to_register(i2c, MAX17048_I2C_ADDR, REG_MODE, buf, 2);
+    status = i2c_write_to_register(i2c, MAX17048_I2C_ADDR, REG_CONFIG, buf, 2);
     if (status != 0) { return MAX17048_WRITE_ERROR; }
 
     return 0;
@@ -96,7 +96,7 @@ int max17048CellVoltage(i2c_inst_t *i2c, float *voltage_out) {
     if (status != 0) {
         return MAX17048_VALUE_READ_ERROR;
     }
-    *voltage_out = ((buf[0] | buf[1] << 8) * 78.125) / 1000000;
+    *voltage_out = ((buf[1] | buf[0] << 8) * 78.125) / 1000000;
 
     return 0;
 }
@@ -128,7 +128,7 @@ int max17048CellPercentage(i2c_inst_t *i2c, float *percentage_out) {
         return MAX17048_VALUE_READ_ERROR;
     }
 
-    *percentage_out = (buf[0] | buf[1] << 8) / 256.0;
+    *percentage_out = (buf[0] << 8 | buf[1]) / 256.0;
 
     return 0;
 }
