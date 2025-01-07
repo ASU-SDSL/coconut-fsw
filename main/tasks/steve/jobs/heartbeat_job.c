@@ -39,8 +39,11 @@ void heartbeat_telemetry_job(void* unused) {
         max17048Percentage = -1;
     }
 
-    logln_info("MAX17048 Voltage: %f, Percentage: %f\n", max17048Voltage, max17048Percentage);
-    
+    payload.max17048Voltage = max17048Voltage;
+    payload.max17048Percentage = max17048Percentage;
+
+    // For testing if needed
+    //logln_info("MAX17048 Voltage: %f, Percentage: %f\n", max17048Voltage, max17048Percentage);
 
     // timestamp
     uint8_t rtcbuf;
@@ -146,6 +149,7 @@ void heartbeat_telemetry_job(void* unused) {
     else payload.vega_ant_status = UINT8_MAX;
 
     // Send it
+    logln_info("Telem size: %d", sizeof(payload));
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
 
     // Logging
