@@ -61,6 +61,7 @@ set (LINK_LIBS
     FreeRTOS
     FatFs
     libspacepacket
+    pico-onewire
 )
 
 IF (SIMULATOR)

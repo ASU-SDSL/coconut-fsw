@@ -1,5 +1,7 @@
 #pragma once
 
+#include "queue.h"
+
 #define TELEMETRY_SYNC_BYTES "\x35\x2E\xF8\x53"
 #define TELEMETRY_SYNC_SIZE 4U
 #define TELEMETRY_MAX_QUEUE_ITEMS 128
