@@ -92,14 +92,15 @@ int getVShunt(i2c_inst_t *i2c,
 }
 
 int getVShunt_raw(i2c_inst_t *i2c,
+				const uint8_t addr,
 				uint16_t *output_buf) {
 	uint8_t buf[2];
 
-	if(i2c_read_from_register(i2c, INA219_ADDR, REG_SHUNT, buf, 2)){
+	if(i2c_read_from_register(i2c, addr, REG_SHUNT, buf, 2)){
 		return 1;
 	}
 
-	uint16_t bufComb = buf[0];
+	uint16_t bufComb = buf[0]; 
 	bufComb = (bufComb << 8) | buf[1];
 
 	// printf("raw vshunt: %d\n", bufComb);
@@ -129,10 +130,11 @@ int getVBus(i2c_inst_t *i2c,
 }
 
 int getVBus_raw(i2c_inst_t *i2c,
+				const uint8_t addr,
 				uint16_t *output_buf) {
 	uint8_t buf[2];
 
-	if (i2c_read_from_register(i2c, INA219_ADDR, REG_BUS, buf, 2)) {
+	if (i2c_read_from_register(i2c, addr, REG_BUS, buf, 2)) {
 		return 1;
 	}
 
@@ -169,6 +171,7 @@ int getPower(i2c_inst_t *i2c,
 }
 
 int getPower_raw(i2c_inst_t *i2c,
+				const uint8_t addr,
 				uint16_t *output_buf) {
 
 	uint8_t buf[2];
@@ -176,7 +179,7 @@ int getPower_raw(i2c_inst_t *i2c,
 	calibrate(i2c);
 
 	// error codes are < 0
-	if (i2c_read_from_register(i2c, INA219_ADDR, REG_POWER, buf, 2)) {
+	if (i2c_read_from_register(i2c, addr, REG_POWER, buf, 2)) {
 		return 1;
 	}
 
@@ -212,13 +215,14 @@ int getCurrent(i2c_inst_t *i2c,
 }
 
 int getCurrent_raw(i2c_inst_t *i2c,
+					const uint8_t addr,
 					uint16_t *output_buf) {
 
 	uint8_t buf[2];
 
 	calibrate(i2c);
 
-	if (i2c_read_from_register(i2c, INA219_ADDR, REG_CURRENT, buf, 2)) {
+	if (i2c_read_from_register(i2c, addr, REG_CURRENT, buf, 2)) {
 		return 1;
 	}
 
@@ -232,7 +236,7 @@ int getCurrent_raw(i2c_inst_t *i2c,
 }
 
 void eps_test() {
-	printf("STARTING EPS TEST\n");
+	logln_info("STARTING EPS TEST\n");
 
 	// Ports
 	i2c_inst_t *i2c = i2c0;
@@ -258,91 +262,91 @@ void eps_test() {
 	// i2c_read_from_register(i2c, INA219_ADDR, REG_CALIB, &data, 2);
 	// printf("0x%02x\r\n", data);
 
-	printf("CALIBRATING\n");
+	logln_info("CALIBRATING\n");
 	calibrate(i2c);
 
 
-	printf("CONFIGURING\n");
+	logln_info("CONFIGURING\n");
 	config(i2c);
 
 
-	printf("STARTING TEST\n");
+	logln_info("STARTING TEST\n");
 
 	// Loop 10 times
-	for(int i = 0; i < 20; i++){
-		float shunt;
-		float vbus;
-		double power;
-		double current;
+	// for(int i = 0; i < 20; i++){
+	// 	float shunt;
+	// 	float vbus;
+	// 	double power;
+	// 	double current;
 
-		uint16_t raw; 
+	// 	uint16_t raw; 
 
-		// // Read registers (16 bits each)
-		printf("\nRAW VALUES\n");
-		if (getVShunt_raw(i2c, &raw)) {
-			printf("Shunt voltage error\n");
-		}
-		else {
-			printf("Shunt voltage (raw): %04x \r\n", raw);
-		}
+	// 	// // Read registers (16 bits each)
+	// 	printf("\nRAW VALUES\n");
+	// 	if (getVShunt_raw(i2c, &raw)) {
+	// 		printf("Shunt voltage error\n");
+	// 	}
+	// 	else {
+	// 		printf("Shunt voltage (raw): %04x \r\n", raw);
+	// 	}
 
-		if (getVBus_raw(i2c, &raw)) {
-			printf("Bus voltage error\n");
-		}
-		else {
-			printf("Bus voltage (raw): %04x \r\n", raw);
-		}
+	// 	if (getVBus_raw(i2c, &raw)) {
+	// 		printf("Bus voltage error\n");
+	// 	}
+	// 	else {
+	// 		printf("Bus voltage (raw): %04x \r\n", raw);
+	// 	}
 
-		if (getPower_raw(i2c, &raw)) {
-			printf("Power error\n");
-		}
-		else {
-			printf("Power (raw): %04x \r\n", raw);
-		}
+	// 	if (getPower_raw(i2c, &raw)) {
+	// 		printf("Power error\n");
+	// 	}
+	// 	else {
+	// 		printf("Power (raw): %04x \r\n", raw);
+	// 	}
 		
-		if (getCurrent_raw(i2c, &raw)) {
-			printf("Current error\n");
-		}
-		else {
-			printf("Current: %04x \r\n", raw);
-		}
+	// 	if (getCurrent_raw(i2c, &raw)) {
+	// 		printf("Current error\n");
+	// 	}
+	// 	else {
+	// 		printf("Current: %04x \r\n", raw);
+	// 	}
 		
-		printf("PROCESSED VALUES\n");
-		// Read registers (16 bits each)
+	// 	printf("PROCESSED VALUES\n");
+	// 	// Read registers (16 bits each)
 	
-		if (getVShunt(i2c, INA219_ADDR, REG_SHUNT, &shunt)) {
-			printf("Shunt voltage error\n");
-		}
-		else {
-			printf("Shunt voltage: %.2f mV\r\n", shunt);
-		}
-		// sleep_ms(5);
+	// 	if (getVShunt(i2c, INA219_ADDR, REG_SHUNT, &shunt)) {
+	// 		printf("Shunt voltage error\n");
+	// 	}
+	// 	else {
+	// 		printf("Shunt voltage: %.2f mV\r\n", shunt);
+	// 	}
+	// 	// sleep_ms(5);
 		
-		if (getVBus(i2c, INA219_ADDR, REG_BUS, &vbus)) {
-			printf("Bus voltage error\n");
-		}
-		else {
-			printf("Bus voltage: %.2f V\r\n", vbus);
-		}
+	// 	if (getVBus(i2c, INA219_ADDR, REG_BUS, &vbus)) {
+	// 		printf("Bus voltage error\n");
+	// 	}
+	// 	else {
+	// 		printf("Bus voltage: %.2f V\r\n", vbus);
+	// 	}
 
-		// sleep_ms(5);
+	// 	// sleep_ms(5);
 
-		if (getCurrent(i2c, INA219_ADDR, REG_CURRENT, &current)) {
-			printf("Current error\n");
-		}
-		else {
-			printf("Current: %.2f mA\r\n", current);
-		}
+	// 	if (getCurrent(i2c, INA219_ADDR, REG_CURRENT, &current)) {
+	// 		printf("Current error\n");
+	// 	}
+	// 	else {
+	// 		printf("Current: %.2f mA\r\n", current);
+	// 	}
 
-		if (getPower(i2c, INA219_ADDR, REG_POWER, &power)) {
-			printf("Power error\n");
-		}
-		else {
-			printf("Power: %.2f mW\r\n", power);
-		}
+	// 	if (getPower(i2c, INA219_ADDR, REG_POWER, &power)) {
+	// 		printf("Power error\n");
+	// 	}
+	// 	else {
+	// 		printf("Power: %.2f mW\r\n", power);
+	// 	}
 		
 		// sleep_ms(5);
 
 		// sleep_ms(2000);
-	}
+	// }
 }
