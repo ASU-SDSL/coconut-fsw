@@ -1,5 +1,7 @@
 #pragma once
 
+#include "queue.h"
+
 #define TELEMETRY_SYNC_BYTES "\x35\x2E\xF8\x53"
 #define TELEMETRY_SYNC_SIZE 4U
 #define TELEMETRY_MAX_QUEUE_ITEMS 128
@@ -56,6 +58,8 @@ typedef struct __attribute__((__packed__)) {
     uint16_t ina5_vbus;
     uint16_t ina5_power;
     uint16_t ina5_current;
+    float max17048Voltage;
+    float max17048Percentage;
     int16_t mag_x;
     int16_t mag_y;
     int16_t mag_z;
