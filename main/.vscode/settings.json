@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "steve.h": "c"
+        "steve.h": "c",
+        "max17048.h": "c",
+        "i2c.h": "c"
     }
 }

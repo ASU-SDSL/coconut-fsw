@@ -12,6 +12,24 @@ void heartbeat_telemetry_job(void* unused) {
     // i2c instance
     i2c_inst_t *i2c = i2c1;
 
+    // MAX17048 data
+    float max17048Voltage;
+    int status = max17048CellVoltage(i2c, &max17048Voltage);
+    if (status != 0) {
+        logln_error("Error reading MAX17048 voltage: %d", status);
+        max17048Voltage = -1;
+    }
+
+    float max17048Percentage;
+    status = max17048CellPercentage(i2c, &max17048Percentage);
+    if (status != 0) {
+        logln_error("Error reading MAX17048 percentage: %d", status);
+        max17048Percentage = -1;
+    }
+
+    logln_info("MAX17048 Voltage: %f, Percentage: %f\n", max17048Voltage, max17048Percentage);
+    
+
     // timestamp
     uint8_t rtcbuf;
     if(!rtc_get_hour(i2c, &rtcbuf)) payload.hour = rtcbuf; 
