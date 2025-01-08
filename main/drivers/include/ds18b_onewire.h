@@ -3,7 +3,7 @@
 extern "C" {
 #endif
 
-float read_temp();
+float ds18b_read_temp();
 
 #ifdef __cplusplus
 }

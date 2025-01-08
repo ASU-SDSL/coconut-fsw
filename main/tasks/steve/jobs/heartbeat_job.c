@@ -10,8 +10,11 @@
 #include "rtc.h"
 #include "vega_ant.h"
 #include "heartbeat_job.h"
+#include "ds18b_onewire.h"
 
 void heartbeat_telemetry_job(void* unused) {
+    ds18b_read_temp();
+    
     // Create heartbeat struct
     heartbeat_telemetry_t payload;
 

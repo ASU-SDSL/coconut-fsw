@@ -8,7 +8,7 @@
 
 #define TEMP_SENSE_GPIO_PIN 25
 
-extern "C" float read_temp() {
+extern "C" float ds18b_read_temp() {
     
     One_wire one_wire(TEMP_SENSE_GPIO_PIN);
 	one_wire.init();
@@ -22,5 +22,7 @@ extern "C" float read_temp() {
         auto address = One_wire::get_address(i);
         logln_info("%016llX\t%3.1f*C\r\n", One_wire::to_uint64(address), one_wire.temperature(address));
     }
+
+    return 0.0;
 
 }
