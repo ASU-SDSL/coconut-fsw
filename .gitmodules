@@ -13,3 +13,6 @@
 [submodule "lib/libspacepacket"]
 	path = lib/libspacepacket
 	url = https://github.com/mzakocs/libspacepacket.git
+[submodule "lib/pico-onewire"]
+	path = lib/pico-onewire
+	url = https://github.com/adamboardman/pico-onewire
