@@ -1,8 +1,5 @@
 #include "eps.h"
 
-// I2C address
-static const uint8_t INA219_ADDR = 0x40;
-
 // Registers
 static const uint8_t REG_CONFIG = 0x00;
 static const uint8_t REG_SHUNT = 0x01;
@@ -37,7 +34,22 @@ int calibrate(i2c_inst_t *i2c){
 
 	// Program calibration register
 	uint8_t* data = (uint8_t*)CAL;
-	if(i2c_write_to_register(i2c, INA219_ADDR, REG_CALIB, data, 2)){
+	if(i2c_write_to_register(i2c, INA0_BATTERY_ADDR, REG_CALIB, data, 2)){
+		return 1;
+	}
+	if(i2c_write_to_register(i2c, INA1_5V_ADDR, REG_CALIB, data, 2)){
+		return 1;
+	}
+	if(i2c_write_to_register(i2c, INA2_SOLAR_ADDR, REG_CALIB, data, 2)){
+		return 1;
+	}
+	if(i2c_write_to_register(i2c, INA3_MPPC_ADDR, REG_CALIB, data, 2)){
+		return 1;
+	}
+	if(i2c_write_to_register(i2c, INA4_RF5_ADDR, REG_CALIB, data, 2)){
+		return 1;
+	}
+	if(i2c_write_to_register(i2c, INA5_3V3_ADDR, REG_CALIB, data, 2)){
 		return 1;
 	}
 
@@ -55,7 +67,22 @@ int config(i2c_inst_t *i2c){
 	//Program config register 
 	uint8_t* config = (uint8_t*)CONFIG;
 
-	if(i2c_write_to_register(i2c, INA219_ADDR, REG_CONFIG, config, 2)){
+	if(i2c_write_to_register(i2c, INA0_BATTERY_ADDR, REG_CALIB, config, 2)){
+		return 1;
+	}
+	if(i2c_write_to_register(i2c, INA1_5V_ADDR, REG_CALIB, config, 2)){
+		return 1;
+	}
+	if(i2c_write_to_register(i2c, INA2_SOLAR_ADDR, REG_CALIB, config, 2)){
+		return 1;
+	}
+	if(i2c_write_to_register(i2c, INA3_MPPC_ADDR, REG_CALIB, config, 2)){
+		return 1;
+	}
+	if(i2c_write_to_register(i2c, INA4_RF5_ADDR, REG_CALIB, config, 2)){
+		return 1;
+	}
+	if(i2c_write_to_register(i2c, INA5_3V3_ADDR, REG_CALIB, config, 2)){
 		return 1;
 	}
 
