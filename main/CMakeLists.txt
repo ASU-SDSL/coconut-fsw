@@ -31,6 +31,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/rtc.c
     ${MAIN_DIRECTORY}/drivers/src/mag.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
+    ${MAIN_DIRECTORY}/drivers/src/max17048.c
 )
 
 # build certain files depending on simulator build
