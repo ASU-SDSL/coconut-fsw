@@ -13,43 +13,6 @@
 #define RADIO_LOGGING 1
 #define RADIO_LOGGING_CAD 1 
 
-// USER FUNCTIONS
-
-// void set_power_output_request(int new_db) {
-
-//     radio_queue_operations_t new_operation;
-//     new_operation.operation_type = SET_OUTPUT_POWER;
-//     new_operation.data_buffer = (uint8_t*)pvPortMalloc(sizeof(int));
-//     new_operation.data_size = sizeof(int);
-//     memcpy(new_operation.data_buffer, &new_db, sizeof(int)); // does this work?
-
-//     while(radio_queue == NULL) {
-//         vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
-//     }
-//     xQueueSendToBack(radio_queue, &new_operation, portMAX_DELAY); 
-// }
-
-// void transmit_request(char* buffer, size_t size) {
-
-//     radio_queue_operations_t new_operation;
-    
-//     new_operation.operation_type = TRANSMIT;
-//     new_operation.data_size = size;
-//     // Allocate chunk on heap to copy buffer contents
-//     uint8_t* heap_buf = (uint8_t*)pvPortMalloc(size);
-//     memcpy(heap_buf, buffer, size);
-//     new_operation.data_buffer = heap_buf;
-    
-//     // Wait for queue to become available
-//     while (radio_queue == NULL) {
-//         vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS);
-//     }
-//     // xQueueSendToBack(uart0_queue, &new_buffer, portMAX_DELAY);
-//     xQueueSendToBack(radio_queue, &new_operation, portMAX_DELAY);
-// }
-
-
-
 /**
  * one thread
  * queue polling to check on the size of queue each iteration
@@ -63,6 +26,7 @@
  * if smt in queue send on radio
  */
 #define RADIO_STATE_NO_ATTEMPT 1 
+#define RADIO_ERROR_CUSTOM 2
 #define RADIO_RECEIVE_TIMEOUT_MS 1000
 #define RADIO_TRANSMIT_TIMEOUT_MS 10000
 #define RADIO_NO_CONTACT_PANIC_TIME_MS (1000UL * 60 * 60 * 24 * 7) //  7 days in ms
@@ -174,7 +138,7 @@ void radio_panic(){
 
     do {
         if(radio == &radioSX){
-            radio_state_SX = 2; 
+            radio_state_SX = RADIO_ERROR_CUSTOM; 
             #if RADIO_LOGGING
             printf("Attempting to switch to RFM98...\n");
             #endif
@@ -193,7 +157,7 @@ void radio_panic(){
                 radioRFM.setDio1Action(radio_cad_detected_RFM, GPIO_IRQ_EDGE_RISE); 
                 // final check 
                 if(radio->startChannelScan() == 0) break; // avoid sleep 
-                else radio_state_RFM = 2; 
+                else radio_state_RFM = RADIO_ERROR_CUSTOM; 
             }
             #if RADIO_LOGGING
             else {
@@ -201,7 +165,7 @@ void radio_panic(){
             }
             #endif
         } else {
-            radio_state_RFM = 2; 
+            radio_state_RFM = RADIO_ERROR_CUSTOM; 
             #if RADIO_LOGGING
             printf("Attempting to switch to SX1268...\n");
             #endif
@@ -220,7 +184,7 @@ void radio_panic(){
                 radioSX.setDio1Action(radio_general_flag_SX);
                 // final check 
                 if(radio->startChannelScan() == 0) break; // avoid sleep 
-                else radio_state_SX = 2; 
+                else radio_state_SX = RADIO_ERROR_CUSTOM; 
             } 
             #if RADIO_LOGGING
             else {
