@@ -16,3 +16,6 @@
 [submodule "deps/no-OS-FatFS-SD-SPI-RPi-Pico"]
 	path = lib/no-OS-FatFS-SD-SPI-RPi-Pico
 	url = https://github.com/carlk3/no-OS-FatFS-SD-SPI-RPi-Pico
+[submodule "RP2040PIO-DS18B20"]
+	path = RP2040PIO-DS18B20
+	url = https://github.com/jondurrant/RP2040PIO-DS18B20.git
