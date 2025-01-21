@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* DEFINES */
 #define MAX_LOG_STR_SIZE 0x1000U
 
@@ -35,3 +39,7 @@ const char *get_current_task_name();
 /* INTERNAL FUNCTIONS */
 
 void _log(const char *str, ...);
+
+#ifdef __cplusplus
+}
+#endif

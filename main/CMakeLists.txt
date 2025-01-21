@@ -32,6 +32,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/mag.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
     ${MAIN_DIRECTORY}/drivers/src/max17048.c
+    ${MAIN_DIRECTORY}/drivers/src/ds18b_onewire.cpp
 )
 
 # build certain files depending on simulator build
@@ -61,7 +62,7 @@ set (LINK_LIBS
     FreeRTOS
     FatFs
     libspacepacket
-    pico-onewire
+    pico_one_wire
 )
 
 IF (SIMULATOR)
@@ -169,7 +170,6 @@ IF (SIMULATOR)
         ${MAIN_DIRECTORY}/drivers/src/rtc.c
         ${MAIN_DIRECTORY}/drivers/src/mag.c
         ${MAIN_DIRECTORY}/drivers/src/usb_uart.c
-        ${MAIN_DIRECTORY}/drivers/src/ds18b_onewire.cpp
 
         ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
 
