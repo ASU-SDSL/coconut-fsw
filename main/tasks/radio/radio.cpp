@@ -269,12 +269,6 @@ int parse_num(uint8_t * packet, size_t packet_size){
     return num; 
 }
 
-int parse_ccsds_num(uint8_t* packet, uint8_t packet_size){
-    packet += SPACEPACKET_ENCODED_HEADER_SIZE;
-
-    return parse_num(packet, packet_size - SPACEPACKET_ENCODED_HEADER_SIZE);
-}
-
 /**
  * 0 for stat echo
  * 1 for "ECHO" echo
@@ -421,10 +415,10 @@ void radio_task_cpp(){
                     }
                     printf("\n"); 
                     #endif
-                    //receive_command_bytes(packet, packet_size);
+                    receive_command_bytes(packet, packet_size);
                     // Check if command is to set output power of the radio
 
-                    parseRebound(radio, packet, packet_size); 
+                    // parseRebound(radio, packet, packet_size); 
                 }
                 #if RADIO_LOGGING
                 else if (packet_state == RADIOLIB_ERR_CRC_MISMATCH)
