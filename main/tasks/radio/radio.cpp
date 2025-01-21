@@ -10,8 +10,8 @@
 #define ERR_NONE 0
 #define NULL_QUEUE_WAIT_TIME 100
 
-#define RADIO_LOGGING 1
-#define RADIO_LOGGING_CAD 1 
+#define RADIO_LOGGING 0
+#define RADIO_LOGGING_CAD 0
 
 /**
  * one thread
