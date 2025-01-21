@@ -169,6 +169,7 @@ IF (SIMULATOR)
         ${MAIN_DIRECTORY}/drivers/src/rtc.c
         ${MAIN_DIRECTORY}/drivers/src/mag.c
         ${MAIN_DIRECTORY}/drivers/src/usb_uart.c
+        ${MAIN_DIRECTORY}/drivers/src/ds18b_onewire.cpp
 
         ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
 
