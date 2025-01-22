@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #define i2c0 NULL
+#define i2c1 NULL
 #define PICO_DEFAULT_I2C_SCL_PIN NULL
 #define PICO_DEFAULT_I2C_SDA_PIN NULL
 

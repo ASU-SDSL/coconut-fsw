@@ -8,13 +8,14 @@
 #define I2CSpeed 100000 // Default of 100k
 #define I2CTimeout_us 1000000 // Timeout for read and writes in micro-seconds
 
-#define I2C0_SDA_GPIO PICO_DEFAULT_I2C_SDA_PIN
-#define I2C0_SCL_GPIO PICO_DEFAULT_I2C_SCL_PIN
+// From FCR schematic
+#define I2C1_SDA_GPIO 2
+#define I2C1_SCL_GPIO 3
 
 /*
 * Configure i2c0 speed and pins
 */
-void config_i2c0();
+void config_i2c1();
 
 /* 
 * Write [reg] and [buf] to i2c device, [reg] is just inserted before [buf]

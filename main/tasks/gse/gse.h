@@ -1,18 +1,5 @@
 #pragma once
 
-#include <string.h>
-
-#include "FreeRTOS.h"
-#include "queue.h"
-
-#include <pico/stdio.h>
-
-#include "usb_uart.h"
-#include "command.h"
-#include "rtc.h"
-#include "eps.h"
-#include "log.h"
-
 #define UART_MAX_QUEUE_ITEMS 64
 #define GSE_CHECK_DELAY_MS 500
 #define UART_QUEUE_CHECK_TIME portMAX_DELAY

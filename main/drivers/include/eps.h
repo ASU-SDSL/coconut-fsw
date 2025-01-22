@@ -8,6 +8,14 @@
 
 #include "i2c.h"
 
+#define INA0_ADDR 0x40
+#define INA1_ADDR 0x41
+#define INA2_ADDR 0x42
+#define INA3_ADDR 0x43
+#define INA4_ADDR 0x44
+#define INA5_ADDR 0x45
+
+
 /*
 * See https://github.com/adafruit/Adafruit_INA219/ for reference
 */
@@ -42,6 +50,7 @@ int getVShunt(i2c_inst_t *i2c,
 * Returns status of operation (0 = success)
 */
 int getVShunt_raw(i2c_inst_t *i2c,
+                    const uint8_t addr,
                     uint16_t *output_buf);
 
 /*
@@ -60,6 +69,7 @@ int getVBus(i2c_inst_t *i2c,
 * Returns status of operation (0 = success)
 */
 int getVBus_raw(i2c_inst_t *i2c,
+                const uint8_t addr,
                 uint16_t *output_buf);
 
 /*
@@ -78,6 +88,7 @@ int getPower(i2c_inst_t *i2c,
 * Returns status of operation (0 = success)
 */
 int getPower_raw(i2c_inst_t *i2c,
+                    const uint8_t addr,
                     uint16_t *output_buf);
 
 /*
@@ -96,6 +107,7 @@ int getCurrent(i2c_inst_t *i2c,
 * Returns status of operation (0 = success)
 */
 int getCurrent_raw(i2c_inst_t *i2c,
+                    const uint8_t addr,
                     uint16_t *output_buf);
                         
 /*

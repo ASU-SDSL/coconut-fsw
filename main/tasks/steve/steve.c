@@ -1,3 +1,19 @@
+
+#include "pico/stdlib.h"
+
+#include <string.h>
+#include <stdbool.h>
+
+#include <FreeRTOS.h>
+#include <task.h>
+#include "log.h"
+#include "state.h"
+#include "mag.h"
+#include "eps.h"
+#include "timing.h"
+
+#include "heartbeat_job.h"
+
 #include "steve.h"
 
 /* 
@@ -217,6 +233,11 @@ void initialize_steve() {
 void steve_task(void* unused_arg) {
     // Setup STEVE jobs and state
     initialize_steve();
+
+    // Steve is the only task that uses i2c for now, so initialize it here - in future missions, we probably want to have a separate i2c task
+    config_i2c1();
+    mag_config(i2c1);
+
     // Run main task loop
     while (true) {
         // Take mutex

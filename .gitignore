@@ -16,3 +16,4 @@ libFreeRTOS.a
 .vscode/c_cpp_properties.json
 .vscode/settings.json
 .password
+.DS_Store
