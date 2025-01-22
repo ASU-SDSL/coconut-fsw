@@ -58,8 +58,10 @@ typedef struct radio_queue_operations {
 /* C FUNC DECLARATIONS */
 
 #ifdef __cplusplus
-extern "C" void _log(const char* str, ...);
-extern "C" void parse_radio_packet(uint8_t* packet, size_t packet_size);
+extern "C" {
+    void _log(const char* str, ...);
+    void receive_command_bytes(uint8_t* packet, size_t packet_size);
+}
 #endif
 
 #include "log.h"
