@@ -13,6 +13,7 @@
 #include "heartbeat_job.h"
 #include "steve.h"
 #include "filesystem.h"
+#include "radio.h"
 #include "command.h"
 
 void receive_command_byte_from_isr(char ch) {
@@ -120,6 +121,20 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (!is_admin(delete_user_args->admin_token)) break;
             if (mkfs_args->confirm != 1) break;
             delete_user(delete_user_args->user_name);
+            break;
+        case RADIO_CONFIG: 
+            if(payload_size < sizeof(radio_config_t)) break; 
+            radio_config_t* radio_config_args = (radio_config_t*)payload_buf; 
+            // removed for testing 
+            // if(!is_admin(radio_config_args->admin_token)) break;
+            
+            // queue module update
+            if(radio_config_args->selected_radio == 1) radio_set_module(ENABLE_RFM98); 
+            else if(radio_config_args->selected_radio == 0) radio_set_module(ENABLE_SX1268); 
+
+            // queue power update 
+            if(radio_config_args->updated_power != 0) radio_set_transmit_power(radio_config_args->updated_power); 
+
             break;
         default:
             logln_error("Received command with unknown APID: %hu", header.apid);
