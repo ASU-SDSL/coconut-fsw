@@ -97,7 +97,7 @@ float getTemperature(){
  * @param gpio
  * @return
  */
-void DS18Initalize(PIO p, int gpio){
+uint DS18Initalize(PIO p, int gpio){
 	pio = p;
 	gp = gpio;
 
@@ -113,4 +113,5 @@ void DS18Initalize(PIO p, int gpio){
     sm_config_set_in_shift(&c, true, true, 8);
     pio_sm_init(pio0, sm, offset, &c);
     pio_sm_set_enabled(pio0, sm, true);
+    return sm;
 }
