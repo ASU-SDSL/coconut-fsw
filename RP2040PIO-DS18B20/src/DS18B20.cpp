@@ -8,23 +8,12 @@
 
 #include "DS18B20.h"
 
-DS18B20::DS18B20() {
-	//NOP
-}
-
-DS18B20::DS18B20(PIO p, uint8_t gp) {
-	DS18Initalize(p, gp);
-}
-
-DS18B20::~DS18B20() {
-	//NOP
-}
 
 
 /***
  * Return CRC8 of the data
  */
-uint8_t DS18B20::crc8(uint8_t *data, uint8_t len){
+uint8_t crc8(uint8_t *data, uint8_t len){
     uint8_t i;
     uint8_t j;
     uint8_t temp;
@@ -50,7 +39,7 @@ uint8_t DS18B20::crc8(uint8_t *data, uint8_t len){
  * @param bytes
  * @param len
  */
-void DS18B20::writeBytes(uint8_t bytes[], int len){
+void writeBytes(uint8_t bytes[], int len, uint sm, PIO pio){ // sm, pio
     pio_sm_put_blocking(pio, sm, 250);
     pio_sm_put_blocking(pio, sm, len - 1);
     for (int i = 0; i < len; i++)
@@ -64,7 +53,7 @@ void DS18B20::writeBytes(uint8_t bytes[], int len){
  * @param bytes
  * @param len
  */
-void DS18B20::readBytes(uint8_t bytes[],  int len){
+void readBytes(uint8_t bytes[],  int len, uint sm, PIO pio){ // sm, pio
     pio_sm_put_blocking(pio, sm, 0);
     pio_sm_put_blocking(pio, sm, len - 1);
     for (int i = 0; i < len; i++)
@@ -77,7 +66,7 @@ void DS18B20::readBytes(uint8_t bytes[],  int len){
  * Covert Temperature
  * Leave 1000ms before getting temperature
  */
-void DS18B20::convert(){
+void convert(){
 	uint8_t d[2]= {0xCC, 0x44};
 	writeBytes(d, 2);
 }
@@ -86,7 +75,7 @@ void DS18B20::convert(){
  * Get term in Celsius
  * @return te,[eratire
  */
-float DS18B20::getTemperature(){
+float getTemperature(){
 	uint8_t d[2] = {0xCC, 0xBE};
     writeBytes(d, 2);
     uint8_t data[9];
@@ -108,7 +97,7 @@ float DS18B20::getTemperature(){
  * @param gpio
  * @return
  */
-void DS18B20::DS18Initalize(PIO p, int gpio){
+void DS18Initalize(PIO p, int gpio){
 	pio = p;
 	gp = gpio;
 
