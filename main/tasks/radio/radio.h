@@ -33,7 +33,6 @@
 #define RADIO_SF 9
 #define RADIO_CR 7
 #define RADIO_SYNC_WORD 18
-#define RADIO_INITIAL_POWER 2
 #define RADIO_PREAMBLE_LEN 8
 #define RADIO_RFM_GAIN 0
 #define RADIO_SX_TXCO_VOLT 0.0
