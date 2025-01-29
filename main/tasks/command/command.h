@@ -90,6 +90,7 @@ typedef struct __attribute__((__packed__)) {
 QueueHandle_t command_byte_queue;
 typedef uint8_t command_byte_t;
 
+
 /* USER FUNCTIONS */
 void receive_command_byte_from_isr(char ch);
 void receive_command_byte(char ch);

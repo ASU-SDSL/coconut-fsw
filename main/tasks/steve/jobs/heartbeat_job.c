@@ -10,6 +10,7 @@
 #include "rtc.h"
 #include "vega_ant.h"
 #include "heartbeat_job.h"
+#include "radio.h"
 
 void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
@@ -148,11 +149,15 @@ void heartbeat_telemetry_job(void* unused) {
     if(!vega_ant_status(i2c, &vega_ant_buf)) payload.vega_ant_status = vega_ant_buf;
     else payload.vega_ant_status = UINT8_MAX;
 
+    // radio status reporting
+    payload.which_radio = radio_which(); 
+    payload.rfm_state = radio_get_RFM_state(); 
+    payload.sx_state = radio_get_SX_state(); 
+    
     // Send it
     logln_info("Telem size: %d", sizeof(payload));
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
 
-    // Logging
     iteration_counter += 1;
     logln_info("Heartbeat %ld - uptime: %d", iteration_counter, (uint32_t)get_uptime());
 }

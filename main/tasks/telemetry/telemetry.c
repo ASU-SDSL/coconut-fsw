@@ -66,7 +66,7 @@ void telemetry_task(void* unused_arg) {
         gse_queue_message(payload_buffer, total_payload_size);
 
         // TODO: Send payload through radio
-        //radio_queue_message(payload_buffer, total_payload_size);
+        radio_queue_message(payload_buffer, total_payload_size);
         
         // Free buffers
         vPortFree(payload_buffer);
