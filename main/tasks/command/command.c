@@ -126,13 +126,13 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if(payload_size < sizeof(radio_config_t)) break; 
             radio_config_t* radio_config_args = (radio_config_t*)payload_buf; 
             // removed for testing 
-            // if(!is_admin(radio_config_args->admin_token)) break;
+            if(!is_admin(radio_config_args->admin_token)) break;
             
-            // queue module update
+            // queue module update if arg isn't 2 
             if(radio_config_args->selected_radio == 1) radio_set_module(ENABLE_RFM98); 
             else if(radio_config_args->selected_radio == 0) radio_set_module(ENABLE_SX1268); 
 
-            // queue power update 
+            // queue power update if arg isn't 0
             if(radio_config_args->updated_power != 0) radio_set_transmit_power(radio_config_args->updated_power); 
 
             break;
