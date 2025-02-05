@@ -24,7 +24,9 @@ typedef enum command_apid {
     FILE_MKFS = 11,
     ADD_USER = 12,
     DELETE_USER = 13,
-    RADIO_CONFIG = 14, 
+
+    RADIO_CONFIG = 101,
+    RADIO_STAT = 104, 
 } command_apid_t;
 
 typedef struct __attribute__((__packed__)) {
@@ -92,6 +94,10 @@ typedef struct __attribute__((__packed__)) {
     uint8_t selected_radio; // radio to switch to (1 == RFM, 0 == SX, anything else no change)
     uint8_t updated_power; // output power to set (0 == no change)
 } radio_config_t; 
+
+typedef struct __attribute__((__packed__)) { 
+    uint8_t admin_token[TOKEN_LENGTH];
+} radio_stat_t; 
 
 // Internal Command Thread Structs
 QueueHandle_t command_byte_queue;

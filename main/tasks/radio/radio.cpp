@@ -101,6 +101,15 @@ extern "C"
         }
         xQueueSendToBack(radio_queue, &new_buffer, portMAX_DELAY); 
     }
+    void radio_queue_stat_response(){
+        radio_queue_operations_t buf; 
+        buf.operation_type = radio_operation_type_t::RETURN_STATS; 
+        while(!radio_queue) 
+        {
+            vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS); 
+        }
+        xQueueSendToBack(radio_queue, &buf, portMAX_DELAY); 
+    }
     uint8_t radio_which(){
         return (radio == &radioRFM); 
     }
@@ -600,6 +609,22 @@ void radio_task_cpp(){
                             radio->startChannelScan(); 
                         }
                     }
+
+                    break;
+
+                case RETURN_STATS:
+                    // get radio stats from last transmission
+                    size_t payload_size = 3 * sizeof(float); 
+                    char payload_buffer[payload_size]; 
+                    float temp = radio->getRSSI(); 
+                    memcpy(payload_buffer, &temp, sizeof(float));
+                    temp = radio->getSNR(); 
+                    memcpy(payload_buffer + sizeof(float), &temp, sizeof(float));
+                    temp = (radio == &radioSX)? radioSX.getFrequencyError(): radioRFM.getFrequencyError(); 
+                    memcpy(payload_buffer + (2*sizeof(float)), &temp, sizeof(float));
+
+                    // send the data to telemetry 
+                    send_telemetry(RADIO_STAT_RES, payload_buffer, payload_size);
 
                     break;
             }

@@ -16,7 +16,9 @@ typedef enum {
     LOG = 0,
     HEARTBEAT = 1, // just to keep the command and telemetry apid equal :)
     DOWNLINK_GROUNDNODE_DATA = 2, 
-    DOWNLINK_TELEMETRY_DATA = 3
+    DOWNLINK_TELEMETRY_DATA = 3,
+
+    RADIO_STAT_RES = 101, 
 } telemetry_apid_t;
 
 typedef struct __attribute__((__packed__)) {

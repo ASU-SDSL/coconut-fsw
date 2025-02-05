@@ -46,10 +46,11 @@ typedef enum radio_operation_type {
     TRANSMIT,
     SET_OUTPUT_POWER,
     ENABLE_RFM98,
-    ENABLE_SX1268
+    ENABLE_SX1268,
+    RETURN_STATS,
 } radio_operation_type_t;
 typedef struct radio_queue_operations {
-    radio_operation_type_t operation_type; // What opeartion to do, could be transmit, set power, etc
+    radio_operation_type_t operation_type; // What operation to do, could be transmit, set power, etc
     uint8_t* data_buffer; // If extra data is needed for this operation, like if the operation is transmit then the data will be the buffer to transmit
     size_t data_size; // Could be 0
 } radio_queue_operations_t;
@@ -60,6 +61,7 @@ typedef struct radio_queue_operations {
 extern "C" {
     void _log(const char* str, ...);
     void receive_command_bytes(uint8_t* packet, size_t packet_size);
+    #include "telemetry.h"
 }
 #endif
 
@@ -74,6 +76,8 @@ extern "C"
     void radio_queue_message(char *buffer, size_t size);
     void radio_set_transmit_power(uint8_t output_power); 
     void radio_set_module(radio_operation_type_t op); 
+    void radio_stat_response(); 
+
     uint8_t radio_which(); 
     uint16_t radio_get_RFM_state(); 
     uint16_t radio_get_SX_state(); 

@@ -136,6 +136,13 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if(radio_config_args->updated_power != 0) radio_set_transmit_power(radio_config_args->updated_power); 
 
             break;
+        case RADIO_STAT:
+            if(payload_size < sizeof(radio_stat_t)) break;
+            radio_stat_t* radio_stat_args = (radio_stat_t*)payload_buf; 
+            if(!is_admin(radio_stat_args->admin_token));
+
+            radio_queue_stat_response(); 
+            break;
         default:
             logln_error("Received command with unknown APID: %hu", header.apid);
     }
