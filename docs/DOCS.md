@@ -99,18 +99,18 @@ Some other libraries utilized in this repo:
 
 ```
 coconut-fsw
-│   **deploy.sh** - builds the flight software and deploys it to an RP2040 automatically
-|   **docker_build.sh** - build using Docker - not well tested
-|   **pico_sdk_import.cmake** - taken from the pico-sdk
+│   deploy.sh - builds the flight software and deploys it to an RP2040 automatically
+|   docker_build.sh - build using Docker - not well tested
+|   pico_sdk_import.cmake - taken from the pico-sdk
 │
-└───**lib** - contains all external libraries
+└───lib - contains all external libraries
 │   
-└───**main** - contains all code we wrote
-│   └───**drivers** - all code used to interact with sensors or devices
-│   └───**tasks** - every C file here has a function that is ran as an RTOS task/thread
-|   └───**utilities** - any code used apart from drivers and tasks
-|   └───**simulator** - 
-|   └───**test** - 
+└───main - contains all code we wrote
+│   └───drivers - all code used to interact with sensors or devices
+│   └───tasks - every C file here has a function that is ran as an RTOS task/thread
+|   └───utilities - any code used apart from drivers and tasks
+|   └───simulator - 
+|   └───test - 
 ```
 
 ### Tasks/Threads Overview
@@ -122,6 +122,17 @@ Under the `main/tasks` directory, you will find multiple tasks. The `main.c` fil
 * **Command Task:** Receives raw bytes of commands from either the Radio or GSE tasks (from the ground) and parses the CCSDS header to find where to route the message to.
 * **Telemetry Task:** Receives packets from any task to encapsulate in a space packet and sends to the GSE and Radio Task. This header file also includes the definitions for all telemetry packets. The "log()" functions and all variants are also transmitted over GSE only as a space packet so that both debug messages and telemetry/commands can be used over the same interface.
 * **STEVE (Scheduler Task):** STEVE handles scheduling of functions (called "jobs") to execute at certain times, for instance the heartbeat/beacon executing every 30 seconds, or the antenna deployment executing 30 minutes after launch. The `jobs` directory also includes the heartbeat job, where telemetry points can be added or removed. This is executed every 30 seconds but can be changed in the heartbeat_job.h file.
+
+<br>
+<center>A Figure of the overall system and some of the tasks in the flight software
+<img src="fsw-bd.png" width="800" />
+<br><br>
+A Figure of the ground software and the radio/GSE redundancy
+
+<img src="gsw-bd.png" width="800" />
+</center>
+
+
 
 ## Users Guide
 
