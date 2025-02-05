@@ -24,6 +24,9 @@ typedef enum command_apid {
     FILE_MKFS = 11,
     ADD_USER = 12,
     DELETE_USER = 13,
+
+    SET_RTC_TIME = 201, 
+
 } command_apid_t;
 
 typedef struct __attribute__((__packed__)) {
@@ -85,6 +88,16 @@ typedef struct __attribute__((__packed__)) {
     uint16_t data_len;
     uint8_t data[];
 } upload_user_data_t;
+
+typedef struct __attribute__((__packed___)) {
+    uint8_t admin_token[TOKEN_LENGTH];
+    uint8_t year;
+    uint8_t month;
+    uint8_t day;
+    uint8_t hour; 
+    uint8_t minute;
+    uint8_t second;
+} set_rtc_time_t; 
 
 // Internal Command Thread Structs
 QueueHandle_t command_byte_queue;

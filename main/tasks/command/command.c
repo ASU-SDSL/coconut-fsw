@@ -14,6 +14,7 @@
 #include "steve.h"
 #include "filesystem.h"
 #include "command.h"
+#include "set_rtc_job.h"
 
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
@@ -121,6 +122,20 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (mkfs_args->confirm != 1) break;
             delete_user(delete_user_args->user_name);
             break;
+
+        case SET_RTC_TIME:
+            if (payload_size < sizeof(set_rtc_time_t)) break;
+            set_rtc_time_t* set_rtc_time_args = (set_rtc_time_t*)payload_buf; 
+            if(!is_admin(set_rtc_time_args->admin_token)) break;
+
+            void* args = pvPortMalloc(payload_size); 
+            memcpy(args, payload_buf, payload_size);
+
+            const char* job_name = "SET_RTC";
+            schedule_delayed_job_ms(job_name, &set_rtc_job, 10); 
+            steve_job_t* job = find_steve_job(job_name); 
+            job->arg_data = args; 
+
         default:
             logln_error("Received command with unknown APID: %hu", header.apid);
     }
