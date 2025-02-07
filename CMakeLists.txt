@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.24)
 
 # Set project data
 set(BUILD_NUMBER "1")
@@ -113,6 +113,13 @@ target_include_directories(FreeRTOS PUBLIC
     ${FREERTOS_INCLUDE_FILES}
 )
 
+IF (FUZZER)
+    include(${CMAKE_SOURCE_DIR}/lib/AFLplusplus_ultimate_protobuf_mutator/cmake/libprotobuf.cmake)
+    include(${CMAKE_SOURCE_DIR}/lib/AFLplusplus_ultimate_protobuf_mutator/cmake/libprotobuf-mutator.cmake)
+    set(LIB_PROTOBUF_DOWNLOAD CACHE INTERNAL OFF)
+    set(LIB_PROTOBUF_MUTATOR_DOWNLOAD CACHE INTERNAL OFF)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/lib/AFLplusplus_ultimate_protobuf_mutator)
+ENDIF()
 # Include the app's source code
 add_subdirectory(${MAIN_DIRECTORY})
 
@@ -121,7 +128,3 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/lib/fatfs/ build)
 IF (NOT SIMULATOR AND NOT FUZZER)
     add_subdirectory(${CMAKE_SOURCE_DIR}/lib/RadioLib)
 ENDIF()
-
-# IF (FUZZER)
-#     add_subdirectory(${CMAKE_SOURCE_DIR}/lib/AFLplusplus-protobuf-mutator)
-# ENDIF()
