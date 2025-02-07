@@ -15,7 +15,7 @@
  * data rate of 155Hz, range +/- 4 gauss, and continuous-conversion
  * operation mode. Writes to CTRL registers
 */
-int mag_cofig(i2c_inst_t *i2c);
+int mag_config(i2c_inst_t *i2c);
 
 // x, y, and z outputs can be given units, they are scaled based on config input 
 /**

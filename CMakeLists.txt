@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.24)
 
+set(CMAKE_CXX_STANDARD 14)
+
 # Set project data
 set(BUILD_NUMBER "1")
 set(PROJECT_NAME "COCONUTFSW")

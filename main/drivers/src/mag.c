@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "mag.h"
 #include "log.h"
 

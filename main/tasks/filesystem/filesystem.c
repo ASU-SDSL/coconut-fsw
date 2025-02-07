@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "log.h"
 #include "filesystem.h"
 

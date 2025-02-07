@@ -7,6 +7,7 @@
 #include <FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
+
 #include "queue.h"
 #include "gse.h"
 #include "log.h"
@@ -19,7 +20,7 @@ void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
     // Send to command queue
     if (command_byte_queue) {
-        xQueueSendToBackFromISR(command_byte_queue, &ch, NULL);
+        xQueueSendToBackFromISR(command_byte_queue, &ch, 0);
     }
 }
 
@@ -29,7 +30,7 @@ void receive_command_byte(char ch) {
         vTaskDelay(1);
     }
     // Send to command queue
-    xQueueSendToBack(command_byte_queue, &ch, NULL);
+    xQueueSendToBack(command_byte_queue, &ch, 0);
 }
 
 void receive_command_bytes(uint8_t* packet, size_t packet_size) {
