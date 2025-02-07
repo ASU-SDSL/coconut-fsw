@@ -1,10 +1,7 @@
- #pragma once
+#pragma once
 
-#include "hardware/spi.h"
-#include "hardware/gpio.h"
-#include "log.h"
-#include "pico/stdlib.h" //Probably need this
-#include <stdlib.h> 
+#include <stdlib.h>
+#include "pico/stdlib.h"
 
 //Project specific constants
 #define SPI_BUS spi1

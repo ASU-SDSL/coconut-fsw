@@ -1,4 +1,4 @@
-#include "rtc.h"
+#include "rtc_ds3231.h"
 #include "hardware/i2c.h"
 #include "pico/stdlib.h"
 #include "i2c.h"
