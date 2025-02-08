@@ -6,9 +6,9 @@
 
 #include "state.h"
 #include "telemetry.h"
-#include "eps.h"
-#include "mag.h"
-#include "rtc.h"
+#include "ina219.h"
+#include "mag_lis3mdltr.h"
+#include "rtc_ds3231.h"
 #include "timing.h"
 #include "vega_ant.h"
 #include "heartbeat_job.h"

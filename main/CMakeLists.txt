@@ -27,9 +27,9 @@ set(SOURCES
     ${MAIN_DIRECTORY}/utilities/src/user_auth.c
 
     ${MAIN_DIRECTORY}/drivers/src/i2c.c
-    ${MAIN_DIRECTORY}/drivers/src/eps.c
-    ${MAIN_DIRECTORY}/drivers/src/rtc.c
-    ${MAIN_DIRECTORY}/drivers/src/mag.c
+    ${MAIN_DIRECTORY}/drivers/src/ina219.c
+    ${MAIN_DIRECTORY}/drivers/src/rtc_ds3231.c
+    ${MAIN_DIRECTORY}/drivers/src/mag_lis3mdltr.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
 )
 

@@ -8,8 +8,8 @@
 #include <task.h>
 #include "log.h"
 #include "state.h"
-#include "mag.h"
-#include "eps.h"
+#include "mag_lis3mdltr.h"
+#include "ina219.h"
 #include "timing.h"
 
 #include "heartbeat_job.h"

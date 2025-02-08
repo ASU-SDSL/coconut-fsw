@@ -1,12 +1,6 @@
 #pragma once
 
 #include "hardware/i2c.h"
-#include "hardware/gpio.h"
-
-#include "log.h"
-#include <stdint.h>
-
-#include "i2c.h"
 
 #define INA0_ADDR 0x40
 #define INA1_ADDR 0x41
