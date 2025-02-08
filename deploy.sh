@@ -45,8 +45,6 @@ update_build_number() {
 comment
 
 # RUNTIME START
-debug_build=0
-simulator_build=0
 for arg in "$@"; do
     check_arg=${arg,,}
     echo "check: $check_arg"
@@ -63,7 +61,8 @@ for arg in "$@"; do
         simulator_build=1
     elif [[ "$check_arg" = "--afl" || "$check_arg" = "-a" ]]; then # enable fuzzer build
         fuzzer_build=1
-        simulator_build=1
+    elif [[ "$check_arg" = "--unit-tests" || "$check_arg" = "-u" ]]; then # enable unit-test build
+        unit_test_build=1
     fi
 done
 
@@ -81,6 +80,8 @@ if [[ ${do_build} -eq 1 ]]; then
         build_string="Fuzzer"
     elif [[ ${simulator_build} -eq 1 ]]; then
         build_string="Simulator"
+    elif [[ ${unit_test_build} -eq 1 ]]; then
+        build_string="UnitTest"
     fi
     echo $build_string
     
@@ -89,12 +90,16 @@ if [[ ${do_build} -eq 1 ]]; then
     uf2_path="${build_path}/main/COCONUTFSW.uf2"
 
     if [[ ${fuzzer_build} -eq 1 ]]; then
-	# use Release here because otherwise you have to include protobufd instead of protobuf
         export AFL_LLVM_THREADSAFE_INST=1
         cmake -S . -B ${build_path} \
             -D "CMAKE_C_COMPILER:FILEPATH=$(which afl-clang-fast)" \
             -D "CMAKE_CXX_COMPILER:FILEPATH=$(which afl-clang-fast++)" \
-            -D CMAKE_BUILD_TYPE:STRING="Release" -DFUZZER:BOOL=ON
+            -D CMAKE_BUILD_TYPE:STRING="Debug" -DFUZZER:BOOL=ON
+    elif [[ ${unit_test_build} -eq 1 ]]; then
+        cmake -S . -B ${build_path} \
+            -D "CMAKE_C_COMPILER:FILEPATH=$(which gcc)" \
+            -D "CMAKE_CXX_COMPILER:FILEPATH=$(which g++)" \
+            -D CMAKE_BUILD_TYPE:STRING="Debug" -DUNIT_TEST:BOOL=ON
     elif [[ ${simulator_build} -eq 1 ]]; then
         cmake -S . -B ${build_path} \
             -D "CMAKE_C_COMPILER:FILEPATH=$(which gcc)" \

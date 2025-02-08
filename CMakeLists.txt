@@ -24,14 +24,16 @@ add_definitions("-DADMIN_TOKEN=\"${HASHED_TOKEN}\"")
 # Add build options
 option(SIMULATOR "Enables simulator build" OFF)
 option(FUZZER "Enables fuzzer build" OFF)
-IF (SIMULATOR OR FUZZER)
+option(UNIT_TEST "Enables unit testing build" OFF)
+set(DESKTOP_BUILD (SIMULATOR OR FUZZER OR UNIT_TEST)) # DESKTOP_BUILD means any builds not for embedded environment
+IF (${DESKTOP_BUILD})
     # add preprocessor define so we can see this within C files
     message(STATUS "Added SIMULATOR define for ${PROJECT_NAME}")
     add_definitions(-DSIMULATOR) 
 ENDIF()
 
 # Include the Pico SDK
-IF (NOT SIMULATOR AND NOT FUZZER)
+IF (NOT ${DESKTOP_BUILD})
     include(pico_sdk_import.cmake) # - uses environment variable PICO_SDK_PATH
     pico_sdk_init() # Initialise the Pico SDK
 ENDIF()
@@ -69,7 +71,7 @@ set (FREERTOS_SOURCE_FILES
 )
 
 # Add FreeRTOS source files
-IF(SIMULATOR OR FUZZER)
+IF(${DESKTOP_BUILD})
     # Simulator
     set(FREERTOS_SOURCE_FILES
         ${FREERTOS_SOURCE_FILES}
@@ -88,7 +90,6 @@ add_library(FreeRTOS STATIC
     ${FREERTOS_SOURCE_FILES}
 )
 
-
 # Build FreeRTOS
 set(FREERTOS_INCLUDE_FILES
     ${FREERTOS_CFG_DIRECTORY}/
@@ -96,7 +97,7 @@ set(FREERTOS_INCLUDE_FILES
 )
 
 # Setup FreeRTOS Includes
-IF (SIMULATOR OR FUZZER)
+IF (${DESKTOP_BUILD})
     # Simulator
     set(FREERTOS_INCLUDE_FILES
         ${FREERTOS_INCLUDE_FILES}
@@ -115,6 +116,7 @@ target_include_directories(FreeRTOS PUBLIC
     ${FREERTOS_INCLUDE_FILES}
 )
 
+# Include AFLplusplus_ultimate_protobuf_mutator for fuzzing builds
 IF (FUZZER)
     include(${CMAKE_SOURCE_DIR}/lib/AFLplusplus_ultimate_protobuf_mutator/cmake/libprotobuf.cmake)
     include(${CMAKE_SOURCE_DIR}/lib/AFLplusplus_ultimate_protobuf_mutator/cmake/libprotobuf-mutator.cmake)
@@ -123,12 +125,12 @@ IF (FUZZER)
     add_subdirectory(${CMAKE_SOURCE_DIR}/lib/AFLplusplus_ultimate_protobuf_mutator)
 ENDIF()
 
-# Include the app's source code
-add_subdirectory(${MAIN_DIRECTORY})
-
-# add libraries here (and in target_link_libraries under the main cmakelists)
+# Include libraries
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/fatfs/ build)
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/libspacepacket/)
-IF (NOT SIMULATOR AND NOT FUZZER)
+IF (NOT ${DESKTOP_BUILD})
     add_subdirectory(${CMAKE_SOURCE_DIR}/lib/RadioLib)
 ENDIF()
+
+# Include the app's source code
+add_subdirectory(${MAIN_DIRECTORY})

@@ -34,7 +34,7 @@ set(SOURCES
 )
 
 # build certain files depending on simulator build
-IF (SIMULATOR OR FUZZER) 
+IF (${DESKTOP_BUILD}) 
     set (SOURCES
         ${SOURCES}
         ${MAIN_DIRECTORY}/simulator/drivers/src/diskio.c
@@ -63,7 +63,7 @@ set (LINK_LIBS
     libspacepacket
 )
 
-IF (SIMULATOR OR FUZZER)
+IF (${DESKTOP_BUILD})
     # add pthread for freertos unix port
     set (LINK_LIBS
         ${LINK_LIBS}
@@ -102,7 +102,7 @@ set (INTERNAL_INCLUDE_DIRS
 )
 
 
-IF (SIMULATOR OR FUZZER)
+IF (${DESKTOP_BUILD})
     # enable stubs for simulator
     set(INTERNAL_INCLUDE_DIRS
         PRIVATE ${MAIN_DIRECTORY}/simulator/pico-sdk
@@ -124,8 +124,10 @@ target_include_directories(${PROJECT_NAME}
 
 # Enable/disable STDIO via USB/UART
 #   Similar to above situation, only use picolib if building for flight hardwares
-IF (NOT SIMULATOR AND NOT FUZZER)
-    target_include_directories(${PROJECT_NAME} ${MAIN_DIRECTORY}../deps/RadioLib)
+IF (NOT ${DESKTOP_BUILD})
+    target_include_directories(${PROJECT_NAME} 
+        PRIVATE ${MAIN_DIRECTORY}../deps/RadioLib
+    )
     pico_enable_stdio_uart(${PROJECT_NAME} 0)
     pico_enable_stdio_usb(${PROJECT_NAME} 1)
     
@@ -138,6 +140,6 @@ IF (FUZZER)
 ENDIF()
 
 # Build unit tests
-IF (SIMULATOR)
+IF (UNIT_TEST)
     add_subdirectory(${MAIN_DIRECTORY}/test/unit)
 ENDIF()
