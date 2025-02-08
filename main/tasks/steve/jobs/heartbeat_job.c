@@ -2,15 +2,18 @@
 
 #include "FreeRTOS.h"
 #include "queue.h"
+#include "task.h"
 
 #include "state.h"
 #include "telemetry.h"
 #include "eps.h"
 #include "mag.h"
 #include "rtc.h"
+#include "timing.h"
 #include "vega_ant.h"
 #include "heartbeat_job.h"
 #include "radio.h"
+#include "max17048.h"
 
 void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct

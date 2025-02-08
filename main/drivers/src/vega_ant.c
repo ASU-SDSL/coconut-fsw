@@ -1,3 +1,6 @@
+#include "FreeRTOS.h"
+#include "task.h"
+
 #include "vega_ant.h"
 
 #define VEGA_ANT_ADDR 0x55

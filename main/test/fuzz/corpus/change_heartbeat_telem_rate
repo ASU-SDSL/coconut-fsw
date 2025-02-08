@@ -1,0 +1,9 @@
+inputs {
+  command {
+    header {
+      apid: APID_CHANGE_HEARTBEAT_TELEM_RATE
+      packet_length: 3
+    }
+    payload: "\377\000\000\000"
+  }
+}

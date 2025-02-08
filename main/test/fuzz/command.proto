@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+// Protobuf Definition for Coconut Cubesat Command Packets
+// Mitchell Zakocs 2024
+
+enum APID {
+    APID_STORE_GROUNDNODE_DATA = 0;
+    APID_CHANGE_HEARTBEAT_TELEM_RATE = 1;
+    APID_REQUEST_DOWNLINK_GROUNDNODE_DATA = 2;
+    APID_REQUEST_DOWNLINK_TELEMETRY_DATA = 3;
+    APID_LIST_STEVE_TASK = 4;
+    APID_FILE_LS = 5;
+    APID_FILE_MKDIR = 6;
+    APID_FILE_CAT = 7;
+    APID_FILE_DELETE = 8;
+    APID_FILE_APPEND = 9;
+    APID_FILE_TOUCH = 10;
+    APID_FILE_MKFS = 11;
+    APID_ADD_USER = 12;
+    APID_DELETE_USER = 13;
+}
+
+message SpacePacketHeader {
+    uint32 version = 1;                    // Version of the packet
+    bool type = 2;                          // Type of the packet (e.g., primary or secondary)
+    bool secondary_header_flag = 3;         // Indicates if there is a secondary header
+    APID apid = 4;                          // Application Process Identifier
+    uint32 sequence_flag = 5;              // Sequence flags
+    uint32 packet_sequence_count = 6;     // Sequence count of the packet
+    uint32 packet_length = 7;             // Length of the packet (header + data)
+}
+
+message Command {
+    SpacePacketHeader header = 1;
+    bytes payload = 2;
+}
+
+message FuzzInput {
+    // Actual fuzz input
+    Command command = 1;
+
+    // Mutatable options
+    bool ignore_packet_length = 2; // ignore packet length field and calculate the correct sizes
+}
+
+message FuzzInputs {
+    repeated FuzzInput inputs = 1;
+}
