@@ -10,6 +10,12 @@
 [submodule "lib/pico-sdk"]
 	path = lib/pico-sdk
 	url = https://github.com/ASU-SDSL/pico-sdk
+[submodule "lib/CMock"]
+	path = lib/CMock
+	url = https://github.com/ThrowTheSwitch/CMock.git
+[submodule "lib/AFLplusplus_ultimate_protobuf_mutator"]
+	path = lib/AFLplusplus_ultimate_protobuf_mutator
+	url = https://github.com/mzakocs/AFLplusplus_ultimate_protobuf_mutator.git
 [submodule "lib/libspacepacket"]
 	path = lib/libspacepacket
 	url = https://github.com/mzakocs/libspacepacket.git

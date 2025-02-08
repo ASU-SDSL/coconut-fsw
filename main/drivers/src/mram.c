@@ -1,6 +1,10 @@
 #include "mram.h"
 #include "FreeRTOS.h"
 
+#include "hardware/spi.h"
+#include "hardware/gpio.h"
+#include "log.h"
+
 //Global Modifiable Variables
 uint16_t memory_start;
 uint16_t cur_addr;

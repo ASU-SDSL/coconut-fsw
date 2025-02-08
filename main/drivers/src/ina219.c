@@ -1,4 +1,11 @@
-#include "eps.h"
+#include "ina219.h"
+
+#include "hardware/gpio.h"
+
+#include "log.h"
+#include <stdint.h>
+
+#include "i2c.h"
 
 // I2C address
 static const uint8_t INA219_ADDR = 0x40;

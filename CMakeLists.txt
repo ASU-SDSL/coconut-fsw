@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.24)
+
+set(CMAKE_CXX_STANDARD 14)
 
 # Set project data
 set(BUILD_NUMBER "1")
@@ -21,14 +23,17 @@ add_definitions("-DADMIN_TOKEN=\"${HASHED_TOKEN}\"")
 
 # Add build options
 option(SIMULATOR "Enables simulator build" OFF)
-IF (SIMULATOR)
+option(FUZZER "Enables fuzzer build" OFF)
+option(UNIT_TEST "Enables unit testing build" OFF)
+set(DESKTOP_BUILD (SIMULATOR OR FUZZER OR UNIT_TEST)) # DESKTOP_BUILD means any builds not for embedded environment
+IF (${DESKTOP_BUILD})
     # add preprocessor define so we can see this within C files
-    message(STATUS "Debugging enabled for ${PROJECT_NAME}")
+    message(STATUS "Added SIMULATOR define for ${PROJECT_NAME}")
     add_definitions(-DSIMULATOR) 
 ENDIF()
 
 # Include the Pico SDK
-IF (NOT SIMULATOR)
+IF (NOT ${DESKTOP_BUILD})
     include(pico_sdk_import.cmake) # - uses environment variable PICO_SDK_PATH
     pico_sdk_init() # Initialise the Pico SDK
 ENDIF()
@@ -66,7 +71,7 @@ set (FREERTOS_SOURCE_FILES
 )
 
 # Add FreeRTOS source files
-IF(SIMULATOR)
+IF(${DESKTOP_BUILD})
     # Simulator
     set(FREERTOS_SOURCE_FILES
         ${FREERTOS_SOURCE_FILES}
@@ -85,7 +90,6 @@ add_library(FreeRTOS STATIC
     ${FREERTOS_SOURCE_FILES}
 )
 
-
 # Build FreeRTOS
 set(FREERTOS_INCLUDE_FILES
     ${FREERTOS_CFG_DIRECTORY}/
@@ -93,7 +97,7 @@ set(FREERTOS_INCLUDE_FILES
 )
 
 # Setup FreeRTOS Includes
-IF (SIMULATOR)
+IF (${DESKTOP_BUILD})
     # Simulator
     set(FREERTOS_INCLUDE_FILES
         ${FREERTOS_INCLUDE_FILES}
@@ -112,12 +116,21 @@ target_include_directories(FreeRTOS PUBLIC
     ${FREERTOS_INCLUDE_FILES}
 )
 
-# Include the app's source code
-add_subdirectory(${MAIN_DIRECTORY})
+# Include AFLplusplus_ultimate_protobuf_mutator for fuzzing builds
+IF (FUZZER)
+    include(${CMAKE_SOURCE_DIR}/lib/AFLplusplus_ultimate_protobuf_mutator/cmake/libprotobuf.cmake)
+    include(${CMAKE_SOURCE_DIR}/lib/AFLplusplus_ultimate_protobuf_mutator/cmake/libprotobuf-mutator.cmake)
+    set(LIB_PROTOBUF_DOWNLOAD CACHE INTERNAL OFF)
+    set(LIB_PROTOBUF_MUTATOR_DOWNLOAD CACHE INTERNAL OFF)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/lib/AFLplusplus_ultimate_protobuf_mutator)
+ENDIF()
 
-# add libraries here (and in target_link_libraries under the main cmakelists)
+# Include libraries
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/fatfs/ build)
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/libspacepacket/)
-IF (NOT SIMULATOR)
+IF (NOT ${DESKTOP_BUILD})
     add_subdirectory(${CMAKE_SOURCE_DIR}/lib/RadioLib)
 ENDIF()
+
+# Include the app's source code
+add_subdirectory(${MAIN_DIRECTORY})
