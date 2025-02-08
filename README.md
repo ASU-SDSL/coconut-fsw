@@ -1,11 +1,11 @@
-# Coconut Flight Software
 
 ![](docs/logo.png)
 
+# Coconut Flight Software
 This repo contains the flight software for the Arizona State University SDSL (Sun Devil Satellite Lab) Coconut CubeSat. It is designed for FreeRTOS on a Raspberry Pi Pico (RP2040). This codebase is based on [this repo](https://github.com/smittytone/RP2040-FreeRTOS), so check it out for reference.
 
 ## Building and Running
-See our [Users Guide](docs/DOCS.md#usersguide) in the main documentation!
+See our [Users Guide](docs/DOCS.md#users-guide) in the main documentation!
 
 ## Directory Structure
 1. `main` Contains the main firmware for the satellite
