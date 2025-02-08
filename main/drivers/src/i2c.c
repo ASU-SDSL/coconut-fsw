@@ -50,4 +50,3 @@ int i2c_read_from_register(	i2c_inst_t *i2c,
 
 	return 0; // no errors
 }
-

@@ -127,6 +127,7 @@ add_subdirectory(${MAIN_DIRECTORY})
 
 # add libraries here (and in target_link_libraries under the main cmakelists)
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/fatfs/ build)
+add_subdirectory(${CMAKE_SOURCE_DIR}/lib/libspacepacket/)
 IF (NOT SIMULATOR AND NOT FUZZER)
     add_subdirectory(${CMAKE_SOURCE_DIR}/lib/RadioLib)
 ENDIF()

@@ -18,6 +18,7 @@
 #include "pico/stdlib.h"
 #include "queue.h"
 #include "task.h"
+#include "spacepacket.h"
 
 extern "C" {
 BaseType_t xTaskCreate(TaskFunction_t pxTaskCode,

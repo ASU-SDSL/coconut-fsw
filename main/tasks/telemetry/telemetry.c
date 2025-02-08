@@ -11,7 +11,7 @@
 #include "radio.h"
 #include "state.h"
 #include "telemetry.h"
-#include "ccsds.h"
+#include "spacepacket.h"
 #include "log.h"
 
 void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t payload_size) {
@@ -39,7 +39,7 @@ void telemetry_task(void* unused_arg) {
         // Wait on a message in the queue
         xQueueReceive(telemetry_queue, &telemetry, TELEMETRY_CHECK_DELAY_MS);
         // Create spacepacket header
-        ccsds_header_t header;
+        spacepacket_header_t header;
         // Fill spacepacket header
         header.version = 0;
         header.type = 0; // telemetry type
@@ -50,13 +50,13 @@ void telemetry_task(void* unused_arg) {
         header.packet_sequence_count = (telemetry.apid == 0) ? g_packet_sequence_number : g_packet_sequence_number++;
         header.packet_length = telemetry.payload_size - 1; // 4.1.3.5.3 in spacepacket standard says packet_length - 1
         // Encode spacepacket header into bytes
-        size_t header_size = TELEMETRY_SYNC_SIZE + CCSDS_ENCODED_HEADER_SIZE;
+        size_t header_size = TELEMETRY_SYNC_SIZE + SPACEPACKET_ENCODED_HEADER_SIZE;
         size_t total_payload_size = header_size + telemetry.payload_size;
         char* payload_buffer = pvPortMalloc(total_payload_size);
         // Write sync bytes first
         memcpy(payload_buffer, TELEMETRY_SYNC_BYTES, TELEMETRY_SYNC_SIZE);
         // Write spacepacket header after sync bytes
-        if (!encode_ccsds_header(header, payload_buffer + TELEMETRY_SYNC_SIZE)) {
+        if (encode_spacepacket_header(&header, payload_buffer + TELEMETRY_SYNC_SIZE, SPACEPACKET_ENCODED_HEADER_SIZE) == -1) {
             logln_error("Failed to encode SpacePacket header!");
             continue;
         }
@@ -66,7 +66,7 @@ void telemetry_task(void* unused_arg) {
         gse_queue_message(payload_buffer, total_payload_size);
 
         // TODO: Send payload through radio
-        //radio_queue_message(payload_buffer, total_payload_size);
+        radio_queue_message(payload_buffer, total_payload_size);
         
         // Free buffers
         vPortFree(payload_buffer);

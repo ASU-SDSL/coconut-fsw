@@ -9,7 +9,6 @@
 #include "rtc.h"
 #include "eps.h"
 #include "log.h"
-#include "ccsds.h"
 #include "gse.h"
 
 void gse_queue_message(char* buffer, size_t size) {

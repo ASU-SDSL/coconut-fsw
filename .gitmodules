@@ -1,9 +1,6 @@
 [submodule "lib/FreeRTOS-Kernel"]
 	path = lib/FreeRTOS-Kernel
 	url = https://github.com/FreeRTOS/FreeRTOS-Kernel
-[submodule "lib/spacepacket"]
-	path = lib/spacepacket
-	url = https://github.com/yuasatakayuki/CCSDSLibrary
 [submodule "lib/RadioLib"]
 	path = lib/RadioLib
 	url = https://github.com/jgromes/RadioLib
@@ -19,3 +16,6 @@
 [submodule "lib/AFLplusplus_ultimate_protobuf_mutator"]
 	path = lib/AFLplusplus_ultimate_protobuf_mutator
 	url = https://github.com/mzakocs/AFLplusplus_ultimate_protobuf_mutator.git
+[submodule "lib/libspacepacket"]
+	path = lib/libspacepacket
+	url = https://github.com/mzakocs/libspacepacket.git

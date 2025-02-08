@@ -22,7 +22,6 @@ set(SOURCES
 
     ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
 
-    ${MAIN_DIRECTORY}/utilities/src/ccsds.c
     ${MAIN_DIRECTORY}/utilities/src/log.c
     ${MAIN_DIRECTORY}/utilities/src/timing.c
     ${MAIN_DIRECTORY}/utilities/src/user_auth.c
@@ -32,6 +31,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/rtc.c
     ${MAIN_DIRECTORY}/drivers/src/mag.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
+    ${MAIN_DIRECTORY}/drivers/src/max17048.c
 )
 
 # build certain files depending on simulator build
@@ -60,6 +60,7 @@ add_executable(${PROJECT_NAME}
 set (LINK_LIBS
     FreeRTOS
     FatFs
+    libspacepacket
 )
 
 IF (SIMULATOR OR FUZZER)
