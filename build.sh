@@ -1,3 +1,6 @@
+# To debug linker/compilation issues (this is a CMake feature not anything we added)
+# export VERBOSE=1
+
 # Release build
 # ./deploy.sh -b
 

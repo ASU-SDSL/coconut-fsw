@@ -6,13 +6,15 @@ main/CMakeFiles/*
 main/elf2uf2/*
 generated
 pioasm
-*.cmake
 Makefile
 CMakeCache.txt
-CMakeLists.txt
 CMakeDoxyfile.in
+CMakeDoxygenDefaults.cmake
+pico_sdk_import.cmake
+cmake_install.cmake
 libFreeRTOS.a
 .vscode/c_cpp_properties.json
 .vscode/settings.json
 .password
 .DS_Store
+output/*

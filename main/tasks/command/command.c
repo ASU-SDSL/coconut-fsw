@@ -7,6 +7,7 @@
 #include <FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
+
 #include "queue.h"
 #include "gse.h"
 #include "log.h"
@@ -19,7 +20,7 @@ void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
     // Send to command queue
     if (command_byte_queue) {
-        xQueueSendToBackFromISR(command_byte_queue, &ch, NULL);
+        xQueueSendToBackFromISR(command_byte_queue, &ch, 0);
     }
 }
 
@@ -29,7 +30,7 @@ void receive_command_byte(char ch) {
         vTaskDelay(1);
     }
     // Send to command queue
-    xQueueSendToBack(command_byte_queue, &ch, NULL);
+    xQueueSendToBack(command_byte_queue, &ch, 0);
 }
 
 void receive_command_bytes(uint8_t* packet, size_t packet_size) {
@@ -136,11 +137,12 @@ void command_task(void* unused_arg) {
             // stall thread until we get a byte
             command_byte_t command_byte = 0;
             xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
-            logln_info("Byte Received: 0x%hhx", command_byte);
+            
+            // logln_info("Byte Received: 0x%hhx", command_byte);
 
             // check if current sync index byte matches
             uint8_t check_byte = COMMAND_SYNC_BYTES[sync_index];
-            logln_info("Comparing with Sync Byte %d: 0x%hhx", sync_index, check_byte);
+            // logln_info("Comparing with Sync Byte %d: 0x%hhx", sync_index, check_byte);
             if (command_byte != check_byte) {
                 // match unsuccessful
                 sync_index = 0;
@@ -155,7 +157,7 @@ void command_task(void* unused_arg) {
             sync_index += 1;
         }
         // We've succesfully received all sync bytes if we've reached here
-        logln_info("Received all sync bytes!");
+        // logln_info("Received all sync bytes!");
         // TODO: Add better error checks and handling here
         // Gather spacepacket header bytes
         uint8_t spacepacket_header_bytes[SPACEPACKET_ENCODED_HEADER_SIZE];

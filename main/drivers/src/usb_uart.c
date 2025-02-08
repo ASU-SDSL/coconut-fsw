@@ -1,3 +1,5 @@
+#include <unistd.h>
+
 #include "usb_uart.h"
 
 int writebytes_usb(uint8_t *buffer, size_t size) {

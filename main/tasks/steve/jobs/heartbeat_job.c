@@ -2,12 +2,14 @@
 
 #include "FreeRTOS.h"
 #include "queue.h"
+#include "task.h"
 
 #include "state.h"
 #include "telemetry.h"
 #include "ina219.h"
 #include "mag_lis3mdltr.h"
 #include "rtc_ds3231.h"
+#include "timing.h"
 #include "vega_ant.h"
 #include "heartbeat_job.h"
 #include "radio.h"

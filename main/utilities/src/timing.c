@@ -1,3 +1,6 @@
+#include "FreeRTOS.h"
+#include "task.h"
+
 #include "timing.h"
 
 TickType_t ms_to_ticks(unsigned long ms) {

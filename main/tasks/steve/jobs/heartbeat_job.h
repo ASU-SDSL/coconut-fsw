@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdint.h>
-
 #define HEARTBEAT_JOB_NAME "heartbeat_telemetry"
 #define HEARTBEAT_TELEMETRY_DEFAULT_INTERVAL 5
 
