@@ -11,7 +11,6 @@
 #include <fstream>
 
 #include "FreeRTOS.h"
-#include "ccsds.h"
 #include "command.pb.h"
 #include "google/protobuf/io/zero_copy_stream_impl.h"
 #include "google/protobuf/text_format.h"
@@ -148,7 +147,7 @@ static size_t proto_to_bytes(char *protobuf_path, uint8_t **out_buf) {
     // std::cerr << inputs.DebugString();
     // Calculate total size
     size_t total_size = (sizeof(COMMAND_SYNC_BYTES) - 1) * inputs.inputs().size();
-    total_size += CCSDS_ENCODED_HEADER_SIZE * inputs.inputs().size();
+    total_size += SPACEPACKET_ENCODED_HEADER_SIZE * inputs.inputs().size();
     for (const FuzzInput &input : inputs.inputs()) {
         total_size += input.command().payload().size();
         if (needs_admin_token(input.command().header().apid())) {
@@ -179,7 +178,7 @@ static size_t proto_to_bytes(char *protobuf_path, uint8_t **out_buf) {
         // Deal w variable length option
         current_buf[4] = (packet_length >> 8) & 0xFF;
         current_buf[5] = packet_length & 0xFF;
-        current_buf += CCSDS_ENCODED_HEADER_SIZE;
+        current_buf += SPACEPACKET_ENCODED_HEADER_SIZE;
         // Put in admin token if necessary
         if (needs_admin_token(apid)) {
             memcpy(current_buf, ADMIN_TOKEN, sizeof(ADMIN_TOKEN));

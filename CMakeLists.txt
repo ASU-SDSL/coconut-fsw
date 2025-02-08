@@ -122,6 +122,7 @@ IF (FUZZER)
     set(LIB_PROTOBUF_MUTATOR_DOWNLOAD CACHE INTERNAL OFF)
     add_subdirectory(${CMAKE_SOURCE_DIR}/lib/AFLplusplus_ultimate_protobuf_mutator)
 ENDIF()
+
 # Include the app's source code
 add_subdirectory(${MAIN_DIRECTORY})
 

@@ -31,7 +31,6 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/rtc.c
     ${MAIN_DIRECTORY}/drivers/src/mag.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
-    ${MAIN_DIRECTORY}/drivers/src/max17048.c
 )
 
 # build certain files depending on simulator build
@@ -48,6 +47,7 @@ ELSE()
         ${MAIN_DIRECTORY}/tasks/radio/radio.cpp
         ${MAIN_DIRECTORY}/drivers/src/mram.c
         ${MAIN_DIRECTORY}/drivers/src/usb_uart.c
+        ${MAIN_DIRECTORY}/drivers/src/max17048.c
     )
 ENDIF()
 
@@ -105,15 +105,16 @@ set (INTERNAL_INCLUDE_DIRS
 IF (SIMULATOR OR FUZZER)
     # enable stubs for simulator
     set(INTERNAL_INCLUDE_DIRS
-        ${INTERNAL_INCLUDE_DIRS}
         PRIVATE ${MAIN_DIRECTORY}/simulator/pico-sdk
         PRIVATE ${MAIN_DIRECTORY}/simulator/tasks/radio
+        PRIVATE ${MAIN_DIRECTORY}/simulator/drivers/include
+        ${INTERNAL_INCLUDE_DIRS} # intentionally put last to guarantee things like the stubbed drivers will be included first
     )
 ELSE() 
     # enable radio module if not simulator
     set(INTERNAL_INCLUDE_DIRS
-        ${INTERNAL_INCLUDE_DIRS}
         PRIVATE ${MAIN_DIRECTORY}/tasks/radio
+        ${INTERNAL_INCLUDE_DIRS}
     )
 ENDIF()
 
@@ -124,7 +125,7 @@ target_include_directories(${PROJECT_NAME}
 # Enable/disable STDIO via USB/UART
 #   Similar to above situation, only use picolib if building for flight hardwares
 IF (NOT SIMULATOR AND NOT FUZZER)
-    include_directories(${MAIN_DIRECTORY}../deps/RadioLib)
+    target_include_directories(${PROJECT_NAME} ${MAIN_DIRECTORY}../deps/RadioLib)
     pico_enable_stdio_uart(${PROJECT_NAME} 0)
     pico_enable_stdio_usb(${PROJECT_NAME} 1)
     

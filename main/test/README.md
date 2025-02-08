@@ -26,3 +26,5 @@ cargo install afl_runner
 There is also a standard `afl-fuzz` command commented-out in the `main/test/fuzz/fuzz.sh` run script if you don't want to parallelize the fuzzer. Either way, you should peek in this script to tweak performance options and adjust the core count on alfr.
 
 Once everything is installed, just run the previously-mentioned `main/test/fuzz/fuzz.sh` run script from the root source dir and start finding bugs.
+
+Keep in mind the fuzzer can break often and has to be maintained when new features are added to the codebase. Checkout the `fuzzer` branch to try the last confirmed working version of the fuzzer.
