@@ -2,24 +2,24 @@
 
 ### Table of Contents
 
-1. [Coconut FSW](#coconut-fsw)
-    * [Table of Contents](#table-of-contents)
-1. [Introduction](#introduction)
-    * [Project Origin and Goals](#project-origin-and-goals)
-    * [Flight Heritage](#flight-heritage)
-    * [Coconut Hardware Overview](#coconut-hardware-overview)
-    * [Current Software Capabilities and Features](#current-software-capabilities-and-features)
-1. [FSW Architecture Design](#flight-heritage-design)
-    * [Tools and Libraries](#tools-and-libraries)
-    * [Repository Overview and Structure](#repository-overview-and-structure)
-    * [Tasks/Threads Overview](#tasks/threads-overview)
-1. [Users Guide](#users-guide)
-    * [Cloning and Building](#cloning-and-building)
-    * [Debugging](#debugging)
-    * [Creating Device Drivers](#creating-device-drivers)
-    * [Creating Telemetry Points](#creating-telemetry-points)
-    * [Creating New STEVE Jobs](#creating-new-steve-jobs)
-    * [Interacting with the Filesystem](#interacting-with-the-filesystem)
+- [Coconut Flight-Software](#coconut-flight-software)
+    - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+    - [Project Origins and Goals](#project-origins-and-goals)
+    - [Flight Heritage](#flight-heritage)
+    - [Coconut Hardware Overview](#coconut-hardware-overview)
+    - [Current Software Capabilities and Features](#current-software-capabilities-and-features)
+  - [FSW Architecture Design](#fsw-architecture-design)
+    - [Tools and Libraries](#tools-and-libraries)
+  - [Repository Overview and Structure](#repository-overview-and-structure)
+    - [Tasks/Threads Overview](#tasksthreads-overview)
+  - [Users Guide](#users-guide)
+    - [Cloning and Building](#cloning-and-building)
+    - [Debugging](#debugging)
+    - [Creating Device Drivers](#creating-device-drivers)
+    - [Creating Telemetry Points](#creating-telemetry-points)
+    - [Creating New STEVE Jobs](#creating-new-steve-jobs)
+  - [Interacting with the Filesystem](#interacting-with-the-filesystem)
 
 ## Introduction
 
@@ -32,6 +32,8 @@ The goals of the Flight Software were to interact with all sensors and devices o
 For further questions please reach out to the Interplanetary Initiative Lab at ASU or any of our student members:
 * Interplanetary Initiative Lab: iilab@asu.edu
 * Dylan Larson (project lead and software engineer): dllarso4@asu.edu
+* Tyler Nielsen (software subsystem team lead): tmniels3@asu.edu
+* Mitchell Zakocs (honorary software subsystem team lead): mzakocs@asu.edu
 
 ### Flight Heritage
 
@@ -74,13 +76,16 @@ Device drivers:
 
 Capabilities:
 * Task/function scheduling (run a function at a certain time with scheduling)
-* CCSDS Space Packet protocol on telemetry/commands
-* Telemetry and commands on both radio interfaces and Ground-Support Interface hard-wire interface (GSE - when you see GSE it refers to this UART hardware interface)
+* CCSDS Space Packet encoding/decoding for telemetry and commands
+* Sending/receiving telemetry and commands on both radio interfaces and Ground-Support Interface hard-wire interface (GSE - when you see GSE it refers to this UART hardware interface)
 * Sensor data collection and telemetry packet creation for the heartbeat/beacon
 * Filesystem for creating directories, files, as well as reading from files
-* Command authentication (unique 8-byte password for each mission)
+* Command authentication (unique 8-byte token for each user)
+* Simulation on Linux
+* Fuzzing
 * Unit testing
-* GDB debug during execution
+* Hardware and simulator debugging through gdb
+
 
 ## FSW Architecture Design
 
@@ -94,6 +99,7 @@ Some other libraries utilized in this repo:
 * FatFS: Used to put a FatFS on the MRAM chips
 * libspacepacket: custom library for CCSDS space packet processing
 * RadioLib: Arduino C++ library for interfacing with many radio modules, including both of our LoRa radio modules. Uses the PicoHal.h file to convert Arduino functions to pico-sdk functions, taken from [RadioLib](https://github.com/jgromes/RadioLib/tree/master/examples/NonArduino/Pico)
+* [AFLplusplus_ultimate_protobuf_mutator](https://github.com/mzakocs/AFLplusplus_ultimate_protobuf_mutator): Used to create a more effective structured input fuzzer for the flight software 
 
 ## Repository Overview and Structure
 
@@ -109,8 +115,8 @@ coconut-fsw
 │   └───drivers - all code used to interact with sensors or devices
 │   └───tasks - every C file here has a function that is ran as an RTOS task/thread
 |   └───utilities - any code used apart from drivers and tasks
-|   └───simulator - 
-|   └───test - 
+|   └───simulator - stubbed files and functions for the simulator
+|   └───test - unit tests and fuzzers
 ```
 
 ### Tasks/Threads Overview
@@ -121,7 +127,7 @@ Under the `main/tasks` directory, you will find multiple tasks. The `main.c` fil
 * **Radio Task:** Handles commands and telemetry communication over both of the radios and control of the RF switch to switch between radios
 * **Command Task:** Receives raw bytes of commands from either the Radio or GSE tasks (from the ground) and parses the CCSDS header to find where to route the message to.
 * **Telemetry Task:** Receives packets from any task to encapsulate in a space packet and sends to the GSE and Radio Task. This header file also includes the definitions for all telemetry packets. The "log()" functions and all variants are also transmitted over GSE only as a space packet so that both debug messages and telemetry/commands can be used over the same interface.
-* **STEVE (Scheduler Task):** STEVE handles scheduling of functions (called "jobs") to execute at certain times, for instance the heartbeat/beacon executing every 30 seconds, or the antenna deployment executing 30 minutes after launch. The `jobs` directory also includes the heartbeat job, where telemetry points can be added or removed. This is executed every 30 seconds but can be changed in the heartbeat_job.h file.
+* **STEVE (Scheduler Task):** STEVE handles scheduling of functions (called "jobs") to execute at certain times, for instance the heartbeat/beacon executing every 30 seconds, or the antenna deployment executing 30 minutes after launch. The `jobs` directory also includes the heartbeat job, where telemetry points can be added or removed. This is executed every 30 seconds but can be changed in the `heartbeat_job.h` file.
 
 <br>
 <center>A Figure of the overall system and some of the tasks in the flight software
@@ -133,7 +139,6 @@ A Figure of the ground software and the radio/GSE redundancy
 </center>
 
 
-
 ## Users Guide
 
 ### Cloning and Building
@@ -141,14 +146,14 @@ A Figure of the ground software and the radio/GSE redundancy
 To setup this repository, you can follow these steps:
 1. Install dependencies: `sudo apt install -y python3 cmake gcc-arm-none-eabi build-essential git`
 2. Clone with submodules (submodules contains all external libraries including the pic_sdk and freertos): `git clone --recurse-submodules https://github.com/ASU-SDSL/coconut-fsw`
-3. Deploy the firmware to the RP2040
+3. Build and deploy the firmware to the RP2040
     1. Hold the white `BOOTSEL` button on the RP2040
     2. Connect the RP2040 to your computer with Micro-USB
     3. Let go of the `BOOTSEL` button
     4. A USB flashdrive called `RPI-RP2` should connect to your computer
     5. Run `./deploy.sh` - this will also build the firmware
     6. The codebase will now be running on the board. It will boot back into the flashed firmware even if powered off and powered on again 
-4. If you wish to just build and not deploy, run `./build.sh` - this will generate the `./build/` directory where you can find the uf2 executable under `./build/Debug/main/COCONUTFSW.uf2`
+4. If you wish to just build and not deploy, run `./build.sh` - this will generate the `./build/` directory where you can find the uf2 executable under `./build/Debug/main/COCONUTFSW.uf2`. You can also check the contents of the scripts to find out how to build the simulator
 
 ### Debugging
 
@@ -164,7 +169,7 @@ For debugging, you have two options:
 
 These device drivers are not live programs/threads, but rather a small library to interface with a certain device or sensor. Every device driver has a `.h` file under `main/drivers/inc` and a `.c` file under `main/drivers/src`. Documentation for the device is to be kept in the `.h` file. Drivers are usually named after the sensor/device name or part number. Once the header and C file are complete, they can be added in the CMake compilation process doing the following:
 
-Edit `main/CMakeLists.txt` - the .../inc directory is already included, so the C file is the only one that needs to be added:
+Edit `main/CMakeLists.txt` - the `.../inc` directory is already included, so the C file is the only one that needs to be added:
 
 ```c
 ## Create a sources variable with a link to all cpp files to compile
@@ -222,8 +227,10 @@ void initialize_steve() {
 }
 ```
 
-Tasks can also be removed, their interval altered, and more. See the `steve.h` for more info.
+Tasks can also be removed, their interval altered, and more. See the `steve.h` header file for more info.
 
 ## Interacting with the Filesystem
 
-See the `main/tasks/filesystem/filesystem.c` for more info on the API into the file system. These functions can be called by any task.
+See the `main/tasks/filesystem/filesystem.c` for more info on the API functions used to interact with the file system. These functions can be called by any task. There are already plenty of files that interact with the filesystem in the codebase, with `main/utilities/user_auth.c` being one of the better examples.
+
+The filesystem interacts with the MRAM flash memory through the `main/drivers/diskio.c` device driver. This driver contains all the SPI read/write logic and should work with other SPI flash chips with some minor modifications (mainly check maximum storage size). The simulator also supports the filesystem through the use of a seperate RAM-disk device driver in `main/simulator/drivers/diskio.c`. 
