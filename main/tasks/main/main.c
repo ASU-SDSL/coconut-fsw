@@ -15,6 +15,7 @@
 #include "log.h"
 #include "steve.h"
 #include "filesystem.h"
+#include "watchdog.h"
 
 #ifndef SIMULATOR
 #include "radio.h"
@@ -38,14 +39,14 @@ int main() {
                                         256, 
                                         NULL,
                                         1,
-                                        NULL);            
+                                        NULL);
          
     BaseType_t scheduler_task_status = xTaskCreate(steve_task, 
                                         "STEVE", 
                                         512, 
                                         NULL, 
                                         1,
-                                        NULL); 
+                                        NULL);
 
     BaseType_t command_task_status = xTaskCreate(command_task,
                                         "COMMAND",
@@ -77,6 +78,13 @@ int main() {
                                         NULL,
                                         1,
                                         NULL);
+
+    BaseType_t watchdog_task_status = xTaskCreate(watchdog_task,
+                                        "FILESYSTEM",
+                                        1024,
+                                        NULL,
+                                        1,
+                                        &xWatchdogTaskHandler);
                                         
     // Start the FreeRTOS scheduler
     vTaskStartScheduler();

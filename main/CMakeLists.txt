@@ -19,6 +19,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/tasks/command/command.c
     ${MAIN_DIRECTORY}/tasks/telemetry/telemetry.c
     ${MAIN_DIRECTORY}/tasks/filesystem/filesystem.c
+    ${MAIN_DIRECTORY}/tasks/watchdog/watchdog.c
 
     ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
 
@@ -96,6 +97,7 @@ set (INTERNAL_INCLUDE_DIRS
     PRIVATE ${MAIN_DIRECTORY}/tasks/steve/jobs
     PRIVATE ${MAIN_DIRECTORY}/tasks/telemetry
     PRIVATE ${MAIN_DIRECTORY}/tasks/filesystem
+    PRIVATE ${MAIN_DIRECTORY}/tasks/watchdog
 
     PRIVATE ${MAIN_DIRECTORY}/utilities/include
     PRIVATE ${MAIN_DIRECTORY}/drivers/include
