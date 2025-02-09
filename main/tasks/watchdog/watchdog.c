@@ -26,10 +26,10 @@ void watchdog_task(void *pvParameters) {
         // See if reset signal was received
         if (ulTaskNotifyTake(pdTRUE, 0) > 0) {
             // Freeze watchdog toggling to cause a reset
-            break;
+            while(1) {}
         }
 
-        state = !state; // Flip sate to toggle on and off
+        state = !state; // Flip state to toggle on and off
         gpio_put(WDI_PIN, state);
         vTaskDelay(500);
 

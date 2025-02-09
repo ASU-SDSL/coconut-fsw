@@ -80,7 +80,7 @@ int main() {
                                         NULL);
 
     BaseType_t watchdog_task_status = xTaskCreate(watchdog_task,
-                                        "FILESYSTEM",
+                                        "WATCHDOG",
                                         1024,
                                         NULL,
                                         1,
