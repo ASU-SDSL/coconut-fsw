@@ -8,6 +8,7 @@
 
 
 void watchdog_freeze() {
+    // Notify main loop in watchdog_task() to freeze
     xTaskNotifyGive(xWatchdogTaskHandler);
 }
 
@@ -21,7 +22,6 @@ void watchdog_task(void *pvParameters) {
     // Simple loop to toggle gpio
     uint8_t state = 1;
     while (1) {
-        logln_info("Watchdog task loop");
 
         // See if reset signal was received
         if (ulTaskNotifyTake(pdTRUE, 0) > 0) {

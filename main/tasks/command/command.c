@@ -15,6 +15,7 @@
 #include "steve.h"
 #include "filesystem.h"
 #include "command.h"
+#include "watchdog.h"
 
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
@@ -121,6 +122,9 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (!is_admin(delete_user_args->admin_token)) break;
             if (mkfs_args->confirm != 1) break;
             delete_user(delete_user_args->user_name);
+            break;
+        case MCU_POWER_CYCLE:
+            watchdog_freeze(); // Freezing the watchdog will cause a reboot within a few seconds
             break;
         default:
             logln_error("Received command with unknown APID: %hu", header.apid);
