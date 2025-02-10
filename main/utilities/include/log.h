@@ -35,3 +35,5 @@ const char *get_current_task_name();
 /* INTERNAL FUNCTIONS */
 
 void _log(const char *str, ...);
+
+void _write_log(const char *bytes, size_t size);

@@ -1,5 +1,7 @@
-#include <pico/stdio.h>
+#include <string.h>
+#include <stdio.h>
 #include <stdarg.h>
+#include <unistd.h>
 
 #include "FreeRTOS.h"
 #include "queue.h"
@@ -54,7 +56,8 @@ void _log(const char *str, ...) {
 
 
 void _write_log(const char *bytes, size_t size) {
-    log_telemetry_t packet;
+
+    	log_telemetry_t packet;
     memcpy(packet.str, bytes, size);
     packet.size = size;
     send_telemetry(LOG, (char*)&packet, sizeof(log_telemetry_t) + size);

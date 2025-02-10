@@ -1,5 +1,7 @@
 #include "i2c.h"
 
+// Battery Gauge Sensor
+
 // Error codes
 #define MAX17048_READ_ERROR -1
 #define MAX17048_DEVICE_NOT_READY_ERROR -2

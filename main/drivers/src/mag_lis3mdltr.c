@@ -1,4 +1,6 @@
-#include "mag.h"
+#include <stdio.h>
+
+#include "mag_lis3mdltr.h"
 #include "log.h"
 
 //Slave Address

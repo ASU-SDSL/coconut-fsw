@@ -1,5 +1,7 @@
-#include "log.h"
+#include <string.h>
+#include <stdio.h>
 
+#include "log.h"
 #include "user_auth.h"
 
 bool is_admin(const uint8_t *user_token) {

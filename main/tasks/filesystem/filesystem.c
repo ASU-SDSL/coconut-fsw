@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "log.h"
 #include "filesystem.h"
 
@@ -417,6 +419,11 @@ void _test() {
 }
 
 void filesystem_task(void* unused_arg) {
+    
+#ifdef SIMULATOR
+    _mkfs();
+#endif
+    
     // mount disk
     FATFS fs;
     FRESULT fr = f_mount(&fs, "0:", 1);

@@ -2,11 +2,12 @@
 
 #include "FreeRTOS.h"
 #include "queue.h"
+#include "pico/stdio.h"
 
 #include "usb_uart.h"
 #include "command.h"
-#include "rtc.h"
-#include "eps.h"
+#include "rtc_ds3231.h"
+#include "ina219.h"
 #include "log.h"
 #include "gse.h"
 

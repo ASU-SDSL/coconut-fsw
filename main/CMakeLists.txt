@@ -19,6 +19,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/tasks/command/command.c
     ${MAIN_DIRECTORY}/tasks/telemetry/telemetry.c
     ${MAIN_DIRECTORY}/tasks/filesystem/filesystem.c
+    ${MAIN_DIRECTORY}/tasks/watchdog/watchdog.c
 
     ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
     ${MAIN_DIRECTORY}/tasks/steve/jobs/set_rtc_job.c
@@ -28,15 +29,14 @@ set(SOURCES
     ${MAIN_DIRECTORY}/utilities/src/user_auth.c
 
     ${MAIN_DIRECTORY}/drivers/src/i2c.c
-    ${MAIN_DIRECTORY}/drivers/src/eps.c
-    ${MAIN_DIRECTORY}/drivers/src/rtc.c
-    ${MAIN_DIRECTORY}/drivers/src/mag.c
+    ${MAIN_DIRECTORY}/drivers/src/ina219.c
+    ${MAIN_DIRECTORY}/drivers/src/rtc_ds3231.c
+    ${MAIN_DIRECTORY}/drivers/src/mag_lis3mdltr.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
-    ${MAIN_DIRECTORY}/drivers/src/max17048.c
 )
 
 # build certain files depending on simulator build
-IF (SIMULATOR) 
+IF (${DESKTOP_BUILD}) 
     set (SOURCES
         ${SOURCES}
         ${MAIN_DIRECTORY}/simulator/drivers/src/diskio.c
@@ -49,6 +49,7 @@ ELSE()
         ${MAIN_DIRECTORY}/tasks/radio/radio.cpp
         ${MAIN_DIRECTORY}/drivers/src/mram.c
         ${MAIN_DIRECTORY}/drivers/src/usb_uart.c
+        ${MAIN_DIRECTORY}/drivers/src/max17048.c
     )
 ENDIF()
 
@@ -64,7 +65,7 @@ set (LINK_LIBS
     libspacepacket
 )
 
-IF (SIMULATOR)
+IF (${DESKTOP_BUILD})
     # add pthread for freertos unix port
     set (LINK_LIBS
         ${LINK_LIBS}
@@ -97,24 +98,26 @@ set (INTERNAL_INCLUDE_DIRS
     PRIVATE ${MAIN_DIRECTORY}/tasks/steve/jobs
     PRIVATE ${MAIN_DIRECTORY}/tasks/telemetry
     PRIVATE ${MAIN_DIRECTORY}/tasks/filesystem
+    PRIVATE ${MAIN_DIRECTORY}/tasks/watchdog
 
     PRIVATE ${MAIN_DIRECTORY}/utilities/include
     PRIVATE ${MAIN_DIRECTORY}/drivers/include
 )
 
 
-IF (SIMULATOR)
+IF (${DESKTOP_BUILD})
     # enable stubs for simulator
     set(INTERNAL_INCLUDE_DIRS
-        ${INTERNAL_INCLUDE_DIRS}
         PRIVATE ${MAIN_DIRECTORY}/simulator/pico-sdk
         PRIVATE ${MAIN_DIRECTORY}/simulator/tasks/radio
+        PRIVATE ${MAIN_DIRECTORY}/simulator/drivers/include
+        ${INTERNAL_INCLUDE_DIRS} # intentionally put last to guarantee things like the stubbed drivers will be included first
     )
 ELSE() 
     # enable radio module if not simulator
     set(INTERNAL_INCLUDE_DIRS
-        ${INTERNAL_INCLUDE_DIRS}
         PRIVATE ${MAIN_DIRECTORY}/tasks/radio
+        ${INTERNAL_INCLUDE_DIRS}
     )
 ENDIF()
 
@@ -124,8 +127,10 @@ target_include_directories(${PROJECT_NAME}
 
 # Enable/disable STDIO via USB/UART
 #   Similar to above situation, only use picolib if building for flight hardwares
-IF (NOT SIMULATOR)
-    include_directories(${MAIN_DIRECTORY}../deps/RadioLib)
+IF (NOT ${DESKTOP_BUILD})
+    target_include_directories(${PROJECT_NAME} 
+        PRIVATE ${MAIN_DIRECTORY}../deps/RadioLib
+    )
     pico_enable_stdio_uart(${PROJECT_NAME} 0)
     pico_enable_stdio_usb(${PROJECT_NAME} 1)
     
@@ -133,60 +138,11 @@ IF (NOT SIMULATOR)
 ENDIF()
 
 # Build fuzzers
-IF (SIMULATOR)
+IF (FUZZER)
+    add_subdirectory(${MAIN_DIRECTORY}/test/fuzz)
+ENDIF()
 
-    # Build options for simulator
-    
-    # target_compile_options(${PROJECT_NAME}
-    #     PRIVATE -g -fsanitize=address
-    # )
-
-    # target_link_libraries(${PROJECT_NAME}
-    #     PRIVATE -fsanitize=address
-    #     ${LINK_LIBS}
-    # )
-
-    # Command Fuzzer
-    set(COMMAND_FUZZER_NAME "command_fuzzer")
-
-    add_executable(${COMMAND_FUZZER_NAME}
-        ${MAIN_DIRECTORY}/test/fuzz/command_fuzzer.cpp
-
-        ${MAIN_DIRECTORY}/tasks/gse/gse.c
-        ${MAIN_DIRECTORY}/tasks/steve/steve.c
-        ${MAIN_DIRECTORY}/tasks/command/command.c
-        ${MAIN_DIRECTORY}/tasks/telemetry/telemetry.c
-        ${MAIN_DIRECTORY}/tasks/filesystem/filesystem.c
-
-        ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
-        ${MAIN_DIRECTORY}/tasks/steve/jobs/set_rtc_job.c
-
-        ${MAIN_DIRECTORY}/utilities/src/log.c
-        ${MAIN_DIRECTORY}/utilities/src/timing.c
-        ${MAIN_DIRECTORY}/utilities/src/user_auth.c
-
-        ${MAIN_DIRECTORY}/drivers/src/i2c.c
-        ${MAIN_DIRECTORY}/drivers/src/eps.c
-        ${MAIN_DIRECTORY}/drivers/src/rtc.c
-        ${MAIN_DIRECTORY}/drivers/src/mag.c
-        ${MAIN_DIRECTORY}/drivers/src/usb_uart.c
-
-        ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
-
-        ${MAIN_DIRECTORY}/simulator/drivers/src/diskio.c
-    )
-
-    target_compile_options(${COMMAND_FUZZER_NAME}
-        PRIVATE -g -fsanitize=fuzzer
-    )
-
-    target_link_libraries(${COMMAND_FUZZER_NAME}
-        PRIVATE -fsanitize=fuzzer
-        ${LINK_LIBS}
-    )
-
-    target_include_directories(${COMMAND_FUZZER_NAME}
-        ${INTERNAL_INCLUDE_DIRS}
-    )
-
+# Build unit tests
+IF (UNIT_TEST)
+    add_subdirectory(${MAIN_DIRECTORY}/test/unit)
 ENDIF()

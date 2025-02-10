@@ -1,4 +1,4 @@
-#include "rtc.h"
+#include "rtc_ds3231.h"
 #include "hardware/i2c.h"
 #include "pico/stdlib.h"
 #include "i2c.h"
@@ -38,7 +38,6 @@ uint8_t rtc_set_time(i2c_inst_t *i2c, uint8_t year, uint8_t month, uint8_t day, 
     }
     //       tens place      ones place
     buf = (hour / 10 << 4) | (hour % 10);
-    printf("hour: %x\n", buf);
     if(i2c_write_to_register(i2c, RTC_ADDR, RTC_HOURS_REG, &buf, 1)){
         return 3;
     }
@@ -187,7 +186,7 @@ void rtc_test() {
         float temp;
         rtc_update_temp(i2c);
         rtc_get_temp(i2c, &temp);
-        printf("RTC Temp: %f\n", temp);
+        // printf("RTC Temp: %f\n", temp);
 
         uint8_t hour;
         uint8_t minute;
