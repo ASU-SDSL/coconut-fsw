@@ -19,7 +19,18 @@
 
 // Size (bytes) that a heartbeat telemetry file can be until a new one should be used
 // If writing a new telemetry entry causes the file to go over this amount, a new file is made
-#define MAX_HB_TLM_FILE_SIZE 200
+#define MAX_HB_TLM_FILE_SIZE 170 //1000000 // About an hour of tlm at 84 bytes a packet every 30 seconds
+
+// Tlm files of the size specified by MAX_HB_TLM_FILE_SIZE will continue to be created until creating a new file of said size will surpase or equal this limit
+// Once this limit is reached, the oldest log will be deleted before a new one is created
+#define MAX_HB_TLM_TOTAL_SIZE 1000 //1250000 // 10 MBit to bytes
+
+// Contents of f_info.bin file which keeps track of information about the logging size and files in the /tlm directory
+typedef struct TlmFilesInfo {
+    uint16_t file_index; // Keeps track of the most recent index of tlm file (not necessarily how many files are in the current directory)
+    uint16_t oldest_file_index; // Index or name of the oldest tlm log in the directory
+    uint16_t directory_size; // Keeps track of the total size that these files are taking up
+} tlm_file_size_info_t;
 
 /* 
 *  Keep a /tlm directory where:
@@ -31,33 +42,33 @@ void log_heartbeat_tlm(heartbeat_telemetry_t payload) {
     // See if tlm directory exists
     if (!dir_exists("/tlm")) {
         make_dir("/tlm");
-    }
-    // See if f_count.bin exists, if not create it and start the index at 0
-    if (!file_exists("/tlm/f_count.bin")) {
-        // If the directory exists but the file counter file doesn't, create it and write a 0 to it
-        //touch("/tlm/f_count.bin");
 
-        char data[] = {0, 0};
-        write_file("/tlm/f_count.bin", data, 2, false); // create and write 0 to the file_counter.txt file
+        // Create the file info file as well
+
+        tlm_file_size_info_t f_data = {
+            0, // Start at index 0
+            0, // Oldest file has index 0
+            sizeof(tlm_file_size_info_t) // directory only has this file in it, so start the directory size at this
+        };
+        write_file("/tlm/f_info.bin", (char*)&f_data, sizeof(tlm_file_size_info_t), false); // create and write to the file info file
 
         logln_info("TLM dir:");
         list_dir("/tlm");
     }
 
-    // Read the file counter
-    char file_counter_buf[2];
-    size_t bytes_read = read_file("/tlm/f_count.bin", file_counter_buf, sizeof(file_counter_buf));
-    if (bytes_read != 2) {
-        logln_error("Error reading f_count.bin");
+    // Read the file info
+    tlm_file_size_info_t file_info_buf;
+    size_t bytes_read = read_file("/tlm/f_info.bin", (char*)&file_info_buf, sizeof(tlm_file_size_info_t));
+    if (bytes_read != sizeof(tlm_file_size_info_t)) {
+        logln_error("Error reading f_info.bin");
         return;
     }
 
-    uint16_t file_count = (file_counter_buf[0] << 8) | file_counter_buf[1];
-    logln_info("Heartbeat tlm file count: %d", file_count);
+    logln_info("Heartbeat tlm file index: %d", file_info_buf.file_index);
     
     // Write to this indexed file
     char filename[20];
-    snprintf(filename, sizeof(filename), "%d.bin", file_count);
+    snprintf(filename, sizeof(filename), "/tlm/%d.bin", file_info_buf.file_index);
     logln_info("Writing to file: %s", filename);
     write_file(filename, (char*)&payload, sizeof(payload), true); // append - this will eaither make the file if it does not exist or append to it if it does
 
@@ -66,11 +77,26 @@ void log_heartbeat_tlm(heartbeat_telemetry_t payload) {
     stat(filename, &file_info);
     if (file_info.fsize + sizeof(heartbeat_telemetry_t) > MAX_HB_TLM_FILE_SIZE) {
         // Increase f_count.bin by 1 for next time
-        file_count += 1;
-        char new_file_counter_buf[2] = {(file_count >> 8) & 0xFF, file_count & 0xFF};
-        write_file("/tlm/f_count.bin", new_file_counter_buf, 2, false); // overwrite the file counter with the new value
-        logln_info("New tlm file should be created");
+        file_info_buf.file_index += 1;
+        file_info_buf.directory_size += MAX_HB_TLM_FILE_SIZE; // Only increase once the file is full, it doesn't get checked until the file is full anyway
+
+        // See if there is enough space for the new file, otherwise delete the oldest file
+        if (file_info_buf.directory_size + MAX_HB_TLM_FILE_SIZE > MAX_HB_TLM_TOTAL_SIZE) {
+            // Delete the oldest file in the directory an increase the oldest file counter by 1
+            char oldest_filename[20];
+            snprintf(oldest_filename, sizeof(oldest_filename), "/tlm/%d.bin", file_info_buf.oldest_file_index);
+            delete_file(oldest_filename);
+            logln_info("Deleted oldest file: %s", oldest_filename);
+            file_info_buf.oldest_file_index += 1;
+
+            file_info_buf.directory_size -= MAX_HB_TLM_FILE_SIZE; // Remove the size of that full file, this value will end up oscillating once the directory is full
+        }
     }
+
+    logln_info("Tlm file info: %d, %d, %d", file_info_buf.file_index, file_info_buf.oldest_file_index, file_info_buf.directory_size);
+
+    // Write the new file info information in case anything changed
+    write_file("/tlm/f_info.bin", (char*)&file_info_buf, sizeof(tlm_file_size_info_t), false);
 
     logln_info("\nTLM DIR:");
     list_dir("/tlm");
