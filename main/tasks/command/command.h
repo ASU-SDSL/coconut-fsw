@@ -25,7 +25,7 @@ typedef enum command_apid {
     ADD_USER = 12,
     DELETE_USER = 13,
     MCU_POWER_CYCLE = 14,
-    PLAYBACK_PACKETS = 15,
+    PLAYBACK_HEARTBEAT_PACKETS = 15,
 } command_apid_t;
 
 typedef struct __attribute__((__packed__)) {

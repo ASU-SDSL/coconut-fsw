@@ -160,7 +160,6 @@ void heartbeat_telemetry_job(void* unused) {
     payload.sx_state = radio_get_SX_state(); 
     
     // Send it
-    logln_info("Telem size: %d", sizeof(payload));
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
     log_heartbeat_tlm(payload);
 

@@ -69,7 +69,7 @@ void log_heartbeat_tlm(heartbeat_telemetry_t payload) {
 
 int hb_tlm_playback(playback_hb_tlm_payload_t* playback_payload) {
     
-    logln_info("PLAYBACK: every x packer: %d,  go back x packets: %d, number of packets: %d", 
+    logln_info("PLAYBACK: every x packet: %d,  go back x packets: %d, number of packets: %d", 
         playback_payload->every_x_packet, playback_payload->go_back_x_packets, playback_payload->number_of_packets);
 
     // Make sure tlm exists
@@ -98,21 +98,42 @@ int hb_tlm_playback(playback_hb_tlm_payload_t* playback_payload) {
     // can differ from packet_counter depending on every_x_packet
     int packet_sent_counter = 0;
 
-    while (packet_sent_counter < playback_payload->number_of_packets) {
+    // Keep track of how many packets until "go_back_x_packets"
+    // Separate this variable so that the first packet after is sent regardless of every_x_packet
+    int packet_go_back_counter = 0;
+
+    // Use a for loop and a breaking statement instead of a while loop to prevent infinite loops
+    for (int i = 0; i < 3000; i++) {
+        if (packet_sent_counter >= playback_payload->number_of_packets) {
+            break;
+        }
 
         // For now, read the entire file into memory, this may need to be changed, or maybe just the MAX_HB_TLM_FILE_SIZE should be changed
         char tlm_buf[MAX_HB_TLM_FILE_SIZE];
         bytes_read = read_file(current_log_filename, tlm_buf, MAX_HB_TLM_FILE_SIZE);
         if (bytes_read <= 0) {
-            logln_error("Playback - read error occured: %d", bytes_read);
+            logln_error("Playback - read error occurred: %d", bytes_read);
             return 3;
-       }
+        }
 
         // Loop through this specific file
         // file_index is where the next heartbeat packet starts in the file buffer - going backwards
         int packet_index = bytes_read - sizeof(heartbeat_telemetry_t);
         heartbeat_telemetry_t hb_tlm_buf;
-        while (packet_index >= 0) {
+
+        // Use the for/while combo again to avoid infinite loops
+        for (int i = 0; i < 3000; i++) {
+            if (packet_index < 0) {
+                break;
+            }
+
+            // Check if we are past the go_back_x counter
+            if (packet_go_back_counter < playback_payload->go_back_x_packets) {
+                packet_go_back_counter++;
+                packet_index -= sizeof(heartbeat_telemetry_t); // Move index but don't increment counters yet
+                continue;
+            }
+
             // Check if this packet should be sent
             if (packet_counter % playback_payload->every_x_packet != 0) {
                 packet_index -= sizeof(heartbeat_telemetry_t); // Move index
