@@ -19,7 +19,7 @@ enum gpio_function {
     GPIO_FUNC_NULL = 0xf,
 };
 
-void static gpio_init(uint gpio) {
+void static gpio_init(int gpio) {
     return;
 }
 
@@ -27,7 +27,7 @@ void static gpio_set_function(int pin, enum gpio_function func) {
     return;
 }
 
-void static gpio_set_dir(uint32_t gpio, bool out) {
+void static gpio_set_dir(uint32_t gpio, int out) {
     return;
 }
 

@@ -16,6 +16,7 @@
 #include "filesystem.h"
 #include "radio.h"
 #include "command.h"
+#include "watchdog.h"
 
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
@@ -143,6 +144,8 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if(!is_admin(radio_stat_args->admin_token));
 
             radio_queue_stat_response(); 
+        case MCU_POWER_CYCLE:
+            watchdog_freeze(); // Freezing the watchdog will cause a reboot within a few seconds
             break;
         default:
             logln_error("Received command with unknown APID: %hu", header.apid);
