@@ -240,6 +240,6 @@ Tasks can also be removed, their interval altered, and more. See the `steve.h` h
 
 ## Interacting with the Filesystem
 
-See the `main/tasks/filesystem/filesystem.c` for more info on the API functions used to interact with the file system. These functions can be called by any task. There are already plenty of files that interact with the filesystem in the codebase, with `main/utilities/user_auth.c` being one of the better examples.
+See the `main/tasks/filesystem/filesystem.c` for more info on the API functions used to interact with the file system. These functions can be called by any task using the `filesystem.h` header file. There are already plenty of files that interact with the filesystem in the codebase, with `main/utilities/user_auth.c` being one of the better examples.
 
 The filesystem interacts with the MRAM flash memory through the `main/drivers/diskio.c` device driver. This driver contains all the SPI read/write logic and should work with other SPI flash chips with some minor modifications (mainly check maximum storage size). The simulator also supports the filesystem through the use of a seperate RAM-disk device driver in `main/simulator/drivers/diskio.c`. 

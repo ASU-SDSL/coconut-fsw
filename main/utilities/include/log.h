@@ -2,6 +2,9 @@
 
 /* DEFINES */
 #define MAX_LOG_STR_SIZE 0x1000U
+#define MAX_ERROR_LOG_STR_SIZE 0x100U // More limited as it is to be logged in our MRAM - used only for writing the logs to files
+#define MAX_ERROR_LOG_MESSAGES 3 // Max number of error messages that can be logged
+
 
 /* USER FUNCTIONS */
 
@@ -37,3 +40,5 @@ const char *get_current_task_name();
 void _log(const char *str, ...);
 
 void _write_log(const char *bytes, size_t size);
+
+void write_error_log(char *str);
