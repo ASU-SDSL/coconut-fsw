@@ -166,14 +166,5 @@ void heartbeat_telemetry_job(void* unused) {
 
     iteration_counter += 1;
 
-    // Test playback
-    if (iteration_counter == 30) {
-        playback_hb_tlm_payload_t playback_payload = {10, 2, 0};
-        int status = hb_tlm_playback(playback_payload);
-        logln_info("HB playback status: %d", status);
-    } else {
-        logln_info("Heartbeat iteration: %d", iteration_counter);
-    }
-
     logln_info("Heartbeat %ld - uptime: %d", iteration_counter, (uint32_t)get_uptime());
 }

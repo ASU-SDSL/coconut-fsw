@@ -67,10 +67,10 @@ void log_heartbeat_tlm(heartbeat_telemetry_t payload) {
     
 }
 
-int hb_tlm_playback(playback_hb_tlm_payload_t playback_payload) {
+int hb_tlm_playback(playback_hb_tlm_payload_t* playback_payload) {
     
     logln_info("PLAYBACK: every x packer: %d,  go back x packets: %d, number of packets: %d", 
-        playback_payload.every_x_packet, playback_payload.go_back_x_packets, playback_payload.number_of_packets);
+        playback_payload->every_x_packet, playback_payload->go_back_x_packets, playback_payload->number_of_packets);
 
     // Make sure tlm exists
     if (!dir_exists("/tlm")) {
@@ -98,7 +98,7 @@ int hb_tlm_playback(playback_hb_tlm_payload_t playback_payload) {
     // can differ from packet_counter depending on every_x_packet
     int packet_sent_counter = 0;
 
-    while (packet_sent_counter < playback_payload.number_of_packets) {
+    while (packet_sent_counter < playback_payload->number_of_packets) {
 
         // For now, read the entire file into memory, this may need to be changed, or maybe just the MAX_HB_TLM_FILE_SIZE should be changed
         char tlm_buf[MAX_HB_TLM_FILE_SIZE];
@@ -114,7 +114,7 @@ int hb_tlm_playback(playback_hb_tlm_payload_t playback_payload) {
         heartbeat_telemetry_t hb_tlm_buf;
         while (packet_index >= 0) {
             // Check if this packet should be sent
-            if (packet_counter % playback_payload.every_x_packet != 0) {
+            if (packet_counter % playback_payload->every_x_packet != 0) {
                 packet_index -= sizeof(heartbeat_telemetry_t); // Move index
                 packet_counter++; // Increase packet iteration counter
                 continue;
@@ -131,7 +131,7 @@ int hb_tlm_playback(playback_hb_tlm_payload_t playback_payload) {
             packet_counter++;
 
             // Check if we have reached the end
-            if (packet_sent_counter >= playback_payload.number_of_packets) {
+            if (packet_sent_counter >= playback_payload->number_of_packets) {
                 break;
             }
 
@@ -140,7 +140,7 @@ int hb_tlm_playback(playback_hb_tlm_payload_t playback_payload) {
         }
 
         // Finished reading this file, see if it's the oldest file, if it is and we have more to read, return error - reached end of logs
-        if (file_index == file_info_buf.oldest_file_index && packet_sent_counter < playback_payload.number_of_packets) {
+        if (file_index == file_info_buf.oldest_file_index && packet_sent_counter < playback_payload->number_of_packets) {
             logln_error("Playback - reached end of logs");
             return 5;
         }

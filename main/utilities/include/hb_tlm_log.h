@@ -1,6 +1,7 @@
 #pragma once
 #include "telemetry.h"
 #include <stdint.h>
+#include "command.h"
 
 // Contents of f_info.bin file which keeps track of information about the logging size and files for the heartbeat tlm in the /tlm directory
 typedef struct HBTlmFilesInfo {
@@ -16,12 +17,6 @@ typedef struct HBTlmFilesInfo {
 */
 void log_heartbeat_tlm(heartbeat_telemetry_t payload);
 
-// Command payload for the playback heartbeat telemetry command
-typedef struct PlaybackHBTLMPayload {
-    uint16_t number_of_packets;
-    uint16_t every_x_packet; // Used to adjust for less resolution but cover more time
-    uint16_t go_back_x_packets; // Used to start the playback from a certain point in the past
-} playback_hb_tlm_payload_t;
 
 /*
 *  Command for playing back the heartbeat telemetry logs
@@ -29,4 +24,4 @@ typedef struct PlaybackHBTLMPayload {
 *  - If go_back_x_packets is 0, it will begin at the most recently logged packet, otherwise it will traverse back go_back_x_packets packets first before collecting packets
 *  - Returns 0 on success, 1 on missing tlm directory, 2 on f_info.bin read error, 5 on reached end of logs
 */
-int hb_tlm_playback(playback_hb_tlm_payload_t playback_payload);
+int hb_tlm_playback(playback_hb_tlm_payload_t* playback_payload);
