@@ -144,6 +144,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if(!is_admin(radio_stat_args->admin_token));
 
             radio_queue_stat_response(); 
+            break;
         case MCU_POWER_CYCLE:
             watchdog_freeze(); // Freezing the watchdog will cause a reboot within a few seconds
             break;
