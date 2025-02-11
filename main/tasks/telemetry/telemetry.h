@@ -1,5 +1,6 @@
 #pragma once
 
+#include "FreeRTOS.h" // This is needed because it gets included from "hb_tlm_log.h" before anything with an '#include "FreeRTOS.h"' is included for some reason
 #include "queue.h"
 
 #define TELEMETRY_SYNC_BYTES "\x35\x2E\xF8\x53"
