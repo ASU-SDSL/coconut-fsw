@@ -37,6 +37,8 @@ void telemetry_task(void *pvParameters);
 
 void filesystem_task(void *pvParameters);
 
+void watchdog_task(void *pvParameters);
+
 void receive_command_bytes(uint8_t *packet, size_t packet_size);
 }
 
@@ -46,6 +48,7 @@ void receive_command_bytes(uint8_t *packet, size_t packet_size);
 #include "log.h"
 #include "steve.h"
 #include "telemetry.h"
+#include "watchdog.h"
 
 typedef struct fuzzer_input {
     uint8_t *data;
@@ -108,6 +111,13 @@ extern "C" int LLVMFuzzerTestOneInput(uint8_t *Data, uint32_t Size) {
                                                 &input,
                                                 1,
                                                 &fuzzer_task_handle);
+
+    BaseType_t watchdog_task_status = xTaskCreate(watchdog_task,
+                                        "WATCHDOG",
+                                        256,
+                                        NULL,
+                                        1,
+                                        &xWatchdogTaskHandler);
 
     // Start the FreeRTOS scheduler
     vTaskStartScheduler();

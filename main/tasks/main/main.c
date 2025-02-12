@@ -81,7 +81,7 @@ int main() {
 
     BaseType_t watchdog_task_status = xTaskCreate(watchdog_task,
                                         "WATCHDOG",
-                                        1024,
+                                        256,
                                         NULL,
                                         1,
                                         &xWatchdogTaskHandler);
