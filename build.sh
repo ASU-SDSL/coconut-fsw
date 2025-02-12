@@ -9,3 +9,9 @@
 
 # Simulator
 # ./deploy.sh -b -s
+
+# Fuzzing (AFL)
+# ./deploy.sh -b -a
+
+# Unit Test
+# ./deploy.sh -b -u
