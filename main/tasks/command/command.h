@@ -24,6 +24,7 @@ typedef enum command_apid {
     FILE_MKFS = 11,
     ADD_USER = 12,
     DELETE_USER = 13,
+    MCU_POWER_CYCLE = 14,
 } command_apid_t;
 
 typedef struct __attribute__((__packed__)) {

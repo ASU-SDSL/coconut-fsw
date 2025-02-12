@@ -13,12 +13,12 @@ add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
 
 ## Create a sources variable with a link to all cpp files to compile
 set(SOURCES
-    ${MAIN_DIRECTORY}/tasks/main/main.c
     ${MAIN_DIRECTORY}/tasks/gse/gse.c
     ${MAIN_DIRECTORY}/tasks/steve/steve.c
     ${MAIN_DIRECTORY}/tasks/command/command.c
     ${MAIN_DIRECTORY}/tasks/telemetry/telemetry.c
     ${MAIN_DIRECTORY}/tasks/filesystem/filesystem.c
+    ${MAIN_DIRECTORY}/tasks/watchdog/watchdog.c
 
     ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
 
@@ -52,6 +52,7 @@ ELSE()
 ENDIF()
 
 add_executable(${PROJECT_NAME}
+    ${MAIN_DIRECTORY}/tasks/main/main.c
     ${SOURCES}
 )
 
@@ -96,6 +97,7 @@ set (INTERNAL_INCLUDE_DIRS
     PRIVATE ${MAIN_DIRECTORY}/tasks/steve/jobs
     PRIVATE ${MAIN_DIRECTORY}/tasks/telemetry
     PRIVATE ${MAIN_DIRECTORY}/tasks/filesystem
+    PRIVATE ${MAIN_DIRECTORY}/tasks/watchdog
 
     PRIVATE ${MAIN_DIRECTORY}/utilities/include
     PRIVATE ${MAIN_DIRECTORY}/drivers/include
