@@ -4,6 +4,7 @@
 
 #include "spacepacket.h"
 #include "user_auth.h"
+#include "radio.h"
 
 #define COMMAND_MAX_QUEUE_ITEMS 0x200
 #define COMMAND_SYNC_BYTES "\x35\x2E\xF8\x53"
@@ -25,6 +26,7 @@ typedef enum command_apid {
     ADD_USER = 12,
     DELETE_USER = 13,
     MCU_POWER_CYCLE = 14,
+    RADIO_ECHO = 102
 } command_apid_t;
 
 typedef struct __attribute__((__packed__)) {
@@ -86,6 +88,11 @@ typedef struct __attribute__((__packed__)) {
     uint16_t data_len;
     uint8_t data[];
 } upload_user_data_t;
+
+typedef struct __attribute__((__packed__)) {
+    uint8_t admin_token[TOKEN_LENGTH];
+    char message[5];
+} radio_echo_t;
 
 // Internal Command Thread Structs
 QueueHandle_t command_byte_queue;
