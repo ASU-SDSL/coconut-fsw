@@ -40,6 +40,12 @@
 
 #define RADIO_MAX_QUEUE_ITEMS 64
 
+#define RADIO_RF_SWITCH_PIN 11
+#define RADIO_RF_SWITCH_RFM 0 
+#define RADIO_RF_SWITCH_SX 1 
+#define RADIO_SX_POWER_PIN 7
+#define RADIO_RFM_POWER_PIN 14
+
 QueueHandle_t radio_queue;
 
 typedef enum radio_operation_type {

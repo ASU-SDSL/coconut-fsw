@@ -205,7 +205,7 @@ void radio_panic(){
             #endif
         }
         printf("SX: %d RFM: %d\n", radio_state_SX, radio_state_RFM); 
-        sleep_ms(15000); // wait 15 seconds between tries
+        vTaskDelay(pdMS_TO_TICKS(15000)); // wait 15 seconds between tries
     } while(radio_state_RFM != 0 && radio_state_SX != 0); 
 
     #if RADIO_LOGGING
@@ -215,9 +215,26 @@ void radio_panic(){
     #endif
 }
 
+void radio_change_radio(PhysicalLayer* new_radio){
+
+}
+
 void init_radio()
 {
-    sleep_ms(1000); // for debugging
+    vTaskDelay(pdMS_TO_TICKS(1000)); // for debugging
+
+    // initialize rf switch and power switch gpio
+    gpio_init(RADIO_RF_SWITCH_PIN);
+    gpio_set_dir(RADIO_RF_SWITCH_PIN, 1); 
+    gpio_put(RADIO_RF_SWITCH_PIN, 0); 
+
+    gpio_init(RADIO_SX_POWER_PIN); 
+    gpio_set_dir(RADIO_SX_POWER_PIN, 1); 
+    gpio_put(RADIO_SX_POWER_PIN, 0);
+
+    gpio_init(RADIO_RFM_POWER_PIN);
+    gpio_set_dir(RADIO_RFM_POWER_PIN, 1); 
+    gpio_put(RADIO_RFM_POWER_PIN, 0); 
 
     // If the RFM is physically wired into the board it needs to call begin() before the SX1268
     // my current theory as to why is that it before begin() it is polluting the SPI line
@@ -400,7 +417,7 @@ void radio_task_cpp(){
                 printf("Duration (s): %f\n", duration_s);
                 printf("Bit rate: %f\n", transmission_size / duration_s);
                 printf("Done.\n"); 
-                sleep_ms(200); 
+                vTaskDelay(pdMS_TO_TICKS(200)); 
                 #endif 
             }
 
