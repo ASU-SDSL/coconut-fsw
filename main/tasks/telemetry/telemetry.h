@@ -1,5 +1,6 @@
 #pragma once
 
+#include "FreeRTOS.h" // This is needed because it gets included from "hb_tlm_log.h" before anything with an '#include "FreeRTOS.h"' is included for some reason
 #include "queue.h"
 
 #define TELEMETRY_SYNC_BYTES "\x35\x2E\xF8\x53"
@@ -16,7 +17,8 @@ typedef enum {
     LOG = 0,
     HEARTBEAT = 1, // just to keep the command and telemetry apid equal :)
     DOWNLINK_GROUNDNODE_DATA = 2, 
-    DOWNLINK_TELEMETRY_DATA = 3
+    DOWNLINK_TELEMETRY_DATA = 3,
+    HEARTBEAT_PLAYBACK = 4,
 } telemetry_apid_t;
 
 typedef struct __attribute__((__packed__)) {
