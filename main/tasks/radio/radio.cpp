@@ -17,10 +17,10 @@
 /**
  * one thread
  * queue polling to check on the size of queue each iteration
- * radio recieve polling
- * On recieve:
- * Send an interrupt when packet recieve https://jgromes.github.io/RadioLib/class_s_x127x.html#ad63322c9c58dd82e4b9982f10e546f33
- * In interupt set a flag -- set the flag to be volitile
+ * radio receive polling
+ * On receive:
+ * Send an interrupt when packet receive https://jgromes.github.io/RadioLib/class_s_x127x.html#ad63322c9c58dd82e4b9982f10e546f33
+ * In interrupt set a flag -- set the flag to be volatile
  * send to command.c to parse
  * On send:
  * poll the queue
@@ -142,6 +142,35 @@ void radio_general_flag_SX(){
 }
 // end isrs
 
+/**
+ * @brief Handle hardware switches between radios 
+ * 
+ * @param new_radio PhysicalLayer pointer to radio module object
+ * @return int currently unused 
+ */
+int radio_hardware_switch_to(PhysicalLayer* new_radio){
+    if(new_radio == &radioRFM){
+        // turn off SX
+        gpio_put(RADIO_SX_POWER_PIN, 0);
+        // turn on RFM 
+        gpio_put(RADIO_RFM_POWER_PIN, 1); 
+        // rf switch to RFM 
+        gpio_put(RADIO_RF_SWITCH_PIN, RADIO_RF_SWITCH_RFM);  
+
+    } else {
+        // turn off RFM 
+        gpio_put(RADIO_RFM_POWER_PIN, 0);
+        // turn on SX
+        gpio_put(RADIO_SX_POWER_PIN, 1); 
+        // rf switch to SX
+        gpio_put(RADIO_RF_SWITCH_PIN, RADIO_RF_SWITCH_SX);  
+    }
+
+    // wait for 100 ms (arbitrary) for power on
+    vTaskDelay(pdMS_TO_TICKS(100)); 
+    return 0; 
+}
+
 // toggle the radio until one of them works
 void radio_panic(){
     #if RADIO_LOGGING
@@ -158,13 +187,13 @@ void radio_panic(){
             radioSX.clearDio1Action(); 
 
             // initialize RFM98
+            radio_hardware_switch_to(&radioRFM); 
             radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
             #if RADIO_LOGGING
             printf("Res: %d\n", radio_state_RFM); 
             #endif
             radio = &radioRFM;
             if(radio_state_RFM == 0){
-                radioRFM.standby(); 
                 radioRFM.setDio0Action(radio_operation_done_RFM, GPIO_IRQ_EDGE_RISE);
                 radioRFM.setDio1Action(radio_cad_detected_RFM, GPIO_IRQ_EDGE_RISE); 
                 // final check 
@@ -185,6 +214,7 @@ void radio_panic(){
             radioRFM.clearDio0Action();
             radioRFM.clearDio1Action(); 
 
+            radio_hardware_switch_to(&radioSX); 
             // initialize SX1268
             radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
             #if RADIO_LOGGING
@@ -192,7 +222,6 @@ void radio_panic(){
             #endif
             radio = &radioSX; 
             if(radio_state_SX == 0){
-                radioSX.standby(); 
                 radioSX.setDio1Action(radio_general_flag_SX);
                 // final check 
                 if(radio->startChannelScan() == 0) break; // avoid sleep 
@@ -215,10 +244,6 @@ void radio_panic(){
     #endif
 }
 
-void radio_change_radio(PhysicalLayer* new_radio){
-
-}
-
 void init_radio()
 {
     vTaskDelay(pdMS_TO_TICKS(1000)); // for debugging
@@ -226,7 +251,7 @@ void init_radio()
     // initialize rf switch and power switch gpio
     gpio_init(RADIO_RF_SWITCH_PIN);
     gpio_set_dir(RADIO_RF_SWITCH_PIN, 1); 
-    gpio_put(RADIO_RF_SWITCH_PIN, 0); 
+    gpio_put(RADIO_RF_SWITCH_PIN, RADIO_RF_SWITCH_RFM); // 0 for RFM 
 
     gpio_init(RADIO_SX_POWER_PIN); 
     gpio_set_dir(RADIO_SX_POWER_PIN, 1); 
@@ -236,6 +261,9 @@ void init_radio()
     gpio_set_dir(RADIO_RFM_POWER_PIN, 1); 
     gpio_put(RADIO_RFM_POWER_PIN, 0); 
 
+    // switch hardware to RFM
+    radio_hardware_switch_to(&radioRFM); 
+
     // If the RFM is physically wired into the board it needs to call begin() before the SX1268
     // my current theory as to why is that it before begin() it is polluting the SPI line
     radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
@@ -244,14 +272,13 @@ void init_radio()
         radioRFM.setDio0Action(radio_operation_done_RFM, GPIO_IRQ_EDGE_RISE);
         radioRFM.setDio1Action(radio_cad_detected_RFM, GPIO_IRQ_EDGE_RISE); 
         radio = &radioRFM; 
-        radioSX.sleep(); 
     }
     else {
+        radio_hardware_switch_to(&radioSX); 
         radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
         if(radio_state_SX == 0){
             radioSX.setDio1Action(radio_general_flag_SX);
             radio = &radioSX;
-            radioRFM.sleep(); 
         }
         else {
             #if RADIO_LOGGING
@@ -288,80 +315,6 @@ void set_power_output(PhysicalLayer* radio_module, int8_t new_dbm){
     radio_module->setOutputPower(new_dbm); 
 }
 
-int parse_num(uint8_t * packet, size_t packet_size){
-    int num = 0; 
-    for(int i = 0; i < packet_size; i++){
-        if(packet[i] >= '0' && packet[i] <= '9'){
-            num = (num * 10) + (packet[i] - '0');
-        }
-    }
-
-    return num; 
-}
-
-/**
- * 0 for stat echo
- * 1 for "ECHO" echo
- * 2 for switch to RFM98
- * 3 for switch to SX1268
- */
-void parseRebound(PhysicalLayer* radio, uint8_t* packet, uint8_t packet_size){
-    int code = -1;
-    
-    code = parse_num(packet, packet_size);
-
-    sleep_ms(1000); 
-
-    switch(code){
-        case 0:{
-            #if RADIO_LOGGING
-            printf("Returning stats\n"); 
-            #endif
-            float rssi = radio->getRSSI();
-            float snr = radio->getSNR(); 
-            float fe = 0;
-            if(radio == &radioSX){
-                fe = radioSX.getFrequencyError();
-            } 
-            else {
-                fe = radioRFM.getFrequencyError(); 
-            }
-
-            // 6 (header) + 64 (msg);
-            char buff[6+64];
-            buff[0] = 'A';
-            buff[1] = 'A';
-            buff[2] = 'A';
-            buff[3] = 'A';
-            buff[4] = 'A';
-            buff[5] = 64; // packet size
-
-            sprintf(buff+6, "%.2fdBm %.2fdB %.2fHz", rssi, snr, fe);
-            radio_queue_message(buff, sizeof(buff)); 
-
-            break; 
-        }
-        case 1:{
-            char msg[] = {'E', 'C', 'H', 'O', '!'};
-            radio_queue_message(msg, 5);
-            break; 
-        }
-        case 2:
-            #if RADIO_LOGGING
-                printf("attempting to switch to RFM98\n"); 
-            #endif
-            radio_set_module(radio_operation_type_t::ENABLE_RFM98);
-            break;
-        case 3:
-            #if RADIO_LOGGING 
-                printf("attempting to switch to SX1268\n"); 
-            #endif 
-            radio_set_module(radio_operation_type_t::ENABLE_SX1268);
-            break;
-        
-    }    
-}
-
 
 
 /**
@@ -386,7 +339,7 @@ void radio_task_cpp(){
     while(true){
         // save now time since boot 
         uint32_t radio_now = to_ms_since_boot(get_absolute_time());
-        // if there's been no contect for a long time, try to switch radios 
+        // if there's been no contact for a long time, try to switch radios 
         if(abs((long long)(radio_now - last_receive_time)) > RADIO_NO_CONTACT_PANIC_TIME_MS){
             radio_panic(); 
         }
@@ -559,12 +512,11 @@ void radio_task_cpp(){
                     #if RADIO_LOGGING
                     printf("attempting to swap to RFM98...\n");
                     #endif
+                    radio_hardware_switch_to(&radioRFM); 
                     radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
                     if(radio_state_RFM == 0){
                         radioSX.clearDio1Action(); 
-                        radioSX.sleep(); 
                         radio = &radioRFM;
-                        radioRFM.standby(); 
                         radioRFM.setDio0Action(radio_operation_done_RFM, GPIO_IRQ_EDGE_RISE);
                         radioRFM.setDio1Action(radio_cad_detected_RFM, GPIO_IRQ_EDGE_RISE); 
                         radio->startChannelScan(); 
@@ -577,6 +529,7 @@ void radio_task_cpp(){
                         #if RADIO_LOGGING
                         printf("switch to RFM failed with code: %d\n", radio_state_RFM); 
                         #endif
+                        radio_hardware_switch_to(&radioSX); 
                         radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
                         if(radio_state_SX != 0){
                             #if RADIO_LOGGING
@@ -597,13 +550,12 @@ void radio_task_cpp(){
                     #if RADIO_LOGGING
                     printf("attempting swap to SX1268...\n"); 
                     #endif
+                    radio_hardware_switch_to(&radioSX); 
                     radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
                     if(radio_state_SX == 0){
                         radioRFM.clearDio0Action();
                         radioRFM.clearDio1Action(); 
-                        radioRFM.sleep(); 
                         radio = &radioSX; 
-                        radioSX.standby(); 
                         radioSX.setDio1Action(radio_general_flag_SX);
                         radio->startChannelScan(); 
                         #if RADIO_LOGGING
@@ -615,6 +567,7 @@ void radio_task_cpp(){
                         #if RADIO_LOGGING
                         printf("switch to SX failed with code: %d\n", radio_state_SX); 
                         #endif
+                        radio_hardware_switch_to(&radioRFM); 
                         radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
                         if(radio_state_RFM != 0){
                             #if RADIO_LOGGING
