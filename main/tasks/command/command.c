@@ -16,6 +16,7 @@
 #include "filesystem.h"
 #include "command.h"
 #include "watchdog.h"
+#include "hb_tlm_log.h"
 
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
@@ -125,6 +126,11 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             break;
         case MCU_POWER_CYCLE:
             watchdog_freeze(); // Freezing the watchdog will cause a reboot within a few seconds
+            break;
+        case PLAYBACK_HEARTBEAT_PACKETS:
+            if (payload_size < sizeof(playback_hb_tlm_payload_t)) break; // Should probably return an error to the ground
+            playback_hb_tlm_payload_t* playback_hb_payload = (playback_hb_tlm_payload_t*)payload_buf;
+            hb_tlm_playback(playback_hb_payload);
             break;
         default:
             logln_error("Received command with unknown APID: %hu", header.apid);

@@ -16,6 +16,7 @@
   - [Users Guide](#users-guide)
     - [Cloning and Building](#cloning-and-building)
     - [Debugging](#debugging)
+    - [Using the Simulator](#using-the-simulator)
     - [Creating Device Drivers](#creating-device-drivers)
     - [Creating Telemetry Points](#creating-telemetry-points)
     - [Creating New STEVE Jobs](#creating-new-steve-jobs)
@@ -164,6 +165,14 @@ For debugging, you have two options:
    3. You will see any output from `logln_info` and `printf` calls in your code
 2. Debugging through SWD/JTAG
    1. See `debug/README.md` to use the VSCode graphic debugger to set breakpoints and see variable values as your code executes
+
+### Using the Simulator
+
+The simulator will simulate FreeRTOS as well as many pico sdk functions, you can see the implemented pico-sdk functions and change their simulated implementations under main/simulator/pico-sdk. The filesystem is also fully functional in the simulator. You can start the simulator using the "Coconut Simulator Debug" under the VSCode debugging window.
+To utilize telemetry and commands on the simulator with the host computer, the following can be done:
+* In a terminal, run `socat -d -d pty,raw,echo=0 pty,raw,echo=0` - this will create 2 /dev/pts/ ports, which will route each others' inputs to the output of the other
+* Once the simulator executable is built (can be done with `./deploy.sh -b -s`), you can run `./build/Simulator/main/COCONUTFSW > /dev/pts/{x} < /dev/pts/{x}` where {x} is the number of one of the ports created above
+* You can then use any other program to read and write to the *other* pts port just like you would a UDP or serial port 
 
 ### Creating Device Drivers
 

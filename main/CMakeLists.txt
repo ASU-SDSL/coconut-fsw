@@ -25,6 +25,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/utilities/src/log.c
     ${MAIN_DIRECTORY}/utilities/src/timing.c
     ${MAIN_DIRECTORY}/utilities/src/user_auth.c
+    ${MAIN_DIRECTORY}/utilities/src/hb_tlm_log.c
 
     ${MAIN_DIRECTORY}/drivers/src/i2c.c
     ${MAIN_DIRECTORY}/drivers/src/ina219.c
