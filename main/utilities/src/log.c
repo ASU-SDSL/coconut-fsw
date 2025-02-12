@@ -84,16 +84,7 @@ void write_error_log(char *str) {
         make_dir("/logs");
 
         // Write to new log file and add this string
-        printf("STRING LEN: %d\n", strlen(str));
         write_file("/logs/errors.txt", str, strlen(str) + 1, false); // +1 for end of string
-
-        char errorlog_buf2[(MAX_ERROR_LOG_STR_SIZE + 2) * MAX_ERROR_LOG_MESSAGES]; // +1 because there is no \0 but there will be the \n
-        int bytes_read2 = read_file("/logs/errors.txt", errorlog_buf2, (MAX_LOG_STR_SIZE + 1) * 5);
-        if (bytes_read2 < 0) {
-            logln_error("Error reading errors.txt here");
-            return;
-        }
-        printf("Error log file:\n%s\n\n\n", errorlog_buf2);
 
         return;
     }
@@ -118,16 +109,20 @@ void write_error_log(char *str) {
     }
 
     // If there are more than MAX_ERROR_LOG_MESSAGES lines, remove the first line
+    char *errlog_buf_ptr;
     if (line_count > MAX_ERROR_LOG_MESSAGES) {
         char *first_newline = strchr(errorlog_buf, '\n'); // Get first newline
         if (first_newline != NULL) {
-            memmove(errorlog_buf, first_newline + 1, strlen(first_newline));
+            errlog_buf_ptr = first_newline + 1;
+        } else {
+            errlog_buf_ptr = errorlog_buf;
         }
+    } else {
+        errlog_buf_ptr = errorlog_buf;
     }
 
     // Rewrite to file
-    write_file("/logs/errors.txt", errorlog_buf, strlen(errorlog_buf), false);
-
+    write_file("/logs/errors.txt", errlog_buf_ptr, strlen(errlog_buf_ptr) + 1, false); // +1 for end string char
 
     printf("ERROR logs: ");
     list_dir("/logs");
@@ -140,5 +135,40 @@ void write_error_log(char *str) {
         return;
     }
     printf("Error log file:\n%s\n\n\n", errorlog_buf2);
+
+    char stri[MAX_ERROR_LOG_STR_SIZE];
+    get_most_recent_logged_error(&stri);
+    printf("MOST RECENT ERROR: %s\n", stri);
+
+}
+
+// Returns length of the out_log_str
+int get_most_recent_logged_error(char *out_log_str) {
+
+    // Read the current log file and append to it - remove lines if it is too long - only keep 4 lines of errors at a time
+    char errorlog_buf[(MAX_ERROR_LOG_STR_SIZE + 2) * MAX_ERROR_LOG_MESSAGES]; // +1 because there is no \0 but there will be the \n
+    int bytes_read = read_file("/logs/errors.txt", errorlog_buf, (MAX_LOG_STR_SIZE + 1) * 5);
+    if (bytes_read < 0) {
+        logln_error("Error reading errorlog.txt");
+        return -1;
+    }
+
+    // Get the last line - at the end of this loop, line_ptr will have the char after the last newline
+    // Last line will have a newline, so get the newline before last
+    char *line_ptr;
+    char *most_recent_newline;
+    for (int i = 0; i < strlen(errorlog_buf); i++) {
+        if (errorlog_buf[i] == '\n') {
+            line_ptr = most_recent_newline;
+            most_recent_newline = (char*)&errorlog_buf[i + 1];
+        }
+    }
+
+    // Remove "[ERROR] " (8 chars)
+    line_ptr += 8;
+
+    // Copy the error log to the log_str
+    strncpy(out_log_str, line_ptr, strlen(line_ptr) + 1); // + 1 for endstring
+    return strlen(line_ptr);
 
 }

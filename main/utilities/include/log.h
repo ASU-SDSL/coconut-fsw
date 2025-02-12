@@ -35,6 +35,13 @@ void print_banner();
 
 const char *get_current_task_name();
 
+/*
+*  Get most recent logged error
+*  Log is output to out_log_str
+*  Returns length of the out_log_str
+*/
+int get_most_recent_logged_error(char *out_log_str);
+
 /* INTERNAL FUNCTIONS */
 
 void _log(const char *str, ...);
