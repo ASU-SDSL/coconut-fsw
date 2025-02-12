@@ -40,14 +40,12 @@
 
 #define RADIO_MAX_QUEUE_ITEMS 64
 
-#define RADIO_RF_SWITCH_PIN 11
-#define RADIO_RF_SWITCH_RFM 0 
-#define RADIO_RF_SWITCH_SX 1 
+#define RADIO_RF_SWITCH_PIN 12
 #define RADIO_SX_POWER_PIN 7
 #define RADIO_RFM_POWER_PIN 14
 
-#define RADIO_RF_SWITCH_RFM 0
-#define RADIO_RF_SWITCH_SX 1
+#define RADIO_RF_SWITCH_RFM 1
+#define RADIO_RF_SWITCH_SX 0
 
 QueueHandle_t radio_queue;
 
