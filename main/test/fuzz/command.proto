@@ -18,6 +18,8 @@ enum APID {
     APID_FILE_MKFS = 11;
     APID_ADD_USER = 12;
     APID_DELETE_USER = 13;
+    APID_MCU_POWER_CYCLE = 14;
+    APID_PLAYBACK_HEARTBEAT_PACKETS = 15;
 }
 
 message SpacePacketHeader {
