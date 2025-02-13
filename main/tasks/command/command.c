@@ -129,7 +129,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
         case RADIO_ECHO:
             if(payload_size < sizeof(radio_echo_t)) break;
             radio_echo_t* radio_echo_args = (radio_echo_t*)payload_buf;
-            if(!is_admin(radio_echo_t->admin_token)) break;
+            if(!is_admin(radio_echo_args->admin_token)) break;
             logln_info(radio_echo_args->message);
             break;
         default:
