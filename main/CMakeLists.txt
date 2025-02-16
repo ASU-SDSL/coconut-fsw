@@ -13,7 +13,6 @@ add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
 
 ## Create a sources variable with a link to all cpp files to compile
 set(SOURCES
-    ${MAIN_DIRECTORY}/tasks/main/main.c
     ${MAIN_DIRECTORY}/tasks/gse/gse.c
     ${MAIN_DIRECTORY}/tasks/steve/steve.c
     ${MAIN_DIRECTORY}/tasks/command/command.c
@@ -27,6 +26,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/utilities/src/log.c
     ${MAIN_DIRECTORY}/utilities/src/timing.c
     ${MAIN_DIRECTORY}/utilities/src/user_auth.c
+    ${MAIN_DIRECTORY}/utilities/src/hb_tlm_log.c
 
     ${MAIN_DIRECTORY}/drivers/src/i2c.c
     ${MAIN_DIRECTORY}/drivers/src/ina219.c
@@ -54,6 +54,7 @@ ELSE()
 ENDIF()
 
 add_executable(${PROJECT_NAME}
+    ${MAIN_DIRECTORY}/tasks/main/main.c
     ${SOURCES}
 )
 

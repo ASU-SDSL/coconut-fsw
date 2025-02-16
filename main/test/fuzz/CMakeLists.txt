@@ -31,27 +31,7 @@ endif()
 # Fuzzer harness
 add_executable(${COMMAND_FUZZER_NAME}
     command_fuzzer.cpp
-
-    ${MAIN_DIRECTORY}/tasks/gse/gse.c
-    ${MAIN_DIRECTORY}/tasks/steve/steve.c
-    ${MAIN_DIRECTORY}/tasks/command/command.c
-    ${MAIN_DIRECTORY}/tasks/telemetry/telemetry.c
-    ${MAIN_DIRECTORY}/tasks/filesystem/filesystem.c
-
-    ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
-
-    ${MAIN_DIRECTORY}/utilities/src/log.c
-    ${MAIN_DIRECTORY}/utilities/src/timing.c
-    ${MAIN_DIRECTORY}/utilities/src/user_auth.c
-
-    ${MAIN_DIRECTORY}/drivers/src/i2c.c
-    ${MAIN_DIRECTORY}/drivers/src/ina219.c
-    ${MAIN_DIRECTORY}/drivers/src/rtc_ds3231.c
-    ${MAIN_DIRECTORY}/drivers/src/mag_lis3mdltr.c
-    ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
-    ${MAIN_DIRECTORY}/drivers/src/usb_uart.c
-
-    ${MAIN_DIRECTORY}/simulator/drivers/src/diskio.c
+    ${SOURCES}
 )
 
 target_compile_options(${COMMAND_FUZZER_NAME} PRIVATE 

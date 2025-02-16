@@ -25,6 +25,7 @@ typedef enum command_apid {
     ADD_USER = 12,
     DELETE_USER = 13,
     MCU_POWER_CYCLE = 14,
+    PLAYBACK_HEARTBEAT_PACKETS = 15,
 
     SET_RTC_TIME = 201, 
 } command_apid_t;
@@ -88,6 +89,12 @@ typedef struct __attribute__((__packed__)) {
     uint16_t data_len;
     uint8_t data[];
 } upload_user_data_t;
+
+typedef struct __attribute__((__packed__)) {
+    uint16_t number_of_packets;
+    uint16_t every_x_packet; // Used to adjust for less resolution but cover more time
+    uint16_t go_back_x_packets; // Used to start the playback from a certain point in the past
+} playback_hb_tlm_payload_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];

@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdio.h>
 
 #include "FreeRTOS.h"
 #include "queue.h"
@@ -14,6 +15,7 @@
 #include "heartbeat_job.h"
 #include "radio.h"
 #include "max17048.h"
+#include "hb_tlm_log.h"
 
 void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
@@ -77,10 +79,10 @@ void heartbeat_telemetry_job(void* unused) {
     if(!getPower_raw(i2c, INA0_ADDR, &ina0buf)) payload.ina0_power = ina0buf;
     else payload.ina0_power = UINT16_MAX; 
 
-    logln_info("INA0 shunt: %ld", payload.ina0_shunt);
+    /*logln_info("INA0 shunt: %ld", payload.ina0_shunt);
     logln_info("INA0 vbus: %ld", payload.ina0_vbus);
     logln_info("INA0 current: %ld", payload.ina0_current);
-    logln_info("INA0 power: %ld", payload.ina0_power);
+    logln_info("INA0 power: %ld", payload.ina0_power);*/
 
     // ina1 data
     uint16_t ina1buf;
@@ -158,9 +160,10 @@ void heartbeat_telemetry_job(void* unused) {
     payload.sx_state = radio_get_SX_state(); 
     
     // Send it
-    logln_info("Telem size: %d", sizeof(payload));
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
+    log_heartbeat_tlm(payload);
 
     iteration_counter += 1;
+
     logln_info("Heartbeat %ld - uptime: %d", iteration_counter, (uint32_t)get_uptime());
 }
