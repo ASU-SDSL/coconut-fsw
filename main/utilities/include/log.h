@@ -48,4 +48,5 @@ void _log(const char *str, ...);
 
 void _write_log(const char *bytes, size_t size);
 
+// ONLY for use within logln_error
 void write_error_log(char *str);

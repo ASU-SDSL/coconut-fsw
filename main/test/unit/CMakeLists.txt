@@ -42,6 +42,7 @@ target_link_libraries(cmock libunity.a)
 
 # add unit test subdirectories here
 add_subdirectory(./steve steve)
+add_subdirectory(./log log)
 
 # add_custom_target(coverage
 #     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/tools/cmock/coverage.cmake

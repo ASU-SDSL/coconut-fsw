@@ -444,7 +444,9 @@ void filesystem_task(void* unused_arg) {
     filesystem_queue_operations_t received_operation;
     while(1) {
         // wait until an operation is in queue
+        logln_info("Wait for filesystem queue");
         xQueueReceive(filesystem_queue, &received_operation, EMPTY_QUEUE_WAIT_TIME);
+        logln_info("HERE DONE Wait for filesystem queue");
         // parse and execute operation
         switch (received_operation.operation_type) {
             case MAKE_FILESYSTEM: {
