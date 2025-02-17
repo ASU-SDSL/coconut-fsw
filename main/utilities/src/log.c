@@ -45,7 +45,8 @@ void _log(const char *str, ...) {
 
 #ifdef SIMULATOR
     // write to stdout
-    write(1, packet->str, strsize);
+    //write(1, packet->str, strsize);
+    send_telemetry(LOG, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
 #else
     // send to telemetry task
     send_telemetry(LOG, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);

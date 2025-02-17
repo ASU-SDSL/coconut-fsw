@@ -10,6 +10,7 @@
 
 // Command Structs and Types
 typedef enum command_apid {
+    // 00 - general and file system 
     UPLOAD_USER_DATA = 0,
     CHANGE_HEARTBEAT_TELEM_RATE = 1,
     REQUEST_DOWNLINK_GROUNDNODE_DATA = 2, 
@@ -25,10 +26,14 @@ typedef enum command_apid {
     ADD_USER = 12,
     DELETE_USER = 13,
     MCU_POWER_CYCLE = 14,
+    PLAYBACK_HEARTBEAT_PACKETS = 15,
 
+    // 01 - radio
     RADIO_CONFIG = 101,
     RADIO_STAT = 104, 
-    
+
+    // 02 - device 
+    SET_RTC_TIME = 201, 
 } command_apid_t;
 
 typedef struct __attribute__((__packed__)) {
@@ -92,6 +97,12 @@ typedef struct __attribute__((__packed__)) {
 } upload_user_data_t;
 
 typedef struct __attribute__((__packed__)) {
+uint16_t number_of_packets;
+uint16_t every_x_packet; // Used to adjust for less resolution but cover more time
+uint16_t go_back_x_packets; // Used to start the playback from a certain point in the past
+} playback_hb_tlm_payload_t;
+
+typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
     uint8_t selected_radio; // radio to switch to (1 == RFM, 0 == SX, anything else no change)
     uint8_t updated_power; // output power to set (0 == no change)
@@ -100,6 +111,16 @@ typedef struct __attribute__((__packed__)) {
 typedef struct __attribute__((__packed__)) { 
     uint8_t admin_token[TOKEN_LENGTH];
 } radio_stat_t; 
+
+typedef struct __attribute__((__packed__)) {
+    uint8_t admin_token[TOKEN_LENGTH];
+    uint8_t year;
+    uint8_t month;
+    uint8_t day;
+    uint8_t hour; 
+    uint8_t minute;
+    uint8_t second;
+} set_rtc_time_t; 
 
 // Internal Command Thread Structs
 QueueHandle_t command_byte_queue;

@@ -233,7 +233,9 @@ void radio_panic(){
             }
             #endif
         }
+        #if RADIO_LOGGING
         printf("SX: %d RFM: %d\n", radio_state_SX, radio_state_RFM); 
+        #endif
         vTaskDelay(pdMS_TO_TICKS(15000)); // wait 15 seconds between tries
     } while(radio_state_RFM != 0 && radio_state_SX != 0); 
 
