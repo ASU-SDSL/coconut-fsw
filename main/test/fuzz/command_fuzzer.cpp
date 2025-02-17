@@ -60,7 +60,7 @@ extern "C" void fuzzer_task(void *input) {
     // Send commands
     receive_command_bytes(fuzzinput->data, fuzzinput->size);
     // Wait
-    vTaskDelay(10);
+    vTaskDelay(20);
     // End process
     // vTaskEndScheduler();
     exit(0);
