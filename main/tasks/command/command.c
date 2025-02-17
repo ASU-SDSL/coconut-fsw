@@ -155,10 +155,12 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
 
     // Get last error
     char last_error[MAX_ERROR_LOG_STR_SIZE];
-    get_most_recent_logged_error(last_error);
+    get_most_recent_logged_error(last_error, MAX_ERROR_LOG_STR_SIZE);
     strncpy(ack->last_logged_error, last_error, sizeof(ack->last_logged_error)); // Copy only first 24 chars (or however many the ack struct says)
 
     send_telemetry(ACK, (char*) ack, ack_size); // Send ack
+
+    pvPortFree(ack);
 }
 
 void command_task(void* unused_arg) {

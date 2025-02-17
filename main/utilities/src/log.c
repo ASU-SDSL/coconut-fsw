@@ -33,6 +33,10 @@ const char *get_current_task_name() {
     return xTaskDetails.pcTaskName;
 }
 
+void _log_error(const char *str, ...) {
+    _log(true, str);
+}
+
 void _log(const char *str, ...) {
     // alloc telemetry packet
     log_telemetry_t *packet = pvPortMalloc(sizeof(log_telemetry_t) + MAX_LOG_STR_SIZE + 1);
@@ -46,7 +50,7 @@ void _log(const char *str, ...) {
     va_end(args);
 
     // If this is an error log
-    if (strncmp(packet->str, "[ERROR]", 7) == 0) {
+    if (is_error) {
         // Write error to file without "[ERROR]"
         write_error_log(packet->str);
     }
@@ -96,7 +100,7 @@ void write_error_log(char *str) {
     // Else - read the current log file and append to it - remove lines if it is too long
     // only keep ERROR_LOGS_FS_ALLOCATION / MAX_ERROR_LOG_STR_SIZE lines of errors at a time
     char errorlog_buf[MAX_ERROR_LOG_STR_SIZE]; // +1 because there is no \0 but there will be the \n
-    int bytes_read = read_file(ERROR_LOG_FILE_PATH, errorlog_buf, (MAX_LOG_STR_SIZE + 1) * 5);
+    int bytes_read = read_file(ERROR_LOG_FILE_PATH, errorlog_buf, MAX_ERROR_LOG_STR_SIZE);
     if (bytes_read < 0) {
         logln_info("Error reading error.txt");
         return;
@@ -132,13 +136,15 @@ void write_error_log(char *str) {
 }
 
 // Returns length of the out_log_str
-int get_most_recent_logged_error(char *out_log_str) {
+int get_most_recent_logged_error(char *out_log_str, int out_log_str_size) {
 
     // Read the current log file and append to it - remove lines if it is too long - only keep 4 lines of errors at a time
     // read up to the max amount of allocated space for logs
-    char errorlog_buf[ERROR_LOGS_FS_ALLOCATION];
+    char *errorlog_buf = pvPortMalloc(ERROR_LOGS_FS_ALLOCATION);
     int bytes_read = read_file(ERROR_LOG_FILE_PATH, errorlog_buf, ERROR_LOGS_FS_ALLOCATION);
+    errorlog_buf[ERROR_LOGS_FS_ALLOCATION] = '\0'; // Ensure null terminated
     if (bytes_read < 0) {
+        vPortFree(errorlog_buf);
         logln_info("Error reading errors.txt");
         return -1;
     }
@@ -155,6 +161,7 @@ int get_most_recent_logged_error(char *out_log_str) {
     }
 
     if (most_recent_newline == NULL) {
+        vPortFree(errorlog_buf);
         logln_error("No errors in errors.txt");
         return -1;
     } else if (line_ptr == NULL) { // The first log is at the beginning of the file
@@ -164,7 +171,8 @@ int get_most_recent_logged_error(char *out_log_str) {
     line_ptr[strlen(line_ptr) - 1] = '\0'; // Remove the newline
 
     // Copy the error log to the log_str
-    strncpy(out_log_str, line_ptr, strlen(line_ptr) + 1); // + 1 for endstring
+    strncpy(out_log_str, line_ptr, out_log_str_size);
+    vPortFree(errorlog_buf);
     return strlen(line_ptr);
 
 }

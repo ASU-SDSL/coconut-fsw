@@ -33,7 +33,8 @@ void print_banner();
     logln("[WARN] " f_, ##__VA_ARGS__);
 
 #define logln_error(f_, ...) \
-    logln("[ERROR] " f_, ##__VA_ARGS__);
+    _log_error_fs(f_, ##__VA_ARGS__); \
+    _log_error("[ERROR] " f_, ##__VA_ARGS__);
 
 #define logln(f_, ...) \
     _log(f_ "\n", ##__VA_ARGS__);
@@ -45,7 +46,7 @@ const char *get_current_task_name();
 *  Log is output to out_log_str
 *  Returns length of the out_log_str
 */
-int get_most_recent_logged_error(char *out_log_str);
+int get_most_recent_logged_error(char *out_log_str, int out_log_str_size);
 
 /* INTERNAL FUNCTIONS */
 

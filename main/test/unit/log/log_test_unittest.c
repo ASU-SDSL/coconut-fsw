@@ -54,7 +54,7 @@ static void test_log_single_error_testtask( void *pvParameters ) {
     // Log error
     logln_error("Test error");
     char error_str[MAX_ERROR_LOG_STR_SIZE];
-    get_most_recent_logged_error(error_str);
+    get_most_recent_logged_error(error_str, MAX_ERROR_LOG_STR_SIZE);
 
     // Compare strings
     TEST_ASSERT_EQUAL_STRING("Test error", error_str);
@@ -83,7 +83,7 @@ static void test_log_max_error_testtask( void *pvParameters ) {
 
         // Check if the last error is updated correctly
         char error_str[MAX_ERROR_LOG_STR_SIZE];
-        get_most_recent_logged_error(error_str);
+        get_most_recent_logged_error(error_str, MAX_ERROR_LOG_STR_SIZE);
 
         // Compare strings
         char expected_error_str[MAX_ERROR_LOG_STR_SIZE];
@@ -129,7 +129,7 @@ static void test_log_file_rotation_testtask( void *pvParameters ) {
 
         // Check if the last error is updated correctly
         char error_str[MAX_ERROR_LOG_STR_SIZE];
-        get_most_recent_logged_error(error_str);
+        get_most_recent_logged_error(error_str, MAX_ERROR_LOG_STR_SIZE);
 
         // Compare strings
         TEST_ASSERT_EQUAL_STRING(expected_error_str, error_str);

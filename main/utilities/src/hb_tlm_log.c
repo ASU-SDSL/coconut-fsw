@@ -37,7 +37,7 @@ void log_heartbeat_tlm(heartbeat_telemetry_t payload) {
     }
     
     // Write to this indexed file
-    char filename[20];
+    char filename[MAX_PATH_SIZE];
     snprintf(filename, sizeof(filename), "/tlm/%d.bin", file_info_buf.file_index);
     write_file(filename, (char*)&payload, sizeof(payload), true); // append - this will eaither make the file if it does not exist or append to it if it does
 
