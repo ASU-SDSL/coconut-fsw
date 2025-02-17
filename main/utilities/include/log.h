@@ -1,10 +1,15 @@
 #pragma once
 
 /* DEFINES */
-#define MAX_LOG_STR_SIZE 0x1000U
-#define MAX_ERROR_LOG_STR_SIZE 0x100U // More limited as it is to be logged in our MRAM - used only for writing the logs to files
-#define MAX_ERROR_LOG_MESSAGES 3 // Max number of error messages that can be logged
+#define MAX_LOG_STR_SIZE 0x1000U // For info and warn
+// For a single error, more limited as it logged in MRAM - used only for writing the logs to files
+// To find max error messages allowed to be logged, divide ERROR_LOGS_FS_ALLOCATION by MAX_ERROR_LOG_STR_SIZE (see filesystem.h)
+#define MAX_ERROR_LOG_STR_SIZE 0x100U // This should be a dividend of ERROR_LOGS_FS_ALLOCATION (see filesystem.h)
 
+
+//#define MAX_ERROR_LOG_MESSAGES 3 // Max number of error messages that can be logged
+
+static const char ERROR_LOG_FILE_PATH[] = "/logs/log.txt";
 
 /* USER FUNCTIONS */
 
@@ -49,4 +54,5 @@ void _log(const char *str, ...);
 void _write_log(const char *bytes, size_t size);
 
 // ONLY for use within logln_error
+// There will be a MAX of  ERROR_LOGS_FS_ALLOCATION / MAX_ERROR_LOG_STR_SIZE lines at a time logged to the error file
 void write_error_log(char *str);

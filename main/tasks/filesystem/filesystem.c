@@ -256,7 +256,7 @@ int32_t _fwrite(const char* file_name, const uint8_t *data, size_t size, bool ap
     FRESULT fr;
     FIL fil;
 
-    logln_info("Writing to file: %s\n", file_name);
+    logln_info("Writing to file: %s", file_name);
 
     int file_open_flags = FA_WRITE | FA_CREATE_ALWAYS;
     if (append_flag) { file_open_flags = FA_OPEN_APPEND | FA_WRITE; }
@@ -444,9 +444,7 @@ void filesystem_task(void* unused_arg) {
     filesystem_queue_operations_t received_operation;
     while(1) {
         // wait until an operation is in queue
-        logln_info("Wait for filesystem queue");
         xQueueReceive(filesystem_queue, &received_operation, EMPTY_QUEUE_WAIT_TIME);
-        logln_info("HERE DONE Wait for filesystem queue");
         // parse and execute operation
         switch (received_operation.operation_type) {
             case MAKE_FILESYSTEM: {
