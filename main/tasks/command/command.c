@@ -132,12 +132,14 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if(!is_admin(set_rtc_time_args->admin_token)) break;
 
             void* args = pvPortMalloc(payload_size); 
-            memcpy(args, payload_buf, payload_size);
+            memcpy(args, payload_buf + sizeof(set_rtc_time_args->admin_token), payload_size - sizeof(set_rtc_time_args->admin_token));
+            // logln_info("args[0]: %d payload_buf: %d len: %d", (((uint8_t*)args)[0]), *payload_buf, payload_size); 
 
             const char* job_name = "SET_RTC";
             schedule_delayed_job_ms(job_name, &set_rtc_job, 10); 
             steve_job_t* job = find_steve_job(job_name); 
             job->arg_data = args; 
+            // logln_info("Job created"); 
 
         case MCU_POWER_CYCLE:
             watchdog_freeze(); // Freezing the watchdog will cause a reboot within a few seconds
@@ -163,7 +165,7 @@ void command_task(void* unused_arg) {
             command_byte_t command_byte = 0;
             xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
             
-            // logln_info("Byte Received: 0x%hhx", command_byte);
+            logln_info("Byte Received: 0x%hhx", command_byte);
 
             // check if current sync index byte matches
             uint8_t check_byte = COMMAND_SYNC_BYTES[sync_index];
