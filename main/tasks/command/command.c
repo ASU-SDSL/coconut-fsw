@@ -140,7 +140,8 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             steve_job_t* job = find_steve_job(job_name); 
             job->arg_data = args; 
             // logln_info("Job created"); 
-
+            break;
+            
         case MCU_POWER_CYCLE:
             watchdog_freeze(); // Freezing the watchdog will cause a reboot within a few seconds
             break;
