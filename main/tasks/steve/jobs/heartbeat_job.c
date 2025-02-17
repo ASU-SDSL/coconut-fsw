@@ -165,6 +165,5 @@ void heartbeat_telemetry_job(void* unused) {
 
     iteration_counter += 1;
 
-    logln_error("TEST ERROR");
     logln_info("Heartbeat %ld - uptime: %d", iteration_counter, (uint32_t)get_uptime());
 }
