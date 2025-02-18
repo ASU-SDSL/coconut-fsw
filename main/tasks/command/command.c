@@ -160,7 +160,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
 
     send_telemetry(ACK, (char*) ack, ack_size); // Send ack
 
-    pvPortFree(ack);
+    vPortFree(ack);
 }
 
 void command_task(void* unused_arg) {

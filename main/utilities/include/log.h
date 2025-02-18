@@ -1,5 +1,8 @@
 #pragma once
 
+#include "telemetry.h"
+#include <stdbool.h>
+
 /* DEFINES */
 #define MAX_LOG_STR_SIZE 0x1000U // For info and warn
 // For a single error, more limited as it logged in MRAM - used only for writing the logs to files
@@ -24,20 +27,19 @@ void print_banner();
 
 // Used for general printing to console
 #define log_gen(f_, ...) \
-    logln(f_, ##__VA_ARGS__);
+    _log(false, f_ "\n", ##__VA_ARGS__);
 
 #define logln_info(f_, ...) \
-    logln("[INFO] " f_, ##__VA_ARGS__);
+    _log(false, "[INFO] " f_ "\n", ##__VA_ARGS__);
 
 #define logln_warn(f_, ...) \
-    logln("[WARN] " f_, ##__VA_ARGS__);
+    _log(false, "[WARN] " f_ "\n", ##__VA_ARGS__);
 
 #define logln_error(f_, ...) \
-    _log_error_fs(f_, ##__VA_ARGS__); \
-    _log_error("[ERROR] " f_, ##__VA_ARGS__);
+    _log(true, "[ERROR] " f_ "\n", ##__VA_ARGS__);
 
 #define logln(f_, ...) \
-    _log(f_ "\n", ##__VA_ARGS__);
+    _log(false, f_ "\n", ##__VA_ARGS__);
 
 const char *get_current_task_name();
 
@@ -50,7 +52,7 @@ int get_most_recent_logged_error(char *out_log_str, int out_log_str_size);
 
 /* INTERNAL FUNCTIONS */
 
-void _log(const char *str, ...);
+void _log(bool is_error, const char *str, ...);
 
 void _write_log(const char *bytes, size_t size);
 

@@ -4,11 +4,10 @@
 #include <unistd.h>
 #include <string.h>
 
-#include "FreeRTOS.h"
+#include <FreeRTOS.h>
 #include "queue.h"
 #include "task.h"
 
-#include "telemetry.h"
 #include "log.h"
 #include "filesystem.h"
 
@@ -33,11 +32,7 @@ const char *get_current_task_name() {
     return xTaskDetails.pcTaskName;
 }
 
-void _log_error(const char *str, ...) {
-    _log(true, str);
-}
-
-void _log(const char *str, ...) {
+void _log(bool is_error, const char *str, ...) {
     // alloc telemetry packet
     log_telemetry_t *packet = pvPortMalloc(sizeof(log_telemetry_t) + MAX_LOG_STR_SIZE + 1);
 
@@ -49,16 +44,14 @@ void _log(const char *str, ...) {
     packet->size = strsize;
     va_end(args);
 
-    // If this is an error log
     if (is_error) {
-        // Write error to file without "[ERROR]"
-        write_error_log(packet->str);
+        write_error_log(packet->str); // Write to the log
     }
 
 #ifdef SIMULATOR
     // write to stdout
-    //write(1, packet->str, strsize);
-    send_telemetry(LOG, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
+    write(1, packet->str, strsize);
+    //send_telemetry(LOG, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
 #else
     // send to telemetry task
     send_telemetry(LOG, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
