@@ -154,7 +154,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
         case RADIO_STAT:
             if(payload_size < sizeof(radio_stat_t)) break;
             radio_stat_t* radio_stat_args = (radio_stat_t*)payload_buf; 
-            if(!is_admin(radio_stat_args->admin_token));
+            if(!is_admin(radio_stat_args->admin_token)) break;
 
             radio_queue_stat_response(); 
             break;
