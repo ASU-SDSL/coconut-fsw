@@ -99,7 +99,7 @@ void write_error_log(char *str) {
         return;
     }
 
-    // Append str to the end of buff - logs already have newlines
+    // Append str to the end of buff - logs already have newlines and str will have max size of MAX_ERROR_LOG_STR_SIZE
     strcat(errorlog_buf, str);
 
     // Count the number of lines

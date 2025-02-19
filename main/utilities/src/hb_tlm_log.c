@@ -10,7 +10,7 @@
 // Tlm files of the size specified by MAX_HB_TLM_FILE_SIZE (see filesystem.h) will continue to be created until creating a new file of said size will surpase or equal this limit
 //      Once this limit is reached, the oldest log will be deleted before a new one is created
 // This should be an even dividend of HEARTBEAT_TLM_FS_ALLOCATION (see filesystem.h)
-#define MAX_HB_TLM_FILE_SIZE 2000 // About an 15 minute of tlm, small enough to read into memory for playback
+#define MAX_HB_TLM_FILE_SIZE 1000 // A reasonable amount to read into memory (this is currently only read into memory by the command task from the heartbeat playback)
 
 void log_heartbeat_tlm(heartbeat_telemetry_t payload) {
 
