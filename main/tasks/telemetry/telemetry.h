@@ -14,12 +14,13 @@ QueueHandle_t telemetry_queue;
 
 /* TELEMETRY DEFINITIONS*/
 typedef enum {
-    LOG = 0,
-    HEARTBEAT = 1, // just to keep the command and telemetry apid equal :)
-    DOWNLINK_GROUNDNODE_DATA = 2, 
-    DOWNLINK_TELEMETRY_DATA = 3,
-    HEARTBEAT_PLAYBACK = 4,
-    ACK = 5,
+    LOG_APID = 0,
+    HEARTBEAT_APID = 1, // just to keep the command and telemetry apid equal :)
+    DOWNLINK_GROUNDNODE_DATA_APID = 2, // currently unused
+    DOWNLINK_TELEMETRY_DATA_APID = 3, // currently unused
+    HEARTBEAT_PLAYBACK_APID = 4,
+    ACK_APID = 5,
+    FILE_DOWNLINK_APID = 6,
 } telemetry_apid_t;
 
 typedef struct __attribute__((__packed__)) {
@@ -80,6 +81,14 @@ typedef struct __attribute__((__packed__)) {
     char last_logged_error[24];
     uint8_t *data; // Any extra data that might be returned by a command
 } ack_telemetry_t;
+
+// File downlink from file-downlink task
+#define FILE_DOWNLINK_PATH_NAME_CHARS 24
+typedef struct __attribute__((__packed__)) {
+    uint16_t sequence_number;
+    char path_name[FILE_DOWNLINK_PATH_NAME_CHARS]; // Limit this buffer so the radio packet doesn't get too big
+    uint8_t *data; // File data
+} file_downlink_telemetry_t;
 
 /* USER FUNCTIONS */
 void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t payload_size);

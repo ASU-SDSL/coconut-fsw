@@ -87,7 +87,7 @@ int main() {
                                         1,
                                         &xWatchdogTaskHandler);
 
-    BaseType_t watchdog_task_status = xTaskCreate(file_downlink_task,
+    BaseType_t file_downlink_task_status = xTaskCreate(file_downlink_task,
                                         "FILEDOWNLINK",
                                         1024,
                                         NULL,

@@ -28,7 +28,7 @@
 
 QueueHandle_t file_downlink_queue;
 
-typedef enum file_downlink_queue_command_id {
+enum file_downlink_queue_command_id {
     FILE_DOWNLINK_INIT = 0,
     FILE_DOWNLINK_ACK = 1,
     CHANGE_DOWNLINK_PACKET_SIZE = 2,
@@ -48,7 +48,7 @@ typedef struct file_downlink_queue_command_change_packet_size_data {
 } file_downlink_queue_command_change_packet_size_data_t;
 
 typedef struct file_downlink_queue_command {
-    uint8_t queue_command;
+    uint8_t queue_command_id;
     uint8_t data[sizeof(file_downlink_queue_command_ack_data_t)]; // Dynamic data with max size of the init data with the max file path
 } file_downlink_queue_command_t;
 

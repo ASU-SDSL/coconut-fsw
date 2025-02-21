@@ -146,7 +146,7 @@ int hb_tlm_playback(playback_hb_tlm_payload_t* playback_payload) {
             logln_info("Sending playback packet #%d, from file %s, with index into file of %d", packet_counter, current_log_filename, packet_index);
 
             // Send the packet
-            send_telemetry(HEARTBEAT_PLAYBACK, (char*)&hb_tlm_buf, sizeof(heartbeat_telemetry_t));
+            send_telemetry(HEARTBEAT_PLAYBACK_APID, (char*)&hb_tlm_buf, sizeof(heartbeat_telemetry_t));
             packet_sent_counter += 1;
             packet_counter++;
 

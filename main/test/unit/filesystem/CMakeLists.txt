@@ -1,7 +1,7 @@
-project ("log unit test")
+project ("filesystem unit test")
 cmake_minimum_required (VERSION 3.13)
 
-set(project_name "log_test")
+set(project_name "filesystem_test")
 
 # Code/library under test
 

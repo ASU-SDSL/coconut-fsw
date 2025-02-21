@@ -130,7 +130,7 @@ bool file_exists(const char* file_name);
 
 /* Internal Functions */
 void _mkfs();
-int32_t _fread(const char *file_name, char *result_buffer, size_t size);
+int32_t _fread(const char *file_name, char *result_buffer, size_t size, uint32_t offset);
 int32_t _fwrite(const char *file_name, const uint8_t *data, size_t size, bool append_flag);
 void _fdelete(const char *file_name);
 void _flist(const char *dir_name);

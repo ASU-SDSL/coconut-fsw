@@ -160,7 +160,7 @@ void heartbeat_telemetry_job(void* unused) {
     payload.sx_state = radio_get_SX_state(); 
     
     // Send it
-    send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
+    send_telemetry(HEARTBEAT_APID, (char*)&payload, sizeof(payload));
     log_heartbeat_tlm(payload);
 
     iteration_counter += 1;
