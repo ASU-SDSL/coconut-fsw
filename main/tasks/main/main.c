@@ -16,6 +16,7 @@
 #include "steve.h"
 #include "filesystem.h"
 #include "watchdog.h"
+#include "file_downlink.h"
 
 #ifndef SIMULATOR
 #include "radio.h"
@@ -85,6 +86,13 @@ int main() {
                                         NULL,
                                         1,
                                         &xWatchdogTaskHandler);
+
+    BaseType_t watchdog_task_status = xTaskCreate(file_downlink_task,
+                                        "FILEDOWNLINK",
+                                        1024,
+                                        NULL,
+                                        1,
+                                        NULL);
                                         
     // Start the FreeRTOS scheduler
     vTaskStartScheduler();

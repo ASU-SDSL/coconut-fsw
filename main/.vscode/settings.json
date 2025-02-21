@@ -2,6 +2,8 @@
     "files.associations": {
         "rtc_ds3231.h": "c",
         "mag_lis3mdltr.h": "c",
-        "gpio.h": "c"
+        "gpio.h": "c",
+        "file_downlink.h": "c",
+        "filesystem.h": "c"
     }
 }
