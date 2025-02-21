@@ -6,12 +6,11 @@
 #include <string.h>
 
 // Size (bytes) that a heartbeat telemetry file can be until a new one should be used
-// If writing a new telemetry entry causes the file to go over this amount, a new file is made
-#define MAX_HB_TLM_FILE_SIZE 2000 // About an 15 minute of tlm, small enough to read into memory for playback
-
-// Tlm files of the size specified by MAX_HB_TLM_FILE_SIZE will continue to be created until creating a new file of said size will surpase or equal this limit
-// Once this limit is reached, the oldest log will be deleted before a new one is created
-#define MAX_HB_TLM_TOTAL_SIZE 10000 //1250000 // 10 MBit to bytes
+//      If writing a new telemetry entry causes the file to go over this amount, a new file is made
+// Tlm files of the size specified by MAX_HB_TLM_FILE_SIZE (see filesystem.h) will continue to be created until creating a new file of said size will surpase or equal this limit
+//      Once this limit is reached, the oldest log will be deleted before a new one is created
+// This should be an even dividend of HEARTBEAT_TLM_FS_ALLOCATION (see filesystem.h)
+#define MAX_HB_TLM_FILE_SIZE 1000 // A reasonable amount to read into memory (this is currently only read into memory by the command task from the heartbeat playback)
 
 void log_heartbeat_tlm(heartbeat_telemetry_t payload) {
 
@@ -38,7 +37,7 @@ void log_heartbeat_tlm(heartbeat_telemetry_t payload) {
     }
     
     // Write to this indexed file
-    char filename[20];
+    char filename[MAX_PATH_SIZE];
     snprintf(filename, sizeof(filename), "/tlm/%d.bin", file_info_buf.file_index);
     write_file(filename, (char*)&payload, sizeof(payload), true); // append - this will eaither make the file if it does not exist or append to it if it does
 
@@ -51,7 +50,7 @@ void log_heartbeat_tlm(heartbeat_telemetry_t payload) {
         file_info_buf.directory_size += MAX_HB_TLM_FILE_SIZE; // Only increase once the file is full, it doesn't get checked until the file is full anyway
 
         // See if there is enough space for the new file, otherwise delete the oldest file
-        if (file_info_buf.directory_size + MAX_HB_TLM_FILE_SIZE > MAX_HB_TLM_TOTAL_SIZE) {
+        if (file_info_buf.directory_size + MAX_HB_TLM_FILE_SIZE > HEARTBEAT_TLM_FS_ALLOCATION) {
             // Delete the oldest file in the directory an increase the oldest file counter by 1
             char oldest_filename[20];
             snprintf(oldest_filename, sizeof(oldest_filename), "/tlm/%d.bin", file_info_buf.oldest_file_index);

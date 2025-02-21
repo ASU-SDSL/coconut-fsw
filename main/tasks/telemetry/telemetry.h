@@ -19,6 +19,7 @@ typedef enum {
     DOWNLINK_GROUNDNODE_DATA = 2, 
     DOWNLINK_TELEMETRY_DATA = 3,
     HEARTBEAT_PLAYBACK = 4,
+    ACK = 5,
 } telemetry_apid_t;
 
 typedef struct __attribute__((__packed__)) {
@@ -72,6 +73,13 @@ typedef struct __attribute__((__packed__)) {
     int16_t sx_state; 
     uint8_t which_radio; // 1 for RFM
 } heartbeat_telemetry_t;
+
+// Telemetry response to any commands sent to the satellite
+typedef struct __attribute__((__packed__)) {
+    uint8_t command_status; // 1 for success/true, 0 for failure/false
+    char last_logged_error[24];
+    uint8_t *data; // Any extra data that might be returned by a command
+} ack_telemetry_t;
 
 /* USER FUNCTIONS */
 void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t payload_size);
