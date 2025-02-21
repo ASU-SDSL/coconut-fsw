@@ -20,6 +20,10 @@ void make_filesystem() {
 // the caller is responsible for allocating memory for this buffer and freeing the memory
 // returns -1 on failure
 int32_t read_file(const char* file_name, char* result_buffer, size_t size) {
+    return read_file_offset(file_name, result_buffer, size, 0); // read from the beginning of the file
+}
+
+int32_t read_file_offset(const char* file_name, char* result_buffer, size_t size, uint32_t offset) {
     if ((strnlen(file_name, MAX_PATH_SIZE) + 1) > MAX_PATH_SIZE) return 0;
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = READ;
@@ -31,6 +35,7 @@ int32_t read_file(const char* file_name, char* result_buffer, size_t size) {
     new_file_operation.file_operation.read_op.size = size;
     new_file_operation.file_operation.read_op.out_size = &out_size;
     new_file_operation.file_operation.read_op.calling_task = xTaskGetCurrentTaskHandle();
+    new_file_operation.file_operation.read_op.offset = offset;
 
     while(filesystem_queue == NULL) {
         vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
@@ -285,38 +290,7 @@ int32_t _fwrite(const char* file_name, const uint8_t *data, size_t size, bool ap
     return bytes_written;
 }
 
-int32_t _fread(const char *file_name, char *result_buffer, size_t size) { 
-    // this function takes in a buffer where the result will be placed
-    // the caller of this function is responsible for allocating the space for this buffer
-    FRESULT fr;
-    FIL fil;
-
-    // open file
-    fr = f_open(&fil, file_name, FA_READ);
-    if (fr != FR_OK) {
-        logln_error("Could not open file before read: %s (%d)\n", file_name, fr);
-        return -1;
-    }    
-
-    // read from file
-    int32_t bytes_read = -1;
-    fr = f_read(&fil, result_buffer, size, &bytes_read);
-    if (fr != FR_OK) {
-        logln_error("Could not read from file: %s (%d)\n", file_name, fr);
-        bytes_read = -1;
-    }
-
-    // close file
-    fr = f_close(&fil);
-    if (fr != FR_OK) {
-        logln_error("Could not close file after read: %s (%d)\n", file_name, fr);
-        bytes_read = -1;
-    }
-    return bytes_read;
-}
-
-// Reads a file from an offset
-int32_t _fread_offset(const char *file_name, char *result_buffer, size_t size, uint32_t offset) { 
+int32_t _fread(const char *file_name, char *result_buffer, size_t size, uint32_t offset) { 
     // this function takes in a buffer where the result will be placed
     // the caller of this function is responsible for allocating the space for this buffer
     FRESULT fr;
@@ -329,11 +303,14 @@ int32_t _fread_offset(const char *file_name, char *result_buffer, size_t size, u
         return -1;
     }
 
-    // Try to incremenet the file pointer to the offset
-    fr = f_lseek(&fil, offset);
-    if (fr != FR_OK) {
-        logln_error("Could not seek to offset: %s (%d)\n", file_name, fr);
-        return -1;
+    // If there is an offset, increment file pointer
+    if (offset > 0) {
+        // Try to incremenet the file pointer to the offset
+        fr = f_lseek(&fil, offset);
+        if (fr != FR_OK) {
+            logln_error("Could not seek to file offset: %s (%d)\n", file_name, fr);
+            return -1;
+        }
     }
 
     // read from file
@@ -444,7 +421,7 @@ void _test() {
 
     // read file
     char outbuf[0x10];
-    size_t bytes_read = _fread(test_filepath, outbuf, sizeof(outbuf));
+    size_t bytes_read = _fread(test_filepath, outbuf, sizeof(outbuf), 0);
     logln_info("Read %d bytes from %s: %s\n", bytes_read, test_filepath, outbuf);
 
     // ls
@@ -491,7 +468,7 @@ void filesystem_task(void* unused_arg) {
             }
             case READ: {
                 read_operation_t read_op = received_operation.file_operation.read_op;
-                size_t read_size = _fread(read_op.file_name, read_op.read_buffer, read_op.size);
+                size_t read_size = _fread(read_op.file_name, read_op.read_buffer, read_op.size, read_op.offset);
                 *read_op.out_size = read_size;
                 xTaskNotifyGive(read_op.calling_task);
                 break;

@@ -28,11 +28,11 @@
 
 QueueHandle_t file_downlink_queue;
 
-typedef enum file_downlink_queue_command {
+typedef enum file_downlink_queue_command_id {
     FILE_DOWNLINK_INIT = 0,
     FILE_DOWNLINK_ACK = 1,
     CHANGE_DOWNLINK_PACKET_SIZE = 2,
-} file_downlink_queue_command_t;
+};
 
 typedef struct file_downlink_queue_command_init_data {
     char file_path[MAX_PATH_SIZE];

@@ -42,6 +42,7 @@ typedef struct {
     size_t size;
     int32_t *out_size;
     TaskHandle_t calling_task;
+    uint32_t offset; // Offset from the beginning of the file to read from
 } read_operation_t;
 
 typedef struct {
@@ -110,6 +111,7 @@ QueueHandle_t filesystem_queue;
 /* User Functions */
 void make_filesystem();
 int32_t read_file(const char *file_name, char *result_buffer, size_t size);
+int32_t read_file_offset(const char* file_name, char* result_buffer, size_t size, uint32_t offset);
 void write_file(const char *file_name, char *data, size_t size, bool append_flag);
 void list_dir(const char *directory_name);
 void delete_file(const char *file_name);
