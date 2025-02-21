@@ -315,6 +315,44 @@ int32_t _fread(const char *file_name, char *result_buffer, size_t size) {
     return bytes_read;
 }
 
+// Reads a file from an offset
+int32_t _fread_offset(const char *file_name, char *result_buffer, size_t size, uint32_t offset) { 
+    // this function takes in a buffer where the result will be placed
+    // the caller of this function is responsible for allocating the space for this buffer
+    FRESULT fr;
+    FIL fil;
+
+    // open file
+    fr = f_open(&fil, file_name, FA_READ);
+    if (fr != FR_OK) {
+        logln_error("Could not open file before read: %s (%d)\n", file_name, fr);
+        return -1;
+    }
+
+    // Try to incremenet the file pointer to the offset
+    fr = f_lseek(&fil, offset);
+    if (fr != FR_OK) {
+        logln_error("Could not seek to offset: %s (%d)\n", file_name, fr);
+        return -1;
+    }
+
+    // read from file
+    int32_t bytes_read = -1;
+    fr = f_read(&fil, result_buffer, size, &bytes_read);
+    if (fr != FR_OK) {
+        logln_error("Could not read from file: %s (%d)\n", file_name, fr);
+        bytes_read = -1;
+    }
+
+    // close file
+    fr = f_close(&fil);
+    if (fr != FR_OK) {
+        logln_error("Could not close file after read: %s (%d)\n", file_name, fr);
+        bytes_read = -1;
+    }
+    return bytes_read;
+}
+
 void _fdelete(const char *file_name) {
     FRESULT fr;
 
