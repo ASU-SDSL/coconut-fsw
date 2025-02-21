@@ -43,6 +43,13 @@ void receive_command_bytes(uint8_t* packet, size_t packet_size) {
 
 void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
     logln_info("Received command with APID: %hu", header.apid);
+
+    // Used for the ack struct
+    uint8_t command_status = 1; // 1 for success/true, 0 for failure/false
+    // Data may or may not be returned, this data should be allocated and freed if needed depending on the packet
+    uint8_t *return_data = NULL;
+    int return_data_len = 0;
+
     switch (header.apid) {
         case UPLOAD_USER_DATA:
             if (payload_size < sizeof(upload_user_data_t)) break;
@@ -130,11 +137,30 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
         case PLAYBACK_HEARTBEAT_PACKETS:
             if (payload_size < sizeof(playback_hb_tlm_payload_t)) break; // Should probably return an error to the ground
             playback_hb_tlm_payload_t* playback_hb_payload = (playback_hb_tlm_payload_t*)payload_buf;
-            hb_tlm_playback(playback_hb_payload);
+            int status = hb_tlm_playback(playback_hb_payload);
+            if (status != 0) command_status = 0;
             break;
+        case FSW_ACK:
+            break; // This will just send the ack
         default:
             logln_error("Received command with unknown APID: %hu", header.apid);
     }
+
+    // Send ack
+
+    int ack_size = sizeof(ack_telemetry_t) + return_data_len;
+    ack_telemetry_t *ack = pvPortMalloc(ack_size);
+    ack->command_status = command_status;
+    ack->data = return_data;
+
+    // Get last error
+    char last_error[MAX_ERROR_LOG_STR_SIZE];
+    get_most_recent_logged_error(last_error, MAX_ERROR_LOG_STR_SIZE);
+    strncpy(ack->last_logged_error, last_error, sizeof(ack->last_logged_error)); // Copy only first 24 chars (or however many the ack struct says)
+
+    send_telemetry(ACK, (char*) ack, ack_size); // Send ack
+
+    vPortFree(ack);
 }
 
 void command_task(void* unused_arg) {

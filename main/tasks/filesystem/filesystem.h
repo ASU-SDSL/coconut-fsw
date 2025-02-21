@@ -23,6 +23,10 @@
 #define MAX_PATH_SIZE 0xFF
 #define MAX_WRITE_CONTENTS_SIZE 0x100
 
+/* File storage allocation */
+#define ERROR_LOGS_FS_ALLOCATION 0x300U // Max bytes for error logs. Should be a multiple of MAX_ERROR_LOG_STR_SIZE (see log.h)
+#define HEARTBEAT_TLM_FS_ALLOCATION 10000 //1250000 // 10 MBit to bytes - should be a multiple of MAX_HB_TLM_FILE_SIZE (see hb_tlm_log.c)
+
 /* Types and Globals */
 typedef enum fs_operation_type {
     MAKE_FILESYSTEM,

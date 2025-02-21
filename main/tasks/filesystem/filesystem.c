@@ -261,7 +261,7 @@ int32_t _fwrite(const char* file_name, const uint8_t *data, size_t size, bool ap
     FRESULT fr;
     FIL fil;
 
-    logln_info("Writing to file: %s\n", file_name);
+    logln_info("Writing to file: %s", file_name);
 
     int file_open_flags = FA_WRITE | FA_CREATE_ALWAYS;
     if (append_flag) { file_open_flags = FA_OPEN_APPEND | FA_WRITE; }
