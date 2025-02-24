@@ -19,7 +19,7 @@ extern "C" float ds18b_read_temp() {
     one_wire.convert_temperature(null_address, true, true);
     for (int i = 0; i < count; i++) {
         auto address = One_wire::get_address(i);
-        logln_info("Temperature = address: %d, temp: %f", One_wire::to_uint64(address), one_wire.temperature(address));
+        logln_info("Temperature = address: %llu, temp: %f", One_wire::to_uint64(address), one_wire.temperature(address));
     }
 
     return 0.0;
