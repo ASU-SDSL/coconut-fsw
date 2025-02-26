@@ -27,6 +27,7 @@ typedef enum command_apid {
     DELETE_USER = 13,
     MCU_POWER_CYCLE = 14,
     PLAYBACK_HEARTBEAT_PACKETS = 15,
+    FSW_ACK = 16,
 
     // 01 - radio
     RADIO_CONFIG = 101,

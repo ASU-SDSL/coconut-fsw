@@ -50,7 +50,7 @@ int main() {
 
     BaseType_t command_task_status = xTaskCreate(command_task,
                                         "COMMAND",
-                                        512,
+                                        1024,
                                         NULL,
                                         1,
                                         NULL);

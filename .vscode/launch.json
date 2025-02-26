@@ -71,5 +71,34 @@
                 }
             ]
         },
+        {
+            "name": "Coconut Log Unit Test Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "buildsimulator",
+            "program": "${workspaceRoot}/build/UnitTest/bin/log_test_utest",
+            // "args": [ "1", "<", "${workspaceFolder}/packet.bin"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Disable SIGALRM handler in gdb",
+                    "text": "handle SIGALRM pass noprint"
+                }
+            ]
+        },
     ]
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #define HEARTBEAT_JOB_NAME "heartbeat_telemetry"
-#define HEARTBEAT_TELEMETRY_DEFAULT_INTERVAL 10
+#define HEARTBEAT_TELEMETRY_DEFAULT_INTERVAL 5
 
 uint32_t iteration_counter;
 
