@@ -21,7 +21,7 @@ void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
     heartbeat_telemetry_t payload;
 
-    logln_info("%s", get_current_task_name());
+    // logln_info("%s", get_current_task_name());
 
     // State data
     payload.state = (uint8_t)g_payload_state;
