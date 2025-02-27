@@ -40,11 +40,11 @@ static const int POWER_MULTIPLIER_MW = 2;
 //uint16_t config = (0x2000) | (0x1800) |  (0x0180) | (0x0018) | (0x07);
 static const uint8_t CONFIG[] = {0x39,0x9f};
 
-int calibrate(i2c_inst_t *i2c){
+int calibrate(i2c_inst_t *i2c, const uint8_t addr){
 
 	// Program calibration register
 	uint8_t* data = (uint8_t*)CAL;
-	if(i2c_write_to_register(i2c, INA219_ADDR, REG_CALIB, data, 2)){
+	if(i2c_write_to_register(i2c, addr, REG_CALIB, data, 2)){
 		return 1;
 	}
 
@@ -58,11 +58,11 @@ int calibrate(i2c_inst_t *i2c){
 
 }
 
-int config(i2c_inst_t *i2c){
+int config(i2c_inst_t *i2c, const uint8_t addr){
 	//Program config register 
 	uint8_t* config = (uint8_t*)CONFIG;
 
-	if(i2c_write_to_register(i2c, INA219_ADDR, REG_CONFIG, config, 2)){
+	if(i2c_write_to_register(i2c, addr, REG_CONFIG, config, 2)){
 		return 1;
 	}
 
@@ -161,7 +161,7 @@ int getPower(i2c_inst_t *i2c,
 
 	uint8_t buf[2];
 
-	calibrate(i2c);
+	calibrate(i2c, addr);
 
 	// error codes are < 0
 	if (i2c_read_from_register(i2c, addr, reg_p, buf, 2)) {
@@ -183,7 +183,7 @@ int getPower_raw(i2c_inst_t *i2c,
 
 	uint8_t buf[2];
 
-	calibrate(i2c);
+	calibrate(i2c, addr);
 
 	// error codes are < 0
 	if (i2c_read_from_register(i2c, addr, REG_POWER, buf, 2)) {
@@ -206,13 +206,13 @@ int getCurrent(i2c_inst_t *i2c,
 
 	uint8_t buf[2];
 
-	calibrate(i2c);
+	calibrate(i2c, addr);
 
 	if (i2c_read_from_register(i2c, addr, reg_c, buf, 2)) {
 		return 1;
 	}
 
-	uint16_t bufComb = buf[0];
+	int16_t bufComb = buf[0];
 	bufComb = (bufComb << 8) | buf[1];
 
 	// printf("raw current: %d\n", bufComb);
@@ -227,7 +227,7 @@ int getCurrent_raw(i2c_inst_t *i2c,
 
 	uint8_t buf[2];
 
-	calibrate(i2c);
+	calibrate(i2c, addr);
 
 	if (i2c_read_from_register(i2c, addr, REG_CURRENT, buf, 2)) {
 		return 1;
@@ -270,11 +270,11 @@ void eps_test() {
 	// printf("0x%02x\r\n", data);
 
 	logln_info("CALIBRATING\n");
-	calibrate(i2c);
+	calibrate(i2c, INA219_ADDR);
 
 
 	logln_info("CONFIGURING\n");
-	config(i2c);
+	config(i2c, INA219_ADDR);
 
 
 	logln_info("STARTING TEST\n");

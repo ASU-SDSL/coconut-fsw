@@ -20,13 +20,13 @@
 * Currently set up for a max current of 0.5A
 * Returns status of operation (0 = success)
 */
-int calibrate(i2c_inst_t *i2c);
+int calibrate(i2c_inst_t *i2c, const uint8_t addr);
 
 /*
 * Configures the EPS by writing to the configuration register (0x00)
 * Config register value taken from Adafruit_INA219 library
 */
-int config(i2c_inst_t *i2c);
+int config(i2c_inst_t *i2c, const uint8_t addr);
 
 /*
 * Reads from the VShunt register [reg_vs](0x01) of the device with 
