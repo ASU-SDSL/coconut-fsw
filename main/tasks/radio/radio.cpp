@@ -361,14 +361,16 @@ void radio_task_cpp(){
             printf("transmit timeout\n"); 
             #endif
             transmitting = false;
+            radio->finishTransmit(); 
             radio->startChannelScan();
         }
 
         // handle interrupt flags 
         if(cad_detected_RFM || operation_done_RFM || general_flag_SX){
             // handle finished transmission
-            if(transmitting){
+            if(transmitting && operation_done_RFM){
                 transmitting = false; 
+                radio->finishTransmit();
                 #if RADIO_LOGGING
                 float duration_s = ((double)radio_now - operation_start_time) / 1000.0; 
                 printf("Duration (s): %f\n", duration_s);
@@ -481,7 +483,7 @@ void radio_task_cpp(){
         {
             switch (rec.operation_type) {
                 case TRANSMIT:
-                    #if 1 || RADIO_LOGGING
+                    #if TEMP_ON || RADIO_LOGGING
                     {
                     char message[rec.data_size+1];
                     for(int i = 0; i < rec.data_size; i++){

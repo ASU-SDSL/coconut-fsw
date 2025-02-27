@@ -233,12 +233,12 @@ int getCurrent_raw(i2c_inst_t *i2c,
 		return 1;
 	}
 
-	int16_t bufComb = buf[0];
+	uint16_t bufComb = buf[0];
 	bufComb = (bufComb << 8) | buf[1];
 
-	printf("raw current: %d\n", bufComb);
+	// printf("raw current: %d\n", bufComb);
 
-	*output_buf = abs(bufComb); // ((double)(bufComb)) / (CURRENT_DEVIDER_MA); // mA
+	*output_buf = bufComb; // ((double)(bufComb)) / (CURRENT_DEVIDER_MA); // mA
 	return 0;
 }
 
