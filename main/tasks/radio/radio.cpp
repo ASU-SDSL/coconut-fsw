@@ -481,7 +481,7 @@ void radio_task_cpp(){
         {
             switch (rec.operation_type) {
                 case TRANSMIT:
-                    #if TEMP_ON || RADIO_LOGGING
+                    #if 1 || RADIO_LOGGING
                     {
                     char message[rec.data_size+1];
                     for(int i = 0; i < rec.data_size; i++){
