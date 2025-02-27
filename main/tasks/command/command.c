@@ -148,9 +148,9 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
         case RADIO_CONFIG: 
             if(payload_size < sizeof(radio_config_t)) break; 
             radio_config_t* radio_config_args = (radio_config_t*)payload_buf; 
-            // removed for testing 
+            // check admin
             if(!is_admin(radio_config_args->admin_token)) break;
-            
+            logln_info("Attempting to switch to %d with power %d", radio_config_args->selected_radio, radio_config_args->updated_power);
             // queue module update if arg isn't 2 
             if(radio_config_args->selected_radio == 1) radio_set_module(ENABLE_RFM98); 
             else if(radio_config_args->selected_radio == 0) radio_set_module(ENABLE_SX1268); 
@@ -164,6 +164,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             radio_stat_t* radio_stat_args = (radio_stat_t*)payload_buf; 
             if(!is_admin(radio_stat_args->admin_token)) break;
 
+            logln("Queuing stat response"); 
             radio_queue_stat_response(); 
             break;
 
@@ -180,7 +181,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             schedule_delayed_job_ms(job_name, &set_rtc_job, 10); 
             steve_job_t* job = find_steve_job(job_name); 
             job->arg_data = args; 
-            // logln_info("Job created"); 
+            logln_info("RTC job created"); 
             break;
             
         case FSW_ACK:
@@ -235,6 +236,7 @@ void command_task(void* unused_arg) {
             // otherwise keep checking bytes
             sync_index += 1;
         }
+        logln_info("Received sync bytes, moving to decode"); 
         // We've succesfully received all sync bytes if we've reached here
         // logln_info("Received all sync bytes!");
         // TODO: Add better error checks and handling here

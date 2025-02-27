@@ -66,14 +66,11 @@ typedef struct radio_queue_operations {
 
 #ifdef __cplusplus
 extern "C" {
-    void _log(const char* str, ...);
-    void receive_command_bytes(uint8_t* packet, size_t packet_size);
     #include "telemetry.h"
+    #include "log.h"
+    #include "command.h"
 }
 #endif
-
-#include "log.h"
-#include "command.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -86,8 +83,8 @@ extern "C"
     void radio_queue_stat_response(); 
 
     uint8_t radio_which(); 
-    uint16_t radio_get_RFM_state(); 
-    uint16_t radio_get_SX_state(); 
+    int16_t radio_get_RFM_state(); 
+    int16_t radio_get_SX_state(); 
 #ifdef __cplusplus
 }
 #endif

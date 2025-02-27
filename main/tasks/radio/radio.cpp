@@ -13,6 +13,7 @@
 
 #define RADIO_LOGGING 0
 #define RADIO_LOGGING_CAD 0
+#define TEMP_ON 0
 
 /**
  * one thread
@@ -113,10 +114,10 @@ extern "C"
     uint8_t radio_which(){
         return (radio == &radioRFM); 
     }
-    uint16_t radio_get_RFM_state(){
+    int16_t radio_get_RFM_state(){
         return radio_state_RFM; 
     }
-    uint16_t radio_get_SX_state(){
+    int16_t radio_get_SX_state(){
         return radio_state_SX; 
     }
 #ifdef __cplusplus
@@ -173,12 +174,13 @@ int radio_hardware_switch_to(PhysicalLayer* new_radio){
 
 // toggle the radio until one of them works
 void radio_panic(){
-    #if RADIO_LOGGING
+    #if TEMP_ON || RADIO_LOGGING
     printf("Critical Radio fail, panicking...\n");
     #endif
 
     do {
-        if(radio == &radioSX){
+        // short the conditional so that it doesn't switch to the sx as I don't think it is currently not working on the stack 
+        if(true || radio == &radioSX){
             radio_state_SX = RADIO_ERROR_CUSTOM; 
             #if RADIO_LOGGING
             printf("Attempting to switch to RFM98...\n");
@@ -233,13 +235,13 @@ void radio_panic(){
             }
             #endif
         }
-        #if RADIO_LOGGING
+        #if TEMP_ON || RADIO_LOGGING
         printf("SX: %d RFM: %d\n", radio_state_SX, radio_state_RFM); 
         #endif
-        vTaskDelay(pdMS_TO_TICKS(15000)); // wait 15 seconds between tries
+        vTaskDelay(pdMS_TO_TICKS(10)); // wait 10 milliseconds between tries
     } while(radio_state_RFM != 0 && radio_state_SX != 0); 
 
-    #if RADIO_LOGGING
+    #if TEMP_ON || RADIO_LOGGING
     printf("Final SX: %d RFM: %d\n", radio_state_SX, radio_state_RFM); 
     if(radio == &radioSX) printf("Resolved to SX1268.\n");
     else printf("Resolved to RFM98.\n");
@@ -355,7 +357,7 @@ void radio_task_cpp(){
             radio->startChannelScan();
         }
         else if(transmitting && abs((long long)(radio_now - operation_start_time)) > RADIO_TRANSMIT_TIMEOUT_MS){
-            #if RADIO_LOGGING
+            #if TEMP_ON || RADIO_LOGGING
             printf("transmit timeout\n"); 
             #endif
             transmitting = false;
@@ -389,7 +391,7 @@ void radio_task_cpp(){
                     last_receive_time = to_ms_since_boot(get_absolute_time()); 
                     // parse out sync bytes and grab packet with header
                     // create command.c function to read packet
-                    #if RADIO_LOGGING
+                    #if TEMP_ON || RADIO_LOGGING
                     printf("Received packet: ");
                     for(int i = 0; i < packet_size; i++){
                         printf("%c", packet[i]);
@@ -479,7 +481,7 @@ void radio_task_cpp(){
         {
             switch (rec.operation_type) {
                 case TRANSMIT:
-                    #if RADIO_LOGGING
+                    #if TEMP_ON || RADIO_LOGGING
                     {
                     char message[rec.data_size+1];
                     for(int i = 0; i < rec.data_size; i++){
@@ -493,13 +495,13 @@ void radio_task_cpp(){
                     transmission_size = rec.data_size; 
                     operation_start_time = to_ms_since_boot(get_absolute_time()); 
                     state = radio->startTransmit(rec.data_buffer, rec.data_size);
-                    #if RADIO_LOGGING
                     while(state != 0){
+                        #if TEMP_ON || RADIO_LOGGING
                         printf("Transmit failed with code: %d\n", state); 
+                        #endif
                         radio_panic(); 
                         state = radio->startTransmit(rec.data_buffer, rec.data_size);
                     }
-                    #endif
                     transmitting = true;
                     vPortFree(rec.data_buffer);
                     break;
@@ -525,9 +527,11 @@ void radio_task_cpp(){
                         #if RADIO_LOGGING
                         printf("success\n"); 
                         #endif
+                        logln_info("Switched to RFM98");
                         // vPortFree(rec.data_buffer); 
                     }
                     else {
+                        logln_info("Switch to RFM98 failed with code: %d", radio_state_RFM); 
                         #if RADIO_LOGGING
                         printf("switch to RFM failed with code: %d\n", radio_state_RFM); 
                         #endif
@@ -563,9 +567,11 @@ void radio_task_cpp(){
                         #if RADIO_LOGGING
                         printf("success\n"); 
                         #endif
+                        logln_info("Switched to SX1268"); 
                         // vPortFree(rec.data_buffer); 
                     }
                     else{
+                        logln_info("Switch to SX1268 failed with code: %d", radio_state_SX); 
                         #if RADIO_LOGGING
                         printf("switch to SX failed with code: %d\n", radio_state_SX); 
                         #endif
@@ -595,6 +601,7 @@ void radio_task_cpp(){
                     temp = (radio == &radioSX)? radioSX.getFrequencyError(): radioRFM.getFrequencyError(); 
                     memcpy(payload_buffer + (2*sizeof(float)), &temp, sizeof(float));
 
+                    logln_info("RADIO_STAT_RES queued"); 
                     // send the data to telemetry 
                     send_telemetry(RADIO_STAT_RES, payload_buffer, payload_size);
 

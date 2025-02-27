@@ -68,6 +68,9 @@ void heartbeat_telemetry_job(void* unused) {
     float rtcTemp = 5500;
     if(!rtc_get_temp(i2c, &rtcTemp)) payload.rtcTemp = rtcTemp;
 
+    // ina config 
+    config(i2c);
+
     // ina0 data
     uint16_t ina0buf;
     if(!getVShunt_raw(i2c, INA0_ADDR, &ina0buf)) payload.ina0_shunt = ina0buf;
