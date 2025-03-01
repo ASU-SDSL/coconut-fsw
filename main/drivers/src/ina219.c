@@ -212,7 +212,7 @@ int getCurrent(i2c_inst_t *i2c,
 		return 1;
 	}
 
-	uint16_t bufComb = buf[0];
+	int16_t bufComb = buf[0];
 	bufComb = (bufComb << 8) | buf[1];
 
 	// printf("raw current: %d\n", bufComb);

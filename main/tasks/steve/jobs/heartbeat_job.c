@@ -21,7 +21,7 @@ void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
     heartbeat_telemetry_t payload;
 
-    logln_info("%s", get_current_task_name());
+    // logln_info("%s", get_current_task_name());
 
     // State data
     payload.state = (uint8_t)g_payload_state;
@@ -67,6 +67,9 @@ void heartbeat_telemetry_job(void* unused) {
     else payload.year = UINT8_MAX;
     float rtcTemp = 5500;
     if(!rtc_get_temp(i2c, &rtcTemp)) payload.rtcTemp = rtcTemp;
+
+    // ina config 
+    config(i2c);
 
     // ina0 data
     uint16_t ina0buf;

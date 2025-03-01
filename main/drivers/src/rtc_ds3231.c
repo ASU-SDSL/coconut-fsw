@@ -24,7 +24,7 @@
 
 // give in 24h time
 // returns 0 on success
-uint8_t rtc_set_time(i2c_inst_t *i2c, uint8_t hour, uint8_t minute, uint8_t second, uint8_t month, uint8_t date, uint8_t year) {
+uint8_t rtc_set_time(i2c_inst_t *i2c, uint8_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t minute, uint8_t second){
     uint8_t buf; 
 
     buf = (second / 10 << 4) | (second % 10);
@@ -42,7 +42,7 @@ uint8_t rtc_set_time(i2c_inst_t *i2c, uint8_t hour, uint8_t minute, uint8_t seco
         return 3;
     }
 
-    buf = (date / 10 << 4) | (date % 10);
+    buf = (day / 10 << 4) | (day % 10);
     if(i2c_write_to_register(i2c, RTC_ADDR, RTC_DATE_REG, &buf, 1)){
         return 4;
     }
@@ -192,7 +192,7 @@ void rtc_test() {
         uint8_t minute;
         uint8_t second;
         uint8_t month; 
-        uint8_t date;
+        uint8_t day;
         uint8_t year;
         if(rtc_get_hour(i2c, &hour)){
             // printf("Hour failed\n");
@@ -206,14 +206,14 @@ void rtc_test() {
         if(rtc_get_month(i2c, &month)){
             // printf("Month failed\n");
         }
-        if(rtc_get_date(i2c, &date)){
+        if(rtc_get_date(i2c, &day)){
             // printf("Date failed\n");
         }
         if(rtc_get_year(i2c, &year)){
             // printf("Date failed\n");
         }
 
-        // printf("RTC TimeStamp: \n%d:%d:%d %d/%d/%d \n", hour, minute, second, month, date, year);  
+        // printf("RTC TimeStamp: \n%d:%d:%d %d/%d/%d \n", hour, minute, second, month, day, year);  
         // sleep_ms(1000);
 
     }
