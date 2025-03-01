@@ -68,10 +68,9 @@ void heartbeat_telemetry_job(void* unused) {
     float rtcTemp = 5500;
     if(!rtc_get_temp(i2c, &rtcTemp)) payload.rtcTemp = rtcTemp;
 
-    // ina config 
-    config(i2c);
 
     // ina0 data
+    config(i2c, INA0_ADDR); 
     uint16_t ina0buf;
     if(!getVShunt_raw(i2c, INA0_ADDR, &ina0buf)) payload.ina0_shunt = ina0buf;
     else payload.ina0_shunt = UINT16_MAX;
@@ -88,6 +87,7 @@ void heartbeat_telemetry_job(void* unused) {
     logln_info("INA0 power: %ld", payload.ina0_power);*/
 
     // ina1 data
+    config(i2c, INA1_ADDR); 
     uint16_t ina1buf;
     if(!getVShunt_raw(i2c, INA1_ADDR, &ina1buf)) payload.ina1_shunt = ina1buf;
     else payload.ina1_shunt = UINT16_MAX;
@@ -99,6 +99,7 @@ void heartbeat_telemetry_job(void* unused) {
     else payload.ina1_power = UINT16_MAX; 
 
     // INA2 data
+    config(i2c, INA2_ADDR); 
     uint16_t ina2buf;
     if(!getVShunt_raw(i2c, INA2_ADDR, &ina2buf)) payload.ina2_shunt = ina2buf;
     else payload.ina2_shunt = UINT16_MAX;
@@ -110,6 +111,7 @@ void heartbeat_telemetry_job(void* unused) {
     else payload.ina2_power = UINT16_MAX; 
 
     // INA3 data
+    config(i2c, INA3_ADDR);
     uint16_t ina3buf;
     if(!getVShunt_raw(i2c, INA3_ADDR, &ina3buf)) payload.ina3_shunt = ina3buf;
     else payload.ina3_shunt = UINT16_MAX;
@@ -121,6 +123,7 @@ void heartbeat_telemetry_job(void* unused) {
     else payload.ina3_power = UINT16_MAX; 
 
     // ina4 data
+    config(i2c, INA4_ADDR); 
     uint16_t ina4buf;
     if(!getVShunt_raw(i2c, INA4_ADDR, &ina4buf)) payload.ina4_shunt = ina4buf;
     else payload.ina4_shunt = UINT16_MAX;
@@ -132,6 +135,7 @@ void heartbeat_telemetry_job(void* unused) {
     else payload.ina4_power = UINT16_MAX;
 
     // ina5 data
+    config(i2c, INA5_ADDR); 
     uint16_t ina5buf;
     if(!getVShunt_raw(i2c, INA5_ADDR, &ina5buf)) payload.ina5_shunt = ina5buf;
     else payload.ina5_shunt = UINT16_MAX;
