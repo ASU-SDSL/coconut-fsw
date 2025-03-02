@@ -12,7 +12,7 @@ void initialize_file_downlink(char *file_path) {
     strncpy(command_data.file_path, file_path, MAX_PATH_SIZE);
 
     file_downlink_queue_command_t command = {
-        .queue_command_id = (uint8_t) FILE_DOWNLINK_INIT,
+        .queue_command_id = (uint8_t) CMD_ID_FILE_DOWNLINK_INIT,
     };
     memcpy(command.data, &command_data, sizeof(file_downlink_queue_command_init_data_t));
 
@@ -28,7 +28,7 @@ void file_downlink_ack_command(char *file_path, uint16_t sequence_number) {
     strncpy(command_data.file_path, file_path, MAX_PATH_SIZE);
     
     file_downlink_queue_command_t command = {
-        .queue_command_id = (uint8_t) FILE_DOWNLINK_INIT,
+        .queue_command_id = (uint8_t) CMD_ID_FILE_DOWNLINK_INIT,
     };
     memcpy(command.data, &command_data, sizeof(file_downlink_queue_command_ack_data_t));
 
@@ -42,7 +42,7 @@ void change_max_packet_size(uint8_t new_packet_size) {
         .new_packet_size = new_packet_size
     };
     file_downlink_queue_command_t command = {
-        .queue_command_id = (uint8_t) CHANGE_DOWNLINK_PACKET_SIZE,
+        .queue_command_id = (uint8_t) CMD_ID_CHANGE_DOWNLINK_PACKET_SIZE,
     };
     memcpy(command.data, &command_data, sizeof(file_downlink_queue_command_change_packet_size_data_t));
 
@@ -131,10 +131,10 @@ void file_downlink_task(void* unused_arg) {
             case IDLE:
                 queue_command = NULL;
                 xQueueReceive(file_downlink_queue, &queue_command, 0); // 0 for non blocking
-                if (queue_command->queue_command_id == FILE_DOWNLINK_INIT) {
+                if (queue_command->queue_command_id == CMD_ID_FILE_DOWNLINK_INIT) {
                     initialize_file_transfer(current_file_downlink_data, queue_command);
                     state = SENDING;
-                } else if (queue_command->queue_command_id == CHANGE_DOWNLINK_PACKET_SIZE) {
+                } else if (queue_command->queue_command_id == CMD_ID_CHANGE_DOWNLINK_PACKET_SIZE) {
                     file_downlink_queue_command_change_packet_size_data_t *change_packet_size_command = (file_downlink_queue_command_change_packet_size_data_t*) queue_command->data;
                     if (change_packet_size_command->new_packet_size < MAX_DOWNLINK_PACKET_SIZE) {
                         packet_downlink_size = change_packet_size_command->new_packet_size;
@@ -170,7 +170,7 @@ void file_downlink_task(void* unused_arg) {
                 if (ticks_to_ms(tick_uptime_in_ms() - current_file_downlink_data->expiration_timer) < ACK_WINDOW_TIMEOUT) {
                     queue_command = NULL;
                     xQueueReceive(file_downlink_queue, &queue_command, 0); // 0 for non blocking
-                    if (queue_command->queue_command_id == FILE_DOWNLINK_ACK) {
+                    if (queue_command->queue_command_id == CMD_ID_FILE_DOWNLINK_ACK) {
 
                         file_downlink_queue_command_ack_data_t *ack_command_data = (file_downlink_queue_command_ack_data_t*) queue_command->data;
 
@@ -193,7 +193,7 @@ void file_downlink_task(void* unused_arg) {
                             current_file_downlink_data->last_ack_received_time = tick_uptime_in_ms();
                         }
                     // If we receive a new file downlink request, terminate this transfer and start the new one
-                    } else if (queue_command->queue_command_id == FILE_DOWNLINK_INIT) {
+                    } else if (queue_command->queue_command_id == CMD_ID_FILE_DOWNLINK_INIT) {
                         logln_error("Received a new file downlink command while in the middle of a transfer");
                         current_file_downlink_data = NULL; // reset struct
                         initialize_file_transfer(current_file_downlink_data, queue_command); // continue with new transfer

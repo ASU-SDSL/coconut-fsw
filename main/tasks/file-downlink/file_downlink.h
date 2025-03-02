@@ -29,9 +29,9 @@
 QueueHandle_t file_downlink_queue;
 
 enum file_downlink_queue_command_id {
-    FILE_DOWNLINK_INIT = 0,
-    FILE_DOWNLINK_ACK = 1,
-    CHANGE_DOWNLINK_PACKET_SIZE = 2,
+    CMD_ID_FILE_DOWNLINK_INIT = 0,
+    CMD_ID_FILE_DOWNLINK_ACK = 1,
+    CMD_ID_CHANGE_DOWNLINK_PACKET_SIZE = 2,
 };
 
 typedef struct file_downlink_queue_command_init_data {

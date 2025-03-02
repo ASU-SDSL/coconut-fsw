@@ -26,7 +26,10 @@ typedef enum command_apid {
     DELETE_USER = 13,
     MCU_POWER_CYCLE = 14,
     PLAYBACK_HEARTBEAT_PACKETS = 15,
-    FSW_ACK = 16,
+    FSW_PING = 16,
+    APID_INITIALIZE_FILE_DOWNLINK = 17,
+    APID_FILE_DOWNLINK_ACK = 18,
+    APID_FILE_DOWNLINK_CHANGE_PACKET_SIZE = 19,
 } command_apid_t;
 
 typedef struct __attribute__((__packed__)) {
@@ -94,6 +97,15 @@ typedef struct __attribute__((__packed__)) {
     uint16_t every_x_packet; // Used to adjust for less resolution but cover more time
     uint16_t go_back_x_packets; // Used to start the playback from a certain point in the past
 } playback_hb_tlm_payload_t;
+
+typedef struct __attribute__((__packed__)) {
+    uint16_t sequence_number; // Specifically for the file downlink protocol, NOT CCSDS space packet
+    char file_path[MAX_PATH_SIZE + 1];
+} file_downlink_ack_payload_t;
+
+typedef struct __attribute__((__packed__)) {
+    uint8_t new_packet_size;
+} file_downlink_change_packet_size_payload_t;
 
 // Internal Command Thread Structs
 QueueHandle_t command_byte_queue;
