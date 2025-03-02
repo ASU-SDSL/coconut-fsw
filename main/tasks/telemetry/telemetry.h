@@ -14,6 +14,7 @@ QueueHandle_t telemetry_queue;
 
 /* TELEMETRY DEFINITIONS*/
 typedef enum {
+    // 00 - general and file system 
     LOG_APID = 0,
     HEARTBEAT_APID = 1, // just to keep the command and telemetry apid equal :)
     DOWNLINK_GROUNDNODE_DATA_APID = 2, // currently unused
@@ -21,6 +22,11 @@ typedef enum {
     HEARTBEAT_PLAYBACK_APID = 4,
     ACK_APID = 5,
     FILE_DOWNLINK_APID = 6,
+
+    // 01 - radio
+    RADIO_STAT_RES = 101,
+    
+    // 02 - device 
 } telemetry_apid_t;
 
 typedef struct __attribute__((__packed__)) {

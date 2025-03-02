@@ -14,7 +14,9 @@
 #include "heartbeat_job.h"
 #include "steve.h"
 #include "filesystem.h"
+#include "radio.h"
 #include "command.h"
+#include "set_rtc_job.h"
 #include "watchdog.h"
 #include "hb_tlm_log.h"
 #include "file_downlink.h"
@@ -132,9 +134,11 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (mkfs_args->confirm != 1) break;
             delete_user(delete_user_args->user_name);
             break;
+
         case MCU_POWER_CYCLE:
             watchdog_freeze(); // Freezing the watchdog will cause a reboot within a few seconds
             break;
+
         case PLAYBACK_HEARTBEAT_PACKETS:
             if (payload_size < sizeof(playback_hb_tlm_payload_t)) break; // Should probably return an error to the ground
             playback_hb_tlm_payload_t* playback_hb_payload = (playback_hb_tlm_payload_t*)payload_buf;
@@ -142,6 +146,47 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (status != 0) command_status = 0;
             break;
         case FSW_PING:
+        
+        case RADIO_CONFIG: 
+            if(payload_size < sizeof(radio_config_t)) break; 
+            radio_config_t* radio_config_args = (radio_config_t*)payload_buf; 
+            // check admin
+            if(!is_admin(radio_config_args->admin_token)) break;
+            logln_info("Attempting to switch to %d with power %d", radio_config_args->selected_radio, radio_config_args->updated_power);
+            // queue module update if arg isn't 2 
+            if(radio_config_args->selected_radio == 1) radio_set_module(ENABLE_RFM98); 
+            else if(radio_config_args->selected_radio == 0) radio_set_module(ENABLE_SX1268); 
+
+            // queue power update if arg isn't 0
+            if(radio_config_args->updated_power != 0) radio_set_transmit_power(radio_config_args->updated_power); 
+            break;
+
+        case RADIO_STAT:
+            if(payload_size < sizeof(radio_stat_t)) break;
+            radio_stat_t* radio_stat_args = (radio_stat_t*)payload_buf; 
+            if(!is_admin(radio_stat_args->admin_token)) break;
+
+            logln("Queuing stat response"); 
+            radio_queue_stat_response(); 
+            break;
+
+        case SET_RTC_TIME:
+            if (payload_size < sizeof(set_rtc_time_t)) break;
+            set_rtc_time_t* set_rtc_time_args = (set_rtc_time_t*)payload_buf; 
+            if(!is_admin(set_rtc_time_args->admin_token)) break;
+
+            void* args = pvPortMalloc(payload_size); 
+            memcpy(args, payload_buf + sizeof(set_rtc_time_args->admin_token), payload_size - sizeof(set_rtc_time_args->admin_token));
+            // logln_info("args[0]: %d payload_buf: %d len: %d", (((uint8_t*)args)[0]), *payload_buf, payload_size); 
+
+            const char* job_name = "SET_RTC";
+            schedule_delayed_job_ms(job_name, &set_rtc_job, 10); 
+            steve_job_t* job = find_steve_job(job_name); 
+            job->arg_data = args; 
+            logln_info("RTC job created"); 
+            break;
+            
+        case FSW_ACK:
             break; // This will just send the ack
         case APID_INITIALIZE_FILE_DOWNLINK:
             // This payload is just a string
@@ -195,7 +240,7 @@ void command_task(void* unused_arg) {
             command_byte_t command_byte = 0;
             xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
             
-            // logln_info("Byte Received: 0x%hhx", command_byte);
+            logln_info("Byte Received: 0x%hhx", command_byte);
 
             // check if current sync index byte matches
             uint8_t check_byte = COMMAND_SYNC_BYTES[sync_index];
@@ -213,6 +258,7 @@ void command_task(void* unused_arg) {
             // otherwise keep checking bytes
             sync_index += 1;
         }
+        logln_info("Received sync bytes, moving to decode"); 
         // We've succesfully received all sync bytes if we've reached here
         // logln_info("Received all sync bytes!");
         // TODO: Add better error checks and handling here

@@ -9,7 +9,7 @@
  * Set the RTC's date and time, asumes 24h input. 
  * Returns 0 on success
 */
-uint8_t rtc_set_time(i2c_inst_t *i2c, uint8_t hour, uint8_t minute, uint8_t second, uint8_t month, uint8_t date, uint8_t year);
+uint8_t rtc_set_time(i2c_inst_t *i2c, uint8_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t minute, uint8_t second);
 
 /**
  * ALL GET FUNCTIONS 
