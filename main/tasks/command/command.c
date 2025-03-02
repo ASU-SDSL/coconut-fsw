@@ -20,7 +20,6 @@
 #include "watchdog.h"
 #include "hb_tlm_log.h"
 #include "file_downlink.h"
-#include "radio.h"
 
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
@@ -190,6 +189,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
         case APID_INITIALIZE_FILE_DOWNLINK:
             // This payload is just a string
             if (strlen(payload_buf) > MAX_PATH_SIZE) break; // Verify it looks like a string and isn't too long
+            payload_buf[payload_size - 1] = '\0'; // Make sure it's null terminated
             initialize_file_downlink(payload_buf);
             break;
         case APID_FILE_DOWNLINK_ACK:
@@ -197,8 +197,10 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (payload_size > sizeof(file_downlink_queue_command_ack_data_t)) break;
             file_downlink_queue_command_ack_data_t ack_args = {
                 .sequence_number = (payload_buf[0] << 8) | payload_buf[1],
-                .file_path = payload_buf + 2
             };
+            payload_buf[payload_size - 1] = '\0'; // make sure null termination on the string
+            strncpy(ack_args.file_path, payload_buf + 2, strlen(payload_buf + 2)); // The file_path string is stored 2 bytes after the beginning of the buf (after seq num)
+
             if (strlen(ack_args.file_path) > MAX_PATH_SIZE) break; // Verify it looks like a string and isn't too long
             file_downlink_ack_command(ack_args.file_path, ack_args.sequence_number);
             break;
