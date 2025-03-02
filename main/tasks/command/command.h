@@ -106,6 +106,8 @@ uint16_t every_x_packet; // Used to adjust for less resolution but cover more ti
 uint16_t go_back_x_packets; // Used to start the playback from a certain point in the past
 } playback_hb_tlm_payload_t;
 
+// Note: Initialize file downlink command only has a string as its payload
+
 typedef struct __attribute__((__packed__)) {
     uint16_t sequence_number; // Specifically for the file downlink protocol, NOT CCSDS space packet
     char file_path[MAX_PATH_SIZE + 1];

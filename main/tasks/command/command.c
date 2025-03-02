@@ -20,6 +20,7 @@
 #include "watchdog.h"
 #include "hb_tlm_log.h"
 #include "file_downlink.h"
+#include "radio.h"
 
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
@@ -146,7 +147,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (status != 0) command_status = 0;
             break;
         case FSW_PING:
-        
+            break; // This will just send the ack
         case RADIO_CONFIG: 
             if(payload_size < sizeof(radio_config_t)) break; 
             radio_config_t* radio_config_args = (radio_config_t*)payload_buf; 
@@ -186,8 +187,6 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             logln_info("RTC job created"); 
             break;
             
-        case FSW_ACK:
-            break; // This will just send the ack
         case APID_INITIALIZE_FILE_DOWNLINK:
             // This payload is just a string
             if (strlen(payload_buf) > MAX_PATH_SIZE) break; // Verify it looks like a string and isn't too long

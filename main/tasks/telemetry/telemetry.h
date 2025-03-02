@@ -15,7 +15,7 @@ QueueHandle_t telemetry_queue;
 /* TELEMETRY DEFINITIONS*/
 typedef enum {
     // 00 - general and file system 
-    LOG_APID = 0,
+    APID_LOG = 0,
     HEARTBEAT_APID = 1, // just to keep the command and telemetry apid equal :)
     DOWNLINK_GROUNDNODE_DATA_APID = 2, // currently unused
     DOWNLINK_TELEMETRY_DATA_APID = 3, // currently unused
