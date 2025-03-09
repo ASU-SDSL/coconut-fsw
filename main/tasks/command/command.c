@@ -213,12 +213,20 @@ void command_task(void* unused_arg) {
     while (true) {
         // Keep gathering bytes until we get the sync bytes
         uint32_t sync_index = 0;
+
+        bool ax25_mode = false; 
         while (true) {
             // stall thread until we get a byte
             command_byte_t command_byte = 0;
             xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
             
             logln_info("Byte Received: 0x%hhx", command_byte);
+
+            // check for AX25 flag field (0x7E)
+            if(command_byte == AX25_FLAG){
+                ax25_mode = true; 
+                break;
+            }
 
             // check if current sync index byte matches
             uint8_t check_byte = COMMAND_SYNC_BYTES[sync_index];
@@ -236,35 +244,58 @@ void command_task(void* unused_arg) {
             // otherwise keep checking bytes
             sync_index += 1;
         }
-        logln_info("Received sync bytes, moving to decode"); 
-        // We've succesfully received all sync bytes if we've reached here
-        // logln_info("Received all sync bytes!");
-        // TODO: Add better error checks and handling here
-        // Gather spacepacket header bytes
-        uint8_t spacepacket_header_bytes[SPACEPACKET_ENCODED_HEADER_SIZE];
-        for (int i = 0; i < sizeof(spacepacket_header_bytes); i++) {
-            xQueueReceive(command_byte_queue, &spacepacket_header_bytes[i], portMAX_DELAY);
+
+        if(ax25_mode){
+            // receive the rest of the bytes 
+            bool msg_err = false; 
+            int msg_len = 256; 
+            uint8_t msg[msg_len];
+            int msg_index = 0; 
+            msg[msg_index++] = AX25_FLAG; // put this in again from the trigger 
+            uint8_t command_byte = 0; 
+            do {
+                xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
+                if(msg_index >= msg_len){ // msg is too large (add reallocation later)
+                    msg_err = true; 
+                    break;  
+                } 
+                msg[msg_index++] = command_byte;
+            } while(command_byte != AX25_FLAG);
+            
+            // recieved the entire message 
+            if(msg_err == false) radio_queue_message(msg, msg_len); 
         }
-        // Parse spacepacket header
-        spacepacket_header_t header;
-        if (decode_spacepacket_header(spacepacket_header_bytes, sizeof(spacepacket_header_bytes), &header) == -1) {
-            logln_error("Failed to decode SpacePacket header!");
-            continue;
+        else {
+            logln_info("Received sync bytes, moving to decode"); 
+            // We've succesfully received all sync bytes if we've reached here
+            // logln_info("Received all sync bytes!");
+            // TODO: Add better error checks and handling here
+            // Gather spacepacket header bytes
+            uint8_t spacepacket_header_bytes[SPACEPACKET_ENCODED_HEADER_SIZE];
+            for (int i = 0; i < sizeof(spacepacket_header_bytes); i++) {
+                xQueueReceive(command_byte_queue, &spacepacket_header_bytes[i], portMAX_DELAY);
+            }
+            // Parse spacepacket header
+            spacepacket_header_t header;
+            if (decode_spacepacket_header(spacepacket_header_bytes, sizeof(spacepacket_header_bytes), &header) == -1) {
+                logln_error("Failed to decode SpacePacket header!");
+                continue;
+            }
+            // Allocate correct size buffer
+            size_t payload_size = header.packet_length + 1; // 4.1.3.5.3 transmits data size field as payload_length - 1
+            uint8_t* payload_buf = pvPortMalloc(payload_size);
+            if (payload_buf == 0) {
+                logln_error("Failed to allocate payload buf of size 0x%x!", payload_size);
+                continue;
+            }
+            // Read payload
+            for (int i = 0; i < payload_size; i++) {
+                xQueueReceive(command_byte_queue, &payload_buf[i], portMAX_DELAY);
+            }
+            // Parse packet payload
+            parse_command_packet(header, payload_buf, payload_size);
+            // Free payload buffer
+            vPortFree(payload_buf);
         }
-        // Allocate correct size buffer
-        size_t payload_size = header.packet_length + 1; // 4.1.3.5.3 transmits data size field as payload_length - 1
-        uint8_t* payload_buf = pvPortMalloc(payload_size);
-        if (payload_buf == 0) {
-            logln_error("Failed to allocate payload buf of size 0x%x!", payload_size);
-            continue;
-        }
-        // Read payload
-        for (int i = 0; i < payload_size; i++) {
-            xQueueReceive(command_byte_queue, &payload_buf[i], portMAX_DELAY);
-        }
-        // Parse packet payload
-        parse_command_packet(header, payload_buf, payload_size);
-        // Free payload buffer
-        vPortFree(payload_buf);
     }
 }
