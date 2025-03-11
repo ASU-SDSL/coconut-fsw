@@ -248,22 +248,26 @@ void command_task(void* unused_arg) {
         if(ax25_mode){
             // receive the rest of the bytes 
             bool msg_err = false; 
-            int msg_len = 256; 
-            uint8_t msg[msg_len];
+            int msg_len = 20; 
+            uint8_t* msg = (uint8_t*)pvPortMalloc(sizeof(uint8_t) * msg_len);
             int msg_index = 0; 
             msg[msg_index++] = AX25_FLAG; // put this in again from the trigger 
             uint8_t command_byte = 0; 
             do {
                 xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
                 if(msg_index >= msg_len){ // msg is too large (add reallocation later)
-                    msg_err = true; 
-                    break;  
+                    msg_len += 20; 
+                    uint8_t* temp = (uint8_t*)pvPortMalloc(sizeof(uint8_t) * msg_len);
+                    memcpy(temp, msg, msg_len); 
+                    vPortFree(msg); 
+                    msg = temp; 
                 } 
                 msg[msg_index++] = command_byte;
             } while(command_byte != AX25_FLAG);
             
             // recieved the entire message 
-            if(msg_err == false) radio_queue_message(msg, msg_len); 
+            if(msg_err == false) radio_queue_message(msg, msg_index);
+            vPortFree(msg); 
         }
         else {
             logln_info("Received sync bytes, moving to decode"); 
