@@ -33,6 +33,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/rtc_ds3231.c
     ${MAIN_DIRECTORY}/drivers/src/mag_lis3mdltr.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
+    ${MAIN_DIRECTORY}/drivers/src/ds18b_onewire.cpp
 )
 
 # build certain files depending on simulator build
@@ -64,6 +65,8 @@ set (LINK_LIBS
     FreeRTOS
     FatFs
     libspacepacket
+
+    OneWireLib
 )
 
 IF (${DESKTOP_BUILD})
