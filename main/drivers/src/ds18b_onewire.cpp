@@ -2,12 +2,13 @@
 #include "ds18b_onewire.h"
 #include "OneWire.h"
 
-OneWire ds(16);  // on pin 10 (a 4.7K resistor is necessary)
+// 16 on breadboard
+#define ONE_WIRE_PIN 25
 
-uint8_t ds18b_read_temp(float* data_arr, uint8_t len){
-    return 0; 
-}
+OneWire ds(ONE_WIRE_PIN);  // on pin 10 (a 4.7K resistor is necessary)
 
+#if ONE_WIRE_DEBUG 
+#include <stdio.h>
 void debug_sample_loop() {
     uint8_t i;
     uint8_t present = 0;
@@ -104,4 +105,73 @@ void debug_sample_loop() {
     printf(" Celsius, ");
     printf("%f", fahrenheit);
     printf(" Fahrenheit\n");
+}
+#endif 
+
+uint8_t ds18b_read_temp(float* data_out){
+    uint8_t i;
+    uint8_t present = 0;
+    uint8_t type_s;
+    uint8_t data[9];
+    uint8_t addr[8];
+    float celsius;
+    
+    // search for onewire devices 
+    if(!ds.search(addr)){
+        ds.reset_search(); 
+        vTaskDelay(pdMS_TO_TICKS(250)); 
+        // busy_wait_ms(250); 
+        return 1; 
+    }
+
+    // check crc
+    if(OneWire::crc8(addr, 7) != addr[7]) {
+        return 2; 
+    }
+
+    // make sure the chip is DS18B20 
+    if(addr[0] != 0x28){
+        return 3; 
+    }
+    type_s = 0; 
+
+    ds.reset(); 
+    ds.select(addr); 
+    // not sure if this needs to be 1 for parasitic power, but I don't think it'll break anything 
+    ds.write(0x44, 1);  // start conversion, with parasite power on at the end
+
+    vTaskDelay(pdMS_TO_TICKS(1000)); 
+    // busy_wait_ms(1000);  // maybe 750ms is enough, maybe not
+
+    present = ds.reset(); 
+    ds.select(addr); 
+    ds.write(0xBE); // read Scratchpad 
+
+    for (i = 0; i < 9; i++) {  // we need 9 bytes
+        data[i] = ds.read();
+    }
+
+    int16_t raw = (data[1] << 8) | data[0]; 
+    if (type_s) {
+        raw = raw << 3;  // 9 bit resolution default
+        if (data[7] == 0x10) {
+        // "count remain" gives full 12 bit resolution
+        raw = (raw & 0xFFF0) + 12 - data[6];
+        }
+    } else {
+        uint8_t cfg = (data[4] & 0x60);
+        // at lower res, the low bits are undefined, so let's zero them
+        if (cfg == 0x00)
+        raw = raw & ~7;  // 9 bit resolution, 93.75 ms
+        else if (cfg == 0x20)
+        raw = raw & ~3;  // 10 bit res, 187.5 ms
+        else if (cfg == 0x40)
+        raw = raw & ~1;  // 11 bit res, 375 ms
+        //// default is 12 bit resolution, 750 ms conversion time
+    }
+    celsius = (float)raw / 16.0;
+
+    *data_out = celsius; 
+
+    return 0;
 }
