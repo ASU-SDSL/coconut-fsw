@@ -25,7 +25,7 @@ OneWire ds(ONE_WIRE_PIN,
             custom_interrupts_hal, 
             custom_noInterrupts_hal);  // on pin 10 (a 4.7K resistor is necessary)
 
-#if ONE_WIRE_DEBUG 
+#if ONE_WIRE_DEBUG
 #include <stdio.h>
 void debug_sample_loop() {
     uint8_t i;
@@ -213,33 +213,7 @@ uint8_t ds18b_start_conversion(){
 
 
 float ds18b_get_temp(const uint8_t* addr){
-    // if it hasn't been long enough since the conversion was started 
-    // wait for it to be long enough 
-    uint32_t now = to_ms_since_boot(get_absolute_time()); 
-    if(now - ds18b_conversion_time < MIN_CONVERSION_TIME_MS){
-        vTaskDelay(pdMS_TO_TICKS(MIN_CONVERSION_TIME_MS - (now - ds18b_conversion_time)));
-    }
-
-    uint8_t present = ds.reset(); 
-    ds.select(addr); 
-    ds.write(0xBE); // read Scratchpad
-
-    uint8_t data[9]; 
-    for(int i = 0; i < 9; i++){
-        data[i] = ds.read(); 
-    }
-
-    int16_t raw = (data[1] << 8) | data[0]; 
-    
-    uint8_t cfg = (data[4] & 0x60);
-    // at lower res, the low bits are undefined, so let's zero them
-    if (cfg == 0x00)
-        raw = raw & ~7;  // 9 bit resolution, 93.75 ms
-    else if (cfg == 0x20)
-        raw = raw & ~3;  // 10 bit res, 187.5 ms
-    else if (cfg == 0x40)
-        raw = raw & ~1;  // 11 bit res, 375 ms
-    //// default is 12 bit resolution, 750 ms conversion time
+    int16_t raw = ds18b_get_temp_raw(addr); 
     
     float celsius = (float)raw / 16.0;
 
