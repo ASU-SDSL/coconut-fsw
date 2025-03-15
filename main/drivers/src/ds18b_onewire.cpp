@@ -7,7 +7,11 @@
 #define ONE_WIRE_PIN 25
 #define MIN_CONVERSION_TIME_MS 1000
 
-#define ONE_WIRE_DEBUG 1
+const uint8_t DS18B_U100[8] = {0x28, 0x0A, 0xAF, 0xD8, 0x0F, 0x00, 0x00, 0xCF};  // 28 A AF D8 F 0 0 CF
+const uint8_t DS18B_U102[8] = {0x28, 0x1C, 0xAF, 0xD8, 0x0F, 0x00, 0x00, 0x26};  // 28 1C AF D8 F 0 0 26
+const uint8_t DS18B_U104[8] = {0x28, 0x11, 0xAF, 0xD8, 0x0F, 0x00, 0x00, 0x6C};  // 28 11 AF D8 F 0 0 6C
+
+#define ONE_WIRE_DEBUG 0
 
 void custom_interrupts_hal(){
     vPortEnterCritical(); 
@@ -240,5 +244,40 @@ float ds18b_get_temp(const uint8_t* addr){
     float celsius = (float)raw / 16.0;
 
     return celsius; 
+}
+
+int16_t ds18b_get_temp_raw(const uint8_t* addr){
+    // if it hasn't been long enough since the conversion was started 
+    // wait for it to be long enough 
+    uint32_t now = to_ms_since_boot(get_absolute_time()); 
+    if(now - ds18b_conversion_time < MIN_CONVERSION_TIME_MS){
+        vTaskDelay(pdMS_TO_TICKS(MIN_CONVERSION_TIME_MS - (now - ds18b_conversion_time)));
+    }
+
+    uint8_t present = ds.reset(); 
+    ds.select(addr); 
+    ds.write(0xBE); // read Scratchpad
+
+    uint8_t data[9]; 
+    for(int i = 0; i < 9; i++){
+        data[i] = ds.read(); 
+    }
+
+    int16_t raw = (data[1] << 8) | data[0]; 
+    
+    uint8_t cfg = (data[4] & 0x60);
+    // at lower res, the low bits are undefined, so let's zero them
+    if (cfg == 0x00)
+        raw = raw & ~7;  // 9 bit resolution, 93.75 ms
+    else if (cfg == 0x20)
+        raw = raw & ~3;  // 10 bit res, 187.5 ms
+    else if (cfg == 0x40)
+        raw = raw & ~1;  // 11 bit res, 375 ms
+    //// default is 12 bit resolution, 750 ms conversion time
+    
+    return raw;
+    // float celsius = (float)raw / 16.0;
+
+    // return celsius; 
 }
 

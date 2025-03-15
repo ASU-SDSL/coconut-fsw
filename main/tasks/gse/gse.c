@@ -10,7 +10,6 @@
 #include "ina219.h"
 #include "log.h"
 #include "gse.h"
-#include "ds18b_onewire.h"
 
 void gse_queue_message(char* buffer, size_t size) {
     // write to picosdk usb uart interface

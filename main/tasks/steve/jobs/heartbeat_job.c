@@ -16,10 +16,16 @@
 #include "radio.h"
 #include "max17048.h"
 #include "hb_tlm_log.h"
+#include "ds18b_onewire.h"
 
 void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
     heartbeat_telemetry_t payload;
+
+    // send signal to start ds18b temperature conversions
+    // this takes 750-1000ms so triggering it now to have 
+    // some of that wait time be used to get other sensor values 
+    ds18b_start_conversion(); 
 
     // logln_info("%s", get_current_task_name());
 
@@ -165,6 +171,11 @@ void heartbeat_telemetry_job(void* unused) {
     payload.which_radio = radio_which(); 
     payload.rfm_state = radio_get_RFM_state(); 
     payload.sx_state = radio_get_SX_state(); 
+
+    // set ds18b temps 
+    payload.u100_temp = ds18b_get_temp_raw(DS18B_U100); 
+    payload.u102_temp = ds18b_get_temp_raw(DS18B_U102); 
+    payload.u104_temp = ds18b_get_temp_raw(DS18B_U104); 
     
     // Send it
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
