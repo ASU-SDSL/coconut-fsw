@@ -128,7 +128,7 @@ ENDIF()
 # Include libraries
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/fatfs/ build)
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/libspacepacket/)
-add_subdirectory(${CMAKE_SOURCE_DIR}/lib/OneWire/)
+add_subdirectory(${CMAKE_SOURCE_DIR}/lib/pico-one-wire-ds18b/)
 IF (NOT ${DESKTOP_BUILD})
     add_subdirectory(${CMAKE_SOURCE_DIR}/lib/RadioLib)
 ENDIF()

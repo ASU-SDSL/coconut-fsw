@@ -19,6 +19,6 @@
 [submodule "lib/libspacepacket"]
 	path = lib/libspacepacket
 	url = https://github.com/mzakocs/libspacepacket.git
-[submodule "lib/OneWire"]
-	path = lib/OneWire
-	url = git@github.com:tylermnielsen/OneWire.git
+[submodule "lib/pico-one-wire-ds18b"]
+	path = lib/pico-one-wire-ds18b
+	url = https://github.com/ASU-SDSL/pico-one-wire-ds18b.git
