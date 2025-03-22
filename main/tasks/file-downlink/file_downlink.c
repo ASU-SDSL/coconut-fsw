@@ -7,25 +7,35 @@
 #include <task.h>
 #include <string.h>
 
-void initialize_file_downlink(char *file_path) {
-    file_downlink_queue_command_init_data_t command_data;
-    strncpy(command_data.file_path, file_path, MAX_PATH_SIZE);
+void initialize_file_downlink(char *file_path, int file_path_len) {
+    // Initialize file downlink only has the string as a parameter
+
+    // This should be checked in the command task but verify here in case there are other users of this function
+    if (file_path_len > MAX_PATH_SIZE) {
+        return;
+    }
 
     file_downlink_queue_command_t command = {
         .queue_command_id = (uint8_t) CMD_ID_FILE_DOWNLINK_INIT,
     };
-    memcpy(command.data, &command_data, sizeof(file_downlink_queue_command_init_data_t));
+    memcpy(command.data, file_path, file_path_len);
+
+    // Make sure it is null terminated - this will not out of range from the MAX_PATH_SIZE check above
+    // might be covered by file_downlink_queue_command_t initializing to 0s
+    command.data[file_path_len] = '\0';
+
+    logln_info("Message len: %d, sizeof: %d", file_path_len, sizeof(file_downlink_queue_command_t));
 
     if (file_downlink_queue) {
         xQueueSendToBack(file_downlink_queue, &command, portMAX_DELAY);
     }
 }
 
-void file_downlink_ack_command(char *file_path, uint16_t sequence_number) {
+void file_downlink_ack_command(uint8_t transaction_id, uint16_t sequence_number) {
     file_downlink_queue_command_ack_data_t command_data = {
+        .transaction_id = transaction_id,
         .sequence_number = sequence_number
     };
-    strncpy(command_data.file_path, file_path, MAX_PATH_SIZE);
     
     file_downlink_queue_command_t command = {
         .queue_command_id = (uint8_t) CMD_ID_FILE_DOWNLINK_INIT,
@@ -56,6 +66,7 @@ typedef struct current_file_downlink_data {
     uint16_t window_start;
     uint16_t window_end;
     char file_path[MAX_PATH_SIZE];
+    uint8_t transaction_id;
     //FILE *file;
     uint16_t current_sending_packet_index;
     bool reached_eof; // Used to determine if the packet of the file has been sent
@@ -73,9 +84,9 @@ int send_n_packet(current_file_downlink_data_t *current_file_data, uint32_t pack
     strncpy(downlink_packet->path_name, current_file_data->file_path, FILE_DOWNLINK_PATH_NAME_CHARS - 1);
     downlink_packet->path_name[FILE_DOWNLINK_PATH_NAME_CHARS - 1] = '\0'; // Make sure there is a null-terminator - this may be unnecessary
 
-    uint32_t bytes_read = read_file_offset(current_file_data->file_path, downlink_packet->data, packet_size, current_file_data->current_sending_packet_index * packet_size);
+    int bytes_read = read_file_offset(current_file_data->file_path, downlink_packet->data, packet_size, current_file_data->current_sending_packet_index * packet_size);
 
-    if (bytes_read < 0) {
+    if (bytes_read <= 0) {
         vPortFree(downlink_packet);
         return bytes_read; // Error
     }
@@ -92,13 +103,20 @@ int send_n_packet(current_file_downlink_data_t *current_file_data, uint32_t pack
 }
 
 // Helper function to setup new transfer
-void initialize_file_transfer(current_file_downlink_data_t *current_file_data_struct, file_downlink_queue_command_t *queue_command) {
+void initialize_file_transfer(current_file_downlink_data_t *current_file_data_struct, char *file_path, uint8_t *transaction_id) {
     unsigned long tick_time_ms = tick_uptime_in_ms();
 
-    file_downlink_queue_command_init_data_t *init_command = (file_downlink_queue_command_init_data_t*) queue_command->data;
+    int file_path_len = MAX_PATH_SIZE;
+    int len = strlen(file_path);
+    if (len < MAX_PATH_SIZE - 1) {
+        file_path_len = len;
+    } else {
+        len = MAX_PATH_SIZE - 1;
+    }
 
-    strncpy(current_file_data_struct->file_path, init_command->file_path, MAX_PATH_SIZE - 1);
+    strncpy(current_file_data_struct->file_path, file_path, len);
     current_file_data_struct->file_path[MAX_PATH_SIZE - 1] = '\0'; // Make sure there is a null-terminator
+    current_file_data_struct->transaction_id = *transaction_id;
 
     current_file_data_struct->window_start = 0;
     current_file_data_struct->window_end = WINDOW_SIZE_N;
@@ -106,6 +124,9 @@ void initialize_file_transfer(current_file_downlink_data_t *current_file_data_st
     current_file_data_struct->expiration_timer = tick_time_ms;
     current_file_data_struct->current_sending_packet_index = 0;
     current_file_data_struct->reached_eof = false;
+
+    // Increment transaction id for next transaction
+    *transaction_id++;
 }
 
 typedef enum file_downlink_state {
@@ -115,13 +136,17 @@ typedef enum file_downlink_state {
 
 void file_downlink_task(void* unused_arg) {
 
+    // For testing, log an error so the error log file exists
+    logln_error("File Downlink Task started");
+
     uint32_t packet_downlink_size = MAX_DOWNLINK_PACKET_SIZE; // This can be changed by command when in idle state
 
     file_downlink_state_t state = IDLE; // start in the idle state
-    current_file_downlink_data_t *current_file_downlink_data = NULL; // initialize all values to 0
+    current_file_downlink_data_t current_file_downlink_data;
+    uint8_t current_transaction_id = 0; // will be incremented for each new initialize file downlink command
 
     file_downlink_queue = xQueueCreate(FILE_DOWNLINK_MAX_QUEUE_ITEMS, sizeof(file_downlink_queue_command_t));
-    file_downlink_queue_command_t *queue_command;
+    file_downlink_queue_command_t queue_command;
     // Send cool banner
     print_banner();
     while (true) {
@@ -129,85 +154,90 @@ void file_downlink_task(void* unused_arg) {
         switch (state) {
             
             case IDLE:
-                queue_command = NULL;
-                xQueueReceive(file_downlink_queue, &queue_command, 0); // 0 for non blocking
-                if (queue_command->queue_command_id == CMD_ID_FILE_DOWNLINK_INIT) {
-                    initialize_file_transfer(current_file_downlink_data, queue_command);
+                int res = xQueueReceive(file_downlink_queue, &queue_command, 0); // 0 for non blocking
+                if (res == pdFALSE) {
+                    continue;
+                }
+                if (queue_command.queue_command_id == CMD_ID_FILE_DOWNLINK_INIT) {
+                    initialize_file_transfer(&current_file_downlink_data, queue_command.data, &current_transaction_id); // data contains only the path for this command
                     state = SENDING;
-                } else if (queue_command->queue_command_id == CMD_ID_CHANGE_DOWNLINK_PACKET_SIZE) {
-                    file_downlink_queue_command_change_packet_size_data_t *change_packet_size_command = (file_downlink_queue_command_change_packet_size_data_t*) queue_command->data;
+                } else if (queue_command.queue_command_id == CMD_ID_CHANGE_DOWNLINK_PACKET_SIZE) {
+                    file_downlink_queue_command_change_packet_size_data_t *change_packet_size_command = (file_downlink_queue_command_change_packet_size_data_t*) queue_command.data;
                     if (change_packet_size_command->new_packet_size < MAX_DOWNLINK_PACKET_SIZE) {
                         packet_downlink_size = change_packet_size_command->new_packet_size;
                     } else {
                         logln_error("File Downlink Task received an invalid packet size command: %d", change_packet_size_command->new_packet_size);
                     }
                 } else {
-                    logln_error("File Downlink Task received an invalid command in IDLE state: %d", queue_command->queue_command_id);
+                    logln_error("File Downlink Task received an invalid command in IDLE state: %d", queue_command.queue_command_id);
                 }
                 break;
 
             
             case SENDING:
                 // If we have not sent all packets in the window, send the next packet in the window
-                if (current_file_downlink_data->current_sending_packet_index < current_file_downlink_data->window_end) {
-                    int result = send_n_packet(current_file_downlink_data, packet_downlink_size);
+                if (current_file_downlink_data.current_sending_packet_index < current_file_downlink_data.window_end) {
+                    int result = send_n_packet(&current_file_downlink_data, packet_downlink_size);
                     switch (result) {
                         case 0: // success
                             break;
                         case 1: // end of file
-                            current_file_downlink_data->reached_eof = true;
+                            current_file_downlink_data.reached_eof = true;
                             break;
                         default: // error
                             logln_error("%d - Error sending packet in file downlink task", result);
-                            current_file_downlink_data = NULL; // reset struct
                             state = IDLE;
                             break;
                     }
-                    current_file_downlink_data->current_sending_packet_index++;
+                    current_file_downlink_data.current_sending_packet_index++;
                 }
 
                 // Check for acks if the timer has not expired
-                if (ticks_to_ms(tick_uptime_in_ms() - current_file_downlink_data->expiration_timer) < ACK_WINDOW_TIMEOUT) {
-                    queue_command = NULL;
-                    xQueueReceive(file_downlink_queue, &queue_command, 0); // 0 for non blocking
-                    if (queue_command->queue_command_id == CMD_ID_FILE_DOWNLINK_ACK) {
+                if (ticks_to_ms(tick_uptime_in_ms() - current_file_downlink_data.expiration_timer) < ACK_WINDOW_TIMEOUT) {
+                    int res = xQueueReceive(file_downlink_queue, &queue_command, 0); // 0 for non blocking
+                    if (res == pdFALSE) {
+                        continue;
+                    }
+                    if (queue_command.queue_command_id == CMD_ID_FILE_DOWNLINK_ACK) {
 
-                        file_downlink_queue_command_ack_data_t *ack_command_data = (file_downlink_queue_command_ack_data_t*) queue_command->data;
+                        file_downlink_queue_command_ack_data_t *ack_command_data = (file_downlink_queue_command_ack_data_t*) queue_command.data;
+
+                        // Make sure this is still for the same transaction
+                        if (ack_command_data->transaction_id != current_file_downlink_data.transaction_id) {
+                            continue;
+                        }
 
                         // See if the seq number is in the window. If so, check if this is the last ack of the transfer, otherwise update the start of the window
-                        if (ack_command_data->sequence_number >= current_file_downlink_data->window_start &&
-                                ack_command_data->sequence_number <= current_file_downlink_data->window_end) {
+                        if (ack_command_data->sequence_number >= current_file_downlink_data.window_start &&
+                                ack_command_data->sequence_number <= current_file_downlink_data.window_end) {
 
                             // Check if it is the end of the transfer
-                            if (current_file_downlink_data->reached_eof == true && ack_command_data->sequence_number == current_file_downlink_data->window_end) {
-                                current_file_downlink_data = NULL; // reset struct
+                            if (current_file_downlink_data.reached_eof == true && ack_command_data->sequence_number == current_file_downlink_data.window_end) {
                                 state = IDLE;
                                 break;
                             }
 
-                            current_file_downlink_data->window_start = ack_command_data->sequence_number + 1;
-                            current_file_downlink_data->window_end = current_file_downlink_data->window_start + WINDOW_SIZE_N;
-                            current_file_downlink_data->current_sending_packet_index = current_file_downlink_data->window_start;
+                            current_file_downlink_data.window_start = ack_command_data->sequence_number + 1;
+                            current_file_downlink_data.window_end = current_file_downlink_data.window_start + WINDOW_SIZE_N;
+                            current_file_downlink_data.current_sending_packet_index = current_file_downlink_data.window_start;
 
-                            current_file_downlink_data->expiration_timer = tick_uptime_in_ms();
-                            current_file_downlink_data->last_ack_received_time = tick_uptime_in_ms();
+                            current_file_downlink_data.expiration_timer = tick_uptime_in_ms();
+                            current_file_downlink_data.last_ack_received_time = tick_uptime_in_ms();
                         }
                     // If we receive a new file downlink request, terminate this transfer and start the new one
-                    } else if (queue_command->queue_command_id == CMD_ID_FILE_DOWNLINK_INIT) {
+                    } else if (queue_command.queue_command_id == CMD_ID_FILE_DOWNLINK_INIT) {
                         logln_error("Received a new file downlink command while in the middle of a transfer");
-                        current_file_downlink_data = NULL; // reset struct
-                        initialize_file_transfer(current_file_downlink_data, queue_command); // continue with new transfer
+                        initialize_file_transfer(&current_file_downlink_data, queue_command.data, &current_transaction_id); // continue with new transfer - data contains path
                         break;
                     }
                 } else {
                     // Resend packets starting at the last in-order ack received sequence number
-                    current_file_downlink_data->current_sending_packet_index = current_file_downlink_data->window_start;
-                    current_file_downlink_data->expiration_timer = tick_uptime_in_ms(); // Only update the timer
+                    current_file_downlink_data.current_sending_packet_index = current_file_downlink_data.window_start;
+                    current_file_downlink_data.expiration_timer = tick_uptime_in_ms(); // Only update the timer
                 }
 
                 // Check if the entire file transfer has timed out
-                if (ticks_to_ms(tick_uptime_in_ms() - current_file_downlink_data->last_ack_received_time) < ACK_TRANSFER_TIMEOUT) {
-                    current_file_downlink_data = NULL; // reset struct
+                if (ticks_to_ms(tick_uptime_in_ms() - current_file_downlink_data.last_ack_received_time) < ACK_TRANSFER_TIMEOUT) {
                     state = IDLE;
                 }
 

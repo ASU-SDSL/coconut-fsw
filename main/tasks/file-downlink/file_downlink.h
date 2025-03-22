@@ -34,13 +34,11 @@ enum file_downlink_queue_command_id {
     CMD_ID_CHANGE_DOWNLINK_PACKET_SIZE = 2,
 };
 
-typedef struct file_downlink_queue_command_init_data {
-    char file_path[MAX_PATH_SIZE];
-} file_downlink_queue_command_init_data_t;
+// Note: Initialize file downlink is just the file_path[MAX_PATH_SIZE]
 
 typedef struct file_downlink_queue_command_ack_data {
+    uint8_t transaction_id;
     uint16_t sequence_number;
-    char file_path[MAX_PATH_SIZE];
 } file_downlink_queue_command_ack_data_t;
 
 typedef struct file_downlink_queue_command_change_packet_size_data {
@@ -49,7 +47,7 @@ typedef struct file_downlink_queue_command_change_packet_size_data {
 
 typedef struct file_downlink_queue_command {
     uint8_t queue_command_id;
-    uint8_t data[sizeof(file_downlink_queue_command_ack_data_t)]; // Dynamic data with max size of the init data with the max file path
+    uint8_t data[MAX_PATH_SIZE + 1]; // Dynamic data with max size of the init data with the max file path (+ \0)
 } file_downlink_queue_command_t;
 
 
@@ -60,12 +58,12 @@ void file_downlink_task();
 /*
 *  Used by the command task to initialize a file downlink - starts transmitting with sequence_number 0
 */
-void initialize_file_downlink(char *file_path);
+void initialize_file_downlink(char *file_path, int file_path_len);
 
 /*
 *  Used by the command task when an ack is received from the ground after n packets are sent
 */
-void file_downlink_ack_command(char *file_path, uint16_t sequence_number);
+void file_downlink_ack_command(uint8_t transaction_id, uint16_t sequence_number);
 
 /*
 *  Used by the command task to change the max packet size (for a single packet n) of the file downlink protocol

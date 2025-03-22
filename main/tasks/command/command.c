@@ -188,21 +188,14 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             
         case APID_INITIALIZE_FILE_DOWNLINK:
             // This payload is just a string
-            if (strlen(payload_buf) > MAX_PATH_SIZE) break; // Verify it looks like a string and isn't too long
-            payload_buf[payload_size - 1] = '\0'; // Make sure it's null terminated
-            initialize_file_downlink(payload_buf);
+            if (strlen(payload_buf) > MAX_PATH_SIZE + 1) break; // Verify it looks like a string (+ \0) and isn't too long
+            initialize_file_downlink(payload_buf, payload_size);
             break;
         case APID_FILE_DOWNLINK_ACK:
             // It's ok if it is smaller, the string will be different sizes
             if (payload_size > sizeof(file_downlink_queue_command_ack_data_t)) break;
-            file_downlink_queue_command_ack_data_t ack_args = {
-                .sequence_number = (payload_buf[0] << 8) | payload_buf[1],
-            };
-            payload_buf[payload_size - 1] = '\0'; // make sure null termination on the string
-            strncpy(ack_args.file_path, payload_buf + 2, strlen(payload_buf + 2)); // The file_path string is stored 2 bytes after the beginning of the buf (after seq num)
-
-            if (strlen(ack_args.file_path) > MAX_PATH_SIZE) break; // Verify it looks like a string and isn't too long
-            file_downlink_ack_command(ack_args.file_path, ack_args.sequence_number);
+            file_downlink_queue_command_ack_data_t* ack_args = (file_downlink_queue_command_ack_data_t*)payload_buf;
+            file_downlink_ack_command(ack_args->transaction_id, ack_args->sequence_number);
             break;
         case APID_FILE_DOWNLINK_CHANGE_PACKET_SIZE:
             if (payload_size < sizeof(file_downlink_queue_command_change_packet_size_data_t)) break;

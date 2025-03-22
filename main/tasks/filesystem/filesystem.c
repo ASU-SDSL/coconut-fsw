@@ -23,8 +23,12 @@ int32_t read_file(const char* file_name, char* result_buffer, size_t size) {
     return read_file_offset(file_name, result_buffer, size, 0); // read from the beginning of the file
 }
 
-int32_t read_file_offset(const char* file_name, char* result_buffer, size_t size, uint32_t offset) {
+// Returns -1 on file does not exist
+int read_file_offset(const char* file_name, char* result_buffer, size_t size, uint32_t offset) {
     if ((strnlen(file_name, MAX_PATH_SIZE) + 1) > MAX_PATH_SIZE) return 0;
+    // See if path exists
+    if (!file_exists(file_name)) return -1;
+
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = READ;
     strncpy(new_file_operation.file_operation.read_op.file_name, file_name, MAX_PATH_SIZE);

@@ -109,8 +109,8 @@ uint16_t go_back_x_packets; // Used to start the playback from a certain point i
 // Note: Initialize file downlink command only has a string as its payload
 
 typedef struct __attribute__((__packed__)) {
-    uint16_t sequence_number; // Specifically for the file downlink protocol, NOT CCSDS space packet
-    char file_path[MAX_PATH_SIZE + 1];
+    uint8_t transaction_id; // Specific ID to ensure ground and satellite continue to transfer the same file
+    uint16_t sequence_number; // Specifically for the file downlink protocol, NOT the same as CCSDS space packet
 } file_downlink_ack_payload_t;
 
 typedef struct __attribute__((__packed__)) {
