@@ -138,6 +138,8 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             watchdog_freeze(); // Freezing the watchdog will cause a reboot within a few seconds
             break;
 
+        // Test comment
+
         case PLAYBACK_HEARTBEAT_PACKETS:
             if (payload_size < sizeof(playback_hb_tlm_payload_t)) break; // Should probably return an error to the ground
             playback_hb_tlm_payload_t* playback_hb_payload = (playback_hb_tlm_payload_t*)payload_buf;
