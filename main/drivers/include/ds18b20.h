@@ -4,6 +4,11 @@
 #include "pico/binary_info.h"
 #include <stdint.h>
 
+// eps one wire romcodes 
+#define DS18B_ROMCODE_U100 0x280AAFD80F0000CF  // 28 0A AF D8 0F 00 00 CF
+#define DS18B_ROMCODE_U102 0x281CAFD80F000026  // 28 1C AF D8 0F 00 00 26
+#define DS18B_ROMCODE_U104 0x2811AFD80F00006C  // 28 11 AF D8 0F 00 00 6C
+
 /**
  * @brief Initializes the PIO block to be a OneWire bus 
  * 
@@ -26,9 +31,17 @@ uint8_t ds18b20_start_conversion();
 
 /**
  * @brief Reads the temperature from a ds18b20 
+ * This requires waiting for that conversion to finish, if
+ * this function is called and the conversion hasn't finished
+ * it will block until it has
  * 
  * @param romcode ROM code (64-bit address) to read from 
  * @return int16_t The temperature in C * 16
  */
 int16_t ds18b20_read_temp(uint64_t romcode); 
 
+/**
+ * @brief Test function for ds18b20 
+ * 
+ */
+void ds18b20_test(); 

@@ -1,5 +1,6 @@
 #include "ds18b20.h"
 #include "onewire_library.h"
+#include "log.h"
 
 // code used from pico-examples:
 // https://github.com/raspberrypi/pico-examples/tree/master/pio/onewire 
@@ -76,4 +77,22 @@ int16_t ds18b20_read_temp(uint64_t romcode){
     temp = ow_read(&ds_ow) | (ow_read(&ds_ow) << 8);
 
     return temp; 
+}
+
+void ds18b20_test(){
+    logln_info("Starting ds18b20 test..."); 
+
+    // trigger conversions 
+    ds18b20_start_conversion(); 
+
+    vTaskDelay(pdMS_TO_TICKS(750)); // wait for conversion (avoid blocking delay) 
+
+    // read values 
+    int16_t u100 = ds18b20_read_temp(DS18B_ROMCODE_U100); 
+    int16_t u102 = ds18b20_read_temp(DS18B_ROMCODE_U102); 
+    int16_t u104 = ds18b20_read_temp(DS18B_ROMCODE_U104); 
+
+    logln_info("Read Temps u100: %d u102: %d u104: %d (C * 16)", u100, u102, u104); 
+
+    logln_info("Done"); 
 }
