@@ -1,4 +1,5 @@
-void buzzer_init();
+#pragma once
+
 void buzzer_beep_job();
 
 

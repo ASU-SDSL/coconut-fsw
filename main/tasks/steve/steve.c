@@ -13,6 +13,7 @@
 #include "timing.h"
 
 #include "heartbeat_job.h"
+#include "miscellaneous_jobs.h"
 
 #include "steve.h"
 
@@ -239,6 +240,8 @@ void steve_task(void* unused_arg) {
     // mag_config(i2c1);
     // int status = max17048Wake(i2c1); // Init battery gauge sensor
     // logln_info("Battery gauge status: %d", status);
+
+    schedule_delayed_job_ms("Buzzer beep", &buzzer_beep_job, 10);
 
     // Run main task loop
     while (true) {
