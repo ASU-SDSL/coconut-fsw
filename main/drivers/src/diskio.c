@@ -18,7 +18,8 @@ static DSTATUS gStatus = STA_NOINIT;
 
 /* Definitions of physical drive number for each drive */
 #define DEV_MRAM		0 /* not sure what the drive # is, should be 0 */
-#define DEVICE_SIZE 	500000 /* 0.5Mb */
+// #define DEVICE_SIZE 	500000 /* 0.5Mb */
+#define DEVICE_SIZE     4000000 /* 4Mb */
 #define BLOCK_SIZE 		512
 
 

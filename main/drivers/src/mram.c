@@ -5,6 +5,9 @@
 #include "hardware/gpio.h"
 #include "log.h"
 
+// for test function 
+#include <stdio.h>
+
 //Global Modifiable Variables
 uint16_t memory_start;
 uint16_t cur_addr;
@@ -43,7 +46,7 @@ int write_bytes(uint32_t addr, const uint8_t* buf, const uint32_t nbytes) {
     send_simple_command(WREN);
 
     uint32_t bendaddr = __builtin_bswap32(addr);
-    uint8_t *p_bendaddr = &bendaddr;
+    uint8_t *p_bendaddr = (uint8_t*) &bendaddr;
 
     uint8_t arr[4] = {WRITE, p_bendaddr[1], p_bendaddr[2], p_bendaddr[3]};
    
@@ -63,7 +66,7 @@ int read_bytes(uint32_t addr, uint8_t* buf, const uint32_t nbytes) {
     gpio_put(CS, 0);
 
     uint32_t bendaddr = __builtin_bswap32(addr);
-    uint8_t *p_bendaddr = &bendaddr;
+    uint8_t *p_bendaddr = (uint8_t*) &bendaddr;
 
     uint8_t arr[4] = {READ, p_bendaddr[1], p_bendaddr[2], p_bendaddr[3]};
 
@@ -74,10 +77,19 @@ int read_bytes(uint32_t addr, uint8_t* buf, const uint32_t nbytes) {
 }
 
 void mram_testing() {
+    gpio_put(CS, 0); 
+    uint8_t data_out[1] = {0x9F};
+    uint8_t data_in[4] = {0, 0, 0, 0};
+    spi_write_blocking(SPI_BUS, data_out, 1); 
+    spi_read_blocking(SPI_BUS, 0, data_in, 4); 
+
+    gpio_put(CS, 1); 
+
     initialize_mram();
 
     while(true) {
-        uint8_t my_buf[8] = {1, 9, 8, 4, 256, 33, 22, 1};
+        // uint8_t my_buf[8] = {1, 9, 8, 4, 256, 33, 22, 1};
+        uint8_t my_buf[8] = {1, 9, 8, 4, 0, 33, 22, 1};
         write_bytes(100, my_buf, 8);
         
         //vTaskDelay(500);
