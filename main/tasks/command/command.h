@@ -35,6 +35,7 @@ typedef enum command_apid {
 
     // 02 - device 
     SET_RTC_TIME = 201, 
+    I2C_RAW_COMMAND = 203
 } command_apid_t;
 
 typedef struct __attribute__((__packed__)) {

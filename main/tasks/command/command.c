@@ -183,7 +183,9 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             job->arg_data = args; 
             logln_info("RTC job created"); 
             break;
-            
+
+        case I2C_RAW_COMMAND:
+            print("Accessed");
         case FSW_ACK:
             break; // This will just send the ack
         default:
