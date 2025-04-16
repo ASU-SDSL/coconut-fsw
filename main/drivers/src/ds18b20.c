@@ -83,7 +83,9 @@ void ds18b20_test(){
     logln_info("Starting ds18b20 test..."); 
 
     // trigger conversions 
-    ds18b20_start_conversion(); 
+    uint8_t res = ds18b20_start_conversion(); 
+
+    logln_info("DS18B20 Start Conversion res = %d\n", res); 
 
     vTaskDelay(pdMS_TO_TICKS(750)); // wait for conversion (avoid blocking delay) 
 
