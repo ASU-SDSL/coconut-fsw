@@ -77,17 +77,25 @@ int read_bytes(uint32_t addr, uint8_t* buf, const uint32_t nbytes) {
 }
 
 void mram_testing() {
-    gpio_put(CS, 0); 
-    uint8_t data_out[1] = {0x9F};
-    uint8_t data_in[4] = {0, 0, 0, 0};
-    spi_write_blocking(SPI_BUS, data_out, 1); 
-    spi_read_blocking(SPI_BUS, 0, data_in, 4); 
-
-    gpio_put(CS, 1); 
-
     initialize_mram();
 
     while(true) {
+        // device id
+        gpio_put(CS, 0); 
+        uint8_t data_out[1] = {0x9F};
+        uint8_t data_in[4] = {0, 0, 0, 0};
+        spi_write_blocking(SPI_BUS, data_out, 1); 
+        spi_read_blocking(SPI_BUS, 0, data_in, 4); 
+
+        gpio_put(CS, 1); 
+
+        printf("Device ID: ");
+        for(int i = 0; i < 4; i++){
+            printf("%d ", data_in[i]);
+        }
+        printf("\n"); 
+
+        // read / write 
         // uint8_t my_buf[8] = {1, 9, 8, 4, 256, 33, 22, 1};
         uint8_t my_buf[8] = {1, 9, 8, 4, 0, 33, 22, 1};
         write_bytes(100, my_buf, 8);
