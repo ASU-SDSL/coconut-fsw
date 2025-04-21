@@ -27,7 +27,7 @@
 
 // pio block config variables 
 PIO ds_pio = pio0; 
-uint ds_gpio = 15; 
+uint ds_gpio = 25;  
 OW ds_ow; 
 uint ds_offset; 
 

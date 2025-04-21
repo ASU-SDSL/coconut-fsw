@@ -50,7 +50,8 @@ void ds18b20_test();
 
 /**
  * @brief More general ds18b20 onewire test, scans for all devices
- * on the onewire bus
+ * on the onewire bus. The pio config selection used is internal to 
+ * this function (pin, pio block, etc.)
  * 
  */
 void ds18b20_scan(); 
