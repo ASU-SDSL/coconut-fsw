@@ -5,9 +5,11 @@
 #include <stdint.h>
 
 // eps one wire romcodes 
-#define DS18B_ROMCODE_U100 0x280AAFD80F0000CF  // 28 0A AF D8 0F 00 00 CF
-#define DS18B_ROMCODE_U102 0x281CAFD80F000026  // 28 1C AF D8 0F 00 00 26
-#define DS18B_ROMCODE_U104 0x2811AFD80F00006C  // 28 11 AF D8 0F 00 00 6C
+// addresss for pio library 
+// (reversed of what was found bit bang)        // bit banged addresses
+#define DS18B_ROMCODE_U100 0xCF00000FD8AF0A28   // 28 0A AF D8 0F 00 00 CF
+#define DS18B_ROMCODE_U102 0x2600000FD8AF1C28   // 28 1C AF D8 0F 00 00 26
+#define DS18B_ROMCODE_U104 0x6C00000FD8AF1128   // 28 11 AF D8 0F 00 00 6C
 
 /**
  * @brief Initializes the PIO block to be a OneWire bus 
@@ -45,3 +47,10 @@ int16_t ds18b20_read_temp(uint64_t romcode);
  * 
  */
 void ds18b20_test(); 
+
+/**
+ * @brief More general ds18b20 onewire test, scans for all devices
+ * on the onewire bus
+ * 
+ */
+void ds18b20_scan(); 
