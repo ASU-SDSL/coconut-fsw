@@ -1,0 +1,18 @@
+<map id="i2c.h" name="i2c.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="275,5,324,32"/>
+<area shape="rect" id="Node000002" href="$mag__lis3mdltr_8h.html" title=" " alt="" coords="116,80,229,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="266,42,196,82,194,77,263,38"/>
+<area shape="rect" id="Node000006" href="$drivers_2include_2max17048_8h.html" title=" " alt="" coords="253,80,346,107"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="302,48,302,80,297,80,297,48"/>
+<area shape="rect" id="Node000007" href="$vega__ant_8h.html" title=" " alt="" coords="370,80,455,107"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="333,38,394,77,391,82,330,43"/>
+<area shape="rect" id="Node000003" href="$heartbeat__job_8c.html" title=" " alt="" coords="235,155,345,181"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="207,113,271,152,268,156,204,117"/>
+<area shape="rect" id="Node000004" href="$mag__lis3mdltr_8c.html" title=" " alt="" coords="5,155,119,181"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="142,118,83,156,80,152,140,113"/>
+<area shape="rect" id="Node000005" href="$steve_8c.html" title=" " alt="" coords="143,155,208,181"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="176,122,178,154,172,154,171,123"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="380,117,313,156,310,152,377,113"/>
+<area shape="rect" id="Node000008" href="$vega__ant_8c.html" title=" " alt="" coords="370,155,455,181"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="415,122,415,154,410,154,410,122"/>
+</map>

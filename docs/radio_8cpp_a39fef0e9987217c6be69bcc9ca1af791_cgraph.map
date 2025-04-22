@@ -1,0 +1,11 @@
+<map id="radio_panic" name="radio_panic">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,81,93,108"/>
+<area shape="rect" id="Node000002" href="$radio_8cpp.html#ae7b8fc4ccc09bb7acd7b803ecad3caca" title=" " alt="" coords="146,5,316,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="71,78,140,42,158,35,160,40,142,46,73,83"/>
+<area shape="rect" id="Node000003" href="$radio_8cpp.html#a9cc461d365bd6aa5037aa79b50a4ab70" title=" " alt="" coords="155,56,306,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="93,86,139,79,140,85,94,91"/>
+<area shape="rect" id="Node000004" href="$radio_8cpp.html#abb38d1447d7bbd825a1514d39e9889f3" title="Handle hardware switches between radios." alt="" coords="145,107,317,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="94,98,130,103,129,108,93,103"/>
+<area shape="rect" id="Node000005" href="$radio_8cpp.html#a69267b1b554b36d584cbc4322534266f" title=" " alt="" coords="141,157,321,184"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="73,106,142,143,160,150,158,155,140,148,71,111"/>
+</map>

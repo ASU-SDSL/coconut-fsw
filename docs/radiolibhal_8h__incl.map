@@ -1,0 +1,13 @@
+<map id="radiolibhal.h" name="radiolibhal.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="263,5,354,32"/>
+<area shape="rect" id="Node000002" href="$stdlib_8h.html" title=" " alt="" coords="5,80,97,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="264,35,111,78,110,73,263,30"/>
+<area shape="rect" id="Node000003" href="$adc_8h.html" title=" " alt="" coords="121,80,232,107"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="287,35,214,75,211,70,284,30"/>
+<area shape="rect" id="Node000004" href="$spi_8h.html" title=" " alt="" coords="255,80,362,107"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="311,33,311,64,306,64,306,33"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="386,80,446,107"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="329,30,386,69,383,73,326,35"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="471,80,554,107"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="345,30,463,72,461,77,343,35"/>
+</map>

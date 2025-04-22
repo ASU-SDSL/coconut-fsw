@@ -1,0 +1,7 @@
+<map id="rtc_update_temp" name="rtc_update_temp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,124,57"/>
+<area shape="rect" id="Node000002" href="$i2c_8c.html#afd489cf93d14a907e09132068de8e1c9" title=" " alt="" coords="172,5,325,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,33,156,29,157,34,125,38"/>
+<area shape="rect" id="Node000003" href="$i2c_8c.html#a73f9c3581b5d48d5db9c6c445034a970" title=" " alt="" coords="178,56,319,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="125,50,163,55,162,60,124,55"/>
+</map>

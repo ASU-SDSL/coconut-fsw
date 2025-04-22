@@ -1,0 +1,9 @@
+<map id="watchdog.h" name="watchdog.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="104,5,193,32"/>
+<area shape="rect" id="Node000002" href="$command_8c.html" title=" " alt="" coords="5,80,95,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,44,69,82,65,77,118,39"/>
+<area shape="rect" id="Node000003" href="$main_8c.html" title=" " alt="" coords="118,80,179,107"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,48,151,80,146,80,146,48"/>
+<area shape="rect" id="Node000004" href="$watchdog_8c.html" title=" " alt="" coords="203,80,292,107"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="180,39,232,77,229,82,176,44"/>
+</map>
