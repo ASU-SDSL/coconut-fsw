@@ -1,0 +1,17 @@
+<map id="init_radio" name="init_radio">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,100,79,127"/>
+<area shape="rect" id="Node000002" href="$radio_8cpp.html#ae7b8fc4ccc09bb7acd7b803ecad3caca" title=" " alt="" coords="267,5,437,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="61,97,90,79,126,62,188,42,251,29,252,34,190,47,128,66,93,83,64,102"/>
+<area shape="rect" id="Node000003" href="$radio_8cpp.html#a9cc461d365bd6aa5037aa79b50a4ab70" title=" " alt="" coords="276,63,428,89"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="78,98,126,85,195,77,261,73,261,79,195,82,127,91,80,103"/>
+<area shape="rect" id="Node000004" href="$radio_8cpp.html#abb38d1447d7bbd825a1514d39e9889f3" title="Handle hardware switches between radios." alt="" coords="266,125,438,152"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="80,124,127,136,189,142,251,142,251,148,189,147,126,141,79,129"/>
+<area shape="rect" id="Node000005" href="$radio_8cpp.html#a69267b1b554b36d584cbc4322534266f" title=" " alt="" coords="262,188,442,215"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="72,125,128,148,193,167,257,182,256,187,192,172,126,153,70,130"/>
+<area shape="rect" id="Node000006" href="$radio_8cpp.html#a39fef0e9987217c6be69bcc9ca1af791" title=" " alt="" coords="127,100,214,127"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="79,111,111,111,111,116,79,116"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="187,97,220,73,261,48,290,35,292,40,263,53,223,77,190,102"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="214,102,268,90,269,96,215,107"/>
+<area shape="poly" id="edge8_Node000006_Node000004" title=" " alt="" coords="215,117,251,122,250,127,214,122"/>
+<area shape="poly" id="edge9_Node000006_Node000005" title=" " alt="" coords="196,125,263,162,302,179,300,184,261,166,193,130"/>
+</map>

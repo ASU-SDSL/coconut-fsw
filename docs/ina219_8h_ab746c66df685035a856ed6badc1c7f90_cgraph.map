@@ -1,0 +1,9 @@
+<map id="getPower" name="getPower">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,82,57"/>
+<area shape="rect" id="Node000002" href="$ina219_8c.html#a75d20b3960f7d7688d27f264f02eb98a" title=" " alt="" coords="171,5,242,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,35,155,24,156,29,82,41"/>
+<area shape="rect" id="Node000004" href="$i2c_8c.html#afd489cf93d14a907e09132068de8e1c9" title=" " alt="" coords="130,56,283,83"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="82,47,115,52,114,58,82,53"/>
+<area shape="rect" id="Node000003" href="$i2c_8c.html#a73f9c3581b5d48d5db9c6c445034a970" title=" " alt="" coords="331,5,472,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="242,16,316,16,316,21,242,21"/>
+</map>

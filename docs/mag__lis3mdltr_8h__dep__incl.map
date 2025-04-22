@@ -1,0 +1,9 @@
+<map id="mag_lis3mdltr.h" name="mag_lis3mdltr.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="140,5,253,32"/>
+<area shape="rect" id="Node000002" href="$heartbeat__job_8c.html" title=" " alt="" coords="5,80,116,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,42,86,82,83,77,158,37"/>
+<area shape="rect" id="Node000003" href="$mag__lis3mdltr_8c.html" title=" " alt="" coords="140,80,253,107"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="199,48,199,80,194,80,194,48"/>
+<area shape="rect" id="Node000004" href="$steve_8c.html" title=" " alt="" coords="278,80,342,107"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="230,38,291,77,289,82,228,43"/>
+</map>

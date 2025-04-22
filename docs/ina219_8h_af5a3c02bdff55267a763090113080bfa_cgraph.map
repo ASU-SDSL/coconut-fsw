@@ -1,0 +1,9 @@
+<map id="getCurrent" name="getCurrent">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,88,57"/>
+<area shape="rect" id="Node000002" href="$ina219_8c.html#a75d20b3960f7d7688d27f264f02eb98a" title=" " alt="" coords="177,5,248,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,35,161,24,162,29,89,40"/>
+<area shape="rect" id="Node000004" href="$i2c_8c.html#afd489cf93d14a907e09132068de8e1c9" title=" " alt="" coords="136,56,289,83"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="89,48,121,53,120,58,88,53"/>
+<area shape="rect" id="Node000003" href="$i2c_8c.html#a73f9c3581b5d48d5db9c6c445034a970" title=" " alt="" coords="337,5,478,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="248,16,322,16,322,21,248,21"/>
+</map>

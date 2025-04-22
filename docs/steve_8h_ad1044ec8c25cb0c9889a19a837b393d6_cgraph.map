@@ -1,0 +1,9 @@
+<map id="kill_steve_job" name="kill_steve_job">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,106,57"/>
+<area shape="rect" id="Node000002" href="$steve_8c.html#a94f8eaec20f9dd9819b29e3e4fd6429b" title=" " alt="" coords="154,5,273,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,33,138,28,139,33,106,39"/>
+<area shape="rect" id="Node000004" href="$steve_8c.html#a19f0e4d517e614fdb1e563f56ac1123a" title=" " alt="" coords="161,56,266,83"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="106,49,145,56,144,61,105,55"/>
+<area shape="rect" id="Node000003" href="$steve_8c.html#a3b9cfae7f649f5fb0fa35e0319f8f06e" title=" " alt="" coords="321,5,481,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="273,16,306,16,306,21,273,21"/>
+</map>

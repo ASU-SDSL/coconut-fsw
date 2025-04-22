@@ -1,0 +1,15 @@
+<map id="max17048.c" name="max17048.c">
+<area shape="rect" id="Node000001" title=" " alt="" coords="62,5,155,32"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="16,80,108,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,34,80,68,76,66,98,31"/>
+<area shape="rect" id="Node000003" href="$log_8h.html" title=" " alt="" coords="132,80,181,107"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="119,31,142,66,138,69,115,34"/>
+<area shape="rect" id="Node000004" href="$telemetry_8h.html" title=" " alt="" coords="62,155,147,181"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="150,109,124,144,120,141,145,106"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="171,155,246,181"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="168,106,193,141,189,144,163,109"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,229,100,256"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="98,183,72,218,68,215,93,180"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="124,229,192,256"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="116,180,142,215,137,218,112,183"/>
+</map>

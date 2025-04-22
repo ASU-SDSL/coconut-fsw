@@ -1,0 +1,28 @@
+<map id="gpio.h" name="gpio.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="370,5,426,32"/>
+<area shape="rect" id="Node000002" href="$drivers_2include_2i2c_8h.html" title=" " alt="" coords="275,80,324,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="370,44,318,82,315,77,367,39"/>
+<area shape="rect" id="Node000003" href="$mag__lis3mdltr_8h.html" title=" " alt="" coords="116,155,229,181"/>
+<area shape="poly" id="edge11_Node000001_Node000003" title=" " alt="" coords="356,37,311,57,265,82,219,120,185,156,181,152,215,116,262,78,308,52,354,32"/>
+<area shape="rect" id="Node000008" href="$vega__ant_8h.html" title=" " alt="" coords="370,155,455,181"/>
+<area shape="poly" id="edge13_Node000001_Node000008" title=" " alt="" coords="393,47,388,76,390,106,398,132,408,153,403,155,393,133,385,107,383,76,388,47"/>
+<area shape="rect" id="Node000010" href="$ina219_8c.html" title=" " alt="" coords="399,80,469,107"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="413,45,430,78,425,81,409,47"/>
+<area shape="rect" id="Node000011" href="$mram_8c.html" title=" " alt="" coords="493,80,559,107"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="435,38,505,77,502,82,432,42"/>
+<area shape="rect" id="Node000012" href="$watchdog_8c.html" title=" " alt="" coords="583,80,672,107"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="442,31,588,77,586,82,440,36"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="266,117,196,156,194,152,263,112"/>
+<area shape="rect" id="Node000007" href="$drivers_2include_2max17048_8h.html" title=" " alt="" coords="253,155,346,181"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="302,122,302,154,297,154,297,122"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="333,113,394,152,391,156,330,118"/>
+<area shape="rect" id="Node000004" href="$heartbeat__job_8c.html" title=" " alt="" coords="235,229,345,256"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="207,187,271,226,268,231,204,192"/>
+<area shape="rect" id="Node000005" href="$mag__lis3mdltr_8c.html" title=" " alt="" coords="5,229,119,256"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="142,192,83,231,80,226,140,188"/>
+<area shape="rect" id="Node000006" href="$steve_8c.html" title=" " alt="" coords="143,229,208,256"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="176,197,178,229,172,229,171,197"/>
+<area shape="poly" id="edge8_Node000008_Node000004" title=" " alt="" coords="380,192,313,231,310,226,377,187"/>
+<area shape="rect" id="Node000009" href="$vega__ant_8c.html" title=" " alt="" coords="370,229,455,256"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="415,197,415,229,410,229,410,197"/>
+</map>
