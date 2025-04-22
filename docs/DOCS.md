@@ -3,7 +3,7 @@
 ### Table of Contents
 
 - [Coconut Flight-Software](#coconut-flight-software)
-    - [Table of Contents](#table-of-contents)
+  - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
     - [Project Origins and Goals](#project-origins-and-goals)
     - [Flight Heritage](#flight-heritage)
