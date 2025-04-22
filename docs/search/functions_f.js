@@ -13,11 +13,11 @@ var searchData=
   ['set_5fpower_5foutput_10',['set_power_output',['../radio_8cpp.html#a74c252dc0de25701a447a67c039e9804',1,'radio.cpp']]],
   ['set_5frtc_5fjob_11',['set_rtc_job',['../set__rtc__job_8c.html#af31d3e6e7b984cd9aca01db95eac999a',1,'set_rtc_job(void *args):&#160;set_rtc_job.c'],['../set__rtc__job_8h.html#af31d3e6e7b984cd9aca01db95eac999a',1,'set_rtc_job(void *args):&#160;set_rtc_job.c']]],
   ['setup_12',['setup',['../mram_8h.html#a4fc01d736fe50cf5b977f755b675f11d',1,'mram.h']]],
-  ['spibegin_13',['spiBegin',['../class_pico_hal.html#a2922f187934112a343bbd27d91b833bf',1,'PicoHal::spiBegin()'],['../class_pi_pico_hal.html#a8ace89698f02c002f3b075c88ed7d383',1,'PiPicoHal::spiBegin()']]],
-  ['spibegintransaction_14',['spiBeginTransaction',['../class_pico_hal.html#ab21013c4125dcf3f4f03147a8e4fa641',1,'PicoHal::spiBeginTransaction()'],['../class_pi_pico_hal.html#a30527b3e6c73a10baa9e85ee5eb5ecec',1,'PiPicoHal::spiBeginTransaction()']]],
-  ['spiend_15',['spiEnd',['../class_pico_hal.html#af36f36f80e3e4d919921b3fadb19e0cf',1,'PicoHal::spiEnd()'],['../class_pi_pico_hal.html#ae6b85aedf43467c1f4c6b5ac603240c8',1,'PiPicoHal::spiEnd()']]],
-  ['spiendtransaction_16',['spiEndTransaction',['../class_pico_hal.html#ac9dc7d26a96fd6f8e907c7b33b79a2a5',1,'PicoHal::spiEndTransaction()'],['../class_pi_pico_hal.html#a1b7e524b9dde6255a9a56d6a125b0805',1,'PiPicoHal::spiEndTransaction()']]],
-  ['spitransfer_17',['spiTransfer',['../class_pico_hal.html#a75e122b8a438254ed1d19fd0922c85bd',1,'PicoHal::spiTransfer()'],['../class_pi_pico_hal.html#a0ea89f9ffe1c16112b5e0efc454c10f4',1,'PiPicoHal::spiTransfer()']]],
+  ['spibegin_13',['spiBegin',['../classPicoHal.html#a2922f187934112a343bbd27d91b833bf',1,'PicoHal::spiBegin()'],['../classPiPicoHal.html#a8ace89698f02c002f3b075c88ed7d383',1,'PiPicoHal::spiBegin()']]],
+  ['spibegintransaction_14',['spiBeginTransaction',['../classPicoHal.html#ab21013c4125dcf3f4f03147a8e4fa641',1,'PicoHal::spiBeginTransaction()'],['../classPiPicoHal.html#a30527b3e6c73a10baa9e85ee5eb5ecec',1,'PiPicoHal::spiBeginTransaction()']]],
+  ['spiend_15',['spiEnd',['../classPicoHal.html#af36f36f80e3e4d919921b3fadb19e0cf',1,'PicoHal::spiEnd()'],['../classPiPicoHal.html#ae6b85aedf43467c1f4c6b5ac603240c8',1,'PiPicoHal::spiEnd()']]],
+  ['spiendtransaction_16',['spiEndTransaction',['../classPicoHal.html#ac9dc7d26a96fd6f8e907c7b33b79a2a5',1,'PicoHal::spiEndTransaction()'],['../classPiPicoHal.html#a1b7e524b9dde6255a9a56d6a125b0805',1,'PiPicoHal::spiEndTransaction()']]],
+  ['spitransfer_17',['spiTransfer',['../classPicoHal.html#a75e122b8a438254ed1d19fd0922c85bd',1,'PicoHal::spiTransfer()'],['../classPiPicoHal.html#a0ea89f9ffe1c16112b5e0efc454c10f4',1,'PiPicoHal::spiTransfer()']]],
   ['stat_18',['stat',['../filesystem_8c.html#aa109ff29a72d1beadda58bb3a54185b6',1,'stat(const char *file_name, FILINFO *file_info_out):&#160;filesystem.c'],['../filesystem_8h.html#aa109ff29a72d1beadda58bb3a54185b6',1,'stat(const char *file_name, FILINFO *file_info_out):&#160;filesystem.c']]],
   ['steve_5ftask_19',['steve_task',['../steve_8c.html#a5eaa2a6f8e013a076a0b8dc66dcaacfd',1,'steve_task(void *unused_arg):&#160;steve.c'],['../steve_8h.html#a5eaa2a6f8e013a076a0b8dc66dcaacfd',1,'steve_task(void *unused_arg):&#160;steve.c'],['../command__fuzzer_8cpp.html#a3060d98896b9461e431f1b604b26b11c',1,'steve_task(void *pvParameters):&#160;steve.c']]]
 ];
