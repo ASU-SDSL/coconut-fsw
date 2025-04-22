@@ -1,11 +1,9 @@
 <map id="telemetry_task" name="telemetry_task">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,56,113,83"/>
-<area shape="rect" id="Node000002" href="$gse_8c.html#a07a7ef3b41255450f286364cc3668e54" title=" " alt="" coords="164,5,308,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,53,172,34,173,39,109,58"/>
-<area shape="rect" id="Node000004" href="$test_2unit_2utilities_2log_8c.html#ad6da18174ed9892c214e56bac27bfc7f" title=" " alt="" coords="190,56,282,83"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="113,67,175,67,175,72,113,72"/>
-<area shape="rect" id="Node000005" href="$radio_8cpp.html#af0ecc74e51dbb7c5bdb5d2bfc4a7a0b2" title=" " alt="" coords="161,107,312,133"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="109,81,173,99,172,105,108,86"/>
-<area shape="rect" id="Node000003" href="$simulator_2drivers_2src_2usb__uart_8c.html#aeeacfdf2d1ad160004870cf65253058f" title=" " alt="" coords="360,5,469,32"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="309,16,345,16,345,21,309,21"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,127,56"/>
+<area shape="rect" id="Node000002" href="$gse_8c.html#a07a7ef3b41255450f286364cc3668e54" title=" " alt="" coords="175,5,333,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,33,161,28,161,33,127,38"/>
+<area shape="rect" id="Node000004" href="$test_2unit_2utilities_2log_8c.html#ad6da18174ed9892c214e56bac27bfc7f" title=" " alt="" coords="202,55,306,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="127,48,189,56,188,62,127,54"/>
+<area shape="rect" id="Node000003" href="$simulator_2drivers_2src_2usb__uart_8c.html#aeeacfdf2d1ad160004870cf65253058f" title=" " alt="" coords="381,5,503,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="333,15,368,15,368,21,333,21"/>
 </map>
