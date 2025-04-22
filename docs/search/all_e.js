@@ -1,8 +1,17 @@
 var searchData=
 [
   ['name_0',['name',['../structsteve__job.html#ac0929360fb64db111659f1c0c0057d5c',1,'steve_job']]],
-  ['nominal_1',['NOMINAL',['../state_8h.html#a65441b5f61f2ab207d4cdaa9ead39eafae2bd7b57b3f0bb02e66e42dbacc5c7fc',1,'state.h']]],
-  ['notification_5fwait_5ftime_2',['NOTIFICATION_WAIT_TIME',['../filesystem_8h.html#aac5bb89f63282142437b51c2deb517b3',1,'filesystem.h']]],
-  ['null_5fqueue_5fwait_5ftime_3',['NULL_QUEUE_WAIT_TIME',['../filesystem_8h.html#a277756e611642420e524ed6a98f06a57',1,'NULL_QUEUE_WAIT_TIME:&#160;filesystem.h'],['../radio_8cpp.html#a277756e611642420e524ed6a98f06a57',1,'NULL_QUEUE_WAIT_TIME:&#160;radio.cpp']]],
-  ['num_5fsectors_4',['NUM_SECTORS',['../simulator_2drivers_2src_2diskio_8c.html#ac5656d686c3863cc1e0f1533c3f6c685',1,'diskio.c']]]
+  ['never_20strong_20em_20be_20run_20outside_20of_20tt_20command_20c_20tt_1',['Note: These functions should &lt;em&gt;&lt;strong&gt;NEVER&lt;/strong&gt;&lt;/em&gt; be run outside of &lt;tt&gt;command.c&lt;/tt&gt;',['../md_docs_2docs_2tasks_2command.html#note-these-functions-should-never-be-run-outside-of-commandc',1,'']]],
+  ['never_20strong_20em_20be_20run_20outside_20of_20tt_20filesystem_20c_20tt_2',['Note: These functions should &lt;em&gt;&lt;strong&gt;NEVER&lt;/strong&gt;&lt;/em&gt; be run outside of &lt;tt&gt;filesystem.c&lt;/tt&gt;',['../md_docs_2docs_2tasks_2filesystem.html#note-these-functions-should-never-be-run-outside-of-filesystemc',1,'']]],
+  ['never_20strong_20em_20be_20run_20outside_20of_20tt_20gse_20c_20tt_3',['Note: These functions should &lt;em&gt;&lt;strong&gt;NEVER&lt;/strong&gt;&lt;/em&gt; be run outside of &lt;tt&gt;gse.c&lt;/tt&gt;',['../md_docs_2docs_2tasks_2gse.html#note-these-functions-should-never-be-run-outside-of-gsec',1,'']]],
+  ['never_20strong_20em_20be_20run_20outside_20of_20tt_20steve_20c_20tt_4',['Note: These functions should &lt;em&gt;&lt;strong&gt;NEVER&lt;/strong&gt;&lt;/em&gt; be run outside of &lt;tt&gt;steve.c&lt;/tt&gt;',['../md_docs_2docs_2tasks_2steve.html#note-these-functions-should-never-be-run-outside-of-stevec',1,'']]],
+  ['new_20steve_20jobs_5',['Creating New STEVE Jobs',['../md_docs_2docs_2_d_o_c_s.html#creating-new-steve-jobs',1,'']]],
+  ['nominal_6',['NOMINAL',['../state_8h.html#a65441b5f61f2ab207d4cdaa9ead39eafae2bd7b57b3f0bb02e66e42dbacc5c7fc',1,'state.h']]],
+  ['note_3a_20these_20functions_20should_20em_20strong_20never_20strong_20em_20be_20run_20outside_20of_20tt_20command_20c_20tt_7',['Note: These functions should &lt;em&gt;&lt;strong&gt;NEVER&lt;/strong&gt;&lt;/em&gt; be run outside of &lt;tt&gt;command.c&lt;/tt&gt;',['../md_docs_2docs_2tasks_2command.html#note-these-functions-should-never-be-run-outside-of-commandc',1,'']]],
+  ['note_3a_20these_20functions_20should_20em_20strong_20never_20strong_20em_20be_20run_20outside_20of_20tt_20filesystem_20c_20tt_8',['Note: These functions should &lt;em&gt;&lt;strong&gt;NEVER&lt;/strong&gt;&lt;/em&gt; be run outside of &lt;tt&gt;filesystem.c&lt;/tt&gt;',['../md_docs_2docs_2tasks_2filesystem.html#note-these-functions-should-never-be-run-outside-of-filesystemc',1,'']]],
+  ['note_3a_20these_20functions_20should_20em_20strong_20never_20strong_20em_20be_20run_20outside_20of_20tt_20gse_20c_20tt_9',['Note: These functions should &lt;em&gt;&lt;strong&gt;NEVER&lt;/strong&gt;&lt;/em&gt; be run outside of &lt;tt&gt;gse.c&lt;/tt&gt;',['../md_docs_2docs_2tasks_2gse.html#note-these-functions-should-never-be-run-outside-of-gsec',1,'']]],
+  ['note_3a_20these_20functions_20should_20em_20strong_20never_20strong_20em_20be_20run_20outside_20of_20tt_20steve_20c_20tt_10',['Note: These functions should &lt;em&gt;&lt;strong&gt;NEVER&lt;/strong&gt;&lt;/em&gt; be run outside of &lt;tt&gt;steve.c&lt;/tt&gt;',['../md_docs_2docs_2tasks_2steve.html#note-these-functions-should-never-be-run-outside-of-stevec',1,'']]],
+  ['notification_5fwait_5ftime_11',['NOTIFICATION_WAIT_TIME',['../filesystem_8h.html#aac5bb89f63282142437b51c2deb517b3',1,'filesystem.h']]],
+  ['null_5fqueue_5fwait_5ftime_12',['NULL_QUEUE_WAIT_TIME',['../filesystem_8h.html#a277756e611642420e524ed6a98f06a57',1,'NULL_QUEUE_WAIT_TIME:&#160;filesystem.h'],['../radio_8cpp.html#a277756e611642420e524ed6a98f06a57',1,'NULL_QUEUE_WAIT_TIME:&#160;radio.cpp']]],
+  ['num_5fsectors_13',['NUM_SECTORS',['../simulator_2drivers_2src_2diskio_8c.html#ac5656d686c3863cc1e0f1533c3f6c685',1,'diskio.c']]]
 ];
