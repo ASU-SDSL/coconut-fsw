@@ -18,8 +18,8 @@ var searchData=
   ['user_5fauth_5ftest_15',['user_auth_test',['../user__auth_8h.html#af2cbb6a4f47e748f8383d9ef32382ace',1,'user_auth_test():&#160;user_auth.c'],['../user__auth_8c.html#af2cbb6a4f47e748f8383d9ef32382ace',1,'user_auth_test():&#160;user_auth.c']]],
   ['user_5fmax_5ftotal_5fdata_5fsize_16',['USER_MAX_TOTAL_DATA_SIZE',['../user__auth_8h.html#ad801defd35ca4634a8c1645546e22e38',1,'user_auth.h']]],
   ['user_5fpath_5fsize_17',['USER_PATH_SIZE',['../user__auth_8h.html#a462e500758047dcaa5662ed98227bee3',1,'user_auth.h']]],
-  ['users_20guide_18',['Users Guide',['../md_docs_2docs_2_d_o_c_s.html#users-guide',1,'']]],
+  ['users_20guide_18',['Users Guide',['../md_docs_2docs_2DOCS.html#users-guide',1,'']]],
   ['users_5fdir_19',['USERS_DIR',['../user__auth_8h.html#a6c9a1820faf81371f2d7fdcff2348233',1,'user_auth.h']]],
-  ['using_20the_20simulator_20',['Using the Simulator',['../md_docs_2docs_2_d_o_c_s.html#using-the-simulator',1,'']]],
+  ['using_20the_20simulator_20',['Using the Simulator',['../md_docs_2docs_2DOCS.html#using-the-simulator',1,'']]],
   ['utilities_2fsrc_2flog_2ec_21',['log.c',['../utilities_2src_2log_8c.html',1,'']]]
 ];

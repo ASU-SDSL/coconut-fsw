@@ -8,5 +8,5 @@ var searchData=
   ['dir_5fptr_5',['dir_ptr',['../structread__directory__operation__t.html#aad0483e06fee78c88e793d1b5824e7ce',1,'read_directory_operation_t']]],
   ['dir_5fptr_5fout_6',['dir_ptr_out',['../structopen__directory__operation__t.html#a54e3b2391a4e4ad81ed0104b5bfbf9ca',1,'open_directory_operation_t']]],
   ['directory_5fname_7',['directory_name',['../structlist__directory__operation__t.html#ae4c42170a9aad4fd3ec0144ef22e7605',1,'list_directory_operation_t::directory_name'],['../structmake__directory__operation__t.html#ae4c42170a9aad4fd3ec0144ef22e7605',1,'make_directory_operation_t::directory_name'],['../structopen__directory__operation__t.html#ae4c42170a9aad4fd3ec0144ef22e7605',1,'open_directory_operation_t::directory_name']]],
-  ['directory_5fsize_8',['directory_size',['../struct_h_b_tlm_files_info.html#a421d57efb001fcac1d14412a0f40e59c',1,'HBTlmFilesInfo']]]
+  ['directory_5fsize_8',['directory_size',['../structHBTlmFilesInfo.html#a421d57efb001fcac1d14412a0f40e59c',1,'HBTlmFilesInfo']]]
 ];
