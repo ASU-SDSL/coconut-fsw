@@ -4,14 +4,24 @@
 #include "steve.h"
 #include "log.h"
 
-#define POWER_PIN 4
+#define SYS_CLOCK_FREQ
+#define BUZZER_PIN 4
+#define BUZZER_FREQ_HZ 1000
+#define BUZZER_POWER 50 //Basically this is the duty cycle which also corresponds to amount of power
 
 void buzzer_beep_job() {
+  //Initialize pwm stuff
   logln_info("Beep!"); 
-  gpio_init(POWER_PIN); 
-  gpio_set_dir(POWER_PIN, GPIO_OUT);
+  gpio_set_function(BUZZER_PIN,  GPIO_FUNC_PWN);
+  uint slice_num = pwm_gpio_to_slice_num(BUZZER_PIN);
+  int wrap = (int) (clock_get_hz(clk_sys) / BUZZER_FREQ_HZ);
+  pwm_set_wrap(slice_num, wrap);
+  pwm_set_chan_level(slice_num, PWM_CHAN_A, BUZZER_POWER);
 
-  gpio_put(POWER_PIN, 1);
-  vTaskDelay(pdMS_TO_TICKS(1000));
-  gpio_put(POWER_PIN, 0);
+  for(int i = 0; i < 3; i++) {
+    pwm_set_enabled(slice_num, true);
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    pwm_set_enabled(slice_num, false);
+    vTaskDelay(pdMS_TO_TICKS(1000));
+  }
 } 
