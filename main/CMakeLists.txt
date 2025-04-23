@@ -22,6 +22,7 @@ set(SOURCES
 
     ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
     ${MAIN_DIRECTORY}/tasks/steve/jobs/set_rtc_job.c
+    ${MAIN_DIRECTORY}/tasks/steve/jobs/miscellaneous_jobs.c 
 
     ${MAIN_DIRECTORY}/utilities/src/log.c
     ${MAIN_DIRECTORY}/utilities/src/timing.c
@@ -84,6 +85,8 @@ ELSE()
         hardware_spi
         hardware_adc
         hardware_i2c
+        hardware_pwm
+        hardware_clocks
         RadioLib
     )
 ENDIF()

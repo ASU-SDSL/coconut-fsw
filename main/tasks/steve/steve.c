@@ -14,6 +14,7 @@
 #include "ds18b20.h"
 
 #include "heartbeat_job.h"
+#include "miscellaneous_jobs.h"
 
 #include "steve.h"
 
@@ -40,6 +41,7 @@ void schedule_recurring_job_secs(const char* job_name, job_func job_func_ptr, un
 void schedule_recurring_job_mins(const char* job_name, job_func job_func_ptr, unsigned long mins_until_recur) {
     schedule_recurring_job_secs(job_name, job_func_ptr, mins_to_secs(mins_until_recur));
 }
+#include "miscellaneous_jobs.h"
 
 // Delayed Job User Functions
 // These tasks will wait a specified time, run, then never run again
@@ -99,6 +101,7 @@ void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time
     xSemaphoreGive(g_steve_context.mutex);
 }
 
+
 void print_debug_exec_times() {
     logln_info("S.T.E.V.E. Tasks:");
     // Take mutex
@@ -156,7 +159,8 @@ void create_steve_job(const char* job_name, TickType_t execute_time, TickType_t 
         logln_error("Name of job %s is too large, reduce to less than %u chars!!!", job_name, MAX_JOB_NAME_LEN);
         return;
     }
-    // Allocate memory
+    // Allocate memory#include "miscellaneous_jobs.h"
+
     steve_job_t* sr = pvPortMalloc(sizeof(steve_job_t));
     // Copy name
     strncpy(sr->name, job_name, job_name_len + 1);
@@ -196,6 +200,7 @@ void delete_steve_job(steve_job_t* job) {
             break;
         }
     }
+
     // If it couldn't find the pointer, something is wrong
     if (!found_ptr) {
         logln_error("Couldn't find scheduler job to delete: %s", job->name);
@@ -240,6 +245,9 @@ void steve_task(void* unused_arg) {
     // mag_config(i2c1);
     // int status = max17048Wake(i2c1); // Init battery gauge sensor
     // logln_info("Battery gauge status: %d", status);
+
+    // startup beeping 
+    schedule_delayed_job_ms("Buzzer beep", &buzzer_beep_job, 10);
 
     // set up PIO block for onewire 
     onewire_init(); 
