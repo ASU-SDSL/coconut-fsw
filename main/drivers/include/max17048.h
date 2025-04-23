@@ -1,3 +1,11 @@
+/**
+ * @file max17048.h
+ * @brief MAX17048 Driver 
+ * 
+ */
+
+#pragma once
+
 #include "i2c.h"
 
 // Battery Gauge Sensor
@@ -9,30 +17,56 @@
 #define MAX17048_RESET_ERROR -4
 #define MAX17048_WRITE_ERROR -5
 
-
-/*
-* Turn on IC and bring out of sleep mode
-*/
+/**
+ * @brief Turn on IC and bring out of sleep mode 
+ * 
+ * @param i2c I2C Instance
+ * @return int Status 
+ */
 int max17048Wake(i2c_inst_t *i2c);
 
-/*
-* Read voltage of battery
-*/
+/**
+ * @brief Read voltage of battery 
+ * 
+ * @param i2c I2C Instance 
+ * @param voltage_out Data Output
+ * @return int Status 
+ */
 int max17048CellVoltage(i2c_inst_t *i2c, float *voltage_out);
 
-/*
-* Read voltage of battery
-*/
+/**
+ * @brief Read voltage of battery
+ * 
+ * @param i2c I2C Instance 
+ * @param voltage_out Data Output
+ * @return int Status 
+ */
 int max17048CellVoltage(i2c_inst_t *i2c, float *voltage_out);
 
-/*
-* For use in a packet; takes up less bytes; conversion done on the ground
-* Returns 2 uint8_ts
-*/
+/**
+ * @brief For use in a packet; takes up less bytes; conversion done on the ground
+ * Returns 2 uint8_ts
+ * 
+ * @param i2c I2C Instance
+ * @param voltage_out Data Output
+ * @return int Status 
+ */
 int max17048CellVoltageRaw(i2c_inst_t *i2c, uint8_t *voltage_out);
 
-/*
-* Get percentage, raw version outputs 2 bytes
-*/
+/**
+ * @brief Get cell percentage 
+ * 
+ * @param i2c I2C Instance
+ * @param percentage_out Data Output 
+ * @return int Status 
+ */
 int max17048CellPercentage(i2c_inst_t *i2c, float *percentage_out);
+
+/**
+ * @brief Get cell percentage raw (2 bytes)
+ * 
+ * @param i2c I2C Instance
+ * @param percentage_out Data Output 
+ * @return int Status 
+ */
 int max17048CellPercentageRaw(i2c_inst_t *i2c, uint8_t *percentage_out);
