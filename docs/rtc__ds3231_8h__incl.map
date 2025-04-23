@@ -1,12 +1,12 @@
 <map id="rtc_ds3231.h" name="rtc_ds3231.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="35,5,131,32"/>
-<area shape="rect" id="Node000002" href="$simulator_2pico-sdk_2hardware_2i2c_8h.html" title=" " alt="" coords="75,80,181,107"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,31,114,65,110,68,88,34"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,155,70,181"/>
-<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="81,33,65,81,48,141,43,139,60,79,76,32"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="114,109,66,147,63,143,111,105"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="94,155,162,181"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="131,107,131,139,126,139,126,107"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="187,155,261,181"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="146,105,197,143,194,147,143,109"/>
+<area shape="rect" id="Node000001" title="DS3231 Real Time Clock Driver." alt="" coords="36,5,141,31"/>
+<area shape="rect" id="Node000002" href="$simulator_2pico-sdk_2hardware_2i2c_8h.html" title=" " alt="" coords="79,79,197,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,29,124,66,120,69,95,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,76,177"/>
+<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="87,32,70,80,51,139,46,138,65,78,82,30"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="124,106,69,146,66,141,121,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="101,152,175,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="141,104,141,138,135,138,135,104"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="199,152,282,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="156,102,214,142,211,146,153,106"/>
 </map>

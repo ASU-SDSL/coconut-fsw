@@ -1,9 +1,9 @@
 <map id="usb_uart.h" name="usb_uart.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="89,5,171,32"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,80,74,107"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,35,68,72,65,68,113,30"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="98,80,162,107"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="133,33,133,64,128,64,128,33"/>
-<area shape="rect" id="Node000004" href="$stdio_8h.html" title=" " alt="" coords="187,80,247,107"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="147,30,192,68,189,72,144,35"/>
+<area shape="rect" id="Node000001" title="Serial Communication Driver (USB/UART)" alt="" coords="95,5,185,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,80,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,33,71,72,68,68,123,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="105,79,175,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="143,31,143,65,137,65,137,31"/>
+<area shape="rect" id="Node000004" href="$stdio_8h.html" title=" " alt="" coords="200,79,267,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="157,29,209,68,206,72,153,33"/>
 </map>

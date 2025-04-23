@@ -92,17 +92,19 @@ $(function(){ initResizable(false); });
   <div class="headertitle"><div class="title">usb_uart.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="usb__uart_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;<a class="code" href="stdio_8h.html">stdio.h</a>&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keywordtype">int</span> <a class="code hl_function" href="usb__uart_8h.html#aeeacfdf2d1ad160004870cf65253058f">writebytes_usb</a>(uint8_t *buffer, <span class="keywordtype">size_t</span> size);</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keywordtype">int</span> <a class="code hl_function" href="usb__uart_8h.html#a8303f1ffe178efa993a8e7a85044565d">readbytes_usb</a>(uint8_t *buffer, <span class="keywordtype">size_t</span> size);</div>
+<a href="usb__uart_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;<a class="code" href="stdio_8h.html">stdio.h</a>&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keywordtype">int</span> <a class="code hl_function" href="usb__uart_8h.html#aeeacfdf2d1ad160004870cf65253058f">writebytes_usb</a>(uint8_t *buffer, <span class="keywordtype">size_t</span> size);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keywordtype">int</span> <a class="code hl_function" href="usb__uart_8h.html#a8303f1ffe178efa993a8e7a85044565d">readbytes_usb</a>(uint8_t *buffer, <span class="keywordtype">size_t</span> size);</div>
 <div class="ttc" id="astdio_8h_html"><div class="ttname"><a href="stdio_8h.html">stdio.h</a></div></div>
-<div class="ttc" id="ausb__uart_8h_html_a8303f1ffe178efa993a8e7a85044565d"><div class="ttname"><a href="usb__uart_8h.html#a8303f1ffe178efa993a8e7a85044565d">readbytes_usb</a></div><div class="ttdeci">int readbytes_usb(uint8_t *buffer, size_t size)</div><div class="ttdef"><b>Definition</b> drivers/src/usb_uart.c:9</div></div>
-<div class="ttc" id="ausb__uart_8h_html_aeeacfdf2d1ad160004870cf65253058f"><div class="ttname"><a href="usb__uart_8h.html#aeeacfdf2d1ad160004870cf65253058f">writebytes_usb</a></div><div class="ttdeci">int writebytes_usb(uint8_t *buffer, size_t size)</div><div class="ttdef"><b>Definition</b> drivers/src/usb_uart.c:5</div></div>
+<div class="ttc" id="ausb__uart_8h_html_a8303f1ffe178efa993a8e7a85044565d"><div class="ttname"><a href="usb__uart_8h.html#a8303f1ffe178efa993a8e7a85044565d">readbytes_usb</a></div><div class="ttdeci">int readbytes_usb(uint8_t *buffer, size_t size)</div><div class="ttdoc">Read bytes from USB.</div><div class="ttdef"><b>Definition</b> drivers/src/usb_uart.c:9</div></div>
+<div class="ttc" id="ausb__uart_8h_html_aeeacfdf2d1ad160004870cf65253058f"><div class="ttname"><a href="usb__uart_8h.html#aeeacfdf2d1ad160004870cf65253058f">writebytes_usb</a></div><div class="ttdeci">int writebytes_usb(uint8_t *buffer, size_t size)</div><div class="ttdoc">Write bytes to USB.</div><div class="ttdef"><b>Definition</b> drivers/src/usb_uart.c:5</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

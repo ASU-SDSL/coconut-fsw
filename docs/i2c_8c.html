@@ -105,10 +105,13 @@ Include dependency graph for i2c.c:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a5d09de7ed47b30c0948eb1f363cb836c" id="r_a5d09de7ed47b30c0948eb1f363cb836c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d09de7ed47b30c0948eb1f363cb836c">config_i2c1</a> ()</td></tr>
+<tr class="memdesc:a5d09de7ed47b30c0948eb1f363cb836c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure i2c0 speed and pins.  <br /></td></tr>
 <tr class="separator:a5d09de7ed47b30c0948eb1f363cb836c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73f9c3581b5d48d5db9c6c445034a970" id="r_a73f9c3581b5d48d5db9c6c445034a970"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73f9c3581b5d48d5db9c6c445034a970">i2c_write_to_register</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c, const uint8_t addr, const uint8_t reg, uint8_t *buf, const uint8_t nbytes)</td></tr>
+<tr class="memdesc:a73f9c3581b5d48d5db9c6c445034a970"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write [reg] and [buf] to i2c device, [reg] is just inserted before [buf].  <br /></td></tr>
 <tr class="separator:a73f9c3581b5d48d5db9c6c445034a970"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd489cf93d14a907e09132068de8e1c9" id="r_afd489cf93d14a907e09132068de8e1c9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd489cf93d14a907e09132068de8e1c9">i2c_read_from_register</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c, const uint8_t addr, const uint8_t reg, uint8_t *buf, const uint8_t nbytes)</td></tr>
+<tr class="memdesc:afd489cf93d14a907e09132068de8e1c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write [reg] byte to i2c device and then read [nbytes] from it. Read bytes are stored in [buf].  <br /></td></tr>
 <tr class="separator:afd489cf93d14a907e09132068de8e1c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -126,6 +129,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Configure i2c0 speed and pins. </p>
 
 </div>
 </div>
@@ -163,6 +168,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Write [reg] byte to i2c device and then read [nbytes] from it. Read bytes are stored in [buf]. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>I2C instance to use </td></tr>
+    <tr><td class="paramname">addr</td><td>Device address </td></tr>
+    <tr><td class="paramname">reg</td><td>Register to write to </td></tr>
+    <tr><td class="paramname">buf</td><td>Data Buffer </td></tr>
+    <tr><td class="paramname">nbytes</td><td>Length of Data Buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int Status of operation (0 = good) </dd></dl>
+
 </div>
 </div>
 <a id="a73f9c3581b5d48d5db9c6c445034a970" name="a73f9c3581b5d48d5db9c6c445034a970"></a>
@@ -198,6 +216,19 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Write [reg] and [buf] to i2c device, [reg] is just inserted before [buf]. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>I2C instance to use </td></tr>
+    <tr><td class="paramname">addr</td><td>Device address </td></tr>
+    <tr><td class="paramname">reg</td><td>Register to write to </td></tr>
+    <tr><td class="paramname">buf</td><td>Data Buffer </td></tr>
+    <tr><td class="paramname">nbytes</td><td>Length of Data Buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int Status of operation (0 = good) </dd></dl>
 
 </div>
 </div>

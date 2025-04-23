@@ -1,0 +1,9 @@
+<map id="ds18b20_test" name="ds18b20_test">
+<area shape="rect" id="Node000001" title="Test function for ds18b20." alt="" coords="5,55,115,80"/>
+<area shape="rect" id="Node000002" href="$ds18b20_8c.html#a5f77a33a7d9243a4c2035db0e66a7eb7" title="Reads the temperature from a ds18b20 This requires waiting for that conversion to finish,..." alt="" coords="181,5,336,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,52,193,31,194,37,112,57"/>
+<area shape="rect" id="Node000003" href="$ds18b20_8c.html#ac28489af27a9b70d2c7a03eb35617bea" title="Triggers a temperature conversion on all ds18b20 devices on the onewire line. This can take up to 750..." alt="" coords="163,55,355,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="115,65,149,65,149,70,115,70"/>
+<area shape="rect" id="Node000004" href="$ds18b20_8c.html#a77ee2f32d90e72a84b5dcddf9f4222c4" title="Initializes the PIO block to be a OneWire bus." alt="" coords="207,104,310,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="112,77,195,98,193,103,111,83"/>
+</map>

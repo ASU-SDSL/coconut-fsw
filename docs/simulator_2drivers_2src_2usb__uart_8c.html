@@ -103,14 +103,16 @@ $(function(){ initResizable(false); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for simulator/drivers/src/usb_uart.c:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="simulator_2drivers_2src_2usb__uart_8c__incl.svg" width="538" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="simulator_2drivers_2src_2usb__uart_8c__incl.svg" width="574" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aeeacfdf2d1ad160004870cf65253058f" id="r_aeeacfdf2d1ad160004870cf65253058f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeeacfdf2d1ad160004870cf65253058f">writebytes_usb</a> (uint8_t *buffer, size_t size)</td></tr>
+<tr class="memdesc:aeeacfdf2d1ad160004870cf65253058f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write bytes to USB.  <br /></td></tr>
 <tr class="separator:aeeacfdf2d1ad160004870cf65253058f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8303f1ffe178efa993a8e7a85044565d" id="r_a8303f1ffe178efa993a8e7a85044565d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8303f1ffe178efa993a8e7a85044565d">readbytes_usb</a> (uint8_t *buffer, size_t size)</td></tr>
+<tr class="memdesc:a8303f1ffe178efa993a8e7a85044565d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read bytes from USB.  <br /></td></tr>
 <tr class="separator:a8303f1ffe178efa993a8e7a85044565d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -133,6 +135,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Read bytes from USB. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer</td><td>Data Out Buffer </td></tr>
+    <tr><td class="paramname">size</td><td>Size of Data Out Buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int Status </dd></dl>
+
 </div>
 </div>
 <a id="aeeacfdf2d1ad160004870cf65253058f" name="aeeacfdf2d1ad160004870cf65253058f"></a>
@@ -153,6 +165,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Write bytes to USB. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer</td><td>Data In Buffer </td></tr>
+    <tr><td class="paramname">size</td><td>Size of Data In Buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int Status </dd></dl>
 
 </div>
 </div>

@@ -1,4 +1,9 @@
 var searchData=
 [
-  ['xtaskcreate_0',['xTaskCreate',['../command__fuzzer_8cpp.html#a713515efde98e3f81d7e857c31f81919',1,'command_fuzzer.cpp']]]
+  ['watchdog_5ffreeze_0',['watchdog_freeze',['../watchdog_8c.html#acebf79aaf42978286eec0c3e016d7b0a',1,'watchdog_freeze():&#160;watchdog.c'],['../watchdog_8h.html#acebf79aaf42978286eec0c3e016d7b0a',1,'watchdog_freeze():&#160;watchdog.c']]],
+  ['watchdog_5ftask_1',['watchdog_task',['../watchdog_8c.html#a594dbd14874f83f5660ab7210cc6ac1e',1,'watchdog_task(void *pvParameters):&#160;watchdog.c'],['../watchdog_8h.html#a594dbd14874f83f5660ab7210cc6ac1e',1,'watchdog_task(void *pvParameters):&#160;watchdog.c']]],
+  ['write_5fbytes_2',['write_bytes',['../mram_8h.html#abf250b9b0f8c27f53be224c564477c6b',1,'write_bytes(const uint32_t addr, const uint8_t *buf, const uint32_t nbytes):&#160;mram.c'],['../mram_8c.html#add902998ab0ec8cffadcd0e2769b083f',1,'write_bytes(uint32_t addr, const uint8_t *buf, const uint32_t nbytes):&#160;mram.c']]],
+  ['write_5ferror_5flog_3',['write_error_log',['../log_8h.html#a881b1f19360f3ed3adf8102f8cdef886',1,'write_error_log(char *str):&#160;log.c'],['../utilities_2src_2log_8c.html#a881b1f19360f3ed3adf8102f8cdef886',1,'write_error_log(char *str):&#160;log.c']]],
+  ['write_5ffile_4',['write_file',['../filesystem_8c.html#a8e5a51c709e9d6229c1974435475292a',1,'write_file(const char *file_name, char *data, size_t size, bool append_flag):&#160;filesystem.c'],['../filesystem_8h.html#a8e5a51c709e9d6229c1974435475292a',1,'write_file(const char *file_name, char *data, size_t size, bool append_flag):&#160;filesystem.c']]],
+  ['writebytes_5fusb_5',['writebytes_usb',['../usb__uart_8h.html#aeeacfdf2d1ad160004870cf65253058f',1,'writebytes_usb(uint8_t *buffer, size_t size):&#160;usb_uart.c'],['../drivers_2src_2usb__uart_8c.html#aeeacfdf2d1ad160004870cf65253058f',1,'writebytes_usb(uint8_t *buffer, size_t size):&#160;usb_uart.c'],['../simulator_2drivers_2src_2usb__uart_8c.html#aeeacfdf2d1ad160004870cf65253058f',1,'writebytes_usb(uint8_t *buffer, size_t size):&#160;usb_uart.c']]]
 ];

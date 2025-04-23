@@ -1,15 +1,15 @@
 <map id="diskio.c" name="diskio.c">
-<area shape="rect" id="Node000001" title=" " alt="" coords="158,5,225,32"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,80,45,107"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,35,60,80,58,75,162,30"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="69,80,136,107"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="178,35,131,72,128,68,174,30"/>
-<area shape="rect" id="Node000004" href="$mram_8h.html" title=" " alt="" coords="159,80,224,107"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="194,33,194,64,189,64,189,33"/>
-<area shape="rect" id="Node000006" href="$stdio_8h.html" title=" " alt="" coords="248,80,308,107"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="208,30,254,68,250,72,205,35"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="333,80,397,107"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="223,30,322,71,320,76,221,35"/>
-<area shape="rect" id="Node000005" href="$stdlib_8h.html" title=" " alt="" coords="160,155,223,181"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="194,107,194,139,189,139,189,107"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="171,5,243,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,48,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="179,33,62,79,60,74,177,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="73,79,146,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="193,33,138,72,135,68,189,29"/>
+<area shape="rect" id="Node000004" href="$mram_8h.html" title="MRAM Driver." alt="" coords="170,79,243,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="209,31,209,65,204,65,204,31"/>
+<area shape="rect" id="Node000006" href="$stdio_8h.html" title=" " alt="" coords="268,79,335,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="223,29,276,68,273,72,220,33"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="359,79,430,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="238,28,352,71,350,76,236,33"/>
+<area shape="rect" id="Node000005" href="$stdlib_8h.html" title=" " alt="" coords="171,152,242,177"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="209,104,209,138,204,138,204,104"/>
 </map>

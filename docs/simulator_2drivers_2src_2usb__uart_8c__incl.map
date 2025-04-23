@@ -1,20 +1,20 @@
 <map id="usb_uart.c" name="usb_uart.c">
-<area shape="rect" id="Node000001" title=" " alt="" coords="165,5,248,32"/>
-<area shape="rect" id="Node000002" href="$stdio_8h.html" title=" " alt="" coords="147,155,207,181"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,22,127,26,86,35,46,53,29,66,15,81,9,97,11,109,22,121,38,131,84,147,132,158,131,163,82,152,36,136,18,125,6,112,3,96,11,79,26,62,44,49,84,30,126,21,165,17"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="25,80,92,107"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="182,35,99,75,97,70,179,30"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="116,80,190,107"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="199,34,173,69,169,66,195,31"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="214,80,308,107"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="218,31,245,66,240,69,214,34"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="332,80,390,107"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="234,30,322,71,319,75,232,35"/>
-<area shape="rect" id="Node000007" href="$usb__uart_8h.html" title=" " alt="" coords="413,80,496,107"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="249,29,399,73,398,78,247,35"/>
-<area shape="poly" id="edge9_Node000007_Node000002" title=" " alt="" coords="414,108,223,158,222,152,412,103"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="375,155,443,181"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="449,109,427,143,423,140,444,106"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="468,155,532,181"/>
-<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="465,106,486,140,482,143,460,109"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="177,5,266,31"/>
+<area shape="rect" id="Node000002" href="$stdio_8h.html" title=" " alt="" coords="155,152,222,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,28,83,48,41,63,16,80,9,96,12,109,23,121,41,131,90,146,142,156,141,161,89,151,39,136,20,125,7,111,3,95,11,77,38,58,81,43,176,23"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="26,79,100,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="197,33,102,75,100,71,195,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="124,79,207,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="214,33,185,69,181,66,210,29"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="231,79,327,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="233,29,263,66,259,70,229,33"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="352,79,414,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="249,28,345,71,343,75,246,33"/>
+<area shape="rect" id="Node000007" href="$usb__uart_8h.html" title="Serial Communication Driver (USB/UART)" alt="" coords="439,79,530,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="264,28,429,72,428,78,263,33"/>
+<area shape="poly" id="edge9_Node000007_Node000002" title=" " alt="" coords="439,106,235,155,234,150,438,101"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="398,152,472,177"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="478,106,453,142,448,139,474,103"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="497,152,568,177"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="494,103,519,139,515,142,490,106"/>
 </map>

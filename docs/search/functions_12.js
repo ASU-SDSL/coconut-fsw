@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['vega_5fant_5fdeploy_0',['vega_ant_deploy',['../vega__ant_8h.html#a2f0326deb24f883f2cb4288ee52f5981',1,'vega_ant_deploy(i2c_inst_t *i2c):&#160;vega_ant.c'],['../vega__ant_8c.html#a2f0326deb24f883f2cb4288ee52f5981',1,'vega_ant_deploy(i2c_inst_t *i2c):&#160;vega_ant.c']]],
-  ['vega_5fant_5fstatus_1',['vega_ant_status',['../vega__ant_8h.html#a6377b53e9c676bceaa38ec9ddeb7fd28',1,'vega_ant_status(i2c_inst_t *i2c, uint8_t *output):&#160;vega_ant.c'],['../vega__ant_8c.html#a6377b53e9c676bceaa38ec9ddeb7fd28',1,'vega_ant_status(i2c_inst_t *i2c, uint8_t *output):&#160;vega_ant.c']]]
+  ['upload_5fuser_5fdata_0',['upload_user_data',['../user__auth_8h.html#acb5e4e390f704ceea798b215f70692d6',1,'upload_user_data(const uint8_t *user_token, uint8_t *buf, uint16_t buf_size):&#160;user_auth.c'],['../user__auth_8c.html#acb5e4e390f704ceea798b215f70692d6',1,'upload_user_data(const uint8_t *user_token, uint8_t *buf, uint16_t buf_size):&#160;user_auth.c']]],
+  ['user_5fauth_5ftest_1',['user_auth_test',['../user__auth_8h.html#af2cbb6a4f47e748f8383d9ef32382ace',1,'user_auth_test():&#160;user_auth.c'],['../user__auth_8c.html#af2cbb6a4f47e748f8383d9ef32382ace',1,'user_auth_test():&#160;user_auth.c']]]
 ];

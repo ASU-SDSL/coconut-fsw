@@ -1,6 +1,6 @@
 <map id="spi.h" name="spi.h">
 <area shape="rect" id="Node000001" title=" " alt="" coords="121,5,175,31"/>
-<area shape="rect" id="Node000002" href="$PicoHal_8h.html" title=" " alt="" coords="5,79,88,104"/>
+<area shape="rect" id="Node000002" href="$PicoHal_8h.html" title="Adapted from RadioLib&#39;s provided PicoHal." alt="" coords="5,79,88,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,41,65,81,62,76,119,36"/>
 <area shape="rect" id="Node000004" href="$mram_8c.html" title=" " alt="" coords="112,79,184,104"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="151,44,151,79,145,79,145,44"/>

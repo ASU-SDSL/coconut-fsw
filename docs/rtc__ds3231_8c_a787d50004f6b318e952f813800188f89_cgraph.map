@@ -1,5 +1,5 @@
 <map id="rtc_get_temp" name="rtc_get_temp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,103,32"/>
-<area shape="rect" id="Node000002" href="$i2c_8c.html#afd489cf93d14a907e09132068de8e1c9" title=" " alt="" coords="151,5,304,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,16,135,16,135,21,103,21"/>
+<area shape="rect" id="Node000001" title="Reads temp (C) from RTC and writes it to [output]." alt="" coords="5,5,113,31"/>
+<area shape="rect" id="Node000002" href="$i2c_8c.html#afd489cf93d14a907e09132068de8e1c9" title="Write [reg] byte to i2c device and then read [nbytes] from it. Read bytes are stored in [buf]." alt="" coords="161,5,333,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,15,147,15,147,21,114,21"/>
 </map>

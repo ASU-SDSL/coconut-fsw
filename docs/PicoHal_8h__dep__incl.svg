@@ -22,7 +22,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Adapted from RadioLib&#39;s provided PicoHal.">
 <polygon fill="#999999" stroke="#666666" points="62,-74 0,-74 0,-55 62,-55 62,-74"/>
 <text text-anchor="middle" x="31" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">PicoHal.h</text>
 </a>

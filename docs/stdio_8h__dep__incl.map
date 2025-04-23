@@ -1,25 +1,27 @@
 <map id="stdio.h" name="stdio.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="395,5,455,32"/>
-<area shape="rect" id="Node000002" href="$drivers_2src_2diskio_8c.html" title=" " alt="" coords="5,80,72,107"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="380,30,91,83,73,87,71,81,90,77,379,25"/>
-<area shape="rect" id="Node000003" href="$gse_8c.html" title=" " alt="" coords="294,155,348,181"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="380,25,315,31,241,42,176,59,152,69,137,82,128,100,134,114,150,127,175,138,237,154,294,162,294,167,236,159,173,143,147,132,129,117,123,99,132,78,149,65,174,54,240,37,314,26,379,20"/>
-<area shape="rect" id="Node000004" href="$hb__tlm__log_8c.html" title=" " alt="" coords="147,80,242,107"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="381,37,236,82,234,77,379,32"/>
-<area shape="rect" id="Node000005" href="$heartbeat__job_8c.html" title=" " alt="" coords="266,80,376,107"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="396,43,341,82,338,77,393,39"/>
-<area shape="rect" id="Node000006" href="$utilities_2src_2log_8c.html" title=" " alt="" coords="400,80,450,107"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="428,48,428,80,422,80,422,48"/>
-<area shape="rect" id="Node000007" href="$mag__lis3mdltr_8c.html" title=" " alt="" coords="474,80,587,107"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="457,39,514,77,511,82,454,43"/>
-<area shape="rect" id="Node000008" href="$simulator_2drivers_2src_2usb__uart_8c.html" title=" " alt="" coords="689,155,772,181"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="471,21,602,40,665,57,690,67,707,78,720,96,728,117,733,154,728,155,723,118,716,99,703,82,687,71,663,62,601,46,470,27"/>
-<area shape="rect" id="Node000009" href="$usb__uart_8h.html" title=" " alt="" coords="611,80,693,107"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="471,32,613,77,611,82,469,37"/>
-<area shape="rect" id="Node000011" href="$user__auth_8c.html" title=" " alt="" coords="768,80,858,107"/>
-<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="471,26,750,77,769,81,768,86,749,83,470,31"/>
-<area shape="poly" id="edge9_Node000009_Node000003" title=" " alt="" coords="597,110,349,164,348,158,595,105"/>
-<area shape="poly" id="edge11_Node000009_Node000008" title=" " alt="" coords="679,116,719,152,715,156,675,120"/>
-<area shape="rect" id="Node000010" href="$drivers_2src_2usb__uart_8c.html" title=" " alt="" coords="583,155,665,181"/>
-<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="644,122,631,155,626,153,639,120"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="479,5,545,31"/>
+<area shape="rect" id="Node000002" href="$drivers_2src_2diskio_8c.html" title=" " alt="" coords="5,79,77,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="465,27,299,48,90,81,78,84,77,78,89,76,298,43,464,22"/>
+<area shape="rect" id="Node000003" href="$ds18b20_8c.html" title=" " alt="" coords="101,79,189,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="465,31,190,84,189,79,464,26"/>
+<area shape="rect" id="Node000004" href="$gse_8c.html" title=" " alt="" coords="429,152,485,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="465,26,407,33,344,44,288,60,267,69,254,80,245,100,252,115,270,128,298,139,367,153,430,159,429,165,366,158,296,144,268,133,248,119,240,100,250,77,264,65,286,55,342,39,407,27,465,21"/>
+<area shape="rect" id="Node000005" href="$hb__tlm__log_8c.html" title=" " alt="" coords="265,79,370,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="469,38,350,81,348,76,467,33"/>
+<area shape="rect" id="Node000006" href="$heartbeat__job_8c.html" title=" " alt="" coords="395,79,517,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="496,43,467,80,463,77,492,40"/>
+<area shape="rect" id="Node000007" href="$utilities_2src_2log_8c.html" title=" " alt="" coords="541,79,595,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="532,40,561,77,557,80,528,43"/>
+<area shape="rect" id="Node000008" href="$mag__lis3mdltr_8c.html" title=" " alt="" coords="619,79,746,104"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="553,33,656,76,654,81,551,38"/>
+<area shape="rect" id="Node000009" href="$simulator_2drivers_2src_2usb__uart_8c.html" title=" " alt="" coords="854,152,943,177"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="560,18,639,23,732,34,818,51,851,62,875,77,889,94,896,114,901,151,896,152,891,116,884,97,872,81,849,67,816,56,731,39,639,29,559,24"/>
+<area shape="rect" id="Node000010" href="$usb__uart_8h.html" title="Serial Communication Driver (USB/UART)" alt="" coords="771,79,861,104"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="559,28,771,77,770,82,558,33"/>
+<area shape="rect" id="Node000012" href="$user__auth_8c.html" title=" " alt="" coords="937,79,1034,104"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="560,23,918,76,937,79,936,84,917,81,559,29"/>
+<area shape="poly" id="edge10_Node000010_Node000004" title=" " alt="" coords="758,107,486,160,485,155,757,102"/>
+<area shape="poly" id="edge12_Node000010_Node000009" title=" " alt="" coords="841,111,887,150,883,154,838,115"/>
+<area shape="rect" id="Node000011" href="$drivers_2src_2usb__uart_8c.html" title=" " alt="" coords="741,152,830,177"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="808,118,793,153,788,151,803,116"/>
 </map>

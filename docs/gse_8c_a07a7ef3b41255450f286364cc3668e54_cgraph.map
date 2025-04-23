@@ -1,5 +1,5 @@
 <map id="gse_queue_message" name="gse_queue_message">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,150,32"/>
-<area shape="rect" id="Node000002" href="$simulator_2drivers_2src_2usb__uart_8c.html#aeeacfdf2d1ad160004870cf65253058f" title=" " alt="" coords="198,5,307,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,16,182,16,182,21,150,21"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,164,31"/>
+<area shape="rect" id="Node000002" href="$simulator_2drivers_2src_2usb__uart_8c.html#aeeacfdf2d1ad160004870cf65253058f" title="Write bytes to USB." alt="" coords="212,5,333,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,15,198,15,198,21,164,21"/>
 </map>

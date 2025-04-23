@@ -1,29 +1,29 @@
 <map id="mag_lis3mdltr.h" name="mag_lis3mdltr.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="116,5,230,32"/>
-<area shape="rect" id="Node000002" href="$simulator_2pico-sdk_2hardware_2i2c_8h.html" title=" " alt="" coords="210,155,317,181"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,31,213,79,250,140,246,143,208,81,178,34"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="83,229,148,256"/>
-<area shape="poly" id="edge7_Node000001_Node000003" title=" " alt="" coords="148,35,114,54,75,80,39,115,11,156,8,167,9,177,22,195,44,211,70,224,68,228,41,216,18,199,4,178,3,166,7,154,35,111,72,76,111,49,145,30"/>
-<area shape="rect" id="Node000006" href="$gpio_8h.html" title=" " alt="" coords="22,155,135,181"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="167,34,97,143,92,140,163,31"/>
-<area shape="rect" id="Node000007" href="$log_8h.html" title=" " alt="" coords="330,80,379,107"/>
-<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="206,30,316,74,314,79,204,35"/>
-<area shape="rect" id="Node000011" href="$drivers_2include_2i2c_8h.html" title=" " alt="" coords="148,80,198,107"/>
-<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="176,33,176,64,170,64,170,33"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="239,184,156,224,154,220,237,179"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="209,229,278,256"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="263,183,254,215,249,214,258,181"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="302,229,377,256"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="279,180,317,217,314,221,275,184"/>
-<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="87,181,105,214,100,217,82,183"/>
-<area shape="poly" id="edge12_Node000007_Node000005" title=" " alt="" coords="356,107,345,214,340,214,350,107"/>
-<area shape="rect" id="Node000008" href="$telemetry_8h.html" title=" " alt="" coords="405,155,490,181"/>
-<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="372,105,421,143,418,147,369,109"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="400,229,495,256"/>
-<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="450,182,450,214,445,214,445,182"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="519,229,587,256"/>
-<area shape="poly" id="edge11_Node000008_Node000010" title=" " alt="" coords="467,180,524,218,521,222,464,184"/>
-<area shape="poly" id="edge14_Node000011_Node000002" title=" " alt="" coords="190,105,238,143,235,147,187,109"/>
-<area shape="poly" id="edge16_Node000011_Node000003" title=" " alt="" coords="173,108,150,182,133,217,128,214,145,180,168,107"/>
-<area shape="poly" id="edge15_Node000011_Node000006" title=" " alt="" coords="158,109,108,147,105,143,155,105"/>
+<area shape="rect" id="Node000001" title="Magnetometer Driver (LIS3MDLTR)" alt="" coords="123,5,250,31"/>
+<area shape="rect" id="Node000002" href="$simulator_2pico-sdk_2hardware_2i2c_8h.html" title=" " alt="" coords="225,152,343,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="197,30,271,139,266,142,192,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="91,225,162,251"/>
+<area shape="poly" id="edge7_Node000001_Node000003" title=" " alt="" coords="159,33,123,51,81,77,42,111,25,131,12,153,8,165,10,175,24,194,49,209,79,221,77,226,47,214,21,198,5,177,3,164,7,151,21,128,38,108,78,73,120,46,157,28"/>
+<area shape="rect" id="Node000006" href="$gpio_8h.html" title=" " alt="" coords="22,152,149,177"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="181,33,103,142,99,139,176,30"/>
+<area shape="rect" id="Node000007" href="$log_8h.html" title=" " alt="" coords="354,79,409,104"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="219,28,342,73,340,78,217,33"/>
+<area shape="rect" id="Node000011" href="$drivers_2include_2i2c_8h.html" title="Drivers for i2c peripheral devices." alt="" coords="160,79,213,104"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="189,31,189,65,184,65,184,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="260,180,166,222,163,217,258,175"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="227,225,301,251"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="283,178,273,213,268,211,278,177"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="325,225,408,251"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="299,175,344,214,341,218,296,179"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="94,176,115,212,111,215,90,179"/>
+<area shape="poly" id="edge12_Node000007_Node000005" title=" " alt="" coords="383,105,372,212,367,211,377,104"/>
+<area shape="rect" id="Node000008" href="$telemetry_8h.html" title=" " alt="" coords="432,152,528,177"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="399,102,454,142,451,146,396,106"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="432,225,528,251"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="483,178,483,212,477,212,477,178"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="552,225,627,251"/>
+<area shape="poly" id="edge11_Node000008_Node000010" title=" " alt="" coords="499,175,561,215,558,220,496,180"/>
+<area shape="poly" id="edge14_Node000011_Node000002" title=" " alt="" coords="204,102,258,141,255,146,201,106"/>
+<area shape="poly" id="edge16_Node000011_Node000003" title=" " alt="" coords="186,105,162,178,144,215,139,212,158,176,181,104"/>
+<area shape="poly" id="edge15_Node000011_Node000006" title=" " alt="" coords="172,106,115,146,112,142,169,102"/>
 </map>

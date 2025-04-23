@@ -99,18 +99,21 @@ $(function(){ initResizable(false); });
   <div class="headertitle"><div class="title">radio.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Handles radio communication.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;FreeRTOS.h&gt;</code><br />
 <code>#include &quot;queue.h&quot;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tasks/radio/radio.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tasks_2radio_2radio_8h__incl.svg" width="286" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tasks_2radio_2radio_8h__incl.svg" width="302" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tasks_2radio_2radio_8h__dep__incl.svg" width="86" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tasks_2radio_2radio_8h__dep__incl.svg" width="94" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="tasks_2radio_2radio_8h_source.html">Go to the source code of this file.</a></p>
@@ -192,24 +195,34 @@ Enumerations</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a59a92112128a733a637390e350d2d16b" id="r_a59a92112128a733a637390e350d2d16b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59a92112128a733a637390e350d2d16b">radio_task</a> (void *unused_arg)</td></tr>
+<tr class="memdesc:a59a92112128a733a637390e350d2d16b"><td class="mdescLeft">&#160;</td><td class="mdescRight">C Linkage for radio task function (cpp version is <a class="el" href="#aa62d7d3a4530934e87199d4741b365d1" title="The implementation of the radio task function (Linked to C by radio_task())">radio_task_cpp()</a>)  <br /></td></tr>
 <tr class="separator:a59a92112128a733a637390e350d2d16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0ecc74e51dbb7c5bdb5d2bfc4a7a0b2" id="r_af0ecc74e51dbb7c5bdb5d2bfc4a7a0b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0ecc74e51dbb7c5bdb5d2bfc4a7a0b2">radio_queue_message</a> (char *buffer, size_t size)</td></tr>
+<tr class="memdesc:af0ecc74e51dbb7c5bdb5d2bfc4a7a0b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a message to the radio queue to be transmitted.  <br /></td></tr>
 <tr class="separator:af0ecc74e51dbb7c5bdb5d2bfc4a7a0b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a610ddc33ff0f6388cea252fb357dc990" id="r_a610ddc33ff0f6388cea252fb357dc990"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a610ddc33ff0f6388cea252fb357dc990">radio_set_transmit_power</a> (uint8_t output_power)</td></tr>
+<tr class="memdesc:a610ddc33ff0f6388cea252fb357dc990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the transmit power used by the radios.  <br /></td></tr>
 <tr class="separator:a610ddc33ff0f6388cea252fb357dc990"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4fc5d140cd46c3db7b311a67d236deb" id="r_ab4fc5d140cd46c3db7b311a67d236deb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4fc5d140cd46c3db7b311a67d236deb">radio_set_module</a> (<a class="el" href="#ace0b4fef871cb7679e839891a34882dd">radio_operation_type_t</a> op)</td></tr>
+<tr class="memdesc:ab4fc5d140cd46c3db7b311a67d236deb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a change radio module being used operation to the radio queue.  <br /></td></tr>
 <tr class="separator:ab4fc5d140cd46c3db7b311a67d236deb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aededabcbfc8060b1d374369c6b67df4b" id="r_aededabcbfc8060b1d374369c6b67df4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aededabcbfc8060b1d374369c6b67df4b">radio_queue_stat_response</a> ()</td></tr>
+<tr class="memdesc:aededabcbfc8060b1d374369c6b67df4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a stat response operation to the radio queue Stats Response Operation sends a packet of RSSI, SNR, and Frequency Error.  <br /></td></tr>
 <tr class="separator:aededabcbfc8060b1d374369c6b67df4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0cf1b14647d5b91ce8706a14d792e76" id="r_ae0cf1b14647d5b91ce8706a14d792e76"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae0cf1b14647d5b91ce8706a14d792e76">radio_which</a> ()</td></tr>
+<tr class="memdesc:ae0cf1b14647d5b91ce8706a14d792e76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns which radio is currently set to be used.  <br /></td></tr>
 <tr class="separator:ae0cf1b14647d5b91ce8706a14d792e76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7478d8e46fb0bc28055ad273b45cc6c" id="r_ab7478d8e46fb0bc28055ad273b45cc6c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7478d8e46fb0bc28055ad273b45cc6c">radio_get_RFM_state</a> ()</td></tr>
+<tr class="memdesc:ab7478d8e46fb0bc28055ad273b45cc6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last recorded state from a function called on the RFM98 radio.  <br /></td></tr>
 <tr class="separator:ab7478d8e46fb0bc28055ad273b45cc6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad94e22af3ec5d65defed81b0efee8d6" id="r_aad94e22af3ec5d65defed81b0efee8d6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad94e22af3ec5d65defed81b0efee8d6">radio_get_SX_state</a> ()</td></tr>
+<tr class="memdesc:aad94e22af3ec5d65defed81b0efee8d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last recorded state from a function called on the SX1268 radio.  <br /></td></tr>
 <tr class="separator:aad94e22af3ec5d65defed81b0efee8d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6a879966c96e3220276583110fde2eb" id="r_ad6a879966c96e3220276583110fde2eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6a879966c96e3220276583110fde2eb">init_radio</a> ()</td></tr>
+<tr class="memdesc:ad6a879966c96e3220276583110fde2eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes necessary peripherals/settings for the radio task.  <br /></td></tr>
 <tr class="separator:ad6a879966c96e3220276583110fde2eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa62d7d3a4530934e87199d4741b365d1" id="r_aa62d7d3a4530934e87199d4741b365d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa62d7d3a4530934e87199d4741b365d1">radio_task_cpp</a> ()</td></tr>
+<tr class="memdesc:aa62d7d3a4530934e87199d4741b365d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The implementation of the radio task function (Linked to C by <a class="el" href="#a59a92112128a733a637390e350d2d16b" title="C Linkage for radio task function (cpp version is radio_task_cpp())">radio_task()</a>)  <br /></td></tr>
 <tr class="separator:aa62d7d3a4530934e87199d4741b365d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
@@ -217,7 +230,10 @@ Variables</h2></td></tr>
 <tr class="memitem:a2e938a65229ef4e546cbe644fd8bebf5" id="r_a2e938a65229ef4e546cbe644fd8bebf5"><td class="memItemLeft" align="right" valign="top">QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e938a65229ef4e546cbe644fd8bebf5">radio_queue</a></td></tr>
 <tr class="separator:a2e938a65229ef4e546cbe644fd8bebf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Handles radio communication. </p>
+<dl class="section date"><dt>Date</dt><dd>2025-04-22 </dd></dl>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a9818fe95ea039d5821e4e4de515eaec1" name="a9818fe95ea039d5821e4e4de515eaec1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9818fe95ea039d5821e4e4de515eaec1">&#9670;&#160;</a></span>RADIO_BW</h2>
 
@@ -606,10 +622,12 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Initializes necessary peripherals/settings for the radio task. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tasks_2radio_2radio_8h_ad6a879966c96e3220276583110fde2eb_cgraph.svg" width="448" height="220"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tasks_2radio_2radio_8h_ad6a879966c96e3220276583110fde2eb_cgraph.svg" width="486" height="218"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -629,6 +647,9 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Returns the last recorded state from a function called on the RFM98 radio. </p>
+<dl class="section return"><dt>Returns</dt><dd>int16_t RadioLib error code </dd></dl>
+
 </div>
 </div>
 <a id="aad94e22af3ec5d65defed81b0efee8d6" name="aad94e22af3ec5d65defed81b0efee8d6"></a>
@@ -645,6 +666,9 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Returns the last recorded state from a function called on the SX1268 radio. </p>
+<dl class="section return"><dt>Returns</dt><dd>int16_t </dd></dl>
 
 </div>
 </div>
@@ -667,6 +691,15 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Adds a message to the radio queue to be transmitted. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer</td><td>Message to transmit </td></tr>
+    <tr><td class="paramname">size</td><td>Size of the message in bytes </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="aededabcbfc8060b1d374369c6b67df4b" name="aededabcbfc8060b1d374369c6b67df4b"></a>
@@ -683,6 +716,8 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Adds a stat response operation to the radio queue Stats Response Operation sends a packet of RSSI, SNR, and Frequency Error. </p>
 
 </div>
 </div>
@@ -701,6 +736,14 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Adds a change radio module being used operation to the radio queue. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">op</td><td><a class="el" href="#aa1711059a24c5fcd007f25e8b2563bbd">radio_queue_operations_t</a> with operation_type of ENABLE_RFM98 or ENABLE_SX1268 </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a610ddc33ff0f6388cea252fb357dc990" name="a610ddc33ff0f6388cea252fb357dc990"></a>
@@ -718,6 +761,14 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Changes the transmit power used by the radios. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">output_power</td><td>New output power in dB </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a59a92112128a733a637390e350d2d16b" name="a59a92112128a733a637390e350d2d16b"></a>
@@ -734,6 +785,14 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>C Linkage for radio task function (cpp version is <a class="el" href="#aa62d7d3a4530934e87199d4741b365d1" title="The implementation of the radio task function (Linked to C by radio_task())">radio_task_cpp()</a>) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unused_arg</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -756,6 +815,8 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>The implementation of the radio task function (Linked to C by <a class="el" href="#a59a92112128a733a637390e350d2d16b" title="C Linkage for radio task function (cpp version is radio_task_cpp())">radio_task()</a>) </p>
 <p>Monitor radio, write to SD card, and send stuff when needed </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
@@ -779,6 +840,9 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Returns which radio is currently set to be used. </p>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t 1 if radio is RFM98, 0 if radio is SX1268 </dd></dl>
 
 </div>
 </div>
