@@ -22,6 +22,7 @@ set(SOURCES
 
     ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
     ${MAIN_DIRECTORY}/tasks/steve/jobs/set_rtc_job.c
+    ${MAIN_DIRECTORY}/tasks/steve/jobs/miscellaneous_jobs.c 
 
     ${MAIN_DIRECTORY}/utilities/src/log.c
     ${MAIN_DIRECTORY}/utilities/src/timing.c
@@ -33,6 +34,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/rtc_ds3231.c
     ${MAIN_DIRECTORY}/drivers/src/mag_lis3mdltr.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
+    ${MAIN_DIRECTORY}/drivers/src/ds18b20.c
 )
 
 # build certain files depending on simulator build
@@ -64,6 +66,7 @@ set (LINK_LIBS
     FreeRTOS
     FatFs
     libspacepacket
+    onewire_library
 )
 
 IF (${DESKTOP_BUILD})
@@ -82,6 +85,8 @@ ELSE()
         hardware_spi
         hardware_adc
         hardware_i2c
+        hardware_pwm
+        hardware_clocks
         RadioLib
     )
 ENDIF()
