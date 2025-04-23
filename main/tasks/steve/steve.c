@@ -99,7 +99,7 @@ void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time
     job->execute_time += job->recur_time;
     // Give mutex back
     xSemaphoreGive(g_steve_context.mutex);
-}#include "miscellaneous_jobs.h"
+}
 
 
 void print_debug_exec_times() {
@@ -199,7 +199,7 @@ void delete_steve_job(steve_job_t* job) {
             g_steve_context.jobs[i] = NULL;
             break;
         }
-    }#include "miscellaneous_jobs.h"
+    }
 
     // If it couldn't find the pointer, something is wrong
     if (!found_ptr) {

@@ -11,6 +11,8 @@
 #define BUZZER_PIN 4
 #define BUZZER_FREQ_HZ 1000
 #define BUZZER_POWER 0.9 //Basically this is the duty cycle which also corresponds to amount of power
+#define BUZZER_BEEP_DELAY_MS 500
+#define BUZZER_BEEP_COUNT 3
 
 void buzzer_beep_job() {
   //Initialize pwm stuff
@@ -21,10 +23,10 @@ void buzzer_beep_job() {
   pwm_set_wrap(slice_num, wrap);
   pwm_set_chan_level(slice_num, PWM_CHAN_A, (uint16_t)(BUZZER_POWER * wrap));
 
-  for(int i = 0; i < 3; i++) {
+  for(int i = 0; i < BUZZER_BEEP_COUNT; i++) {
     pwm_set_enabled(slice_num, true);
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    vTaskDelay(pdMS_TO_TICKS(BUZZER_BEEP_DELAY_MS));
     pwm_set_enabled(slice_num, false);
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    vTaskDelay(pdMS_TO_TICKS(BUZZER_BEEP_DELAY_MS));
   }
 } 
