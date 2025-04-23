@@ -74,7 +74,10 @@ typedef struct __attribute__((__packed__)) {
     int16_t mag_z;
     int16_t mag_temp;
     uint8_t vega_ant_status;
-
+    int16_t temp_u100;
+    int16_t temp_u102;
+    int16_t temp_u104; 
+    
     int16_t rfm_state; 
     int16_t sx_state; 
     uint8_t which_radio; // 1 for RFM

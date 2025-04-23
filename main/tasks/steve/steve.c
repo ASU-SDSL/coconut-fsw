@@ -11,6 +11,7 @@
 #include "mag_lis3mdltr.h"
 #include "ina219.h"
 #include "timing.h"
+#include "ds18b20.h"
 
 #include "heartbeat_job.h"
 
@@ -239,6 +240,9 @@ void steve_task(void* unused_arg) {
     // mag_config(i2c1);
     // int status = max17048Wake(i2c1); // Init battery gauge sensor
     // logln_info("Battery gauge status: %d", status);
+
+    // set up PIO block for onewire 
+    onewire_init(); 
 
     // Run main task loop
     while (true) {
