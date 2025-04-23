@@ -10,7 +10,6 @@
 #include "ina219.h"
 #include "log.h"
 #include "gse.h"
-#include "miscellaneous_jobs.h"
 
 void gse_queue_message(char* buffer, size_t size) {
     // write to picosdk usb uart interface
@@ -20,11 +19,6 @@ void gse_queue_message(char* buffer, size_t size) {
 void gse_task(void *pvParameters) {
     // Initialize USB UART
     stdio_init_all();
-
-    for(int i = 0; i < 100; i++){
-        buzzer_beep_job(); 
-        vTaskDelay(pdMS_TO_TICKS(500)); 
-    }
 
     // Start listening for USB UART bytes
     while (true) {

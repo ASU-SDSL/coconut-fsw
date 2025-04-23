@@ -83,6 +83,8 @@ ELSE()
         hardware_spi
         hardware_adc
         hardware_i2c
+        hardware_pwm
+        hardware_clocks
         RadioLib
     )
 ENDIF()
