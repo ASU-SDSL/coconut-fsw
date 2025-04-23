@@ -1,5 +1,5 @@
 <map id="getVShunt" name="getVShunt">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,88,32"/>
-<area shape="rect" id="Node000002" href="$i2c_8c.html#afd489cf93d14a907e09132068de8e1c9" title=" " alt="" coords="136,5,289,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,16,120,16,120,21,88,21"/>
+<area shape="rect" id="Node000001" title="Reads from the VShunt register [reg_vs](0x01) of the device with i2c address [addr] and writes it to ..." alt="" coords="5,5,95,31"/>
+<area shape="rect" id="Node000002" href="$i2c_8c.html#afd489cf93d14a907e09132068de8e1c9" title="Write [reg] byte to i2c device and then read [nbytes] from it. Read bytes are stored in [buf]." alt="" coords="143,5,315,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,15,129,15,129,21,95,21"/>
 </map>

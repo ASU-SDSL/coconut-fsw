@@ -1,28 +1,28 @@
 <map id="rtc_ds3231.c" name="rtc_ds3231.c">
-<area shape="rect" id="Node000001" title=" " alt="" coords="173,5,270,32"/>
-<area shape="rect" id="Node000002" href="$rtc__ds3231_8h.html" title=" " alt="" coords="5,80,102,107"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,35,98,76,96,71,191,30"/>
-<area shape="rect" id="Node000003" href="$simulator_2pico-sdk_2hardware_2i2c_8h.html" title=" " alt="" coords="88,155,195,181"/>
-<area shape="poly" id="edge7_Node000001_Node000003" title=" " alt="" coords="207,35,186,55,166,81,154,111,148,140,142,139,149,109,162,79,182,52,204,31"/>
-<area shape="rect" id="Node000007" href="$stdlib_8h.html" title=" " alt="" coords="176,80,267,107"/>
-<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="224,33,224,64,219,64,219,33"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="292,80,341,107"/>
-<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="240,30,289,68,286,73,236,35"/>
-<area shape="rect" id="Node000009" href="$log_8h.html" title=" " alt="" coords="365,80,414,107"/>
-<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="252,30,352,73,349,78,250,35"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="71,105,116,143,113,147,67,109"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="19,229,83,256"/>
-<area shape="poly" id="edge6_Node000002_Node000004" title=" " alt="" coords="56,107,54,214,49,214,51,107"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="127,184,80,222,76,218,124,180"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="107,229,176,256"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="144,182,144,214,139,214,139,182"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="212,229,287,256"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="162,180,219,218,216,222,159,184"/>
-<area shape="poly" id="edge14_Node000009_Node000006" title=" " alt="" coords="379,109,274,220,270,216,376,105"/>
-<area shape="rect" id="Node000010" href="$telemetry_8h.html" title=" " alt="" coords="347,155,432,181"/>
-<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="392,107,392,139,387,139,387,107"/>
-<area shape="rect" id="Node000011" title=" " alt="" coords="332,229,426,256"/>
-<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="390,182,386,214,380,214,385,181"/>
-<area shape="rect" id="Node000012" title=" " alt="" coords="450,229,518,256"/>
-<area shape="poly" id="edge13_Node000010_Node000012" title=" " alt="" coords="408,180,457,218,454,222,404,184"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="185,5,289,31"/>
+<area shape="rect" id="Node000002" href="$rtc__ds3231_8h.html" title="DS3231 Real Time Clock Driver." alt="" coords="5,79,111,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="209,33,101,76,99,71,207,28"/>
+<area shape="rect" id="Node000003" href="$simulator_2pico-sdk_2hardware_2i2c_8h.html" title=" " alt="" coords="93,152,212,177"/>
+<area shape="poly" id="edge7_Node000001_Node000003" title=" " alt="" coords="221,33,198,53,176,80,164,109,158,138,153,137,159,108,172,77,194,50,218,29"/>
+<area shape="rect" id="Node000007" href="$stdlib_8h.html" title=" " alt="" coords="186,79,287,104"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="239,31,239,65,234,65,234,31"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="311,79,365,104"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="254,28,312,68,309,73,251,33"/>
+<area shape="rect" id="Node000009" href="$log_8h.html" title=" " alt="" coords="389,79,444,104"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="267,28,377,72,375,77,265,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="75,102,128,141,125,146,72,106"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="20,225,91,251"/>
+<area shape="poly" id="edge6_Node000002_Node000004" title=" " alt="" coords="60,105,58,212,53,212,55,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="139,180,84,219,81,215,135,175"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="115,225,190,251"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="155,178,155,212,150,212,150,178"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="226,225,309,251"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="172,175,238,216,236,220,170,180"/>
+<area shape="poly" id="edge14_Node000009_Node000006" title=" " alt="" coords="406,106,291,218,287,214,403,103"/>
+<area shape="rect" id="Node000010" href="$telemetry_8h.html" title=" " alt="" coords="369,152,465,177"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="419,104,419,138,414,138,414,104"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="357,225,453,251"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="417,178,412,212,406,211,412,177"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="477,225,551,251"/>
+<area shape="poly" id="edge13_Node000010_Node000012" title=" " alt="" coords="434,175,488,215,485,219,431,180"/>
 </map>

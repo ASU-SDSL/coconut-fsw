@@ -76,5 +76,6 @@ var searchData=
   ['strong_20never_20strong_20em_20be_20run_20outside_20of_20tt_20filesystem_20c_20tt_73',['Note: These functions should &lt;em&gt;&lt;strong&gt;NEVER&lt;/strong&gt;&lt;/em&gt; be run outside of &lt;tt&gt;filesystem.c&lt;/tt&gt;',['../md_docs_2docs_2tasks_2filesystem.html#note-these-functions-should-never-be-run-outside-of-filesystemc',1,'']]],
   ['strong_20never_20strong_20em_20be_20run_20outside_20of_20tt_20gse_20c_20tt_74',['Note: These functions should &lt;em&gt;&lt;strong&gt;NEVER&lt;/strong&gt;&lt;/em&gt; be run outside of &lt;tt&gt;gse.c&lt;/tt&gt;',['../md_docs_2docs_2tasks_2gse.html#note-these-functions-should-never-be-run-outside-of-gsec',1,'']]],
   ['strong_20never_20strong_20em_20be_20run_20outside_20of_20tt_20steve_20c_20tt_75',['Note: These functions should &lt;em&gt;&lt;strong&gt;NEVER&lt;/strong&gt;&lt;/em&gt; be run outside of &lt;tt&gt;steve.c&lt;/tt&gt;',['../md_docs_2docs_2tasks_2steve.html#note-these-functions-should-never-be-run-outside-of-stevec',1,'']]],
-  ['structure_76',['Repository Overview and Structure',['../md_docs_2docs_2DOCS.html#repository-overview-and-structure',1,'']]]
+  ['structure_76',['Repository Overview and Structure',['../md_docs_2docs_2DOCS.html#repository-overview-and-structure',1,'']]],
+  ['sys_5fclock_5ffreq_77',['SYS_CLOCK_FREQ',['../miscellaneous__jobs_8c.html#a37e9f102f1c0070d64370b094b22d46e',1,'miscellaneous_jobs.c']]]
 ];

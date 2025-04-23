@@ -94,6 +94,9 @@ $(function(){ initResizable(false); });
   <div class="headertitle"><div class="title">mag_lis3mdltr.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Magnetometer Driver (LIS3MDLTR)  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h_source.html">hardware/i2c.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="gpio_8h_source.html">hardware/gpio.h</a>&quot;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
@@ -102,12 +105,12 @@ $(function(){ initResizable(false); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for mag_lis3mdltr.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h__incl.svg" width="592" height="262"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h__incl.svg" width="632" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h__dep__incl.svg" width="348" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h__dep__incl.svg" width="379" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="mag__lis3mdltr_8h_source.html">Go to the source code of this file.</a></p>
@@ -115,39 +118,30 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ad2342b17e572d323f49fcd1ddad36652" id="r_ad2342b17e572d323f49fcd1ddad36652"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad2342b17e572d323f49fcd1ddad36652">mag_config</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c)</td></tr>
+<tr class="memdesc:ad2342b17e572d323f49fcd1ddad36652"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures the Magnetometer for High performance (xyz), data rate of 155Hz, range +/- 4 gauss, and continuous-conversion operation mode. Writes to CTRL registers.  <br /></td></tr>
 <tr class="separator:ad2342b17e572d323f49fcd1ddad36652"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38a61bd16b9dfb232231f3518d803b65" id="r_a38a61bd16b9dfb232231f3518d803b65"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a38a61bd16b9dfb232231f3518d803b65">mag_get_x</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c, int16_t *output)</td></tr>
+<tr class="memdesc:a38a61bd16b9dfb232231f3518d803b65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the x output to [output].  <br /></td></tr>
 <tr class="separator:a38a61bd16b9dfb232231f3518d803b65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47dbf866e595e1b959c9da3b594dcc7d" id="r_a47dbf866e595e1b959c9da3b594dcc7d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47dbf866e595e1b959c9da3b594dcc7d">mag_get_y</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c, int16_t *output)</td></tr>
+<tr class="memdesc:a47dbf866e595e1b959c9da3b594dcc7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the y output to [output].  <br /></td></tr>
 <tr class="separator:a47dbf866e595e1b959c9da3b594dcc7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8775374a424d7f7cce47046c180954d" id="r_ae8775374a424d7f7cce47046c180954d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae8775374a424d7f7cce47046c180954d">mag_get_z</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c, int16_t *output)</td></tr>
+<tr class="memdesc:ae8775374a424d7f7cce47046c180954d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the z output to [output].  <br /></td></tr>
 <tr class="separator:ae8775374a424d7f7cce47046c180954d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7701b495ff94874c5d3bbd940b8f99ff" id="r_a7701b495ff94874c5d3bbd940b8f99ff"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7701b495ff94874c5d3bbd940b8f99ff">mag_get_temp</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c, int16_t *output)</td></tr>
+<tr class="memdesc:a7701b495ff94874c5d3bbd940b8f99ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the temperature output in Celsius to [output].  <br /></td></tr>
 <tr class="separator:a7701b495ff94874c5d3bbd940b8f99ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42a5a21c178f5710baa0ecfca50432c2" id="r_a42a5a21c178f5710baa0ecfca50432c2"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a42a5a21c178f5710baa0ecfca50432c2">get_mag_status</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c)</td></tr>
-<tr class="separator:a42a5a21c178f5710baa0ecfca50432c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af99f3bce6aa235d4fa7dc9468af80fda" id="r_af99f3bce6aa235d4fa7dc9468af80fda"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af99f3bce6aa235d4fa7dc9468af80fda">mag_get_status</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c)</td></tr>
+<tr class="memdesc:af99f3bce6aa235d4fa7dc9468af80fda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value stored in the status register indicated if new data is available, 0 = no new data anything else = new data (datasheet has the breakdown of exactly what new data is available based on the output)  <br /></td></tr>
+<tr class="separator:af99f3bce6aa235d4fa7dc9468af80fda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf4f0a4212c817500b983641c083d900" id="r_abf4f0a4212c817500b983641c083d900"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf4f0a4212c817500b983641c083d900">mag_test</a> ()</td></tr>
+<tr class="memdesc:abf4f0a4212c817500b983641c083d900"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests the <a class="el" href="mag__lis3mdltr_8h.html" title="Magnetometer Driver (LIS3MDLTR)">mag_lis3mdltr.h</a> functions.  <br /></td></tr>
 <tr class="separator:abf4f0a4212c817500b983641c083d900"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a42a5a21c178f5710baa0ecfca50432c2" name="a42a5a21c178f5710baa0ecfca50432c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42a5a21c178f5710baa0ecfca50432c2">&#9670;&#160;</a></span>get_mag_status()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t get_mag_status </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *</td>          <td class="paramname"><span class="paramname"><em>i2c</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Returns the value stored in the status register indicated if new data is available, 0 = no new data anything else = new data (datasheet has the breakdown of exactly what new data is available based on the output) </p>
-
-</div>
-</div>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Magnetometer Driver (LIS3MDLTR) </p>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="ad2342b17e572d323f49fcd1ddad36652" name="ad2342b17e572d323f49fcd1ddad36652"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad2342b17e572d323f49fcd1ddad36652">&#9670;&#160;</a></span>mag_config()</h2>
 
@@ -162,11 +156,51 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Configures the Magnetometer for High performance (xyz), data rate of 155Hz, range +/- 4 gauss, and continuous-conversion operation mode. Writes to CTRL registers </p>
+
+<p>Configures the Magnetometer for High performance (xyz), data rate of 155Hz, range +/- 4 gauss, and continuous-conversion operation mode. Writes to CTRL registers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>I2C Instance </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int Status (0 = success) </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h_ad2342b17e572d323f49fcd1ddad36652_cgraph.svg" width="300" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h_ad2342b17e572d323f49fcd1ddad36652_cgraph.svg" width="328" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="af99f3bce6aa235d4fa7dc9468af80fda" name="af99f3bce6aa235d4fa7dc9468af80fda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af99f3bce6aa235d4fa7dc9468af80fda">&#9670;&#160;</a></span>mag_get_status()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t mag_get_status </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *</td>          <td class="paramname"><span class="paramname"><em>i2c</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the value stored in the status register indicated if new data is available, 0 = no new data anything else = new data (datasheet has the breakdown of exactly what new data is available based on the output) </p>
+<p>Returns the value stored in the status register indicated if new data is available, 0 = no new data anything else = new data (datasheet has the breakdown of exactly what new data is available based on the output) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>I2C Instance </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t Status (see brief) </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h_af99f3bce6aa235d4fa7dc9468af80fda_cgraph.svg" width="358" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -189,11 +223,20 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Writes the temperature output in Celsius to [output] Returns 0 on success </p>
+
+<p>Writes the temperature output in Celsius to [output]. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>I2C Instance </td></tr>
+    <tr><td class="paramname">output</td><td>Data Output Buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t Status (0 = success) </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h_a7701b495ff94874c5d3bbd940b8f99ff_cgraph.svg" width="320" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h_a7701b495ff94874c5d3bbd940b8f99ff_cgraph.svg" width="351" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -216,11 +259,20 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Writes the x output to [output] Returns 0 on success </p>
+
+<p>Writes the x output to [output]. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>I2C Instance </td></tr>
+    <tr><td class="paramname">output</td><td>Data Output Buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t Status (0 = success) </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h_a38a61bd16b9dfb232231f3518d803b65_cgraph.svg" width="298" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h_a38a61bd16b9dfb232231f3518d803b65_cgraph.svg" width="326" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -243,11 +295,20 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Writes the y output to [output] Returns 0 on success </p>
+
+<p>Writes the y output to [output]. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>I2C Instance </td></tr>
+    <tr><td class="paramname">output</td><td>Data Output Buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t Status (0 = success) </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h_a47dbf866e595e1b959c9da3b594dcc7d_cgraph.svg" width="298" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h_a47dbf866e595e1b959c9da3b594dcc7d_cgraph.svg" width="326" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -270,11 +331,20 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Writes the z output to [output] Returns 0 on success </p>
+
+<p>Writes the z output to [output]. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>I2C Instance </td></tr>
+    <tr><td class="paramname">output</td><td>Data Output Buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t Status (0 = success) </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h_ae8775374a424d7f7cce47046c180954d_cgraph.svg" width="298" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h_ae8775374a424d7f7cce47046c180954d_cgraph.svg" width="324" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -293,10 +363,13 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Tests the <a class="el" href="mag__lis3mdltr_8h.html" title="Magnetometer Driver (LIS3MDLTR)">mag_lis3mdltr.h</a> functions. </p>
+<dl class="section return"><dt>Returns</dt><dd>int Status </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h_abf4f0a4212c817500b983641c083d900_cgraph.svg" width="443" height="291"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="mag__lis3mdltr_8h_abf4f0a4212c817500b983641c083d900_cgraph.svg" width="482" height="283"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

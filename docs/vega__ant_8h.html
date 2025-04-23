@@ -94,6 +94,9 @@ $(function(){ initResizable(false); });
   <div class="headertitle"><div class="title">vega_ant.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Vega Antenna Board Driver.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h_source.html">hardware/i2c.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="gpio_8h_source.html">hardware/gpio.h</a>&quot;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
@@ -102,12 +105,12 @@ $(function(){ initResizable(false); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for vega_ant.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="vega__ant_8h__incl.svg" width="379" height="262"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="vega__ant_8h__incl.svg" width="408" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="vega__ant_8h__dep__incl.svg" width="230" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="vega__ant_8h__dep__incl.svg" width="251" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="vega__ant_8h_source.html">Go to the source code of this file.</a></p>
@@ -115,11 +118,15 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a6377b53e9c676bceaa38ec9ddeb7fd28" id="r_a6377b53e9c676bceaa38ec9ddeb7fd28"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6377b53e9c676bceaa38ec9ddeb7fd28">vega_ant_status</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c, uint8_t *output)</td></tr>
+<tr class="memdesc:a6377b53e9c676bceaa38ec9ddeb7fd28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets deployment status of antennas.  <br /></td></tr>
 <tr class="separator:a6377b53e9c676bceaa38ec9ddeb7fd28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f0326deb24f883f2cb4288ee52f5981" id="r_a2f0326deb24f883f2cb4288ee52f5981"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f0326deb24f883f2cb4288ee52f5981">vega_ant_deploy</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c)</td></tr>
+<tr class="memdesc:a2f0326deb24f883f2cb4288ee52f5981"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send command to deploy antennas.  <br /></td></tr>
 <tr class="separator:a2f0326deb24f883f2cb4288ee52f5981"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Vega Antenna Board Driver. </p>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="a2f0326deb24f883f2cb4288ee52f5981" name="a2f0326deb24f883f2cb4288ee52f5981"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2f0326deb24f883f2cb4288ee52f5981">&#9670;&#160;</a></span>vega_ant_deploy()</h2>
 
@@ -134,10 +141,19 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Send command to deploy antennas. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>I2C Instance </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t Status </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="vega__ant_8h_a2f0326deb24f883f2cb4288ee52f5981_cgraph.svg" width="320" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="vega__ant_8h_a2f0326deb24f883f2cb4288ee52f5981_cgraph.svg" width="351" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -160,10 +176,20 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Gets deployment status of antennas. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>I2C Instance </td></tr>
+    <tr><td class="paramname">output</td><td>Data Out Buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t Status </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="vega__ant_8h_a6377b53e9c676bceaa38ec9ddeb7fd28_cgraph.svg" width="330" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="vega__ant_8h_a6377b53e9c676bceaa38ec9ddeb7fd28_cgraph.svg" width="360" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

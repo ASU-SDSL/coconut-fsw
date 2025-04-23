@@ -1,7 +1,7 @@
 <map id="rtc_update_temp" name="rtc_update_temp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,124,57"/>
-<area shape="rect" id="Node000002" href="$i2c_8c.html#afd489cf93d14a907e09132068de8e1c9" title=" " alt="" coords="172,5,325,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,33,156,29,157,34,125,38"/>
-<area shape="rect" id="Node000003" href="$i2c_8c.html#a73f9c3581b5d48d5db9c6c445034a970" title=" " alt="" coords="178,56,319,83"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="125,50,163,55,162,60,124,55"/>
+<area shape="rect" id="Node000001" title="Manually updates value in temp register. RTC auto&#45;updates the temp every 64 seconds." alt="" coords="5,31,137,56"/>
+<area shape="rect" id="Node000002" href="$i2c_8c.html#afd489cf93d14a907e09132068de8e1c9" title="Write [reg] byte to i2c device and then read [nbytes] from it. Read bytes are stored in [buf]." alt="" coords="185,5,357,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,32,171,28,172,33,138,38"/>
+<area shape="rect" id="Node000003" href="$i2c_8c.html#a73f9c3581b5d48d5db9c6c445034a970" title="Write [reg] and [buf] to i2c device, [reg] is just inserted before [buf]." alt="" coords="192,55,351,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="138,49,179,54,178,59,138,54"/>
 </map>

@@ -2,11 +2,11 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="711,5,793,31"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,152,96,177"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="711,25,530,42,413,58,297,81,184,115,91,149,89,144,182,110,295,76,412,53,529,36,710,19"/>
-<area shape="rect" id="Node000003" href="$tasks_2radio_2radio_8h.html" title=" " alt="" coords="816,225,883,251"/>
+<area shape="rect" id="Node000003" href="$tasks_2radio_2radio_8h.html" title="Handles radio communication." alt="" coords="816,225,883,251"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="760,30,841,211,836,213,755,32"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="551,299,647,324"/>
 <area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="747,32,698,113,636,226,610,287,605,285,631,224,693,110,742,30"/>
-<area shape="rect" id="Node000007" href="$PicoHal_8h.html" title=" " alt="" coords="380,79,463,104"/>
+<area shape="rect" id="Node000007" href="$PicoHal_8h.html" title="Adapted from RadioLib&#39;s provided PicoHal." alt="" coords="380,79,463,104"/>
 <area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="711,31,477,81,476,76,710,26"/>
 <area shape="rect" id="Node000008" href="$stdlib_8h.html" title=" " alt="" coords="120,152,221,177"/>
 <area shape="poly" id="edge13_Node000001_Node000008" title=" " alt="" coords="711,25,558,42,463,59,369,81,279,114,206,148,203,143,277,109,367,76,462,53,558,37,710,20"/>

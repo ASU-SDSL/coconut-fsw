@@ -94,18 +94,21 @@ $(function(){ initResizable(false); });
   <div class="headertitle"><div class="title">usb_uart.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Serial Communication Driver (USB/UART)  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stddef.h&gt;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="stdio_8h_source.html">stdio.h</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for usb_uart.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="usb__uart_8h__incl.svg" width="252" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="usb__uart_8h__incl.svg" width="272" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="usb__uart_8h__dep__incl.svg" width="278" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="usb__uart_8h__dep__incl.svg" width="295" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="usb__uart_8h_source.html">Go to the source code of this file.</a></p>
@@ -113,11 +116,15 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aeeacfdf2d1ad160004870cf65253058f" id="r_aeeacfdf2d1ad160004870cf65253058f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeeacfdf2d1ad160004870cf65253058f">writebytes_usb</a> (uint8_t *buffer, size_t size)</td></tr>
+<tr class="memdesc:aeeacfdf2d1ad160004870cf65253058f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write bytes to USB.  <br /></td></tr>
 <tr class="separator:aeeacfdf2d1ad160004870cf65253058f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8303f1ffe178efa993a8e7a85044565d" id="r_a8303f1ffe178efa993a8e7a85044565d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8303f1ffe178efa993a8e7a85044565d">readbytes_usb</a> (uint8_t *buffer, size_t size)</td></tr>
+<tr class="memdesc:a8303f1ffe178efa993a8e7a85044565d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read bytes from USB.  <br /></td></tr>
 <tr class="separator:a8303f1ffe178efa993a8e7a85044565d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Serial Communication Driver (USB/UART) </p>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="a8303f1ffe178efa993a8e7a85044565d" name="a8303f1ffe178efa993a8e7a85044565d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8303f1ffe178efa993a8e7a85044565d">&#9670;&#160;</a></span>readbytes_usb()</h2>
 
@@ -136,6 +143,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Read bytes from USB. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer</td><td>Data Out Buffer </td></tr>
+    <tr><td class="paramname">size</td><td>Size of Data Out Buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int Status </dd></dl>
 
 </div>
 </div>
@@ -157,6 +174,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Write bytes to USB. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer</td><td>Data In Buffer </td></tr>
+    <tr><td class="paramname">size</td><td>Size of Data In Buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int Status </dd></dl>
 
 </div>
 </div>

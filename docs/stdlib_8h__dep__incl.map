@@ -1,30 +1,39 @@
 <map id="stdlib.h" name="stdlib.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="562,5,633,31"/>
-<area shape="rect" id="Node000002" href="$PicoHal_8h.html" title=" " alt="" coords="5,79,88,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="549,27,355,48,107,81,89,84,88,79,106,76,354,43,548,22"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="633,5,703,31"/>
+<area shape="rect" id="Node000002" href="$PicoHal_8h.html" title="Adapted from RadioLib&#39;s provided PicoHal." alt="" coords="5,79,88,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="619,26,397,46,107,81,89,84,88,79,106,76,397,41,619,21"/>
 <area shape="rect" id="Node000003" href="$radio_8cpp.html" title=" " alt="" coords="45,152,128,177"/>
-<area shape="poly" id="edge9_Node000001_Node000003" title=" " alt="" coords="549,24,453,29,337,40,227,57,184,68,152,81,132,97,116,116,94,153,89,150,111,113,128,93,149,76,182,63,226,51,336,34,453,24,548,18"/>
+<area shape="poly" id="edge14_Node000001_Node000003" title=" " alt="" coords="619,23,509,27,372,36,242,53,190,66,152,81,132,96,116,116,94,153,89,150,111,113,128,93,149,76,188,61,241,48,372,31,509,21,619,17"/>
 <area shape="rect" id="Node000004" href="$command_8c.html" title=" " alt="" coords="163,79,261,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="549,31,274,81,262,83,261,78,273,76,548,26"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="619,29,274,81,262,83,261,78,273,76,619,24"/>
 <area shape="rect" id="Node000005" href="$command__fuzzer_8cpp.html" title=" " alt="" coords="285,79,445,104"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="550,37,403,81,402,76,548,32"/>
-<area shape="rect" id="Node000006" href="$main_8c.html" title=" " alt="" coords="469,79,536,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="573,41,520,81,517,76,570,37"/>
-<area shape="rect" id="Node000007" href="$mram_8h.html" title=" " alt="" coords="561,79,634,104"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="600,44,600,79,595,79,595,44"/>
-<area shape="rect" id="Node000010" href="$radiolibhal_8h.html" title=" " alt="" coords="658,79,761,104"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="629,36,692,76,690,81,626,40"/>
-<area shape="rect" id="Node000011" href="$rtc__ds3231_8c.html" title=" " alt="" coords="785,79,889,104"/>
-<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="647,31,799,76,798,81,645,36"/>
-<area shape="rect" id="Node000012" href="$steve_8c.html" title=" " alt="" coords="913,79,983,104"/>
-<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="647,26,902,76,913,79,912,84,901,81,646,31"/>
-<area shape="rect" id="Node000013" href="$telemetry_8c.html" title=" " alt="" coords="1007,79,1102,104"/>
-<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="647,23,995,76,1007,78,1006,83,994,81,646,29"/>
-<area shape="rect" id="Node000014" href="$watchdog_8c.html" title=" " alt="" coords="1127,79,1223,104"/>
-<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="647,21,852,42,1115,76,1127,78,1126,83,1114,81,851,47,647,26"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="620,33,415,81,414,76,618,28"/>
+<area shape="rect" id="Node000006" href="$ds18b20_8h.html" title=" " alt="" coords="470,79,559,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="632,39,541,81,539,76,630,34"/>
+<area shape="rect" id="Node000009" href="$steve_8c.html" title=" " alt="" coords="581,152,651,177"/>
+<area shape="poly" id="edge17_Node000001_Node000009" title=" " alt="" coords="649,42,636,60,625,80,617,119,618,152,612,152,612,118,620,78,631,57,645,39"/>
+<area shape="rect" id="Node000010" href="$main_8c.html" title=" " alt="" coords="635,79,701,104"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="671,44,671,79,665,79,665,44"/>
+<area shape="rect" id="Node000011" href="$miscellaneous__jobs_8c.html" title=" " alt="" coords="726,79,887,104"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="704,34,785,76,783,81,701,39"/>
+<area shape="rect" id="Node000012" href="$mram_8h.html" title="MRAM Driver." alt="" coords="911,79,985,104"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="717,29,912,78,910,83,716,34"/>
+<area shape="rect" id="Node000015" href="$radiolibhal_8h.html" title=" " alt="" coords="1009,79,1111,104"/>
+<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="717,26,998,76,1009,78,1008,83,997,81,716,31"/>
+<area shape="rect" id="Node000016" href="$rtc__ds3231_8c.html" title=" " alt="" coords="1136,79,1240,104"/>
+<area shape="poly" id="edge16_Node000001_Node000016" title=" " alt="" coords="717,22,897,44,1124,76,1136,78,1136,83,1124,81,896,50,717,28"/>
+<area shape="rect" id="Node000017" href="$telemetry_8c.html" title=" " alt="" coords="1265,79,1359,104"/>
+<area shape="poly" id="edge18_Node000001_Node000017" title=" " alt="" coords="718,20,949,40,1252,76,1265,78,1264,83,1252,81,948,46,717,26"/>
+<area shape="rect" id="Node000018" href="$watchdog_8c.html" title=" " alt="" coords="1384,79,1480,104"/>
+<area shape="poly" id="edge19_Node000001_Node000018" title=" " alt="" coords="717,19,996,37,1183,54,1372,76,1384,78,1383,83,1372,81,1182,59,996,43,717,24"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="62,115,83,151,78,153,58,118"/>
-<area shape="rect" id="Node000008" href="$drivers_2src_2diskio_8c.html" title=" " alt="" coords="513,152,585,177"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="584,117,559,153,555,150,580,114"/>
-<area shape="rect" id="Node000009" href="$mram_8c.html" title=" " alt="" coords="609,152,681,177"/>
-<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="615,114,640,150,635,153,611,117"/>
+<area shape="rect" id="Node000007" href="$ds18b20_8c.html" title=" " alt="" coords="323,152,411,177"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="480,112,392,154,390,149,478,107"/>
+<area shape="rect" id="Node000008" href="$heartbeat__job_8c.html" title=" " alt="" coords="435,152,557,177"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="511,118,502,153,496,151,506,117"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="544,110,601,150,598,154,541,114"/>
+<area shape="rect" id="Node000013" href="$drivers_2src_2diskio_8c.html" title=" " alt="" coords="864,152,936,177"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="935,117,910,153,906,150,930,114"/>
+<area shape="rect" id="Node000014" href="$mram_8c.html" title=" " alt="" coords="960,152,1032,177"/>
+<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="966,114,990,150,986,153,961,117"/>
 </map>

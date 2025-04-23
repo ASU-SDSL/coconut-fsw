@@ -1,12 +1,12 @@
 <map id="mram_testing" name="mram_testing">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,56,106,83"/>
-<area shape="rect" id="Node000002" href="$mram_8c.html#ae11c5653b6ee6161a4a838d899556106" title=" " alt="" coords="154,5,262,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,53,150,35,152,40,99,58"/>
-<area shape="rect" id="Node000004" href="$mram_8c.html#ac591c4396a1fe18bacf982086ed0137c" title=" " alt="" coords="165,56,250,83"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="106,67,150,67,150,72,106,72"/>
-<area shape="rect" id="Node000005" href="$mram_8c.html#add902998ab0ec8cffadcd0e2769b083f" title=" " alt="" coords="164,107,252,133"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="99,81,152,99,150,104,97,86"/>
-<area shape="rect" id="Node000003" href="$mram_8c.html#a52ab33155b91ce8971434bf4e30e4d98" title=" " alt="" coords="310,56,468,83"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="259,30,325,49,323,54,258,35"/>
-<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="252,105,323,85,325,90,253,110"/>
+<area shape="rect" id="Node000001" title="Tests functions in mram.h." alt="" coords="5,55,119,80"/>
+<area shape="rect" id="Node000002" href="$mram_8c.html#ae11c5653b6ee6161a4a838d899556106" title=" " alt="" coords="167,5,291,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,52,171,32,172,37,106,57"/>
+<area shape="rect" id="Node000004" href="$mram_8c.html#ac591c4396a1fe18bacf982086ed0137c" title="Read bytes from the MRAM device." alt="" coords="181,55,276,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="119,65,168,65,168,70,119,70"/>
+<area shape="rect" id="Node000005" href="$mram_8c.html#add902998ab0ec8cffadcd0e2769b083f" title="Writes bytes to the MRAM device." alt="" coords="179,104,278,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="106,77,172,97,171,102,105,83"/>
+<area shape="rect" id="Node000003" href="$mram_8c.html#a52ab33155b91ce8971434bf4e30e4d98" title="Send a simple spi command to MRAM device." alt="" coords="339,55,515,80"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="281,28,362,49,361,54,280,33"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="278,102,361,81,363,86,279,107"/>
 </map>

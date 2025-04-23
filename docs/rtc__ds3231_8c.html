@@ -103,7 +103,7 @@ $(function(){ initResizable(false); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for rtc_ds3231.c:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c__incl.svg" width="523" height="262"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c__incl.svg" width="558" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -136,10 +136,13 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a2c6c198dcdf9a137429432320e626cd0" id="r_a2c6c198dcdf9a137429432320e626cd0"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c6c198dcdf9a137429432320e626cd0">rtc_set_time</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c, uint8_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t minute, uint8_t second)</td></tr>
+<tr class="memdesc:a2c6c198dcdf9a137429432320e626cd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the RTC's date and time, assumes 24h input.  <br /></td></tr>
 <tr class="separator:a2c6c198dcdf9a137429432320e626cd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20e96ec4aa615b2c3921058dc539b14a" id="r_a20e96ec4aa615b2c3921058dc539b14a"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20e96ec4aa615b2c3921058dc539b14a">rtc_update_temp</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c)</td></tr>
+<tr class="memdesc:a20e96ec4aa615b2c3921058dc539b14a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manually updates value in temp register. RTC auto-updates the temp every 64 seconds.  <br /></td></tr>
 <tr class="separator:a20e96ec4aa615b2c3921058dc539b14a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a787d50004f6b318e952f813800188f89" id="r_a787d50004f6b318e952f813800188f89"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a787d50004f6b318e952f813800188f89">rtc_get_temp</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c, float *output)</td></tr>
+<tr class="memdesc:a787d50004f6b318e952f813800188f89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads temp (C) from RTC and writes it to [output].  <br /></td></tr>
 <tr class="separator:a787d50004f6b318e952f813800188f89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a663d94e64990cdf62b9f4f740b94bfab" id="r_a663d94e64990cdf62b9f4f740b94bfab"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a663d94e64990cdf62b9f4f740b94bfab">rtc_get_second</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c, uint8_t *output)</td></tr>
 <tr class="separator:a663d94e64990cdf62b9f4f740b94bfab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,6 +157,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ab763e064ad555e3e2b0f21d4e78c0d76" id="r_ab763e064ad555e3e2b0f21d4e78c0d76"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab763e064ad555e3e2b0f21d4e78c0d76">rtc_get_year</a> (<a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a> *i2c, uint8_t *output)</td></tr>
 <tr class="separator:ab763e064ad555e3e2b0f21d4e78c0d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2bc879008c2614f50a02e24a616673bf" id="r_a2bc879008c2614f50a02e24a616673bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2bc879008c2614f50a02e24a616673bf">rtc_test</a> ()</td></tr>
+<tr class="memdesc:a2bc879008c2614f50a02e24a616673bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test RTC functions.  <br /></td></tr>
 <tr class="separator:a2bc879008c2614f50a02e24a616673bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -347,7 +351,7 @@ Functions</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a4d9ecc8e912cc84cd50c842a8d69e70e_cgraph.svg" width="306" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a4d9ecc8e912cc84cd50c842a8d69e70e_cgraph.svg" width="334" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -373,7 +377,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a50130551fb17b3228d45e86ff7b634c3_cgraph.svg" width="306" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a50130551fb17b3228d45e86ff7b634c3_cgraph.svg" width="334" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -399,7 +403,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a37b2be869bea794d2fdfa8869baaa26d_cgraph.svg" width="320" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a37b2be869bea794d2fdfa8869baaa26d_cgraph.svg" width="351" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -425,7 +429,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a21b982cbe42fb3a2a10755cc9cb1f3f8_cgraph.svg" width="316" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a21b982cbe42fb3a2a10755cc9cb1f3f8_cgraph.svg" width="347" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -452,7 +456,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a663d94e64990cdf62b9f4f740b94bfab_cgraph.svg" width="323" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a663d94e64990cdf62b9f4f740b94bfab_cgraph.svg" width="351" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -475,11 +479,20 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Reads temp (C) from RTC and writes it to [output] Returns 0 on success. </p>
+
+<p>Reads temp (C) from RTC and writes it to [output]. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>I2C Instance </td></tr>
+    <tr><td class="paramname">output</td><td>Temperature in Celsius </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t Status </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a787d50004f6b318e952f813800188f89_cgraph.svg" width="310" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a787d50004f6b318e952f813800188f89_cgraph.svg" width="339" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -505,7 +518,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_ab763e064ad555e3e2b0f21d4e78c0d76_cgraph.svg" width="306" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_ab763e064ad555e3e2b0f21d4e78c0d76_cgraph.svg" width="334" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -553,11 +566,25 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set the RTC's date and time, asumes 24h input. Returns 0 on success </p>
+
+<p>Set the RTC's date and time, assumes 24h input. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>I2C Instance </td></tr>
+    <tr><td class="paramname">year</td><td>Last 2 digits (20XX) </td></tr>
+    <tr><td class="paramname">month</td><td></td></tr>
+    <tr><td class="paramname">day</td><td></td></tr>
+    <tr><td class="paramname">hour</td><td></td></tr>
+    <tr><td class="paramname">minute</td><td></td></tr>
+    <tr><td class="paramname">second</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t Status (0 = success) </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a2c6c198dcdf9a137429432320e626cd0_cgraph.svg" width="294" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a2c6c198dcdf9a137429432320e626cd0_cgraph.svg" width="320" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -576,11 +603,12 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Test RTC functions </p>
+
+<p>Test RTC functions. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a2bc879008c2614f50a02e24a616673bf_cgraph.svg" width="444" height="494"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a2bc879008c2614f50a02e24a616673bf_cgraph.svg" width="482" height="480"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -599,11 +627,19 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Manually updates value in temp register. RTC auto-updates the temp every 64 seconds. Returns 0 on success. </p>
+
+<p>Manually updates value in temp register. RTC auto-updates the temp every 64 seconds. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>I2C Instance </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t Status (0 = success) </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a20e96ec4aa615b2c3921058dc539b14a_cgraph.svg" width="331" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="rtc__ds3231_8c_a20e96ec4aa615b2c3921058dc539b14a_cgraph.svg" width="363" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

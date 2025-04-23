@@ -1,23 +1,23 @@
 <map id="mag_test" name="mag_test">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,132,81,159"/>
-<area shape="rect" id="Node000002" href="$i2c_8c.html#a5d09de7ed47b30c0948eb1f363cb836c" title=" " alt="" coords="139,5,226,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="51,130,82,88,127,42,133,38,136,42,130,46,86,91,55,133"/>
-<area shape="rect" id="Node000003" href="$mag__lis3mdltr_8c.html#ad2342b17e572d323f49fcd1ddad36652" title=" " alt="" coords="138,56,226,83"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="65,129,127,92,137,87,139,92,130,97,68,134"/>
-<area shape="rect" id="Node000006" href="$mag__lis3mdltr_8c.html#a7701b495ff94874c5d3bbd940b8f99ff" title=" " alt="" coords="129,107,236,133"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="81,136,113,130,114,135,82,141"/>
-<area shape="rect" id="Node000007" href="$mag__lis3mdltr_8c.html#a38a61bd16b9dfb232231f3518d803b65" title=" " alt="" coords="140,157,225,184"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="82,150,125,158,124,163,81,155"/>
-<area shape="rect" id="Node000008" href="$mag__lis3mdltr_8c.html#a47dbf866e595e1b959c9da3b594dcc7d" title=" " alt="" coords="140,208,225,235"/>
-<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="68,157,130,194,139,198,137,203,127,198,65,162"/>
-<area shape="rect" id="Node000009" href="$mag__lis3mdltr_8c.html#ae8775374a424d7f7cce47046c180954d" title=" " alt="" coords="140,259,225,285"/>
-<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="55,157,86,199,130,245,136,248,133,253,127,249,82,203,51,161"/>
-<area shape="rect" id="Node000004" href="$i2c_8c.html#afd489cf93d14a907e09132068de8e1c9" title=" " alt="" coords="284,157,437,184"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="215,81,237,92,327,146,324,151,235,97,213,86"/>
-<area shape="rect" id="Node000005" href="$i2c_8c.html#a73f9c3581b5d48d5db9c6c445034a970" title=" " alt="" coords="290,56,431,83"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="227,67,274,67,274,72,227,72"/>
-<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="233,131,297,150,296,155,231,137"/>
-<area shape="poly" id="edge8_Node000007_Node000004" title=" " alt="" coords="225,168,269,168,269,173,225,173"/>
-<area shape="poly" id="edge10_Node000008_Node000004" title=" " alt="" coords="225,207,296,186,297,191,226,212"/>
-<area shape="poly" id="edge12_Node000009_Node000004" title=" " alt="" coords="213,256,235,244,324,191,327,195,237,249,215,260"/>
+<area shape="rect" id="Node000001" title="Tests the mag_lis3mdltr.h functions." alt="" coords="5,129,88,155"/>
+<area shape="rect" id="Node000002" href="$i2c_8c.html#a5d09de7ed47b30c0948eb1f363cb836c" title="Configure i2c0 speed and pins." alt="" coords="149,5,243,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="54,128,86,85,109,61,134,40,142,35,145,39,138,44,113,65,90,89,58,131"/>
+<area shape="rect" id="Node000003" href="$mag__lis3mdltr_8c.html#ad2342b17e572d323f49fcd1ddad36652" title="Configures the Magnetometer for High performance (xyz), data rate of 155Hz, range +/&#45; 4 gauss,..." alt="" coords="147,55,245,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="67,127,135,89,148,83,150,88,137,94,70,132"/>
+<area shape="rect" id="Node000006" href="$mag__lis3mdltr_8c.html#a7701b495ff94874c5d3bbd940b8f99ff" title="Writes the temperature output in Celsius to [output]." alt="" coords="136,104,256,129"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="88,132,122,126,123,132,89,138"/>
+<area shape="rect" id="Node000007" href="$mag__lis3mdltr_8c.html#a38a61bd16b9dfb232231f3518d803b65" title="Writes the x output to [output]." alt="" coords="149,153,243,179"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="89,146,135,154,134,159,88,151"/>
+<area shape="rect" id="Node000008" href="$mag__lis3mdltr_8c.html#a47dbf866e595e1b959c9da3b594dcc7d" title="Writes the y output to [output]." alt="" coords="149,203,243,228"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="71,152,137,188,152,195,150,199,135,192,69,157"/>
+<area shape="rect" id="Node000009" href="$mag__lis3mdltr_8c.html#ae8775374a424d7f7cce47046c180954d" title="Writes the z output to [output]." alt="" coords="149,252,243,277"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="59,153,91,194,113,217,138,237,148,244,145,248,134,241,109,221,87,197,55,157"/>
+<area shape="rect" id="Node000004" href="$i2c_8c.html#afd489cf93d14a907e09132068de8e1c9" title="Write [reg] byte to i2c device and then read [nbytes] from it. Read bytes are stored in [buf]." alt="" coords="304,153,476,179"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="232,78,257,89,358,144,355,149,255,94,229,83"/>
+<area shape="rect" id="Node000005" href="$i2c_8c.html#a73f9c3581b5d48d5db9c6c445034a970" title="Write [reg] and [buf] to i2c device, [reg] is just inserted before [buf]." alt="" coords="311,55,469,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="245,65,297,65,297,70,245,70"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="247,127,326,147,325,152,246,132"/>
+<area shape="poly" id="edge8_Node000007_Node000004" title=" " alt="" coords="244,163,290,163,290,169,244,169"/>
+<area shape="poly" id="edge10_Node000008_Node000004" title=" " alt="" coords="243,201,326,180,327,185,244,206"/>
+<area shape="poly" id="edge12_Node000009_Node000004" title=" " alt="" coords="228,249,255,237,354,183,357,188,257,242,230,254"/>
 </map>

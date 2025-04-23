@@ -95,24 +95,25 @@ $(function(){ initResizable(false); });
   <div class="headertitle"><div class="title">mram.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>MRAM Driver.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;<a class="el" href="stdlib_8h_source.html">stdlib.h</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for mram.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="mram_8h__incl.svg" width="76" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="mram_8h__incl.svg" width="84" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="mram_8h__dep__incl.svg" width="166" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="mram_8h__dep__incl.svg" width="179" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="mram_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a4a29698db5ef031543df84d51da3e16a" id="r_a4a29698db5ef031543df84d51da3e16a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a29698db5ef031543df84d51da3e16a">PICO_DEFAULT_LED_PIN</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:a4a29698db5ef031543df84d51da3e16a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc52a50e07f79a25a6de181238b9d9aa" id="r_abc52a50e07f79a25a6de181238b9d9aa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc52a50e07f79a25a6de181238b9d9aa">SPI_BUS</a>&#160;&#160;&#160;spi1</td></tr>
 <tr class="separator:abc52a50e07f79a25a6de181238b9d9aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b04ec1cde4d3032f558ed8ad05930a4" id="r_a1b04ec1cde4d3032f558ed8ad05930a4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1b04ec1cde4d3032f558ed8ad05930a4">FREQ</a>&#160;&#160;&#160;1000000</td></tr>
@@ -138,6 +139,7 @@ Macros</h2></td></tr>
 <tr class="memitem:ad7f630556c2cd30d8d8976e0f6e7f749" id="r_ad7f630556c2cd30d8d8976e0f6e7f749"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad7f630556c2cd30d8d8976e0f6e7f749">PS</a>&#160;&#160;&#160;0</td></tr>
 <tr class="separator:ad7f630556c2cd30d8d8976e0f6e7f749"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53dec1d28a7c7b24b2d56c058f7e140a" id="r_a53dec1d28a7c7b24b2d56c058f7e140a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53dec1d28a7c7b24b2d56c058f7e140a">WREN</a>&#160;&#160;&#160;0x06</td></tr>
+<tr class="memdesc:a53dec1d28a7c7b24b2d56c058f7e140a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command codes.  <br /></td></tr>
 <tr class="separator:a53dec1d28a7c7b24b2d56c058f7e140a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb229428140f30a6f8b6fa2ebb3fb6f0" id="r_acb229428140f30a6f8b6fa2ebb3fb6f0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb229428140f30a6f8b6fa2ebb3fb6f0">WRDI</a>&#160;&#160;&#160;0x04</td></tr>
 <tr class="separator:acb229428140f30a6f8b6fa2ebb3fb6f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,17 +159,24 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a4fc01d736fe50cf5b977f755b675f11d" id="r_a4fc01d736fe50cf5b977f755b675f11d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4fc01d736fe50cf5b977f755b675f11d">setup</a> ()</td></tr>
+<tr class="memdesc:a4fc01d736fe50cf5b977f755b675f11d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up MRAM device.  <br /></td></tr>
 <tr class="separator:a4fc01d736fe50cf5b977f755b675f11d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52ab33155b91ce8971434bf4e30e4d98" id="r_a52ab33155b91ce8971434bf4e30e4d98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a52ab33155b91ce8971434bf4e30e4d98">send_simple_command</a> (uint8_t cmd)</td></tr>
+<tr class="memdesc:a52ab33155b91ce8971434bf4e30e4d98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a simple spi command to MRAM device.  <br /></td></tr>
 <tr class="separator:a52ab33155b91ce8971434bf4e30e4d98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf250b9b0f8c27f53be224c564477c6b" id="r_abf250b9b0f8c27f53be224c564477c6b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf250b9b0f8c27f53be224c564477c6b">write_bytes</a> (const uint32_t addr, const uint8_t *buf, const uint32_t nbytes)</td></tr>
+<tr class="memdesc:abf250b9b0f8c27f53be224c564477c6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes bytes to the MRAM device.  <br /></td></tr>
 <tr class="separator:abf250b9b0f8c27f53be224c564477c6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45db161cef32bbdd88f049302d198569" id="r_a45db161cef32bbdd88f049302d198569"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a45db161cef32bbdd88f049302d198569">read_bytes</a> (const uint32_t addr, uint8_t *buf, const uint32_t nbytes)</td></tr>
+<tr class="memdesc:a45db161cef32bbdd88f049302d198569"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read bytes from the MRAM device.  <br /></td></tr>
 <tr class="separator:a45db161cef32bbdd88f049302d198569"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b58c15c362ce79fc443a37aac15b21d" id="r_a0b58c15c362ce79fc443a37aac15b21d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b58c15c362ce79fc443a37aac15b21d">mram_testing</a> ()</td></tr>
+<tr class="memdesc:a0b58c15c362ce79fc443a37aac15b21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests functions in <a class="el" href="mram_8h.html" title="MRAM Driver.">mram.h</a>.  <br /></td></tr>
 <tr class="separator:a0b58c15c362ce79fc443a37aac15b21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>MRAM Driver. </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a3780e2fe762dc532df7d0f030b55caa0" name="a3780e2fe762dc532df7d0f030b55caa0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3780e2fe762dc532df7d0f030b55caa0">&#9670;&#160;</a></span>CS</h2>
 
@@ -246,20 +255,6 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">#define PACKET_SIZE&#160;&#160;&#160;8</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a4a29698db5ef031543df84d51da3e16a" name="a4a29698db5ef031543df84d51da3e16a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a29698db5ef031543df84d51da3e16a">&#9670;&#160;</a></span>PICO_DEFAULT_LED_PIN</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PICO_DEFAULT_LED_PIN&#160;&#160;&#160;0</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -432,6 +427,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Command codes. </p>
+
 </div>
 </div>
 <a id="aa10f470e996d0f51210d24f442d25e1e" name="aa10f470e996d0f51210d24f442d25e1e"></a>
@@ -477,10 +474,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Tests functions in <a class="el" href="mram_8h.html" title="MRAM Driver.">mram.h</a>. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="mram_8h_a0b58c15c362ce79fc443a37aac15b21d_cgraph.svg" width="474" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="mram_8h_a0b58c15c362ce79fc443a37aac15b21d_cgraph.svg" width="520" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -509,6 +508,17 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Read bytes from the MRAM device. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>Address in memory </td></tr>
+    <tr><td class="paramname">buf</td><td>Data In Buffer </td></tr>
+    <tr><td class="paramname">nbytes</td><td>Length of Data In Buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int Status </dd></dl>
+
 </div>
 </div>
 <a id="a52ab33155b91ce8971434bf4e30e4d98" name="a52ab33155b91ce8971434bf4e30e4d98"></a>
@@ -526,6 +536,14 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Send a simple spi command to MRAM device. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cmd</td><td>Command Byte </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a4fc01d736fe50cf5b977f755b675f11d" name="a4fc01d736fe50cf5b977f755b675f11d"></a>
@@ -542,6 +560,8 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Set up MRAM device. </p>
 
 </div>
 </div>
@@ -568,10 +588,21 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Writes bytes to the MRAM device. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>Address in memory </td></tr>
+    <tr><td class="paramname">buf</td><td>Data In Buffer </td></tr>
+    <tr><td class="paramname">nbytes</td><td>Length of Data In Buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int Status </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="mram_8h_abf250b9b0f8c27f53be224c564477c6b_cgraph.svg" width="306" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="mram_8h_abf250b9b0f8c27f53be224c564477c6b_cgraph.svg" width="334" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

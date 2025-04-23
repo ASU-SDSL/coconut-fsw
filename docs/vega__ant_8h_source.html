@@ -92,26 +92,28 @@ $(function(){ initResizable(false); });
   <div class="headertitle"><div class="title">vega_ant.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="vega__ant_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef VEGA_ANT_H</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define VEGA_ANT_H</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="simulator_2pico-sdk_2hardware_2i2c_8h.html">hardware/i2c.h</a>&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="gpio_8h.html">hardware/gpio.h</a>&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="drivers_2include_2i2c_8h.html">i2c.h</a>&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;FreeRTOS.h&gt;</span></div>
+<a href="vega__ant_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef VEGA_ANT_H</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define VEGA_ANT_H</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>uint8_t <a class="code hl_function" href="vega__ant_8h.html#a6377b53e9c676bceaa38ec9ddeb7fd28">vega_ant_status</a>(<a class="code hl_typedef" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a>* i2c, uint8_t* output);</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>uint8_t <a class="code hl_function" href="vega__ant_8h.html#a2f0326deb24f883f2cb4288ee52f5981">vega_ant_deploy</a>(<a class="code hl_typedef" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a>* i2c);</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="adrivers_2include_2i2c_8h_html"><div class="ttname"><a href="drivers_2include_2i2c_8h.html">i2c.h</a></div></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="simulator_2pico-sdk_2hardware_2i2c_8h.html">hardware/i2c.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="gpio_8h.html">hardware/gpio.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="drivers_2include_2i2c_8h.html">i2c.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;FreeRTOS.h&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>uint8_t <a class="code hl_function" href="vega__ant_8h.html#a6377b53e9c676bceaa38ec9ddeb7fd28">vega_ant_status</a>(<a class="code hl_typedef" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a>* i2c, uint8_t* output);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>uint8_t <a class="code hl_function" href="vega__ant_8h.html#a2f0326deb24f883f2cb4288ee52f5981">vega_ant_deploy</a>(<a class="code hl_typedef" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a>* i2c);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="adrivers_2include_2i2c_8h_html"><div class="ttname"><a href="drivers_2include_2i2c_8h.html">i2c.h</a></div><div class="ttdoc">Drivers for i2c peripheral devices.</div></div>
 <div class="ttc" id="agpio_8h_html"><div class="ttname"><a href="gpio_8h.html">gpio.h</a></div></div>
 <div class="ttc" id="asimulator_2pico-sdk_2hardware_2i2c_8h_html"><div class="ttname"><a href="simulator_2pico-sdk_2hardware_2i2c_8h.html">i2c.h</a></div></div>
 <div class="ttc" id="asimulator_2pico-sdk_2hardware_2i2c_8h_html_ad8f335db926d38694712398d3e03f317"><div class="ttname"><a href="simulator_2pico-sdk_2hardware_2i2c_8h.html#ad8f335db926d38694712398d3e03f317">i2c_inst_t</a></div><div class="ttdeci">struct i2c_inst i2c_inst_t</div><div class="ttdef"><b>Definition</b> simulator/pico-sdk/hardware/i2c.h:13</div></div>
-<div class="ttc" id="avega__ant_8h_html_a2f0326deb24f883f2cb4288ee52f5981"><div class="ttname"><a href="vega__ant_8h.html#a2f0326deb24f883f2cb4288ee52f5981">vega_ant_deploy</a></div><div class="ttdeci">uint8_t vega_ant_deploy(i2c_inst_t *i2c)</div><div class="ttdef"><b>Definition</b> vega_ant.c:19</div></div>
-<div class="ttc" id="avega__ant_8h_html_a6377b53e9c676bceaa38ec9ddeb7fd28"><div class="ttname"><a href="vega__ant_8h.html#a6377b53e9c676bceaa38ec9ddeb7fd28">vega_ant_status</a></div><div class="ttdeci">uint8_t vega_ant_status(i2c_inst_t *i2c, uint8_t *output)</div><div class="ttdef"><b>Definition</b> vega_ant.c:12</div></div>
+<div class="ttc" id="avega__ant_8h_html_a2f0326deb24f883f2cb4288ee52f5981"><div class="ttname"><a href="vega__ant_8h.html#a2f0326deb24f883f2cb4288ee52f5981">vega_ant_deploy</a></div><div class="ttdeci">uint8_t vega_ant_deploy(i2c_inst_t *i2c)</div><div class="ttdoc">Send command to deploy antennas.</div><div class="ttdef"><b>Definition</b> vega_ant.c:19</div></div>
+<div class="ttc" id="avega__ant_8h_html_a6377b53e9c676bceaa38ec9ddeb7fd28"><div class="ttname"><a href="vega__ant_8h.html#a6377b53e9c676bceaa38ec9ddeb7fd28">vega_ant_status</a></div><div class="ttdeci">uint8_t vega_ant_status(i2c_inst_t *i2c, uint8_t *output)</div><div class="ttdoc">Gets deployment status of antennas.</div><div class="ttdef"><b>Definition</b> vega_ant.c:12</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -1,8 +1,8 @@
 <map id="max17048CellPercentageRaw" name="max17048CellPercentageRaw">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,203,32"/>
-<area shape="rect" id="Node000002" href="$i2c_8c.html#afd489cf93d14a907e09132068de8e1c9" title=" " alt="" coords="470,5,623,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,16,454,16,454,21,203,21"/>
-<area shape="rect" id="Node000003" href="$max17048_8c.html#a4f5e94a7e81b4682c6489f4c07138bda" title=" " alt="" coords="251,31,422,57"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="203,27,235,30,235,36,202,32"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="422,31,454,27,455,32,422,36"/>
+<area shape="rect" id="Node000001" title="Get cell percentage raw (2 bytes)" alt="" coords="5,5,223,31"/>
+<area shape="rect" id="Node000002" href="$i2c_8c.html#afd489cf93d14a907e09132068de8e1c9" title="Write [reg] byte to i2c device and then read [nbytes] from it. Read bytes are stored in [buf]." alt="" coords="507,5,679,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,15,493,15,493,21,223,21"/>
+<area shape="rect" id="Node000003" href="$max17048_8c.html#a4f5e94a7e81b4682c6489f4c07138bda" title=" " alt="" coords="271,31,459,56"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="223,26,258,30,257,35,222,32"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="459,30,493,26,494,32,459,36"/>
 </map>

@@ -4,6 +4,6 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,33,161,28,161,33,127,38"/>
 <area shape="rect" id="Node000004" href="$test_2unit_2utilities_2log_8c.html#ad6da18174ed9892c214e56bac27bfc7f" title=" " alt="" coords="202,55,306,80"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="127,48,189,56,188,62,127,54"/>
-<area shape="rect" id="Node000003" href="$simulator_2drivers_2src_2usb__uart_8c.html#aeeacfdf2d1ad160004870cf65253058f" title=" " alt="" coords="381,5,503,31"/>
+<area shape="rect" id="Node000003" href="$simulator_2drivers_2src_2usb__uart_8c.html#aeeacfdf2d1ad160004870cf65253058f" title="Write bytes to USB." alt="" coords="381,5,503,31"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="333,15,368,15,368,21,333,21"/>
 </map>

@@ -1,5 +1,5 @@
 <map id="max17048CellPercentage" name="max17048CellPercentage">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,176,32"/>
-<area shape="rect" id="Node000002" href="$i2c_8c.html#afd489cf93d14a907e09132068de8e1c9" title=" " alt="" coords="224,5,377,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,16,208,16,208,21,176,21"/>
+<area shape="rect" id="Node000001" title="Get cell percentage." alt="" coords="5,5,195,31"/>
+<area shape="rect" id="Node000002" href="$i2c_8c.html#afd489cf93d14a907e09132068de8e1c9" title="Write [reg] byte to i2c device and then read [nbytes] from it. Read bytes are stored in [buf]." alt="" coords="243,5,415,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,15,229,15,229,21,195,21"/>
 </map>

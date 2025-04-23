@@ -1,9 +1,9 @@
 <map id="radio.h" name="radio.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="128,5,188,32"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,80,100,107"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="141,35,85,73,82,69,138,30"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="124,80,192,107"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="160,33,160,64,155,64,155,33"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="215,80,279,107"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="175,30,222,68,218,72,172,35"/>
+<area shape="rect" id="Node000001" title="Handles radio communication." alt="" coords="129,5,196,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,101,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,33,84,73,81,69,144,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="125,79,200,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="165,31,165,65,160,65,160,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="225,79,295,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="180,29,234,68,231,72,177,33"/>
 </map>
