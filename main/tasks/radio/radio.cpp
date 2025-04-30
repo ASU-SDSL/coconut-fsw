@@ -42,7 +42,8 @@ PhysicalLayer* radio = &radioSX;
 int radio_state_RFM = RADIO_STATE_NO_ATTEMPT; 
 int radio_state_SX = RADIO_STATE_NO_ATTEMPT;
 
-uint8_t radio_transmit_power = 2;
+#define RADIO_POWER(x) (x - 14) 
+uint8_t radio_transmit_power = RADIO_POWER(16); // set power is always +14 dBm
 
 #ifdef __cplusplus
 extern "C"
@@ -315,8 +316,8 @@ void init_radio()
 }
 
 void set_power_output(PhysicalLayer* radio_module, int8_t new_dbm){
-    radio_transmit_power = new_dbm;
-    radio_module->setOutputPower(new_dbm); 
+    radio_transmit_power = RADIO_POWER(new_dbm); 
+    radio_module->setOutputPower(radio_transmit_power); 
 }
 
 
