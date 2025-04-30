@@ -1,6 +1,6 @@
 /**
  * @file miscellaneous_jobs.h
- * @brief This file is used for small jobs that don't deserve their own files
+ * @brief This file is used for small jobs that don't need their own files
  * 
  */
 #pragma once
