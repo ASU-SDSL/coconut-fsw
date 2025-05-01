@@ -1,3 +1,8 @@
+/**
+ * @file steve.h
+ * @brief S.T.E.V.E (Scheduler Task for Executing Vital Events)
+ * 
+ */
 #pragma once
 
 #include <semphr.h>
@@ -9,23 +14,24 @@
 #define SCHEDULER_CHECK_DELAY_TICKS pdMS_TO_TICKS(SCHEDULER_CHECK_DELAY_MS)
 
 // Job Structs and Types
+/// @brief Job function header type 
 typedef void (*job_func)(void*);
 
 typedef struct steve_job {
-    char name[MAX_JOB_NAME_LEN + 1]; // job name for logging purposes
-    TickType_t execute_time; // exact tick when the job will be ran
-    TickType_t recur_time; // how many ticks until the job will recur after execution, null for non-recurring jobs
-    job_func func_ptr; // function ptr that will be called when the job is ran
-    void* arg_data; // data that will be passed to the first argument of the function job
+    char name[MAX_JOB_NAME_LEN + 1]; ///< job name for logging purposes
+    TickType_t execute_time; ///< exact tick when the job will be ran
+    TickType_t recur_time; ///< how many ticks until the job will recur after execution, null for non-recurring jobs
+    job_func func_ptr; ///< function ptr that will be called when the job is ran
+    void* arg_data; ///< data that will be passed to the first argument of the function job
 } steve_job_t;
 
 typedef struct steve_context {
-    steve_job_t* jobs[MAX_JOBS]; // global storage for scheduler jobs
-    size_t job_count; // amount of jobs currently allocated
+    steve_job_t* jobs[MAX_JOBS]; ///< global storage for scheduler jobs
+    size_t job_count; ///< amount of jobs currently allocated
     SemaphoreHandle_t mutex;
 } steve_context_t;
 
-// Global Scheduler Context
+/// Global Scheduler Context
 steve_context_t g_steve_context;
 
 

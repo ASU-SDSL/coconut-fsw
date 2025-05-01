@@ -322,7 +322,7 @@ void set_power_output(PhysicalLayer* radio_module, int8_t new_dbm){
 
 
 /**
- * Monitor radio, write to SD card, and send stuff when needed
+ * Monitor radio and send stuff when needed
  */
 void radio_task_cpp(){
     #if RADIO_LOGGING
