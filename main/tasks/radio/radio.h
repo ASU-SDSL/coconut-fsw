@@ -55,6 +55,7 @@
 
 QueueHandle_t radio_queue;
 
+/// @brief Radio operation types for use in radio_queue_operations_t in the radio_queue
 typedef enum radio_operation_type {
     TRANSMIT,
     SET_OUTPUT_POWER,
@@ -63,10 +64,11 @@ typedef enum radio_operation_type {
     RETURN_STATS,
 } radio_operation_type_t;
 
+/// @brief Radio operation to be added to the radio_queue
 typedef struct radio_queue_operations {
-    radio_operation_type_t operation_type; // What operation to do, could be transmit, set power, etc
-    uint8_t* data_buffer; // If extra data is needed for this operation, like if the operation is transmit then the data will be the buffer to transmit
-    size_t data_size; // Could be 0
+    radio_operation_type_t operation_type; ///< What operation does, could be transmit, set power, etc
+    uint8_t* data_buffer; ///< If extra data is needed for this operation, for example if the operation is transmit then the data will be the buffer to transmit
+    size_t data_size; ///< Could be 0
 } radio_queue_operations_t;
 
 /* C FUNC DECLARATIONS */
@@ -100,8 +102,12 @@ extern "C"
 
     /**
      * @brief Changes the transmit power used by the radios
+     * The RFM98PW includes and offset of +14dBm to what it is set at
+     * so this function will subtract 14 from the given parameter to 
+     * accurately produce the output power. This increases the minimum allowed 
+     * dBm by 14 as well 
      * 
-     * @param output_power New output power in dB 
+     * @param output_power New output power in dB
      */
     void radio_set_transmit_power(uint8_t output_power);
     
