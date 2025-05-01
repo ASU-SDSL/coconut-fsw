@@ -128,7 +128,7 @@
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="telemetry_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000008"><a xlink:href="telemetry_8h.html" target="_top" xlink:title="Functions for packaging and queuing telemetry packets for sending.">
 <polygon fill="white" stroke="#666666" points="245,-74 173,-74 173,-55 245,-55 245,-74"/>
 <text text-anchor="middle" x="209" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">telemetry.h</text>
 </a>
@@ -308,7 +308,7 @@
 <!-- Node30 -->
 <g id="Node000030" class="node">
 <title>Node30</title>
-<g id="a_Node000030"><a xlink:href="ds18b20_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000030"><a xlink:href="ds18b20_8h.html" target="_top" xlink:title="Driver for PIO Onewire DS18B20 Temperature Sensors.">
 <polygon fill="white" stroke="#666666" points="1198.5,-239 1131.5,-239 1131.5,-220 1198.5,-220 1198.5,-239"/>
 <text text-anchor="middle" x="1165" y="-227" font-family="Helvetica,sans-Serif" font-size="10.00">ds18b20.h</text>
 </a>
@@ -623,7 +623,7 @@
 <!-- Node24 -->
 <g id="Node000024" class="node">
 <title>Node24</title>
-<g id="a_Node000024"><a xlink:href="command_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000024"><a xlink:href="command_8h.html" target="_top" xlink:title="Handles decoding and triggering responses to received commands.">
 <polygon fill="white" stroke="#666666" points="581,-184 507,-184 507,-165 581,-165 581,-184"/>
 <text text-anchor="middle" x="544" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">command.h</text>
 </a>
@@ -704,7 +704,7 @@
 <!-- Node27 -->
 <g id="Node000027" class="node">
 <title>Node27</title>
-<g id="a_Node000027"><a xlink:href="filesystem_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000027"><a xlink:href="filesystem_8h.html" target="_top" xlink:title="Handles file system operations and management.">
 <polygon fill="white" stroke="#666666" points="448.5,-74 371.5,-74 371.5,-55 448.5,-55 448.5,-74"/>
 <text text-anchor="middle" x="410" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">filesystem.h</text>
 </a>

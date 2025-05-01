@@ -95,17 +95,20 @@ $(function(){ initResizable(false); });
   <div class="headertitle"><div class="title">watchdog.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Watchdog management functions.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;FreeRTOS.h&quot;</code><br />
 <code>#include &lt;task.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for watchdog.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="watchdog_8h__incl.svg" width="187" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="watchdog_8h__incl.svg" width="195" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="watchdog_8h__dep__incl.svg" width="298" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="watchdog_8h__dep__incl.svg" width="320" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="watchdog_8h_source.html">Go to the source code of this file.</a></p>
@@ -113,16 +116,21 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:acebf79aaf42978286eec0c3e016d7b0a" id="r_acebf79aaf42978286eec0c3e016d7b0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acebf79aaf42978286eec0c3e016d7b0a">watchdog_freeze</a> ()</td></tr>
+<tr class="memdesc:acebf79aaf42978286eec0c3e016d7b0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Task that controls the resetting of the hardware watchdog - MAX706RESA - this module needs to be reset (GPIO toggled) within 1.6s with 100ns minimum pulse Any task can send this task a signal to stop reseting the watchdog, causing a simple processor reboot.  <br /></td></tr>
 <tr class="separator:acebf79aaf42978286eec0c3e016d7b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a594dbd14874f83f5660ab7210cc6ac1e" id="r_a594dbd14874f83f5660ab7210cc6ac1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a594dbd14874f83f5660ab7210cc6ac1e">watchdog_task</a> (void *pvParameters)</td></tr>
+<tr class="memdesc:a594dbd14874f83f5660ab7210cc6ac1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the watchdog reset loop and will stop if given the freeze signal from the watchdog_freeze function.  <br /></td></tr>
 <tr class="separator:a594dbd14874f83f5660ab7210cc6ac1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:afc61aa8b5a0056949c7a3cf2c1d0d436" id="r_afc61aa8b5a0056949c7a3cf2c1d0d436"><td class="memItemLeft" align="right" valign="top">TaskHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc61aa8b5a0056949c7a3cf2c1d0d436">xWatchdogTaskHandler</a></td></tr>
+<tr class="memdesc:afc61aa8b5a0056949c7a3cf2c1d0d436"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores instance of this task, assigned in <a class="el" href="main_8c.html">main.c</a> and used for notifications (similar to binary semaphores)  <br /></td></tr>
 <tr class="separator:afc61aa8b5a0056949c7a3cf2c1d0d436"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Watchdog management functions. </p>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="acebf79aaf42978286eec0c3e016d7b0a" name="acebf79aaf42978286eec0c3e016d7b0a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acebf79aaf42978286eec0c3e016d7b0a">&#9670;&#160;</a></span>watchdog_freeze()</h2>
 
@@ -137,6 +145,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Task that controls the resetting of the hardware watchdog - MAX706RESA - this module needs to be reset (GPIO toggled) within 1.6s with 100ns minimum pulse Any task can send this task a signal to stop reseting the watchdog, causing a simple processor reboot. </p>
 
 </div>
 </div>
@@ -155,6 +165,8 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Runs the watchdog reset loop and will stop if given the freeze signal from the watchdog_freeze function. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
@@ -169,6 +181,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Stores instance of this task, assigned in <a class="el" href="main_8c.html">main.c</a> and used for notifications (similar to binary semaphores) </p>
 
 </div>
 </div>

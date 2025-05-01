@@ -143,7 +143,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:af0ecc74e51dbb7c5bdb5d2bfc4a7a0b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a message to the radio queue to be transmitted.  <br /></td></tr>
 <tr class="separator:af0ecc74e51dbb7c5bdb5d2bfc4a7a0b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a610ddc33ff0f6388cea252fb357dc990" id="r_a610ddc33ff0f6388cea252fb357dc990"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a610ddc33ff0f6388cea252fb357dc990">radio_set_transmit_power</a> (uint8_t output_power)</td></tr>
-<tr class="memdesc:a610ddc33ff0f6388cea252fb357dc990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the transmit power used by the radios.  <br /></td></tr>
+<tr class="memdesc:a610ddc33ff0f6388cea252fb357dc990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the transmit power used by the radios The RFM98PW includes and offset of +14dBm to what it is set at so this function will subtract 14 from the given parameter to accurately produce the output power. This increases the minimum allowed dBm by 14 as well.  <br /></td></tr>
 <tr class="separator:a610ddc33ff0f6388cea252fb357dc990"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4fc5d140cd46c3db7b311a67d236deb" id="r_ab4fc5d140cd46c3db7b311a67d236deb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4fc5d140cd46c3db7b311a67d236deb">radio_set_module</a> (<a class="el" href="tasks_2radio_2radio_8h.html#ace0b4fef871cb7679e839891a34882dd">radio_operation_type_t</a> op)</td></tr>
 <tr class="memdesc:ab4fc5d140cd46c3db7b311a67d236deb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a change radio module being used operation to the radio queue.  <br /></td></tr>
@@ -576,7 +576,7 @@ Here is the call graph for this function:</div>
 <p>Adds a change radio module being used operation to the radio queue. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">op</td><td><a class="el" href="tasks_2radio_2radio_8h.html#aa1711059a24c5fcd007f25e8b2563bbd">radio_queue_operations_t</a> with operation_type of ENABLE_RFM98 or ENABLE_SX1268 </td></tr>
+    <tr><td class="paramname">op</td><td><a class="el" href="tasks_2radio_2radio_8h.html#aa1711059a24c5fcd007f25e8b2563bbd" title="Radio operation to be added to the radio_queue.">radio_queue_operations_t</a> with operation_type of ENABLE_RFM98 or ENABLE_SX1268 </td></tr>
   </table>
   </dd>
 </dl>
@@ -598,7 +598,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Changes the transmit power used by the radios. </p>
+<p>Changes the transmit power used by the radios The RFM98PW includes and offset of +14dBm to what it is set at so this function will subtract 14 from the given parameter to accurately produce the output power. This increases the minimum allowed dBm by 14 as well. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">output_power</td><td>New output power in dB </td></tr>
@@ -654,7 +654,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p>The implementation of the radio task function (Linked to C by <a class="el" href="tasks_2radio_2radio_8h.html#a59a92112128a733a637390e350d2d16b" title="C Linkage for radio task function (cpp version is radio_task_cpp())">radio_task()</a>) </p>
-<p>Monitor radio, write to SD card, and send stuff when needed </p>
+<p>Monitor radio and send stuff when needed </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

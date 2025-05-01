@@ -1,15 +1,15 @@
 <map id="i2c.c" name="i2c.c">
-<area shape="rect" id="Node000001" title=" " alt="" coords="94,5,144,32"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="58,80,108,107"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,34,99,67,94,65,111,31"/>
-<area shape="rect" id="Node000003" href="$log_8h.html" title=" " alt="" coords="132,80,181,107"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="128,31,146,65,141,68,123,34"/>
-<area shape="rect" id="Node000004" href="$telemetry_8h.html" title=" " alt="" coords="62,155,147,181"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="150,109,124,144,120,141,145,106"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="171,155,246,181"/>
-<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="168,106,193,141,189,144,163,109"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="5,229,100,256"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="98,183,72,218,68,215,93,180"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="124,229,192,256"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="116,180,142,215,137,218,112,183"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="98,5,150,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="59,79,112,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,32,100,68,96,65,115,30"/>
+<area shape="rect" id="Node000003" href="$log_8h.html" title=" " alt="" coords="137,79,191,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="133,30,153,65,148,68,128,32"/>
+<area shape="rect" id="Node000004" href="$telemetry_8h.html" title="Functions for packaging and queuing telemetry packets for sending." alt="" coords="60,152,156,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="157,106,128,143,123,140,153,103"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="180,152,263,177"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="176,103,205,139,201,143,171,106"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,225,101,251"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="101,179,73,216,68,213,97,176"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="125,225,200,251"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="119,176,148,213,143,216,115,179"/>
 </map>

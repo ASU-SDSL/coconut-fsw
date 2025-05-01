@@ -92,28 +92,30 @@ $(function(){ initResizable(false); });
   <div class="headertitle"><div class="title">ds18b20.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="ds18b20_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="stdlib_8h.html">pico/stdlib.h</a>&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;pico/binary_info.h&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<a href="ds18b20_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">// eps one wire romcodes </span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">// addresss for pio library </span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">// (reversed of what was found bit bang)        // bit banged addresses</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="ds18b20_8h.html#ae7ade73278da5f29684fd682ec3ed6bb">   10</a></span><span class="preprocessor">#define DS18B_ROMCODE_U100 0xCF00000FD8AF0A28   </span><span class="comment">// 28 0A AF D8 0F 00 00 CF</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="ds18b20_8h.html#abcfdbafbb600fe84572233fd179f43a0">   11</a></span><span class="preprocessor">#define DS18B_ROMCODE_U102 0x2600000FD8AF1C28   </span><span class="comment">// 28 1C AF D8 0F 00 00 26</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="ds18b20_8h.html#af67342a212ebdbb5a036694e4c0fe195">   12</a></span><span class="preprocessor">#define DS18B_ROMCODE_U104 0x6C00000FD8AF1128   </span><span class="comment">// 28 11 AF D8 0F 00 00 6C</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>uint8_t <a class="code hl_function" href="ds18b20_8h.html#a77ee2f32d90e72a84b5dcddf9f4222c4">onewire_init</a>();</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>uint8_t <a class="code hl_function" href="ds18b20_8h.html#ac28489af27a9b70d2c7a03eb35617bea">ds18b20_start_conversion</a>(); </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>int16_t <a class="code hl_function" href="ds18b20_8h.html#a5f77a33a7d9243a4c2035db0e66a7eb7">ds18b20_read_temp</a>(uint64_t romcode); </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keywordtype">void</span> <a class="code hl_function" href="ds18b20_8h.html#a846305b21f5e58359bea3b8f9f79773a">ds18b20_test</a>(); </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="stdlib_8h.html">pico/stdlib.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;pico/binary_info.h&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">// eps one wire romcodes </span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// addresss for pio library </span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">// (reversed of what was found bit bang)        // bit banged addresses</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="ds18b20_8h.html#ae7ade73278da5f29684fd682ec3ed6bb">   16</a></span><span class="preprocessor">#define DS18B_ROMCODE_U100 0xCF00000FD8AF0A28   </span><span class="comment">// 28 0A AF D8 0F 00 00 CF</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="ds18b20_8h.html#abcfdbafbb600fe84572233fd179f43a0">   17</a></span><span class="preprocessor">#define DS18B_ROMCODE_U102 0x2600000FD8AF1C28   </span><span class="comment">// 28 1C AF D8 0F 00 00 26</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="ds18b20_8h.html#af67342a212ebdbb5a036694e4c0fe195">   18</a></span><span class="preprocessor">#define DS18B_ROMCODE_U104 0x6C00000FD8AF1128   </span><span class="comment">// 28 11 AF D8 0F 00 00 6C</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>uint8_t <a class="code hl_function" href="ds18b20_8h.html#a77ee2f32d90e72a84b5dcddf9f4222c4">onewire_init</a>();</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>uint8_t <a class="code hl_function" href="ds18b20_8h.html#ac28489af27a9b70d2c7a03eb35617bea">ds18b20_start_conversion</a>(); </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>int16_t <a class="code hl_function" href="ds18b20_8h.html#a5f77a33a7d9243a4c2035db0e66a7eb7">ds18b20_read_temp</a>(uint64_t romcode); </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keywordtype">void</span> <a class="code hl_function" href="ds18b20_8h.html#a9f12d0ab8eaacfce053804381a428ea5">ds18b20_scan</a>(); </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keywordtype">void</span> <a class="code hl_function" href="ds18b20_8h.html#a846305b21f5e58359bea3b8f9f79773a">ds18b20_test</a>(); </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keywordtype">void</span> <a class="code hl_function" href="ds18b20_8h.html#a9f12d0ab8eaacfce053804381a428ea5">ds18b20_scan</a>(); </div>
 <div class="ttc" id="ads18b20_8h_html_a5f77a33a7d9243a4c2035db0e66a7eb7"><div class="ttname"><a href="ds18b20_8h.html#a5f77a33a7d9243a4c2035db0e66a7eb7">ds18b20_read_temp</a></div><div class="ttdeci">int16_t ds18b20_read_temp(uint64_t romcode)</div><div class="ttdoc">Reads the temperature from a ds18b20 This requires waiting for that conversion to finish,...</div><div class="ttdef"><b>Definition</b> ds18b20.c:66</div></div>
 <div class="ttc" id="ads18b20_8h_html_a77ee2f32d90e72a84b5dcddf9f4222c4"><div class="ttname"><a href="ds18b20_8h.html#a77ee2f32d90e72a84b5dcddf9f4222c4">onewire_init</a></div><div class="ttdeci">uint8_t onewire_init()</div><div class="ttdoc">Initializes the PIO block to be a OneWire bus.</div><div class="ttdef"><b>Definition</b> ds18b20.c:38</div></div>
 <div class="ttc" id="ads18b20_8h_html_a846305b21f5e58359bea3b8f9f79773a"><div class="ttname"><a href="ds18b20_8h.html#a846305b21f5e58359bea3b8f9f79773a">ds18b20_test</a></div><div class="ttdeci">void ds18b20_test()</div><div class="ttdoc">Test function for ds18b20.</div><div class="ttdef"><b>Definition</b> ds18b20.c:153</div></div>

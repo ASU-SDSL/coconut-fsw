@@ -1,5 +1,5 @@
 <map id="heartbeat_telemetry_job" name="heartbeat_telemetry_job">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,597,188,623"/>
+<area shape="rect" id="Node000001" title="Collects sensor information and transmits it as a heartbeat packet." alt="" coords="5,597,188,623"/>
 <area shape="rect" id="Node000002" href="$ina219_8c.html#a9ffe93da633c2f6008fac2f2da36ab72" title="Configures the EPS by writing to the configuration register (0x00) Config register value taken from A..." alt="" coords="531,29,593,55"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,597,109,492,136,330,154,245,177,168,203,105,218,81,234,64,267,42,303,28,342,19,381,15,457,18,518,28,517,34,456,23,381,20,343,24,305,33,270,47,238,68,222,85,208,108,182,170,160,246,141,331,114,493,102,597"/>
 <area shape="rect" id="Node000004" href="$ds18b20_8c.html#a5f77a33a7d9243a4c2035db0e66a7eb7" title="Reads the temperature from a ds18b20 This requires waiting for that conversion to finish,..." alt="" coords="255,967,409,992"/>

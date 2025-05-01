@@ -4,7 +4,7 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="34,1433,161,899,166,900,40,1434"/>
 <area shape="rect" id="Node000046" href="$filesystem_8c.html#a73f4c05620eb3111fa320fe7fa6c5609" title=" " alt="" coords="108,1373,233,1398"/>
 <area shape="poly" id="edge31_Node000001_Node000046" title=" " alt="" coords="59,1432,127,1401,130,1406,61,1437"/>
-<area shape="rect" id="Node000056" href="$gse_8c.html#adc9941bea1763f7fa0e63895359daf4b" title=" " alt="" coords="131,1533,211,1558"/>
+<area shape="rect" id="Node000056" href="$gse_8c.html#adc9941bea1763f7fa0e63895359daf4b" title="GSE Task main function." alt="" coords="131,1533,211,1558"/>
 <area shape="poly" id="edge41_Node000001_Node000056" title=" " alt="" coords="53,1457,142,1522,139,1527,50,1462"/>
 <area shape="rect" id="Node000059" href="$radio_8cpp.html#a59a92112128a733a637390e350d2d16b" title="C Linkage for radio task function (cpp version is radio_task_cpp())" alt="" coords="125,535,216,561"/>
 <area shape="poly" id="edge44_Node000001_Node000059" title=" " alt="" coords="33,1434,57,1205,79,1029,105,848,135,692,161,574,166,575,140,693,111,848,84,1030,62,1205,38,1434"/>
@@ -12,7 +12,7 @@
 <area shape="poly" id="edge47_Node000001_Node000069" title=" " alt="" coords="38,1432,68,1377,121,1297,154,1253,192,1210,234,1170,280,1135,310,1121,312,1126,283,1140,238,1174,196,1213,159,1256,125,1300,73,1380,43,1435"/>
 <area shape="rect" id="Node000105" href="$telemetry_8c.html#a4b6f80453fccd49ceedb1296e14b1bee" title=" " alt="" coords="110,1582,231,1607"/>
 <area shape="poly" id="edge57_Node000001_Node000105" title=" " alt="" coords="41,1459,66,1511,85,1541,110,1567,117,1573,114,1577,106,1571,81,1544,61,1513,36,1461"/>
-<area shape="rect" id="Node000109" href="$watchdog_8c.html#a594dbd14874f83f5660ab7210cc6ac1e" title=" " alt="" coords="111,1631,231,1657"/>
+<area shape="rect" id="Node000109" href="$watchdog_8c.html#a594dbd14874f83f5660ab7210cc6ac1e" title="Runs the watchdog reset loop and will stop if given the freeze signal from the watchdog_freeze functi..." alt="" coords="111,1631,231,1657"/>
 <area shape="poly" id="edge60_Node000001_Node000109" title=" " alt="" coords="39,1459,46,1491,59,1533,80,1577,110,1617,116,1622,112,1626,106,1621,75,1580,54,1535,41,1492,34,1460"/>
 <area shape="rect" id="Node000110" href="$command__fuzzer_8cpp.html#a713515efde98e3f81d7e857c31f81919" title=" " alt="" coords="119,1681,222,1706"/>
 <area shape="poly" id="edge61_Node000001_Node000110" title=" " alt="" coords="37,1459,42,1499,53,1554,75,1613,91,1641,110,1666,115,1671,111,1675,106,1670,86,1644,70,1616,48,1555,36,1499,32,1460"/>
@@ -50,11 +50,11 @@
 <area shape="poly" id="edge23_Node000003_Node000032" title=" " alt="" coords="373,546,386,499,411,430,429,393,451,357,477,323,508,294,515,289,518,293,511,298,481,327,455,360,433,396,416,432,391,500,378,548"/>
 <area shape="rect" id="Node000033" href="$radio_8cpp.html#ab4fc5d140cd46c3db7b311a67d236deb" title="Adds a change radio module being used operation to the radio queue." alt="" coords="540,309,679,334"/>
 <area shape="poly" id="edge24_Node000003_Node000033" title=" " alt="" coords="375,546,390,507,418,452,457,394,481,367,508,345,526,334,529,339,511,349,485,371,461,397,422,455,395,509,380,548"/>
-<area shape="rect" id="Node000034" href="$radio_8cpp.html#a610ddc33ff0f6388cea252fb357dc990" title="Changes the transmit power used by the radios." alt="" coords="537,359,681,399"/>
+<area shape="rect" id="Node000034" href="$radio_8cpp.html#a610ddc33ff0f6388cea252fb357dc990" title="Changes the transmit power used by the radios The RFM98PW includes and offset of +14dBm to what it is..." alt="" coords="537,359,681,399"/>
 <area shape="poly" id="edge25_Node000003_Node000034" title=" " alt="" coords="379,546,428,481,465,442,508,408,523,400,526,405,511,413,469,446,432,484,383,549"/>
 <area shape="rect" id="Node000035" href="$steve_8c.html#acc0bfad0acf234b4903c832955b29767" title=" " alt="" coords="513,1027,706,1053"/>
 <area shape="poly" id="edge26_Node000003_Node000035" title=" " alt="" coords="377,572,388,637,412,737,429,794,452,852,479,909,511,961,541,993,575,1018,572,1022,538,997,507,964,474,911,447,854,424,795,406,738,383,638,372,573"/>
-<area shape="rect" id="Node000037" href="$set__rtc__job_8c.html#af31d3e6e7b984cd9aca01db95eac999a" title=" " alt="" coords="563,423,656,449"/>
+<area shape="rect" id="Node000037" href="$set__rtc__job_8c.html#af31d3e6e7b984cd9aca01db95eac999a" title="Set the real time clock to the given time." alt="" coords="563,423,656,449"/>
 <area shape="poly" id="edge30_Node000003_Node000037" title=" " alt="" coords="385,545,436,502,471,478,508,458,548,444,550,449,510,462,474,483,439,506,388,549"/>
 <area shape="poly" id="edge4_Node000004_Node000011" title=" " alt="" coords="650,537,765,551,764,556,650,542"/>
 <area shape="poly" id="edge8_Node000018_Node000017" title=" " alt="" coords="658,729,760,716,760,722,659,734"/>
@@ -106,7 +106,7 @@
 <area shape="rect" id="Node000102" href="$steve_8c.html#a42627e02f5c86446dbe0cbbae5f87fe6" title=" " alt="" coords="553,1274,666,1299"/>
 <area shape="poly" id="edge54_Node000069_Node000102" title=" " alt="" coords="419,1115,442,1122,463,1135,476,1151,484,1167,488,1199,492,1230,499,1245,511,1259,541,1276,538,1280,508,1263,494,1248,487,1232,483,1200,479,1169,472,1154,460,1139,440,1127,417,1120"/>
 <area shape="poly" id="edge55_Node000102_Node000029" title=" " alt="" coords="665,1275,708,1259,758,1223,797,1184,800,1188,761,1227,711,1264,667,1280"/>
-<area shape="rect" id="Node000106" href="$gse_8c.html#a07a7ef3b41255450f286364cc3668e54" title=" " alt="" coords="292,1693,451,1718"/>
+<area shape="rect" id="Node000106" href="$gse_8c.html#a07a7ef3b41255450f286364cc3668e54" title="Adds a message to the GSE queue for transmission over the hardline." alt="" coords="292,1693,451,1718"/>
 <area shape="poly" id="edge58_Node000105_Node000106" title=" " alt="" coords="215,1605,235,1617,251,1633,259,1649,268,1664,283,1678,296,1685,293,1690,280,1682,264,1667,255,1651,246,1636,232,1621,213,1610"/>
 <area shape="rect" id="Node000108" href="$test_2unit_2utilities_2log_8c.html#ad6da18174ed9892c214e56bac27bfc7f" title=" " alt="" coords="319,1742,423,1767"/>
 <area shape="poly" id="edge59_Node000105_Node000108" title=" " alt="" coords="219,1605,235,1617,247,1631,254,1646,259,1675,265,1703,271,1716,283,1729,307,1743,305,1747,280,1733,267,1719,260,1704,254,1676,249,1648,243,1634,232,1621,216,1610"/>

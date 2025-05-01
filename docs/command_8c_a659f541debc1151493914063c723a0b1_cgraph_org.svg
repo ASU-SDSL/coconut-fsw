@@ -327,7 +327,7 @@
 <!-- Node32 -->
 <g id="Node000032" class="node">
 <title>Node32</title>
-<g id="a_Node000032"><a xlink:href="radio_8cpp.html#a610ddc33ff0f6388cea252fb357dc990" target="_top" xlink:title="Changes the transmit power used by the radios.">
+<g id="a_Node000032"><a xlink:href="radio_8cpp.html#a610ddc33ff0f6388cea252fb357dc990" target="_top" xlink:title="Changes the transmit power used by the radios The RFM98PW includes and offset of +14dBm to what it is...">
 <polygon fill="white" stroke="#666666" points="300,-104.5 192,-104.5 192,-74.5 300,-74.5 300,-104.5"/>
 <text text-anchor="start" x="200" y="-92.5" font-family="Helvetica,sans-Serif" font-size="10.00">radio_set_transmit</text>
 <text text-anchor="middle" x="246" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">_power</text>
@@ -364,7 +364,7 @@
 <!-- Node35 -->
 <g id="Node000035" class="node">
 <title>Node35</title>
-<g id="a_Node000035"><a xlink:href="set__rtc__job_8c.html#af31d3e6e7b984cd9aca01db95eac999a" target="_top" xlink:title=" ">
+<g id="a_Node000035"><a xlink:href="set__rtc__job_8c.html#af31d3e6e7b984cd9aca01db95eac999a" target="_top" xlink:title="Set the real time clock to the given time.">
 <polygon fill="white" stroke="#666666" points="281,-56 211,-56 211,-37 281,-37 281,-56"/>
 <text text-anchor="middle" x="246" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">set_rtc_job</text>
 </a>
@@ -418,7 +418,7 @@
 <!-- Node43 -->
 <g id="Node000043" class="node">
 <title>Node43</title>
-<g id="a_Node000043"><a xlink:href="watchdog_8c.html#acebf79aaf42978286eec0c3e016d7b0a" target="_top" xlink:title=" ">
+<g id="a_Node000043"><a xlink:href="watchdog_8c.html#acebf79aaf42978286eec0c3e016d7b0a" target="_top" xlink:title="Task that controls the resetting of the hardware watchdog &#45; MAX706RESA &#45; this module needs to be rese...">
 <polygon fill="white" stroke="#666666" points="296,-19 196,-19 196,0 296,0 296,-19"/>
 <text text-anchor="middle" x="246" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">watchdog_freeze</text>
 </a>

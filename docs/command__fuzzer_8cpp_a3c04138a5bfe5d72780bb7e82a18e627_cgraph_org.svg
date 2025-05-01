@@ -453,7 +453,7 @@
 <!-- Node35 -->
 <g id="Node000035" class="node">
 <title>Node35</title>
-<g id="a_Node000035"><a xlink:href="radio_8cpp.html#a610ddc33ff0f6388cea252fb357dc990" target="_top" xlink:title="Changes the transmit power used by the radios.">
+<g id="a_Node000035"><a xlink:href="radio_8cpp.html#a610ddc33ff0f6388cea252fb357dc990" target="_top" xlink:title="Changes the transmit power used by the radios The RFM98PW includes and offset of +14dBm to what it is...">
 <polygon fill="white" stroke="#666666" points="684,-980.5 576,-980.5 576,-950.5 684,-950.5 684,-980.5"/>
 <text text-anchor="start" x="584" y="-968.5" font-family="Helvetica,sans-Serif" font-size="10.00">radio_set_transmit</text>
 <text text-anchor="middle" x="630" y="-957.5" font-family="Helvetica,sans-Serif" font-size="10.00">_power</text>
@@ -490,7 +490,7 @@
 <!-- Node38 -->
 <g id="Node000038" class="node">
 <title>Node38</title>
-<g id="a_Node000038"><a xlink:href="set__rtc__job_8c.html#af31d3e6e7b984cd9aca01db95eac999a" target="_top" xlink:title=" ">
+<g id="a_Node000038"><a xlink:href="set__rtc__job_8c.html#af31d3e6e7b984cd9aca01db95eac999a" target="_top" xlink:title="Set the real time clock to the given time.">
 <polygon fill="#fff0f0" stroke="red" points="665,-932 595,-932 595,-913 665,-913 665,-932"/>
 <text text-anchor="middle" x="630" y="-920" font-family="Helvetica,sans-Serif" font-size="10.00">set_rtc_job</text>
 </a>
@@ -544,7 +544,7 @@
 <!-- Node46 -->
 <g id="Node000046" class="node">
 <title>Node46</title>
-<g id="a_Node000046"><a xlink:href="watchdog_8c.html#acebf79aaf42978286eec0c3e016d7b0a" target="_top" xlink:title=" ">
+<g id="a_Node000046"><a xlink:href="watchdog_8c.html#acebf79aaf42978286eec0c3e016d7b0a" target="_top" xlink:title="Task that controls the resetting of the hardware watchdog &#45; MAX706RESA &#45; this module needs to be rese...">
 <polygon fill="white" stroke="#666666" points="680,-818 580,-818 580,-799 680,-799 680,-818"/>
 <text text-anchor="middle" x="630" y="-806" font-family="Helvetica,sans-Serif" font-size="10.00">watchdog_freeze</text>
 </a>
@@ -976,7 +976,7 @@
 <!-- Node97 -->
 <g id="Node000097" class="node">
 <title>Node97</title>
-<g id="a_Node000097"><a xlink:href="gse_8c.html#a07a7ef3b41255450f286364cc3668e54" target="_top" xlink:title=" ">
+<g id="a_Node000097"><a xlink:href="gse_8c.html#a07a7ef3b41255450f286364cc3668e54" target="_top" xlink:title="Adds a message to the GSE queue for transmission over the hardline.">
 <polygon fill="#fff0f0" stroke="red" points="509,-131 390,-131 390,-112 509,-112 509,-131"/>
 <text text-anchor="middle" x="449.5" y="-119" font-family="Helvetica,sans-Serif" font-size="10.00">gse_queue_message</text>
 </a>

@@ -1,5 +1,5 @@
 <map id="telemetry.h" name="telemetry.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="843,5,939,31"/>
+<area shape="rect" id="Node000001" title="Functions for packaging and queuing telemetry packets for sending." alt="" coords="843,5,939,31"/>
 <area shape="rect" id="Node000002" href="$command__fuzzer_8cpp.html" title=" " alt="" coords="104,152,264,177"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="829,21,732,23,609,31,473,49,405,63,340,81,299,97,260,117,201,154,198,150,258,112,297,92,338,76,404,58,473,44,609,26,732,17,829,16"/>
 <area shape="rect" id="Node000003" href="$hb__tlm__log_8h.html" title=" " alt="" coords="351,79,457,104"/>

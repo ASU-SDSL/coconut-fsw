@@ -392,7 +392,7 @@ var sectionId = 'dynsection-1';
 <!-- Node33 -->
 <g id="Node000033" class="node">
 <title>Node33</title>
-<g id="a_Node000033"><a xlink:href="radio_8cpp.html#a610ddc33ff0f6388cea252fb357dc990" target="_top" xlink:title="Changes the transmit power used by the radios.">
+<g id="a_Node000033"><a xlink:href="radio_8cpp.html#a610ddc33ff0f6388cea252fb357dc990" target="_top" xlink:title="Changes the transmit power used by the radios The RFM98PW includes and offset of +14dBm to what it is...">
 <polygon fill="white" stroke="#666666" points="428,-104.5 320,-104.5 320,-74.5 428,-74.5 428,-104.5"/>
 <text text-anchor="start" x="328" y="-92.5" font-family="Helvetica,sans-Serif" font-size="10.00">radio_set_transmit</text>
 <text text-anchor="middle" x="374" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">_power</text>
@@ -429,7 +429,7 @@ var sectionId = 'dynsection-1';
 <!-- Node36 -->
 <g id="Node000036" class="node">
 <title>Node36</title>
-<g id="a_Node000036"><a xlink:href="set__rtc__job_8c.html#af31d3e6e7b984cd9aca01db95eac999a" target="_top" xlink:title=" ">
+<g id="a_Node000036"><a xlink:href="set__rtc__job_8c.html#af31d3e6e7b984cd9aca01db95eac999a" target="_top" xlink:title="Set the real time clock to the given time.">
 <polygon fill="white" stroke="#666666" points="409,-56 339,-56 339,-37 409,-37 409,-56"/>
 <text text-anchor="middle" x="374" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">set_rtc_job</text>
 </a>
@@ -483,7 +483,7 @@ var sectionId = 'dynsection-1';
 <!-- Node44 -->
 <g id="Node000044" class="node">
 <title>Node44</title>
-<g id="a_Node000044"><a xlink:href="watchdog_8c.html#acebf79aaf42978286eec0c3e016d7b0a" target="_top" xlink:title=" ">
+<g id="a_Node000044"><a xlink:href="watchdog_8c.html#acebf79aaf42978286eec0c3e016d7b0a" target="_top" xlink:title="Task that controls the resetting of the hardware watchdog &#45; MAX706RESA &#45; this module needs to be rese...">
 <polygon fill="white" stroke="#666666" points="424,-19 324,-19 324,0 424,0 424,-19"/>
 <text text-anchor="middle" x="374" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">watchdog_freeze</text>
 </a>

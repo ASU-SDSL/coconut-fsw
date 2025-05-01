@@ -1,5 +1,5 @@
 <map id="ds18b20.h" name="ds18b20.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="155,5,245,31"/>
+<area shape="rect" id="Node000001" title="Driver for PIO Onewire DS18B20 Temperature Sensors." alt="" coords="155,5,245,31"/>
 <area shape="rect" id="Node000002" href="$stdlib_8h.html" title=" " alt="" coords="5,79,107,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,33,93,75,91,70,176,28"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="131,79,269,104"/>

@@ -200,7 +200,7 @@
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="heartbeat__job_8c.html#a5a39a53ceb61fec283d89fcb0032a24b" target="_top" xlink:title=" ">
+<g id="a_Node000007"><a xlink:href="heartbeat__job_8c.html#a5a39a53ceb61fec283d89fcb0032a24b" target="_top" xlink:title="Collects sensor information and transmits it as a heartbeat packet.">
 <polygon fill="white" stroke="#666666" points="512,-463 375,-463 375,-444 512,-444 512,-463"/>
 <text text-anchor="middle" x="443.5" y="-451" font-family="Helvetica,sans-Serif" font-size="10.00">heartbeat_telemetry_job</text>
 </a>

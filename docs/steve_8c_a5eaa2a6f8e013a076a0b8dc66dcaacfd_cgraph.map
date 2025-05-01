@@ -16,7 +16,7 @@
 <area shape="poly" id="edge70_Node000001_Node000046" title=" " alt="" coords="98,235,142,228,142,233,99,240"/>
 <area shape="rect" id="Node000049" href="$steve_8c.html#acc0bfad0acf234b4903c832955b29767" title=" " alt="" coords="556,308,749,333"/>
 <area shape="poly" id="edge74_Node000001_Node000049" title=" " alt="" coords="99,248,543,304,542,309,98,253"/>
-<area shape="rect" id="Node000006" href="$heartbeat__job_8c.html#a5a39a53ceb61fec283d89fcb0032a24b" title=" " alt="" coords="325,1089,508,1115"/>
+<area shape="rect" id="Node000006" href="$heartbeat__job_8c.html#a5a39a53ceb61fec283d89fcb0032a24b" title="Collects sensor information and transmits it as a heartbeat packet." alt="" coords="325,1089,508,1115"/>
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="225,415,252,457,280,512,309,592,334,676,374,840,401,981,415,1075,409,1076,395,982,369,841,329,677,304,594,275,514,247,459,220,418"/>
 <area shape="rect" id="Node000040" href="$steve_8c.html#aa1f662b5890cdc563739a6c3eed51686" title=" " alt="" coords="344,383,489,423"/>
 <area shape="poly" id="edge62_Node000005_Node000040" title=" " alt="" coords="273,401,330,401,330,406,273,406"/>

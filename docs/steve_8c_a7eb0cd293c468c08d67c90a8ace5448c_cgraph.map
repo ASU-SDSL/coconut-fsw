@@ -1,6 +1,6 @@
 <map id="initialize_steve" name="initialize_steve">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,1064,127,1089"/>
-<area shape="rect" id="Node000002" href="$heartbeat__job_8c.html#a5a39a53ceb61fec283d89fcb0032a24b" title=" " alt="" coords="175,763,357,788"/>
+<area shape="rect" id="Node000002" href="$heartbeat__job_8c.html#a5a39a53ceb61fec283d89fcb0032a24b" title="Collects sensor information and transmits it as a heartbeat packet." alt="" coords="175,763,357,788"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,1062,246,798,251,801,78,1065"/>
 <area shape="rect" id="Node000037" href="$steve_8c.html#aa1f662b5890cdc563739a6c3eed51686" title=" " alt="" coords="193,1357,339,1397"/>
 <area shape="poly" id="edge58_Node000001_Node000037" title=" " alt="" coords="78,1088,246,1343,241,1346,74,1091"/>

@@ -31,7 +31,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="ds18b20_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="ds18b20_8h.html" target="_top" xlink:title="Driver for PIO Onewire DS18B20 Temperature Sensors.">
 <polygon fill="white" stroke="#666666" points="179.5,-129 112.5,-129 112.5,-110 179.5,-110 179.5,-129"/>
 <text text-anchor="middle" x="146" y="-117" font-family="Helvetica,sans-Serif" font-size="10.00">ds18b20.h</text>
 </a>
@@ -157,7 +157,7 @@
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="telemetry_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000008"><a xlink:href="telemetry_8h.html" target="_top" xlink:title="Functions for packaging and queuing telemetry packets for sending.">
 <polygon fill="white" stroke="#666666" points="367,-74 295,-74 295,-55 367,-55 367,-74"/>
 <text text-anchor="middle" x="331" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">telemetry.h</text>
 </a>

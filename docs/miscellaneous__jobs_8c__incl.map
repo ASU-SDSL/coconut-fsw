@@ -10,7 +10,7 @@
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="377,31,377,65,372,65,372,31"/>
 <area shape="rect" id="Node000007" title=" " alt="" coords="469,79,600,104"/>
 <area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="401,28,497,71,495,75,399,33"/>
-<area shape="rect" id="Node000008" href="$steve_8h.html" title=" " alt="" coords="625,79,695,104"/>
+<area shape="rect" id="Node000008" href="$steve_8h.html" title="S.T.E.V.E (Scheduler Task for Executing Vital Events)" alt="" coords="625,79,695,104"/>
 <area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="421,28,612,75,611,81,420,33"/>
 <area shape="rect" id="Node000010" href="$log_8h.html" title=" " alt="" coords="719,79,774,104"/>
 <area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="453,28,569,48,707,76,706,81,568,53,452,33"/>
@@ -18,7 +18,7 @@
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="93,104,93,138,88,138,88,104"/>
 <area shape="rect" id="Node000009" title=" " alt="" coords="535,152,617,177"/>
 <area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="648,106,602,145,599,141,645,102"/>
-<area shape="rect" id="Node000011" href="$telemetry_8h.html" title=" " alt="" coords="641,152,737,177"/>
+<area shape="rect" id="Node000011" href="$telemetry_8h.html" title="Functions for packaging and queuing telemetry packets for sending." alt="" coords="641,152,737,177"/>
 <area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="739,106,709,143,705,139,735,103"/>
 <area shape="rect" id="Node000013" title=" " alt="" coords="761,152,844,177"/>
 <area shape="poly" id="edge13_Node000010_Node000013" title=" " alt="" coords="758,103,787,140,783,143,754,106"/>

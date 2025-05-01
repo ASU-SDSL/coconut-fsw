@@ -46,6 +46,6 @@ var searchData=
   ['gse_2emd_43',['gse.md',['../gse_8md.html',1,'']]],
   ['gse_5fcheck_5fdelay_5fms_44',['GSE_CHECK_DELAY_MS',['../gse_8h.html#a157deb3f53176929a3a1978d4c2aab23',1,'gse.h']]],
   ['gse_5fqueue_5fmessage_45',['gse_queue_message',['../gse_8c.html#a07a7ef3b41255450f286364cc3668e54',1,'gse_queue_message(char *buffer, size_t size):&#160;gse.c'],['../gse_8h.html#a07a7ef3b41255450f286364cc3668e54',1,'gse_queue_message(char *buffer, size_t size):&#160;gse.c']]],
-  ['gse_5ftask_46',['gse_task',['../gse_8c.html#adc9941bea1763f7fa0e63895359daf4b',1,'gse_task(void *pvParameters):&#160;gse.c'],['../gse_8h.html#a9c0b2ba180fc79bf6350307e7724ee33',1,'gse_task():&#160;gse.h'],['../command__fuzzer_8cpp.html#adc9941bea1763f7fa0e63895359daf4b',1,'gse_task(void *pvParameters):&#160;gse.c']]],
+  ['gse_5ftask_46',['gse_task',['../gse_8c.html#adc9941bea1763f7fa0e63895359daf4b',1,'gse_task(void *pvParameters):&#160;gse.c'],['../gse_8h.html#adc9941bea1763f7fa0e63895359daf4b',1,'gse_task(void *pvParameters):&#160;gse.c'],['../command__fuzzer_8cpp.html#adc9941bea1763f7fa0e63895359daf4b',1,'gse_task(void *pvParameters):&#160;gse.c']]],
   ['guide_47',['Users Guide',['../md_docs_2docs_2DOCS.html#users-guide',1,'']]]
 ];

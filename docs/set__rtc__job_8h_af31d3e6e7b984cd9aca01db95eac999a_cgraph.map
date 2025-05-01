@@ -1,5 +1,5 @@
 <map id="set_rtc_job" name="set_rtc_job">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,99,31"/>
+<area shape="rect" id="Node000001" title="Set the real time clock to the given time." alt="" coords="5,5,99,31"/>
 <area shape="rect" id="Node000002" href="$rtc__ds3231_8c.html#a2c6c198dcdf9a137429432320e626cd0" title="Set the RTC&#39;s date and time, assumes 24h input." alt="" coords="147,5,249,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,15,133,15,133,21,99,21"/>
 <area shape="rect" id="Node000003" href="$i2c_8c.html#a73f9c3581b5d48d5db9c6c445034a970" title="Write [reg] and [buf] to i2c device, [reg] is just inserted before [buf]." alt="" coords="297,5,456,31"/>
