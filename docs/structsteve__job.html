@@ -96,14 +96,19 @@ $(function(){ initResizable(false); });
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:ac0929360fb64db111659f1c0c0057d5c" id="r_ac0929360fb64db111659f1c0c0057d5c"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0929360fb64db111659f1c0c0057d5c">name</a> [<a class="el" href="steve_8h.html#aaa9ba6348f94f638860070887000dd67">MAX_JOB_NAME_LEN</a>+1]</td></tr>
+<tr class="memdesc:ac0929360fb64db111659f1c0c0057d5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">job name for logging purposes  <br /></td></tr>
 <tr class="separator:ac0929360fb64db111659f1c0c0057d5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33ff1d9d53562816317e4c39c20496b5" id="r_a33ff1d9d53562816317e4c39c20496b5"><td class="memItemLeft" align="right" valign="top">TickType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a33ff1d9d53562816317e4c39c20496b5">execute_time</a></td></tr>
+<tr class="memdesc:a33ff1d9d53562816317e4c39c20496b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">exact tick when the job will be ran  <br /></td></tr>
 <tr class="separator:a33ff1d9d53562816317e4c39c20496b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5fedcd7bc69cb0da4f19aa961528fd8" id="r_aa5fedcd7bc69cb0da4f19aa961528fd8"><td class="memItemLeft" align="right" valign="top">TickType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa5fedcd7bc69cb0da4f19aa961528fd8">recur_time</a></td></tr>
+<tr class="memdesc:aa5fedcd7bc69cb0da4f19aa961528fd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">how many ticks until the job will recur after execution, null for non-recurring jobs  <br /></td></tr>
 <tr class="separator:aa5fedcd7bc69cb0da4f19aa961528fd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a36949c30ba901297bb886910b16757" id="r_a4a36949c30ba901297bb886910b16757"><td class="memItemLeft" align="right" valign="top"><a class="el" href="steve_8h.html#a4d42ee224194e404f838eb3154ab8205">job_func</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a36949c30ba901297bb886910b16757">func_ptr</a></td></tr>
+<tr class="memdesc:a4a36949c30ba901297bb886910b16757"><td class="mdescLeft">&#160;</td><td class="mdescRight">function ptr that will be called when the job is ran  <br /></td></tr>
 <tr class="separator:a4a36949c30ba901297bb886910b16757"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1c5ff1595a0718b4737492f5c6360ac" id="r_af1c5ff1595a0718b4737492f5c6360ac"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1c5ff1595a0718b4737492f5c6360ac">arg_data</a></td></tr>
+<tr class="memdesc:af1c5ff1595a0718b4737492f5c6360ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">data that will be passed to the first argument of the function job  <br /></td></tr>
 <tr class="separator:af1c5ff1595a0718b4737492f5c6360ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Field Documentation</h2>
@@ -119,6 +124,8 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>data that will be passed to the first argument of the function job </p>
+
 </div>
 </div>
 <a id="a33ff1d9d53562816317e4c39c20496b5" name="a33ff1d9d53562816317e4c39c20496b5"></a>
@@ -132,6 +139,8 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>exact tick when the job will be ran </p>
 
 </div>
 </div>
@@ -147,6 +156,8 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>function ptr that will be called when the job is ran </p>
+
 </div>
 </div>
 <a id="ac0929360fb64db111659f1c0c0057d5c" name="ac0929360fb64db111659f1c0c0057d5c"></a>
@@ -161,6 +172,8 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>job name for logging purposes </p>
+
 </div>
 </div>
 <a id="aa5fedcd7bc69cb0da4f19aa961528fd8" name="aa5fedcd7bc69cb0da4f19aa961528fd8"></a>
@@ -174,6 +187,8 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>how many ticks until the job will recur after execution, null for non-recurring jobs </p>
 
 </div>
 </div>

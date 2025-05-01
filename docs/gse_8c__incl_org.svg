@@ -110,7 +110,7 @@
 <!-- Node9 -->
 <g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_Node000009"><a xlink:href="command_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000009"><a xlink:href="command_8h.html" target="_top" xlink:title="Handles decoding and triggering responses to received commands.">
 <polygon fill="white" stroke="#666666" points="429.5,-184 355.5,-184 355.5,-165 429.5,-165 429.5,-184"/>
 <text text-anchor="middle" x="392.5" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">command.h</text>
 </a>
@@ -182,7 +182,7 @@
 <!-- Node22 -->
 <g id="Node000022" class="node">
 <title>Node22</title>
-<g id="a_Node000022"><a xlink:href="gse_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000022"><a xlink:href="gse_8h.html" target="_top" xlink:title="Handles hardline communication over USB.">
 <polygon fill="white" stroke="#666666" points="775,-184 732,-184 732,-165 775,-165 775,-184"/>
 <text text-anchor="middle" x="753.5" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">gse.h</text>
 </a>
@@ -317,7 +317,7 @@
 <!-- Node13 -->
 <g id="Node000013" class="node">
 <title>Node13</title>
-<g id="a_Node000013"><a xlink:href="filesystem_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000013"><a xlink:href="filesystem_8h.html" target="_top" xlink:title="Handles file system operations and management.">
 <polygon fill="white" stroke="#666666" points="391,-74 314,-74 314,-55 391,-55 391,-74"/>
 <text text-anchor="middle" x="352.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">filesystem.h</text>
 </a>
@@ -506,7 +506,7 @@
 <!-- Node21 -->
 <g id="Node000021" class="node">
 <title>Node21</title>
-<g id="a_Node000021"><a xlink:href="telemetry_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000021"><a xlink:href="telemetry_8h.html" target="_top" xlink:title="Functions for packaging and queuing telemetry packets for sending.">
 <polygon fill="white" stroke="#666666" points="219.5,-74 147.5,-74 147.5,-55 219.5,-55 219.5,-74"/>
 <text text-anchor="middle" x="183.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">telemetry.h</text>
 </a>

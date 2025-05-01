@@ -34,17 +34,17 @@
 <area shape="poly" id="edge42_Node000001_Node000030" title=" " alt="" coords="101,1012,110,1068,133,1152,150,1197,173,1242,201,1284,235,1320,243,1326,240,1330,232,1324,197,1287,168,1245,145,1200,128,1153,105,1069,95,1013"/>
 <area shape="rect" id="Node000031" href="$radio_8cpp.html#ab4fc5d140cd46c3db7b311a67d236deb" title="Adds a change radio module being used operation to the radio queue." alt="" coords="264,1384,403,1409"/>
 <area shape="poly" id="edge43_Node000001_Node000031" title=" " alt="" coords="100,1012,107,1076,127,1173,144,1226,167,1278,197,1327,235,1369,253,1381,250,1385,232,1373,193,1330,162,1281,139,1228,122,1174,101,1077,95,1012"/>
-<area shape="rect" id="Node000032" href="$radio_8cpp.html#a610ddc33ff0f6388cea252fb357dc990" title="Changes the transmit power used by the radios." alt="" coords="261,1434,405,1474"/>
+<area shape="rect" id="Node000032" href="$radio_8cpp.html#a610ddc33ff0f6388cea252fb357dc990" title="Changes the transmit power used by the radios The RFM98PW includes and offset of +14dBm to what it is..." alt="" coords="261,1434,405,1474"/>
 <area shape="poly" id="edge44_Node000001_Node000032" title=" " alt="" coords="100,1012,105,1082,123,1191,140,1252,164,1312,195,1369,235,1419,251,1431,247,1435,231,1423,191,1372,159,1314,135,1253,118,1192,99,1083,94,1012"/>
 <area shape="rect" id="Node000033" href="$steve_8c.html#acc0bfad0acf234b4903c832955b29767" title=" " alt="" coords="237,1137,430,1163"/>
 <area shape="poly" id="edge45_Node000001_Node000033" title=" " alt="" coords="109,1010,159,1065,195,1096,235,1122,252,1130,250,1135,232,1127,192,1100,155,1069,105,1014"/>
-<area shape="rect" id="Node000035" href="$set__rtc__job_8c.html#af31d3e6e7b984cd9aca01db95eac999a" title=" " alt="" coords="287,1499,380,1524"/>
+<area shape="rect" id="Node000035" href="$set__rtc__job_8c.html#af31d3e6e7b984cd9aca01db95eac999a" title="Set the real time clock to the given time." alt="" coords="287,1499,380,1524"/>
 <area shape="poly" id="edge50_Node000001_Node000035" title=" " alt="" coords="99,1012,99,1093,104,1152,113,1220,129,1291,154,1361,189,1427,210,1457,235,1484,253,1496,274,1504,272,1509,251,1501,232,1488,206,1460,184,1430,149,1363,124,1292,108,1221,98,1153,94,1093,93,1012"/>
 <area shape="rect" id="Node000038" href="$filesystem_8c.html#a1038e83eda006a16d81aba0bda5c3334" title=" " alt="" coords="527,839,586,864"/>
 <area shape="poly" id="edge53_Node000001_Node000038" title=" " alt="" coords="112,984,164,949,232,914,308,890,386,872,513,852,514,858,387,877,310,895,234,919,167,954,115,989"/>
 <area shape="rect" id="Node000039" href="$user__auth_8c.html#acb5e4e390f704ceea798b215f70692d6" title=" " alt="" coords="265,637,402,663"/>
 <area shape="poly" id="edge55_Node000001_Node000039" title=" " alt="" coords="101,985,153,894,231,770,309,672,313,675,236,773,157,897,106,988"/>
-<area shape="rect" id="Node000043" href="$watchdog_8c.html#acebf79aaf42978286eec0c3e016d7b0a" title=" " alt="" coords="267,1548,400,1573"/>
+<area shape="rect" id="Node000043" href="$watchdog_8c.html#acebf79aaf42978286eec0c3e016d7b0a" title="Task that controls the resetting of the hardware watchdog &#45; MAX706RESA &#45; this module needs to be rese..." alt="" coords="267,1548,400,1573"/>
 <area shape="poly" id="edge68_Node000001_Node000043" title=" " alt="" coords="101,1012,115,1114,142,1273,161,1356,183,1431,208,1494,221,1517,235,1535,255,1548,252,1552,232,1539,217,1520,203,1496,178,1433,156,1357,137,1274,109,1115,96,1013"/>
 <area shape="rect" id="Node000003" href="$filesystem_8c.html#a6c3bed1f355bd1952d7ffa87405828c6" title=" " alt="" coords="514,335,599,360"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="346,534,386,494,431,443,444,422,452,404,462,387,480,369,500,358,502,362,483,373,466,390,457,407,449,425,435,446,390,498,350,538"/>

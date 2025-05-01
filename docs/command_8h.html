@@ -98,18 +98,21 @@ $(function(){ initResizable(false); });
   <div class="headertitle"><div class="title">command.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Handles decoding and triggering responses to received commands.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
 <code>#include &quot;spacepacket.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="user__auth_8h_source.html">user_auth.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for command.h:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="command_8h__incl.svg" width="100%" height="496"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="command_8h__incl.svg" width="100%" height="492"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="command_8h__dep__incl.svg" width="556" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="command_8h__dep__incl.svg" width="598" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="command_8h_source.html">Go to the source code of this file.</a></p>
@@ -124,6 +127,7 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a1960ba3af8c583fa16bc16ddc20286a7" id="r_a1960ba3af8c583fa16bc16ddc20286a7"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="#a752e1275ef50e500a1d812783710b140">command_apid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1960ba3af8c583fa16bc16ddc20286a7">command_apid_t</a></td></tr>
+<tr class="memdesc:a1960ba3af8c583fa16bc16ddc20286a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command Structs and Types Groups: 00 - general and file system 01 - radio 02 - device.  <br /></td></tr>
 <tr class="separator:a1960ba3af8c583fa16bc16ddc20286a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a190415e7a363e1796887d6c32e3dc6d6" id="r_a190415e7a363e1796887d6c32e3dc6d6"><td class="memItemLeft" align="right" valign="top">typedef uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a190415e7a363e1796887d6c32e3dc6d6">command_byte_t</a></td></tr>
 <tr class="separator:a190415e7a363e1796887d6c32e3dc6d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,11 +161,13 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#a752e1275ef50e500a1d812783710b140a13ff77d32e793a056b56f5a6e883c256">SET_RTC_TIME</a> = 201
 <br />
  }</td></tr>
+<tr class="memdesc:a752e1275ef50e500a1d812783710b140"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command Structs and Types Groups: 00 - general and file system 01 - radio 02 - device.  <a href="#a752e1275ef50e500a1d812783710b140">More...</a><br /></td></tr>
 <tr class="separator:a752e1275ef50e500a1d812783710b140"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ad09246453a4dabd919c7541484046a87" id="r_ad09246453a4dabd919c7541484046a87"><td class="memItemLeft" align="right" valign="top">struct&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad09246453a4dabd919c7541484046a87">__attribute__</a> ((__packed__))</td></tr>
+<tr class="memdesc:ad09246453a4dabd919c7541484046a87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Heartbeat packet definition.  <br /></td></tr>
 <tr class="separator:ad09246453a4dabd919c7541484046a87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3063ab697200daa8d385b7b2c1cd364" id="r_ab3063ab697200daa8d385b7b2c1cd364"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab3063ab697200daa8d385b7b2c1cd364">receive_command_byte_from_isr</a> (char ch)</td></tr>
 <tr class="separator:ab3063ab697200daa8d385b7b2c1cd364"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -207,9 +213,12 @@ Variables</h2></td></tr>
 <tr class="memitem:a2b09ded88bd37b33c97d6f0f946aa4d6" id="r_a2b09ded88bd37b33c97d6f0f946aa4d6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b09ded88bd37b33c97d6f0f946aa4d6">set_rtc_time_t</a></td></tr>
 <tr class="separator:a2b09ded88bd37b33c97d6f0f946aa4d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe66b5c2f4a7fc180016809cd5e97704" id="r_abe66b5c2f4a7fc180016809cd5e97704"><td class="memItemLeft" align="right" valign="top">QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe66b5c2f4a7fc180016809cd5e97704">command_byte_queue</a></td></tr>
+<tr class="memdesc:abe66b5c2f4a7fc180016809cd5e97704"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Command Thread Structs.  <br /></td></tr>
 <tr class="separator:abe66b5c2f4a7fc180016809cd5e97704"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Handles decoding and triggering responses to received commands. </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a3cd2eede80cd4c72cf82422c069031c1" name="a3cd2eede80cd4c72cf82422c069031c1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3cd2eede80cd4c72cf82422c069031c1">&#9670;&#160;</a></span>COMMAND_MAX_QUEUE_ITEMS</h2>
 
@@ -251,6 +260,8 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Command Structs and Types Groups: 00 - general and file system 01 - radio 02 - device. </p>
+
 </div>
 </div>
 <a id="a190415e7a363e1796887d6c32e3dc6d6" name="a190415e7a363e1796887d6c32e3dc6d6"></a>
@@ -279,6 +290,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Command Structs and Types Groups: 00 - general and file system 01 - radio 02 - device. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a752e1275ef50e500a1d812783710b140a695404ec74fb89db184298695d232964" name="a752e1275ef50e500a1d812783710b140a695404ec74fb89db184298695d232964"></a>UPLOAD_USER_DATA&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a752e1275ef50e500a1d812783710b140a5b9482b8c45a3de1954f6cceae6a4220" name="a752e1275ef50e500a1d812783710b140a5b9482b8c45a3de1954f6cceae6a4220"></a>CHANGE_HEARTBEAT_TELEM_RATE&#160;</td><td class="fielddoc"></td></tr>
@@ -319,6 +332,13 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Heartbeat packet definition. </p>
+<p>Telemetry response to any commands sent to the satellite. </p>
+<p>&lt; Used to adjust for less resolution but cover more time</p>
+<p>&lt; Used to start the playback from a certain point in the past</p>
+<p>&lt; radio to switch to (1 == RFM, 0 == SX, anything else no change)</p>
+<p>&lt; output power to set (0 == no change)</p>
 
 </div>
 </div>
@@ -465,6 +485,8 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Internal Command Thread Structs. </p>
 
 </div>
 </div>

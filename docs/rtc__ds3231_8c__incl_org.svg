@@ -191,7 +191,7 @@
 <!-- Node10 -->
 <g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_Node000010"><a xlink:href="telemetry_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000010"><a xlink:href="telemetry_8h.html" target="_top" xlink:title="Functions for packaging and queuing telemetry packets for sending.">
 <polygon fill="white" stroke="#666666" points="344.5,-74 272.5,-74 272.5,-55 344.5,-55 344.5,-74"/>
 <text text-anchor="middle" x="308.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">telemetry.h</text>
 </a>

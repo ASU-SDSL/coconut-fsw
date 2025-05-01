@@ -164,7 +164,7 @@
 <!-- Node10 -->
 <g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_Node000010"><a xlink:href="gse_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000010"><a xlink:href="gse_8h.html" target="_top" xlink:title="Handles hardline communication over USB.">
 <polygon fill="white" stroke="#666666" points="1231.5,-239 1188.5,-239 1188.5,-220 1231.5,-220 1231.5,-239"/>
 <text text-anchor="middle" x="1210" y="-227" font-family="Helvetica,sans-Serif" font-size="10.00">gse.h</text>
 </a>
@@ -218,7 +218,7 @@
 <!-- Node14 -->
 <g id="Node000014" class="node">
 <title>Node14</title>
-<g id="a_Node000014"><a xlink:href="steve_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000014"><a xlink:href="steve_8h.html" target="_top" xlink:title="S.T.E.V.E (Scheduler Task for Executing Vital Events)">
 <polygon fill="white" stroke="#666666" points="1144.5,-184 1091.5,-184 1091.5,-165 1144.5,-165 1144.5,-184"/>
 <text text-anchor="middle" x="1118" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">steve.h</text>
 </a>
@@ -236,7 +236,7 @@
 <!-- Node15 -->
 <g id="Node000015" class="node">
 <title>Node15</title>
-<g id="a_Node000015"><a xlink:href="filesystem_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000015"><a xlink:href="filesystem_8h.html" target="_top" xlink:title="Handles file system operations and management.">
 <polygon fill="white" stroke="#666666" points="751.5,-74 674.5,-74 674.5,-55 751.5,-55 751.5,-74"/>
 <text text-anchor="middle" x="713" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">filesystem.h</text>
 </a>
@@ -272,7 +272,7 @@
 <!-- Node19 -->
 <g id="Node000019" class="node">
 <title>Node19</title>
-<g id="a_Node000019"><a xlink:href="command_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000019"><a xlink:href="command_8h.html" target="_top" xlink:title="Handles decoding and triggering responses to received commands.">
 <polygon fill="white" stroke="#666666" points="328,-184 254,-184 254,-165 328,-165 328,-184"/>
 <text text-anchor="middle" x="291" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">command.h</text>
 </a>
@@ -308,7 +308,7 @@
 <!-- Node25 -->
 <g id="Node000025" class="node">
 <title>Node25</title>
-<g id="a_Node000025"><a xlink:href="watchdog_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000025"><a xlink:href="watchdog_8h.html" target="_top" xlink:title="Watchdog management functions.">
 <polygon fill="white" stroke="#666666" points="1009.5,-74 936.5,-74 936.5,-55 1009.5,-55 1009.5,-74"/>
 <text text-anchor="middle" x="973" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">watchdog.h</text>
 </a>
@@ -353,7 +353,7 @@
 <!-- Node12 -->
 <g id="Node000012" class="node">
 <title>Node12</title>
-<g id="a_Node000012"><a xlink:href="telemetry_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000012"><a xlink:href="telemetry_8h.html" target="_top" xlink:title="Functions for packaging and queuing telemetry packets for sending.">
 <polygon fill="white" stroke="#666666" points="880,-74 808,-74 808,-55 880,-55 880,-74"/>
 <text text-anchor="middle" x="844" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">telemetry.h</text>
 </a>

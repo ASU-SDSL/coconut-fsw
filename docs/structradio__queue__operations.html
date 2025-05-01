@@ -91,18 +91,26 @@ $(function(){ initResizable(false); });
 </div><!--header-->
 <div class="contents">
 
+<p>Radio operation to be added to the radio_queue.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="tasks_2radio_2radio_8h_source.html">radio.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:a74c8366f25383a6ba7bacfcb62d43e1e" id="r_a74c8366f25383a6ba7bacfcb62d43e1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="tasks_2radio_2radio_8h.html#ace0b4fef871cb7679e839891a34882dd">radio_operation_type_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a74c8366f25383a6ba7bacfcb62d43e1e">operation_type</a></td></tr>
+<tr class="memdesc:a74c8366f25383a6ba7bacfcb62d43e1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">What operation does, could be transmit, set power, etc.  <br /></td></tr>
 <tr class="separator:a74c8366f25383a6ba7bacfcb62d43e1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abef30bdb6743d7636588fc07f3455843" id="r_abef30bdb6743d7636588fc07f3455843"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abef30bdb6743d7636588fc07f3455843">data_buffer</a></td></tr>
+<tr class="memdesc:abef30bdb6743d7636588fc07f3455843"><td class="mdescLeft">&#160;</td><td class="mdescRight">If extra data is needed for this operation, for example if the operation is transmit then the data will be the buffer to transmit.  <br /></td></tr>
 <tr class="separator:abef30bdb6743d7636588fc07f3455843"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6bc120bffc64dfc5230863a8ba96596" id="r_ad6bc120bffc64dfc5230863a8ba96596"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6bc120bffc64dfc5230863a8ba96596">data_size</a></td></tr>
+<tr class="memdesc:ad6bc120bffc64dfc5230863a8ba96596"><td class="mdescLeft">&#160;</td><td class="mdescRight">Could be 0.  <br /></td></tr>
 <tr class="separator:ad6bc120bffc64dfc5230863a8ba96596"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Field Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Radio operation to be added to the radio_queue. </p>
+</div><h2 class="groupheader">Field Documentation</h2>
 <a id="abef30bdb6743d7636588fc07f3455843" name="abef30bdb6743d7636588fc07f3455843"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abef30bdb6743d7636588fc07f3455843">&#9670;&#160;</a></span>data_buffer</h2>
 
@@ -114,6 +122,8 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>If extra data is needed for this operation, for example if the operation is transmit then the data will be the buffer to transmit. </p>
 
 </div>
 </div>
@@ -129,6 +139,8 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Could be 0. </p>
+
 </div>
 </div>
 <a id="a74c8366f25383a6ba7bacfcb62d43e1e" name="a74c8366f25383a6ba7bacfcb62d43e1e"></a>
@@ -142,6 +154,8 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>What operation does, could be transmit, set power, etc. </p>
 
 </div>
 </div>

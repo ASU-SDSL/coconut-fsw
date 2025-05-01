@@ -97,12 +97,15 @@ $(function(){ initResizable(false); });
   <div class="headertitle"><div class="title">telemetry.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Functions for packaging and queuing telemetry packets for sending.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;FreeRTOS.h&quot;</code><br />
 <code>#include &quot;queue.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for telemetry.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="telemetry_8h__incl.svg" width="198" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="telemetry_8h__incl.svg" width="206" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -136,11 +139,13 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#aa186c7c344407c70bb628524bbd09e3aa215383250db552b1b2e1489e0de4641a">RADIO_STAT_RES</a> = 101
 <br />
  }</td></tr>
+<tr class="memdesc:aa186c7c344407c70bb628524bbd09e3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Telemetry packet APIDs Groups: 00 - general and file system 01 - radio 02 - device.  <a href="#aa186c7c344407c70bb628524bbd09e3a">More...</a><br /></td></tr>
 <tr class="separator:aa186c7c344407c70bb628524bbd09e3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ad09246453a4dabd919c7541484046a87" id="r_ad09246453a4dabd919c7541484046a87"><td class="memItemLeft" align="right" valign="top">struct&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad09246453a4dabd919c7541484046a87">__attribute__</a> ((__packed__))</td></tr>
+<tr class="memdesc:ad09246453a4dabd919c7541484046a87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log packet definition (sent over hardline only by default)  <br /></td></tr>
 <tr class="separator:ad09246453a4dabd919c7541484046a87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dbf6c6cfd75451e5642ca0b64bf7f5a" id="r_a6dbf6c6cfd75451e5642ca0b64bf7f5a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6dbf6c6cfd75451e5642ca0b64bf7f5a">send_telemetry</a> (<a class="el" href="#aa186c7c344407c70bb628524bbd09e3a">telemetry_apid_t</a> apid, const char *payload_buffer, size_t payload_size)</td></tr>
 <tr class="separator:a6dbf6c6cfd75451e5642ca0b64bf7f5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,7 +165,9 @@ Variables</h2></td></tr>
 <tr class="memitem:acc699e4f9a1d78a6ebd8477c986bafaa" id="r_acc699e4f9a1d78a6ebd8477c986bafaa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc699e4f9a1d78a6ebd8477c986bafaa">ack_telemetry_t</a></td></tr>
 <tr class="separator:acc699e4f9a1d78a6ebd8477c986bafaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Functions for packaging and queuing telemetry packets for sending. </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a2ac19a407c8cd1d0c2acfe5ff28c9ad7" name="a2ac19a407c8cd1d0c2acfe5ff28c9ad7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2ac19a407c8cd1d0c2acfe5ff28c9ad7">&#9670;&#160;</a></span>TELEMETRY_CHECK_DELAY_MS</h2>
 
@@ -229,6 +236,8 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Telemetry packet APIDs Groups: 00 - general and file system 01 - radio 02 - device. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa186c7c344407c70bb628524bbd09e3aacd7ffe737ad5fb21fbd7499886934910" name="aa186c7c344407c70bb628524bbd09e3aacd7ffe737ad5fb21fbd7499886934910"></a>LOG&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aa186c7c344407c70bb628524bbd09e3aa0f286b0bbc1ee4f20be5136a55cf8923" name="aa186c7c344407c70bb628524bbd09e3aa0f286b0bbc1ee4f20be5136a55cf8923"></a>HEARTBEAT&#160;</td><td class="fielddoc"></td></tr>
@@ -256,6 +265,13 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Log packet definition (sent over hardline only by default) </p>
+<p>Telemetry response to any commands sent to the satellite.</p>
+<p>Heartbeat packet definition. </p>
+<p>&lt; 1 for RFM</p>
+<p>&lt; 1 for success/true, 0 for failure/false</p>
+<p>&lt; Any extra data that might be returned by a command</p>
 
 </div>
 </div>

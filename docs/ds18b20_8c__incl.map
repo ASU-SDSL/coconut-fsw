@@ -1,6 +1,6 @@
 <map id="ds18b20.c" name="ds18b20.c">
 <area shape="rect" id="Node000001" title=" " alt="" coords="351,5,439,31"/>
-<area shape="rect" id="Node000002" href="$ds18b20_8h.html" title=" " alt="" coords="155,79,245,104"/>
+<area shape="rect" id="Node000002" href="$ds18b20_8h.html" title="Driver for PIO Onewire DS18B20 Temperature Sensors." alt="" coords="155,79,245,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="364,33,245,76,244,71,362,28"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="269,79,403,104"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="387,33,356,70,352,67,383,29"/>
@@ -14,7 +14,7 @@
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="203,104,203,138,197,138,197,104"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="294,152,365,177"/>
 <area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="222,102,297,143,295,147,220,106"/>
-<area shape="rect" id="Node000008" href="$telemetry_8h.html" title=" " alt="" coords="399,152,495,177"/>
+<area shape="rect" id="Node000008" href="$telemetry_8h.html" title="Functions for packaging and queuing telemetry packets for sending." alt="" coords="399,152,495,177"/>
 <area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="456,105,452,139,447,138,451,104"/>
 <area shape="rect" id="Node000011" title=" " alt="" coords="519,152,601,177"/>
 <area shape="poly" id="edge10_Node000007_Node000011" title=" " alt="" coords="473,102,533,142,530,147,470,106"/>

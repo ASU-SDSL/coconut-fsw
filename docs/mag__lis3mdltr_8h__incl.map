@@ -17,7 +17,7 @@
 <area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="299,175,344,214,341,218,296,179"/>
 <area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="94,176,115,212,111,215,90,179"/>
 <area shape="poly" id="edge12_Node000007_Node000005" title=" " alt="" coords="383,105,372,212,367,211,377,104"/>
-<area shape="rect" id="Node000008" href="$telemetry_8h.html" title=" " alt="" coords="432,152,528,177"/>
+<area shape="rect" id="Node000008" href="$telemetry_8h.html" title="Functions for packaging and queuing telemetry packets for sending." alt="" coords="432,152,528,177"/>
 <area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="399,102,454,142,451,146,396,106"/>
 <area shape="rect" id="Node000009" title=" " alt="" coords="432,225,528,251"/>
 <area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="483,178,483,212,477,212,477,178"/>

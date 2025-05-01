@@ -103,7 +103,7 @@ var sectionId = 'dynsection-1';
 <!-- Node56 -->
 <g id="Node000056" class="node">
 <title>Node56</title>
-<g id="a_Node000056"><a xlink:href="gse_8c.html#adc9941bea1763f7fa0e63895359daf4b" target="_top" xlink:title=" ">
+<g id="a_Node000056"><a xlink:href="gse_8c.html#adc9941bea1763f7fa0e63895359daf4b" target="_top" xlink:title="GSE Task main function.">
 <polygon fill="white" stroke="#666666" points="154,-176 94,-176 94,-157 154,-157 154,-176"/>
 <text text-anchor="middle" x="124" y="-164" font-family="Helvetica,sans-Serif" font-size="10.00">gse_task</text>
 </a>
@@ -175,7 +175,7 @@ var sectionId = 'dynsection-1';
 <!-- Node109 -->
 <g id="Node000109" class="node">
 <title>Node109</title>
-<g id="a_Node000109"><a xlink:href="watchdog_8c.html#a594dbd14874f83f5660ab7210cc6ac1e" target="_top" xlink:title=" ">
+<g id="a_Node000109"><a xlink:href="watchdog_8c.html#a594dbd14874f83f5660ab7210cc6ac1e" target="_top" xlink:title="Runs the watchdog reset loop and will stop if given the freeze signal from the watchdog_freeze functi...">
 <polygon fill="white" stroke="#666666" points="169,-102 79,-102 79,-83 169,-83 169,-102"/>
 <text text-anchor="middle" x="124" y="-90" font-family="Helvetica,sans-Serif" font-size="10.00">watchdog_task</text>
 </a>
@@ -518,7 +518,7 @@ var sectionId = 'dynsection-1';
 <!-- Node34 -->
 <g id="Node000034" class="node">
 <title>Node34</title>
-<g id="a_Node000034"><a xlink:href="radio_8cpp.html#a610ddc33ff0f6388cea252fb357dc990" target="_top" xlink:title="Changes the transmit power used by the radios.">
+<g id="a_Node000034"><a xlink:href="radio_8cpp.html#a610ddc33ff0f6388cea252fb357dc990" target="_top" xlink:title="Changes the transmit power used by the radios The RFM98PW includes and offset of +14dBm to what it is...">
 <polygon fill="white" stroke="#666666" points="507,-1056.5 399,-1056.5 399,-1026.5 507,-1026.5 507,-1056.5"/>
 <text text-anchor="start" x="407" y="-1044.5" font-family="Helvetica,sans-Serif" font-size="10.00">radio_set_transmit</text>
 <text text-anchor="middle" x="453" y="-1033.5" font-family="Helvetica,sans-Serif" font-size="10.00">_power</text>
@@ -555,7 +555,7 @@ var sectionId = 'dynsection-1';
 <!-- Node37 -->
 <g id="Node000037" class="node">
 <title>Node37</title>
-<g id="a_Node000037"><a xlink:href="set__rtc__job_8c.html#af31d3e6e7b984cd9aca01db95eac999a" target="_top" xlink:title=" ">
+<g id="a_Node000037"><a xlink:href="set__rtc__job_8c.html#af31d3e6e7b984cd9aca01db95eac999a" target="_top" xlink:title="Set the real time clock to the given time.">
 <polygon fill="#fff0f0" stroke="red" points="488,-1008 418,-1008 418,-989 488,-989 488,-1008"/>
 <text text-anchor="middle" x="453" y="-996" font-family="Helvetica,sans-Serif" font-size="10.00">set_rtc_job</text>
 </a>
@@ -1023,7 +1023,7 @@ var sectionId = 'dynsection-1';
 <!-- Node106 -->
 <g id="Node000106" class="node">
 <title>Node106</title>
-<g id="a_Node000106"><a xlink:href="gse_8c.html#a07a7ef3b41255450f286364cc3668e54" target="_top" xlink:title=" ">
+<g id="a_Node000106"><a xlink:href="gse_8c.html#a07a7ef3b41255450f286364cc3668e54" target="_top" xlink:title="Adds a message to the GSE queue for transmission over the hardline.">
 <polygon fill="#fff0f0" stroke="red" points="334,-56 215,-56 215,-37 334,-37 334,-56"/>
 <text text-anchor="middle" x="274.5" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">gse_queue_message</text>
 </a>
