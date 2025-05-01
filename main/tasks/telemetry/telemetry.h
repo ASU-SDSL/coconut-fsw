@@ -1,3 +1,8 @@
+/**
+ * @file telemetry.h
+ * @brief Functions for packaging and queuing telemetry packets for sending 
+ * 
+ */
 #pragma once
 
 #include "FreeRTOS.h" // This is needed because it gets included from "hb_tlm_log.h" before anything with an '#include "FreeRTOS.h"' is included for some reason
@@ -13,6 +18,13 @@ uint16_t g_packet_sequence_number;
 QueueHandle_t telemetry_queue;
 
 /* TELEMETRY DEFINITIONS*/
+/**
+ * @brief Telemetry packet APIDs
+ * Groups: 
+ * 00 - general and file system 
+ * 01 - radio
+ * 02 - device
+ */
 typedef enum {
     // 00 - general and file system 
     LOG = 0,
@@ -28,11 +40,13 @@ typedef enum {
     // 02 - device 
 } telemetry_apid_t;
 
+/// @brief Log packet definition (sent over hardline only by default)
 typedef struct __attribute__((__packed__)) {
     uint16_t size;
     char str[]; 
 } log_telemetry_t;
 
+/// @brief Heartbeat packet definition 
 typedef struct __attribute__((__packed__)) {
     uint8_t state;
     uint32_t uptime;
@@ -80,14 +94,14 @@ typedef struct __attribute__((__packed__)) {
     
     int16_t rfm_state; 
     int16_t sx_state; 
-    uint8_t which_radio; // 1 for RFM
+    uint8_t which_radio; ///< 1 for RFM
 } heartbeat_telemetry_t;
 
-// Telemetry response to any commands sent to the satellite
+/// @brief Telemetry response to any commands sent to the satellite
 typedef struct __attribute__((__packed__)) {
-    uint8_t command_status; // 1 for success/true, 0 for failure/false
+    uint8_t command_status; ///< 1 for success/true, 0 for failure/false
     char last_logged_error[24];
-    uint8_t *data; // Any extra data that might be returned by a command
+    uint8_t *data; ///< Any extra data that might be returned by a command
 } ack_telemetry_t;
 
 /* USER FUNCTIONS */
