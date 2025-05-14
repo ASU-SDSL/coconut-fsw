@@ -112,6 +112,11 @@ typedef struct __attribute__((__packed__)) {
 } upload_user_data_t;
 
 typedef struct __attribute__((__packed__)) {
+    uint8_t admin_token[TOKEN_LENGTH];
+} mcu_power_cycle_t; 
+
+typedef struct __attribute__((__packed__)) {
+    uint8_t admin_token[TOKEN_LENGTH];
     uint16_t number_of_packets;
     uint16_t every_x_packet; ///< Used to adjust for less resolution but cover more time
     uint16_t go_back_x_packets; ///< Used to start the playback from a certain point in the past
