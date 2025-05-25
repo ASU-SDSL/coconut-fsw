@@ -180,7 +180,7 @@ void radio_panic(){
 
     do {
         // short the conditional so that it doesn't switch to the sx as I don't think it is currently not working on the stack 
-        if(true || radio == &radioSX){
+        if(radio == &radioSX){
             radio_state_SX = RADIO_ERROR_CUSTOM; 
             #if RADIO_LOGGING
             printf("Attempting to switch to RFM98...\n");
@@ -322,7 +322,7 @@ void set_power_output(PhysicalLayer* radio_module, int8_t new_dbm){
 
 
 /**
- * Monitor radio, write to SD card, and send stuff when needed
+ * Monitor radio and send stuff when needed
  */
 void radio_task_cpp(){
     #if RADIO_LOGGING
