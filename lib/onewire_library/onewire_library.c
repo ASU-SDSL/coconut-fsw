@@ -7,9 +7,33 @@
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 #include "hardware/pio.h"
+#include <FreeRTOS.h>
 
 #include "onewire_library.h"
 
+#define PIO_OW_TIMEOUT_MS 100
+
+static bool pio_sm_put_timeout(PIO pio, uint sm, uint32_t data){
+    uint16_t tries = 0; 
+    while(pio_sm_is_tx_fifo_full(pio, sm)){
+        if(tries >= PIO_OW_TIMEOUT_MS) return false; 
+        tries++; 
+        vTaskDelay(pdMS_TO_TICKS(1));
+    }
+
+    pio_sm_put(pio, sm, data); 
+}
+
+static uint32_t pio_sm_get_timeout(PIO pio, uint sm){
+    uint16_t tries = 0; 
+    while(pio_sm_is_rx_fifo_empty(pio, sm)){
+        if(tries >= PIO_OW_TIMEOUT_MS) return 0; 
+        tries++; 
+        vTaskDelay(pdMS_TO_TICKS(1));
+    }
+
+    return pio_sm_get(pio, sm); 
+}
 
 // Create a driver instance and populate the provided OW structure.
 // Returns: True on success.
@@ -38,8 +62,8 @@ bool ow_init (OW *ow, PIO pio, uint offset, uint gpio) {
 // ow: A pointer to an OW driver struct.
 // data: The word to be sent.
 void ow_send (OW *ow, uint data) {
-    pio_sm_put_blocking (ow->pio, ow->sm, (uint32_t)data);
-    pio_sm_get_blocking (ow->pio, ow->sm);  // discard the response
+    pio_sm_put_timeout (ow->pio, ow->sm, (uint32_t)data);
+    pio_sm_get_timeout (ow->pio, ow->sm);  // discard the response
 }
 
 
@@ -47,8 +71,8 @@ void ow_send (OW *ow, uint data) {
 // Returns: the word read (LSB first).
 // ow: pointer to an OW driver struct
 uint8_t ow_read (OW *ow) {
-    pio_sm_put_blocking (ow->pio, ow->sm, 0xff);    // generate read slots
-    return (uint8_t)(pio_sm_get_blocking (ow->pio, ow->sm) >> 24);  // shift response into bits 0..7
+    pio_sm_put_timeout (ow->pio, ow->sm, 0xff);    // generate read slots
+    return (uint8_t)(pio_sm_get_timeout (ow->pio, ow->sm) >> 24);  // shift response into bits 0..7
 }
 
 
@@ -57,7 +81,7 @@ uint8_t ow_read (OW *ow) {
 // ow: pointer to an OW driver struct
 bool ow_reset (OW *ow) {
     pio_sm_exec_wait_blocking (ow->pio, ow->sm, ow->jmp_reset);
-    if ((pio_sm_get_blocking (ow->pio, ow->sm) & 1) == 0) {     // apply pin mask (see pio program)
+    if ((pio_sm_get_timeout (ow->pio, ow->sm) & 1) == 0) {     // apply pin mask (see pio program)
         return true;    // a slave pulled the bus low
     }
     return false;
