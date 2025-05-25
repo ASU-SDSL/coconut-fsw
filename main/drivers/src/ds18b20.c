@@ -66,12 +66,8 @@ uint8_t ds18b20_start_conversion(){
 }
 
 int16_t ds18b20_read_temp(uint64_t romcode){
-    // busy wait until conversion is done 
-    uint16_t count = 0; 
-    while(ow_read(&ds_ow) == 0){
-        if(count >= DS18B20_TIMEOUT_MS) return 0xFFFF; 
-        count++; 
-    }
+    // busy wait until conversion is done
+    while(ow_read(&ds_ow) == 0);
 
     // read the result 
     ow_reset(&ds_ow); 

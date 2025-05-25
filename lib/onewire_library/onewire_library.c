@@ -8,6 +8,7 @@
 #include "hardware/gpio.h"
 #include "hardware/pio.h"
 #include <FreeRTOS.h>
+#include "task.h"
 
 #include "onewire_library.h"
 
@@ -24,10 +25,10 @@ static bool pio_sm_put_timeout(PIO pio, uint sm, uint32_t data){
     pio_sm_put(pio, sm, data); 
 }
 
-static uint32_t pio_sm_get_timeout(PIO pio, uint sm){
+static int64_t pio_sm_get_timeout(PIO pio, uint sm){
     uint16_t tries = 0; 
     while(pio_sm_is_rx_fifo_empty(pio, sm)){
-        if(tries >= PIO_OW_TIMEOUT_MS) return 0; 
+        if(tries >= PIO_OW_TIMEOUT_MS) return -1; 
         tries++; 
         vTaskDelay(pdMS_TO_TICKS(1));
     }
@@ -70,9 +71,9 @@ void ow_send (OW *ow, uint data) {
 // Read a binary word from the bus.
 // Returns: the word read (LSB first).
 // ow: pointer to an OW driver struct
-uint8_t ow_read (OW *ow) {
+int16_t ow_read (OW *ow) {
     pio_sm_put_timeout (ow->pio, ow->sm, 0xff);    // generate read slots
-    return (uint8_t)(pio_sm_get_timeout (ow->pio, ow->sm) >> 24);  // shift response into bits 0..7
+    return (int16_t)(pio_sm_get_timeout (ow->pio, ow->sm) >> 24);  // shift response into bits 0..7
 }
 
 
