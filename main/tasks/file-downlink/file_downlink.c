@@ -147,13 +147,12 @@ void file_downlink_task(void* unused_arg) {
 
     file_downlink_queue = xQueueCreate(FILE_DOWNLINK_MAX_QUEUE_ITEMS, sizeof(file_downlink_queue_command_t));
     file_downlink_queue_command_t queue_command;
-    // Send cool banner
-    print_banner();
+
     while (true) {
 
         switch (state) {
             
-            case IDLE:
+            case IDLE: {
                 int res = xQueueReceive(file_downlink_queue, &queue_command, 0); // 0 for non blocking
                 if (res == pdFALSE) {
                     continue;
@@ -172,9 +171,9 @@ void file_downlink_task(void* unused_arg) {
                     logln_error("File Downlink Task received an invalid command in IDLE state: %d", queue_command.queue_command_id);
                 }
                 break;
-
+            }
             
-            case SENDING:
+            case SENDING: {
                 // If we have not sent all packets in the window, send the next packet in the window
                 if (current_file_downlink_data.current_sending_packet_index < current_file_downlink_data.window_end) {
                     int result = send_n_packet(&current_file_downlink_data, packet_downlink_size);
@@ -242,6 +241,8 @@ void file_downlink_task(void* unused_arg) {
                 }
 
                 break;
+
+            }
         }
 
     }
