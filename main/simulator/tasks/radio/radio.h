@@ -23,11 +23,11 @@ static uint16_t radio_get_SX_state() {
     return 0; 
 }
 
-static void radio_set_module() {
+static void radio_set_module(radio_operation_type_t op) {
     return;
 }
 
-static void radio_set_transmit_power() {
+static void radio_set_transmit_power(uint8_t output_power) {
     return;
 }
 

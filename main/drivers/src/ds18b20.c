@@ -105,7 +105,7 @@ void ds18b20_scan(){
 
                 printf("Found %d devices\n", num_devs);      
                 for (int i = 0; i < num_devs; i += 1) {
-                    printf("\t%d: 0x%llx\n", i, romcode[i]);
+                    printf("\t%d: 0x%lx\n", i, romcode[i]);
                 }
                 putchar ('\n');
 
@@ -133,19 +133,19 @@ void ds18b20_scan(){
                     }
                     putchar ('\n');
                 }
-                sleep_ms(1000); 
+                vTaskDelay(pdMS_TO_TICKS(1000)); 
             }
             
         } else {
             while(1){
                 puts ("could not initialise the driver");
-                sleep_ms(1000); 
+                vTaskDelay(pdMS_TO_TICKS(1000)); 
             }
         }
     } else {
         while(1){
             puts ("could not add the program");
-            sleep_ms(1000); 
+            vTaskDelay(pdMS_TO_TICKS(1000)); 
         }
     }
 }

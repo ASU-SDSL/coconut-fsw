@@ -67,7 +67,6 @@ set (LINK_LIBS
     FreeRTOS
     FatFs
     libspacepacket
-    onewire_library
 )
 
 IF (${DESKTOP_BUILD})
@@ -89,6 +88,7 @@ ELSE()
         hardware_pwm
         hardware_clocks
         RadioLib
+        onewire_library
     )
 ENDIF()
 
