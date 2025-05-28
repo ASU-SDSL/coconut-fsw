@@ -181,7 +181,7 @@ void radio_panic(){
 
     do {
         // short the conditional so that it doesn't switch to the sx as I don't think it is currently not working on the stack 
-        if(true || radio == &radioSX){
+        if(radio == &radioSX){
             radio_state_SX = RADIO_ERROR_CUSTOM; 
             #if RADIO_LOGGING
             printf("Attempting to switch to RFM98...\n");
