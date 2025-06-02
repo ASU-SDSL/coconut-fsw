@@ -3,9 +3,49 @@
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 #include "log.h"
+#include <stdlib.h>
 
 #define WDI_PIN 21 // from FCR schematic
 
+#define HEARTBEAT_CHECK_PERIOD_MS (10 * 1000) // 10 s
+#define WATCHDOG_MUTEX_DELAY_MS 1000
+
+/// @brief Array of task heartbeats to watch 
+static task_heartbeat_t** watchlist = NULL; 
+static int watchlist_len = 0; 
+
+task_heartbeat_t* build_task_heartbeat(const char* name){
+    task_heartbeat_t* thb = (task_heartbeat_t*) pvPortMalloc(sizeof(task_heartbeat_t)); 
+    thb->name = name; 
+    thb->tick = 0; 
+
+    // make a new larger watchlist
+    task_heartbeat_t** new_watchlist = pvPortMalloc(sizeof(task_heartbeat_t*) * (watchlist_len + 1)); 
+
+    // copy old watch list 
+    for(int i = 0; i < watchlist_len; i++){
+        new_watchlist[i] = watchlist[i]; 
+    }
+    
+    // add new heartbeat
+    new_watchlist[watchlist_len] = thb; 
+    watchlist_len++; 
+
+    // replace old watchlist 
+    if(xSemaphoreTake(watchlist_mutex, WATCHDOG_MUTEX_DELAY_MS)) {
+        vPortFree(watchlist); 
+        watchlist = new_watchlist;
+
+        xSemaphoreGive(watchlist_mutex); 
+    }
+
+    return thb; 
+}
+
+
+void task_heartbeat_tick(task_heartbeat_t* watchdog) {
+    watchdog->tick = true; 
+}
 
 void watchdog_freeze() {
     // Notify main loop in watchdog_task() to freeze
@@ -21,7 +61,23 @@ void watchdog_task(void *pvParameters) {
 
     // Simple loop to toggle gpio
     uint8_t state = 1;
+    uint32_t last = to_ms_since_boot(get_absolute_time());
     while (1) {
+
+        // every defined bit 
+        if(abs(last - to_ms_since_boot(get_absolute_time())) > HEARTBEAT_CHECK_PERIOD_MS){
+            // check heartbeats
+            for(int i = 0; i < watchlist_len; i++){
+                // if it is still false, the task has flat lined 
+                if(watchlist[i] == false){ 
+                    // trigger restart 
+                    watchdog_freeze(); 
+                } else {
+                    // reset 
+                    watchlist[i] = false; 
+                }
+            }
+        }
 
         // See if reset signal was received
         if (ulTaskNotifyTake(pdTRUE, 0) > 0) {

@@ -20,6 +20,8 @@
 #include "watchdog.h"
 #include "hb_tlm_log.h"
 
+#define COMMAND_QUEUE_RECEIVE_LOOP_DELAY 1000
+
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
     // Send to command queue
@@ -214,15 +216,22 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
 }
 
 void command_task(void* unused_arg) {
+    task_heartbeat_t* command_heartbeat = build_task_heartbeat("COMMAND"); 
+
     // Initialize byte queue
     command_byte_queue = xQueueCreate(COMMAND_MAX_QUEUE_ITEMS, sizeof(command_byte_t));
     while (true) {
+        task_heartbeat_tick(command_heartbeat);
+
         // Keep gathering bytes until we get the sync bytes
         uint32_t sync_index = 0;
         while (true) {
             // stall thread until we get a byte
             command_byte_t command_byte = 0;
-            xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
+            while(xQueueReceive(command_byte_queue, &command_byte, COMMAND_QUEUE_RECEIVE_LOOP_DELAY) == pdFALSE){
+                // keep heartbeat beating
+                task_heartbeat_tick(command_heartbeat);
+            }
             
             logln_info("Byte Received: 0x%hhx", command_byte);
 

@@ -85,6 +85,8 @@ int main() {
                                         NULL,
                                         1,
                                         &xWatchdogTaskHandler);
+    // initialize watchdog mutex
+    watchlist_mutex = xSemaphoreCreateMutex();  
                                         
     // Start the FreeRTOS scheduler
     vTaskStartScheduler();

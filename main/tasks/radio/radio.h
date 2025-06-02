@@ -78,6 +78,7 @@ extern "C" {
     #include "telemetry.h"
     #include "log.h"
     #include "command.h"
+    #include "watchdog.h"
 }
 #endif
 

@@ -3,10 +3,8 @@
 #include <FreeRTOS.h>
 #include "PicoHal.h"
 #include <stdlib.h>
-#include "log.h"
 #include "gse.h"
 #include "spacepacket.h"
-#include "command.h"
 
 #define ERR_NONE 0
 #define NULL_QUEUE_WAIT_TIME 100
@@ -340,7 +338,14 @@ void radio_task_cpp(){
     uint32_t last_receive_time = to_ms_since_boot(get_absolute_time());
     int transmission_size = 0;  
 
+    // build heartbeat
+    task_heartbeat_t* radio_heartbeat = build_task_heartbeat("RADIO"); 
+
+
     while(true){
+        // heartbeat
+        task_heartbeat_tick(radio_heartbeat); 
+
         // save now time since boot 
         uint32_t radio_now = to_ms_since_boot(get_absolute_time());
         // if there's been no contact for a long time, try to switch radios 
