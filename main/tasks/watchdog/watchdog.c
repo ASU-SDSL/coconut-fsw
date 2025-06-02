@@ -65,7 +65,7 @@ void watchdog_task(void *pvParameters) {
     while (1) {
 
         // every defined bit 
-        if(abs(last - to_ms_since_boot(get_absolute_time())) > HEARTBEAT_CHECK_PERIOD_MS){
+        if(abs(to_ms_since_boot(get_absolute_time()) - last) > HEARTBEAT_CHECK_PERIOD_MS){
             // check heartbeats
             for(int i = 0; i < watchlist_len; i++){
                 // if it is still false, the task has flat lined 

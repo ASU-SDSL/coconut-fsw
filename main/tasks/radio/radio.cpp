@@ -7,7 +7,7 @@
 #include "spacepacket.h"
 
 #define ERR_NONE 0
-#define NULL_QUEUE_WAIT_TIME 100
+#define RADIO_NULL_QUEUE_WAIT_TIME 100
 
 #define RADIO_LOGGING 0
 #define RADIO_LOGGING_CAD 0
