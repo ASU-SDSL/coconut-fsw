@@ -27,6 +27,7 @@ void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t pa
     }
 }
 
+//TODO: Check if KB & Henry's edits are correct
 void telemetry_task(void* unused_arg) {
     // Initialize telemetry context
     g_packet_sequence_number = 0;
@@ -49,18 +50,24 @@ void telemetry_task(void* unused_arg) {
         // Do not increment if this is a logging packet (GSE only), we want only packets over the radio to increment
         header.packet_sequence_count = (telemetry.apid == 0) ? g_packet_sequence_number : g_packet_sequence_number++;
         header.packet_length = telemetry.payload_size - 1; // 4.1.3.5.3 in spacepacket standard says packet_length - 1
+        full_packet
+
         // Encode spacepacket header into bytes
-        size_t header_size = TELEMETRY_SYNC_SIZE + SPACEPACKET_ENCODED_HEADER_SIZE;
+        size_t header_size = TELEMETRY_SYNC_SIZE + CALLSIGN_SIZE + SPACEPACKET_ENCODED_HEADER_SIZE;
+
         size_t total_payload_size = header_size + telemetry.payload_size;
         char* payload_buffer = pvPortMalloc(total_payload_size);
         // Write sync bytes first
         memcpy(payload_buffer, TELEMETRY_SYNC_BYTES, TELEMETRY_SYNC_SIZE);
-        // Write spacepacket header after sync bytes
-        if (encode_spacepacket_header(&header, payload_buffer + TELEMETRY_SYNC_SIZE, SPACEPACKET_ENCODED_HEADER_SIZE) == -1) {
+        //Write Callsign after
+        memcpy(payload_buffer + TELEMETRY_SYNC_SIZE, CALLSIGN, CALLSIGN_SIZE);
+
+        // Write spacepacket header after sync bytes and callsign bytes
+        if (encode_spacepacket_header(&header, payload_buffer + TELEMETRY_SYNC_SIZE + CALLSIGN_SIZE, SPACEPACKET_ENCODED_HEADER_SIZE) == -1) {
             logln_error("Failed to encode SpacePacket header!");
             continue;
         }
-        // Append payload to sync bytes and header
+        // Append payload to sync bytes, callsign, and header
         memcpy(payload_buffer + header_size, telemetry.payload_buffer, telemetry.payload_size);
         // Send telemetry through UART
         gse_queue_message(payload_buffer, total_payload_size);

@@ -12,6 +12,9 @@
 #define TELEMETRY_SYNC_SIZE 4U
 #define TELEMETRY_MAX_QUEUE_ITEMS 128
 #define TELEMETRY_CHECK_DELAY_MS portMAX_DELAY
+#define CALLSIGN_SIZE 8
+
+const char* CALLSIGN = "\0KK7LTW\0\0"; //Use Tyler's callsign for now, also make sure to pad to CALLSIGN_SIZE. A little bit over is fine.
 
 uint16_t g_packet_sequence_number;
 
