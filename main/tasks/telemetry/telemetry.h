@@ -108,6 +108,7 @@ typedef struct __attribute__((__packed__)) {
     char callsign[8];
      spacepacket_header_t header;
     uint8_t* payload;
+    size_t payload_size;
 } spacepacket_full_t;
 
 
