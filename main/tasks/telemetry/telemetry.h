@@ -71,11 +71,6 @@ typedef struct __attribute__((__packed__)) {
     uint8_t which_radio; // 1 for RFM
 } heartbeat_telemetry_t;
 
-typedef struct __attribute__((__packed__)) {
-    char callsign[8]
-     spacepacket_header_t header
-    uint8_t* payload
-} spacepacket_full_t;
 
 
 /* USER FUNCTIONS */
