@@ -247,6 +247,14 @@ void command_task(void* unused_arg) {
         // logln_info("Received all sync bytes!");
         // TODO: Add better error checks and handling here
         // Gather spacepacket header bytes
+
+        //Edit by KB & Henry: we also receive in the callsign bytes
+        uint8_t callsign_bytes[CALLSIGN_SIZE];
+        for(int i = 0; i < CALLSIGN_SIZE; i++) {
+            xQueueReceive(command_byte_queue, &callsign_bytes[i], portMAX_DELAY);
+        }
+        //TODO: Do something with the received callsign, like maybe debug print or something.
+
         uint8_t spacepacket_header_bytes[SPACEPACKET_ENCODED_HEADER_SIZE];
         for (int i = 0; i < sizeof(spacepacket_header_bytes); i++) {
             xQueueReceive(command_byte_queue, &spacepacket_header_bytes[i], portMAX_DELAY);
