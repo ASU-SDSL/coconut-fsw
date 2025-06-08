@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:25.10
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV SHELL=bash
@@ -12,8 +12,8 @@ COPY . /coconut-fsw
 WORKDIR /coconut-fsw
 
 # Update submodules if needed
-RUN git submodule update --init --recursive
+#RUN git submodule update --init --recursive
 
 # Build repo
 ENV PICO_SDK_PATH="/coconut-fsw/lib/pico-sdk"
-RUN ./build.sh
+#RUN ./build.sh
