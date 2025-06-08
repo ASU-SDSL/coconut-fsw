@@ -25,7 +25,7 @@ int32_t read_file(const char* file_name, char* result_buffer, size_t size) {
     new_file_operation.operation_type = READ;
     strncpy(new_file_operation.file_operation.read_op.file_name, file_name, MAX_PATH_SIZE);
 
-    size_t out_size = 0;
+    int32_t out_size = 0;
 
     new_file_operation.file_operation.read_op.read_buffer = result_buffer;
     new_file_operation.file_operation.read_op.size = size;
@@ -45,7 +45,7 @@ int32_t read_file(const char* file_name, char* result_buffer, size_t size) {
     }
 
     // Return size
-    return (int32_t)out_size;
+    return out_size;
 }
 
 void write_file(const char* file_name, char* data, size_t size, bool append_flag) {
