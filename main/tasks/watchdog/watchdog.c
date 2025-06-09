@@ -18,6 +18,7 @@ task_heartbeat_t* build_task_heartbeat(const char* name){
     task_heartbeat_t* thb = (task_heartbeat_t*) pvPortMalloc(sizeof(task_heartbeat_t)); 
     thb->name = name; 
     thb->tick = 0; 
+    thb->mutex = xSemaphoreCreateMutex();
 
     // make a new larger watchlist
     task_heartbeat_t** new_watchlist = pvPortMalloc(sizeof(task_heartbeat_t*) * (watchlist_len + 1)); 
@@ -44,7 +45,33 @@ task_heartbeat_t* build_task_heartbeat(const char* name){
 
 
 void task_heartbeat_tick(task_heartbeat_t* watchdog) {
-    watchdog->tick = true; 
+    if(xSemaphoreTake(watchlist_mutex, WATCHDOG_MUTEX_DELAY_MS) && xSemaphoreTake(watchdog->mutex, WATCHDOG_MUTEX_DELAY_MS)) {
+        watchdog->tick = true; 
+
+        xSemaphoreGive(watchdog->mutex); 
+        xSemaphoreGive(watchlist_mutex); 
+    }
+}
+
+static bool task_heartbeat_read(task_heartbeat_t* watchdog){
+    bool res = false; 
+    if(xSemaphoreTake(watchlist_mutex, WATCHDOG_MUTEX_DELAY_MS) && xSemaphoreTake(watchdog->mutex, WATCHDOG_MUTEX_DELAY_MS)) {
+        res = watchdog->tick;
+
+        xSemaphoreGive(watchdog->mutex); 
+        xSemaphoreGive(watchlist_mutex); 
+    }
+
+    return res; 
+}
+
+static void task_heartbeat_untick(task_heartbeat_t* watchdog){
+    if(xSemaphoreTake(watchlist_mutex, WATCHDOG_MUTEX_DELAY_MS) && xSemaphoreTake(watchdog->mutex, WATCHDOG_MUTEX_DELAY_MS)) {
+        watchdog->tick = false;
+
+        xSemaphoreGive(watchdog->mutex); 
+        xSemaphoreGive(watchlist_mutex); 
+    }
 }
 
 void watchdog_freeze() {
@@ -69,12 +96,13 @@ void watchdog_task(void *pvParameters) {
             // check heartbeats
             for(int i = 0; i < watchlist_len; i++){
                 // if it is still false, the task has flat lined 
-                if(watchlist[i] == false){ 
+                if(task_heartbeat_read(watchlist[i]) == false){ 
                     // trigger restart 
                     watchdog_freeze(); 
+                    break; 
                 } else {
                     // reset 
-                    watchlist[i] = false; 
+                    task_heartbeat_untick(watchlist[i]); 
                 }
             }
         }

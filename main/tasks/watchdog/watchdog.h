@@ -18,7 +18,8 @@ SemaphoreHandle_t watchlist_mutex;
 /// @brief Struct used for naming task heartbeats for watchdog task to watch 
 typedef struct {
     const char* name; 
-    volatile bool tick; 
+    SemaphoreHandle_t mutex; 
+    bool tick; 
 } task_heartbeat_t; 
 
 /**
