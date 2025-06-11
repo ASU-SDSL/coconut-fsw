@@ -25,7 +25,16 @@ void heartbeat_telemetry_job(void* unused) {
     // logln_info("%s", get_current_task_name());
 
     //Incorporate callsign, using Tyler's for now.
-    payload.callsign = "KK7LTW\0";
+    payload.callsign[0] = 'K';
+    payload.callsign[1] = 'K';
+    payload.callsign[2] = '7';
+    payload.callsign[3] = 'L';
+    payload.callsign[4] = 'T';
+    payload.callsign[5] = 'W';
+    payload.callsign[6] = '\0';
+    payload.callsign[7] = '\0';
+
+
 
     // State data
     payload.state = (uint8_t)g_payload_state;
