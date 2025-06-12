@@ -135,12 +135,18 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             break;
 
         case MCU_POWER_CYCLE:
+            if(payload_size < sizeof(mcu_power_cycle_t)) break;
+            mcu_power_cycle_t* mcu_power_cycle_args = (mcu_power_cycle_t*)payload_buf; 
+            if (!is_admin(mcu_power_cycle_args->admin_token)) break; // check admin
+
             watchdog_freeze(); // Freezing the watchdog will cause a reboot within a few seconds
             break;
 
         case PLAYBACK_HEARTBEAT_PACKETS:
             if (payload_size < sizeof(playback_hb_tlm_payload_t)) break; // Should probably return an error to the ground
             playback_hb_tlm_payload_t* playback_hb_payload = (playback_hb_tlm_payload_t*)payload_buf;
+            if (!is_admin(playback_hb_payload->admin_token)) break; // check admin
+
             int status = hb_tlm_playback(playback_hb_payload);
             if (status != 0) command_status = 0;
             break;
