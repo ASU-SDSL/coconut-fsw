@@ -425,11 +425,17 @@ void filesystem_task(void* unused_arg) {
 #ifdef SIMULATOR
     _mkfs();
 #endif
-    _mkfs(); 
+    // mount disk
+    logln_info("Mounting filesystem...\n");
+    FRESULT fr = f_mount(&fs, "0:", 1);
+    if (fr != FR_OK) {
+        logln_error("Failed to mount filesystem (%d), attempting to rebuilt filesystem", fr);
+        _mkfs(); 
+    }
     
     // mount disk
     FATFS fs;
-    FRESULT fr = f_mount(&fs, "0:", 1);
+    fr = f_mount(&fs, "0:", 1);
     if (fr != FR_OK) {
         logln_warn("Failed to mount filesystem, you probably need to run make_filesystem (mkfs)!", fr);
     }
