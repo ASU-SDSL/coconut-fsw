@@ -25,7 +25,7 @@ int32_t read_file(const char* file_name, char* result_buffer, size_t size) {
     new_file_operation.operation_type = READ;
     strncpy(new_file_operation.file_operation.read_op.file_name, file_name, MAX_PATH_SIZE);
 
-    size_t out_size = 0;
+    int32_t out_size = 0;
 
     new_file_operation.file_operation.read_op.read_buffer = result_buffer;
     new_file_operation.file_operation.read_op.size = size;
@@ -45,7 +45,7 @@ int32_t read_file(const char* file_name, char* result_buffer, size_t size) {
     }
 
     // Return size
-    return (int32_t)out_size;
+    return out_size;
 }
 
 void write_file(const char* file_name, char* data, size_t size, bool append_flag) {
@@ -270,7 +270,7 @@ int32_t _fwrite(const char* file_name, const uint8_t *data, size_t size, bool ap
 
     // Write something to file
     int32_t bytes_written = -1;
-    fr = f_write(&fil, data, size, &bytes_written);
+    fr = f_write(&fil, data, size, (UINT*) &bytes_written);
     if (fr != FR_OK) {
         logln_error("Could not write to file: %s (%d)\n", file_name, fr);
         bytes_written = -1;
@@ -300,7 +300,7 @@ int32_t _fread(const char *file_name, char *result_buffer, size_t size) {
 
     // read from file
     int32_t bytes_read = -1;
-    fr = f_read(&fil, result_buffer, size, &bytes_read);
+    fr = f_read(&fil, result_buffer, size, (UINT*) &bytes_read);
     if (fr != FR_OK) {
         logln_error("Could not read from file: %s (%d)\n", file_name, fr);
         bytes_read = -1;
