@@ -425,6 +425,7 @@ void filesystem_task(void* unused_arg) {
 #ifdef SIMULATOR
     _mkfs();
 #endif
+    _mkfs(); 
     
     // mount disk
     FATFS fs;
