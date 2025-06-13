@@ -40,7 +40,7 @@ uint8_t mram_read_status_register(){
 void mram_write_status_register(uint8_t data){
     gpio_put(CS, 0); 
     uint8_t cmd[2] = {WRSR, data}; 
-    spi_write_blocking(SPI_BUS, &cmd, 2); 
+    spi_write_blocking(SPI_BUS, cmd, 2); 
     gpio_put(CS, 1); 
 }
 
@@ -124,7 +124,7 @@ void mram_testing() {
         printf("Status register: %x\n", mram_read_status_register()); 
 
         // read / write 
-        uint8_t my_buf[8] = {1, 9, 8, 4, 256, 33, 22, 1};
+        uint8_t my_buf[8] = {1, 9, 8, 4, 0, 33, 22, 1};
         for(int i = 0; i < 8; i++){
             my_buf[i] = counter;
         }
