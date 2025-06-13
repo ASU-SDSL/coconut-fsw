@@ -77,3 +77,6 @@ int read_bytes(const uint32_t addr, uint8_t* buf, const uint32_t nbytes);
  */
 void mram_testing();
 void initialize_mram(); 
+
+void mram_write_status_register(uint8_t data); 
+uint8_t mram_read_status_register(); 

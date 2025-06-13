@@ -23,6 +23,27 @@ void send_simple_command(uint8_t cmd) {
     gpio_put(CS, 1);
 }
 
+uint8_t mram_read_status_register(){
+    gpio_put(CS, 0); 
+
+    uint8_t cmd = RDSR; 
+
+    spi_write_blocking(SPI_BUS, &cmd, 1); 
+    uint8_t buf; 
+    spi_read_blocking(SPI_BUS, 0, &buf, 1);
+
+    gpio_put(CS, 1); 
+
+    return buf; 
+}
+
+void mram_write_status_register(uint8_t data){
+    gpio_put(CS, 0); 
+    uint8_t cmd[2] = {WRSR, data}; 
+    spi_write_blocking(SPI_BUS, &cmd, 2); 
+    gpio_put(CS, 1); 
+}
+
 void initialize_mram() {
     spi_init(SPI_BUS, FREQ);
 
@@ -37,12 +58,15 @@ void initialize_mram() {
     gpio_put(CS, 1);
 
     //Make sure device is initially awake
-    send_simple_command(WAKE);
+    send_simple_command(WAKE);     
+
+    mram_write_status_register(mram_read_status_register() & ~(0x1 << 7)); // make sure WPEN is 0  
 }
 
 int write_bytes(uint32_t addr, const uint8_t* buf, const uint32_t nbytes) {
     if (nbytes == 0) { return 0; }
 
+    //printf("Write called!\n");
     send_simple_command(WREN);
 
     uint32_t bendaddr = __builtin_bswap32(addr);
@@ -62,7 +86,8 @@ int write_bytes(uint32_t addr, const uint8_t* buf, const uint32_t nbytes) {
 
 int read_bytes(uint32_t addr, uint8_t* buf, const uint32_t nbytes) {
     if (nbytes == 0) { return 0; }
-    
+
+    //printf("Read called!\n");
     gpio_put(CS, 0);
 
     uint32_t bendaddr = __builtin_bswap32(addr);
@@ -79,6 +104,7 @@ int read_bytes(uint32_t addr, uint8_t* buf, const uint32_t nbytes) {
 void mram_testing() {
     initialize_mram();
 
+    u_int8_t counter = 0;
     while(true) {
         // device id
         gpio_put(CS, 0); 
@@ -87,7 +113,7 @@ void mram_testing() {
         spi_write_blocking(SPI_BUS, data_out, 1); 
         spi_read_blocking(SPI_BUS, 0, data_in, 4); 
 
-        gpio_put(CS, 1); 
+        gpio_put(CS, 1);
 
         printf("Device ID: ");
         for(int i = 0; i < 4; i++){
@@ -95,10 +121,15 @@ void mram_testing() {
         }
         printf("\n"); 
 
+        printf("Status register: %x\n", mram_read_status_register()); 
+
         // read / write 
-        // uint8_t my_buf[8] = {1, 9, 8, 4, 256, 33, 22, 1};
-        uint8_t my_buf[8] = {1, 9, 8, 4, 0, 33, 22, 1};
+        uint8_t my_buf[8] = {1, 9, 8, 4, 256, 33, 22, 1};
+        for(int i = 0; i < 8; i++){
+            my_buf[i] = counter;
+        }
         write_bytes(100, my_buf, 8);
+        
         
         //vTaskDelay(500);
 
@@ -118,7 +149,9 @@ void mram_testing() {
             printf("%d ", output[i]);
         }
         printf("\n");
-        vTaskDelay(200);
+        printf("\n");
+        vTaskDelay(1000);
 
+        counter++;
     }
 }

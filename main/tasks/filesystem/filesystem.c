@@ -422,7 +422,7 @@ void _test() {
 
 void filesystem_task(void* unused_arg) {
 
-    mram_testing(); 
+    //mram_testing(); 
     
 #ifdef SIMULATOR
     _mkfs();

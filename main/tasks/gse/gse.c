@@ -9,6 +9,7 @@
 #include "rtc_ds3231.h"
 #include "ina219.h"
 #include "log.h"
+#include "mram.h"
 #include "gse.h"
 
 void gse_queue_message(char* buffer, size_t size) {
@@ -20,6 +21,8 @@ void gse_task(void *pvParameters) {
     // Initialize USB UART
     stdio_init_all();
 
+    mram_testing();
+    
     // Start listening for USB UART bytes
     while (true) {
         // Wait on bytes from stdin
