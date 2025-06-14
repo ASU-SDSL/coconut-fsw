@@ -42,7 +42,7 @@ PhysicalLayer* radio = &radioSX;
 int radio_state_RFM = RADIO_STATE_NO_ATTEMPT; 
 int radio_state_SX = RADIO_STATE_NO_ATTEMPT;
 
-uint8_t radio_transmit_power = 2;
+uint8_t radio_transmit_power = 21;
 
 #ifdef __cplusplus
 extern "C"
