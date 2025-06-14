@@ -143,6 +143,43 @@ void radio_general_flag_SX(){
 }
 // end isrs
 
+// radio mode 
+typedef enum {
+    RADIO_FAST,
+    RADIO_SAFE
+} radio_mode_t; 
+
+static radio_mode_t radio_mode = RADIO_SAFE; 
+
+int radio_set_mode(radio_mode_t mode){
+    radio_mode = mode; 
+
+    if(radio == &radioRFM){
+        radio_begin_rfm(); 
+    } else {
+        radio_begin_sx(); 
+    }
+    
+    return 0; 
+}
+
+// radio initializers 
+void radio_begin_rfm(){
+    if(radio_mode == RADIO_FAST){
+        radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW_FAST, RADIO_SF_FAST, RADIO_CR_FAST, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+    } else {
+        radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW_SAFE, RADIO_SF_SAFE, RADIO_CR_SAFE, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+    }
+}
+
+void radio_begin_sx(){
+    if(radio_mode == RADIO_FAST){
+        radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW_FAST, RADIO_SF_FAST, RADIO_CR_FAST, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+    } else {
+        radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW_SAFE, RADIO_SF_SAFE, RADIO_CR_SAFE, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+    }
+}
+
 /**
  * @brief Handle hardware switches between radios 
  * 
@@ -190,7 +227,8 @@ void radio_panic(){
 
             // initialize RFM98
             radio_hardware_switch_to(&radioRFM); 
-            radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+            //radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+            radio_begin_rfm(); 
             #if RADIO_LOGGING
             printf("Res: %d\n", radio_state_RFM); 
             #endif
@@ -218,7 +256,8 @@ void radio_panic(){
 
             radio_hardware_switch_to(&radioSX); 
             // initialize SX1268
-            radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+            // radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+            radio_begin_sx(); 
             #if RADIO_LOGGING
             printf("Res: %d\n", radio_state_SX); 
             #endif
@@ -270,7 +309,8 @@ void init_radio()
 
     // If the RFM is physically wired into the board it needs to call begin() before the SX1268
     // my current theory as to why is that it before begin() it is polluting the SPI line
-    radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+    // radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+    radio_begin_rfm(); 
 
     if(radio_state_RFM == 0){
         radioRFM.setDio0Action(radio_operation_done_RFM, GPIO_IRQ_EDGE_RISE);
@@ -279,7 +319,8 @@ void init_radio()
     }
     else {
         radio_hardware_switch_to(&radioSX); 
-        radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+        // radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+        radio_begin_sx(); 
         if(radio_state_SX == 0){
             radioSX.setDio1Action(radio_general_flag_SX);
             radio = &radioSX;
@@ -519,7 +560,8 @@ void radio_task_cpp(){
                     printf("attempting to swap to RFM98...\n");
                     #endif
                     radio_hardware_switch_to(&radioRFM); 
-                    radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+                    // radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+                    radio_begin_rfm(); 
                     if(radio_state_RFM == 0){
                         radioSX.clearDio1Action(); 
                         radio = &radioRFM;
@@ -538,7 +580,8 @@ void radio_task_cpp(){
                         printf("switch to RFM failed with code: %d\n", radio_state_RFM); 
                         #endif
                         radio_hardware_switch_to(&radioSX); 
-                        radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+                        // radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+                        radio_begin_sx(); 
                         if(radio_state_SX != 0){
                             #if RADIO_LOGGING
                             printf("switch back to SX1268 failed with code: %d\n", radio_state_SX);
@@ -559,7 +602,8 @@ void radio_task_cpp(){
                     printf("attempting swap to SX1268...\n"); 
                     #endif
                     radio_hardware_switch_to(&radioSX); 
-                    radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+                    // radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+                    radio_begin_sx(); 
                     if(radio_state_SX == 0){
                         radioRFM.clearDio0Action();
                         radioRFM.clearDio1Action(); 
@@ -578,7 +622,8 @@ void radio_task_cpp(){
                         printf("switch to SX failed with code: %d\n", radio_state_SX); 
                         #endif
                         radio_hardware_switch_to(&radioRFM); 
-                        radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+                        // radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+                        radio_begin_rfm(); 
                         if(radio_state_RFM != 0){
                             #if RADIO_LOGGING
                             printf("switch back failed with code: %d\n", radio_state_RFM);

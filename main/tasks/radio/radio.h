@@ -35,9 +35,17 @@
 #define RADIO_RFM_DIO1_PIN 29
 
 #define RADIO_FREQ 434.0
-#define RADIO_BW 125.0
-#define RADIO_SF 9
-#define RADIO_CR 7
+
+// fast mode (21.875 kbps)
+#define RADIO_BW_FAST 500.0
+#define RADIO_SF_FAST 7
+#define RADIO_CR_FAST 5
+
+// safe mode (1.171 kbps)
+#define RADIO_BW_SAFE 500.0
+#define RADIO_SF_SAFE 12
+#define RADIO_CR_SAFE 5
+
 #define RADIO_SYNC_WORD 18
 #define RADIO_PREAMBLE_LEN 8
 #define RADIO_RFM_GAIN 0
@@ -161,3 +169,7 @@ void init_radio();
  * 
  */
 void radio_task_cpp();
+
+void radio_begin_rfm(); 
+
+void radio_begin_sx(); 
