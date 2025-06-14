@@ -111,6 +111,18 @@ extern "C"
         }
         xQueueSendToBack(radio_queue, &buf, portMAX_DELAY); 
     }
+    void radio_queue_lora_mode_change(uint8_t new_mode){
+        radio_queue_operations_t buf; 
+        buf.operation_type = radio_operation_type_t::SET_LORA_MODE; 
+        uint8_t* heap_buf = static_cast<uint8_t *>(pvPortMalloc(1));
+        *(buf.data_buffer) = new_mode; 
+        buf.data_size = 1; 
+        while(!radio_queue) 
+        {
+            vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS); 
+        }
+        xQueueSendToBack(radio_queue, &buf, portMAX_DELAY); 
+    }
     uint8_t radio_which(){
         return (radio == &radioRFM); 
     }
@@ -143,15 +155,9 @@ void radio_general_flag_SX(){
 }
 // end isrs
 
-// radio mode 
-typedef enum {
-    RADIO_FAST,
-    RADIO_SAFE
-} radio_mode_t; 
+static uint8_t radio_mode = RADIO_SAFE_MODE; 
 
-static radio_mode_t radio_mode = RADIO_SAFE; 
-
-int radio_set_mode(radio_mode_t mode){
+int radio_set_mode(uint8_t mode){
     radio_mode = mode; 
 
     if(radio == &radioRFM){
@@ -165,7 +171,7 @@ int radio_set_mode(radio_mode_t mode){
 
 // radio initializers 
 void radio_begin_rfm(){
-    if(radio_mode == RADIO_FAST){
+    if(radio_mode == RADIO_FAST_MODE){
         radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW_FAST, RADIO_SF_FAST, RADIO_CR_FAST, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
     } else {
         radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW_SAFE, RADIO_SF_SAFE, RADIO_CR_SAFE, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
@@ -173,7 +179,7 @@ void radio_begin_rfm(){
 }
 
 void radio_begin_sx(){
-    if(radio_mode == RADIO_FAST){
+    if(radio_mode == RADIO_FAST_MODE){
         radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW_FAST, RADIO_SF_FAST, RADIO_CR_FAST, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
     } else {
         radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW_SAFE, RADIO_SF_SAFE, RADIO_CR_SAFE, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
@@ -637,7 +643,8 @@ void radio_task_cpp(){
 
                     break;
 
-                case RETURN_STATS:
+                case RETURN_STATS: 
+                {
                     // get radio stats from last transmission
                     size_t payload_size = 3 * sizeof(float); 
                     char payload_buffer[payload_size]; 
@@ -651,7 +658,17 @@ void radio_task_cpp(){
                     logln_info("RADIO_STAT_RES queued"); 
                     // send the data to telemetry 
                     send_telemetry(RADIO_STAT_RES, payload_buffer, payload_size);
+                    
+                }
+                    break;
 
+                case SET_LORA_MODE: 
+                    radio_set_mode(*(rec.data_buffer)); 
+                    vPortFree(rec.data_buffer);
+                    break;
+
+                default:
+                    logln_error("Bad radio operation: %d", rec.operation_type); 
                     break;
             }
         }

@@ -71,6 +71,7 @@ typedef enum radio_operation_type {
     ENABLE_RFM98,
     ENABLE_SX1268,
     RETURN_STATS,
+    SET_LORA_MODE, 
 } radio_operation_type_t;
 
 /// @brief Radio operation to be added to the radio_queue
@@ -79,6 +80,10 @@ typedef struct radio_queue_operations {
     uint8_t* data_buffer; ///< If extra data is needed for this operation, for example if the operation is transmit then the data will be the buffer to transmit
     size_t data_size; ///< Could be 0
 } radio_queue_operations_t;
+
+// radio mode 
+#define RADIO_FAST_MODE 0
+#define RADIO_SAFE_MODE 1
 
 /* C FUNC DECLARATIONS */
 
@@ -158,6 +163,12 @@ extern "C"
 }
 #endif
 
+void radio_begin_rfm(); 
+
+void radio_begin_sx(); 
+
+int radio_set_mode(uint8_t mode); 
+
 /**
  * @brief Initializes necessary peripherals/settings for the radio task
  * 
@@ -169,7 +180,3 @@ void init_radio();
  * 
  */
 void radio_task_cpp();
-
-void radio_begin_rfm(); 
-
-void radio_begin_sx(); 
