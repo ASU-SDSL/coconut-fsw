@@ -39,7 +39,10 @@ typedef enum command_apid {
     DELETE_USER = 13,
     MCU_POWER_CYCLE = 14,
     PLAYBACK_HEARTBEAT_PACKETS = 15,
-    FSW_ACK = 16,
+    FSW_PING = 16,
+    APID_INITIALIZE_FILE_DOWNLINK = 17,
+    APID_FILE_DOWNLINK_ACK = 18,
+    APID_FILE_DOWNLINK_CHANGE_PACKET_SIZE = 19,
 
     // 01 - radio
     RADIO_CONFIG = 101,
@@ -121,6 +124,17 @@ typedef struct __attribute__((__packed__)) {
     uint16_t every_x_packet; ///< Used to adjust for less resolution but cover more time
     uint16_t go_back_x_packets; ///< Used to start the playback from a certain point in the past
 } playback_hb_tlm_payload_t;
+
+// Note: Initialize file downlink command only has a string as its payload
+
+typedef struct __attribute__((__packed__)) {
+    uint8_t transaction_id; // Specific ID to ensure ground and satellite continue to transfer the same file
+    uint16_t sequence_number; // Specifically for the file downlink protocol, NOT the same as CCSDS space packet
+} file_downlink_ack_payload_t;
+
+typedef struct __attribute__((__packed__)) {
+    uint8_t new_packet_size;
+} file_downlink_change_packet_size_payload_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
