@@ -51,8 +51,8 @@
 #define RADIO_RFM_POWER_PIN 14
 
 // Sets radio switch gpio level to select a radio 
-#define RADIO_RF_SWITCH_RFM 0
-#define RADIO_RF_SWITCH_SX 1
+#define RADIO_RF_SWITCH_RFM 1
+#define RADIO_RF_SWITCH_SX 0
 
 QueueHandle_t radio_queue;
 
