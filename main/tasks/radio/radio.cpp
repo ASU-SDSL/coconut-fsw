@@ -156,9 +156,15 @@ void radio_general_flag_SX(){
 // end isrs
 
 static uint8_t radio_mode = RADIO_SAFE_MODE; 
+static uint32_t last_fast_mode_start = 0; 
 
 int radio_set_mode(uint8_t mode){
     radio_mode = mode; 
+
+    // if we're switching to fast mode mark the time, auto switch back to safe mode eventually
+    if(mode == RADIO_FAST_MODE){  
+        last_fast_mode_start = to_ms_since_boot(get_absolute_time());
+    }
 
     if(radio == &radioRFM){
         radio_begin_rfm(); 
@@ -391,19 +397,25 @@ void radio_task_cpp(){
         // save now time since boot 
         uint32_t radio_now = to_ms_since_boot(get_absolute_time());
         // if there's been no contact for a long time, try to switch radios 
-        if(abs((long long)(radio_now - last_receive_time)) > RADIO_NO_CONTACT_PANIC_TIME_MS){
+        if(time_between(radio_now, last_receive_time) > RADIO_NO_CONTACT_PANIC_TIME_MS){
             radio_panic(); 
         }
 
+        // if the radio has been in fast mode for too long 
+        if(time_between(radio_now, last_fast_mode_start) > RADIO_FAST_MODE_MAX_DURATION_MS){
+            // queue a switch back to safe more 
+            radio_set_mode(RADIO_SAFE_MODE); 
+        }
+
         // check operation duration to avoid hanging in an operation mode 
-        if(receiving && abs((long long)(radio_now - operation_start_time)) > RADIO_RECEIVE_TIMEOUT_MS){
+        if(receiving && time_between(radio_now, operation_start_time) > RADIO_RECEIVE_TIMEOUT_MS){
             #if RADIO_LOGGING
             printf("receive timeout\n"); 
             #endif
             receiving = false;
             radio->startChannelScan();
         }
-        else if(transmitting && abs((long long)(radio_now - operation_start_time)) > RADIO_TRANSMIT_TIMEOUT_MS){
+        else if(transmitting && time_between(radio_now, operation_start_time) > RADIO_TRANSMIT_TIMEOUT_MS){
             #if TEMP_ON || RADIO_LOGGING
             printf("transmit timeout\n"); 
             #endif

@@ -84,6 +84,7 @@ typedef struct radio_queue_operations {
 // radio mode 
 #define RADIO_FAST_MODE 0
 #define RADIO_SAFE_MODE 1
+#define RADIO_FAST_MODE_MAX_DURATION_MS (1000 * 60 * 30) // 30 minutes 
 
 /* C FUNC DECLARATIONS */
 
@@ -92,6 +93,7 @@ extern "C" {
     #include "telemetry.h"
     #include "log.h"
     #include "command.h"
+    #include "timing.h"
 }
 #endif
 
