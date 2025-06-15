@@ -142,6 +142,13 @@ extern "C"
     void radio_queue_stat_response(); 
 
     /**
+     * @brief Queues a change in the LoRa settings 
+     * 
+     * @param new_mode RADIO_FAST_MODE or RADIO_SAFE_MODE
+     */
+    void radio_queue_lora_mode_change(uint8_t new_mode); 
+
+    /**
      * @brief Returns which radio is currently set to be used 
      * 
      * @return uint8_t 1 if radio is RFM98, 0 if radio is SX1268
