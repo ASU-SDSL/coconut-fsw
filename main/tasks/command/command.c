@@ -17,6 +17,7 @@
 #include "radio.h"
 #include "command.h"
 #include "set_rtc_job.h"
+#include "antenna_deploy_job.h"
 #include "watchdog.h"
 #include "hb_tlm_log.h"
 
@@ -173,6 +174,11 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             logln("Queuing stat response"); 
             radio_queue_stat_response(); 
             break;
+
+        case ANTENNA_DEPLOY:
+            // Schedule deployment in STEVE for right now
+            schedule_delayed_job_ms("DEPLOY_ANTENNA", &deploy_antenna_job, 10);
+            
 
         case SET_RTC_TIME:
             if (payload_size < sizeof(set_rtc_time_t)) break;
