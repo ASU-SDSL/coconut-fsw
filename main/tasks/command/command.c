@@ -212,6 +212,10 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
 
     vPortFree(ack);
 }
+static uint32_t command_count = 0;
+uint32_t get_command_count(void){
+    return command_count;
+}
 
 void command_task(void* unused_arg) {
     // Initialize byte queue
