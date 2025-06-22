@@ -5,7 +5,10 @@ docker build . -t coconut_fsw
 # Copy files out of the container
 mkdir -p docker_build
 
-docker run --name coconut_build -id coconut_fsw
-docker cp coconut_build:/coconut-fsw/build/Release/main/COCONUTFSW.uf2 .
+docker run -dit --name coconut_build -v $(pwd)/..:/coconut-fsw coconut_fsw bash
+
+docker exec coconut_build bash -c "cd /coconut-fsw && ./deploy.sh -b -g"
+docker exec coconut_build bash -c "cd /coconut-fsw && ./deploy.sh -b -s"
+
 docker kill coconut_build
 docker rm coconut_build

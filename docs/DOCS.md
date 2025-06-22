@@ -15,6 +15,7 @@
     - [Tasks/Threads Overview](#tasksthreads-overview)
   - [Users Guide](#users-guide)
     - [Cloning and Building](#cloning-and-building)
+    - [Building with Docker](#building-with-docker)
     - [Debugging](#debugging)
     - [Using the Simulator](#using-the-simulator)
     - [Creating Device Drivers](#creating-device-drivers)
@@ -155,6 +156,13 @@ To setup this repository, you can follow these steps:
     5. Run `./deploy.sh` - this will also build the firmware
     6. The codebase will now be running on the board. It will boot back into the flashed firmware even if powered off and powered on again 
 4. If you wish to just build and not deploy, run `./build.sh` - this will generate the `./build/` directory where you can find the uf2 executable under `./build/Debug/main/COCONUTFSW.uf2`. You can also check the contents of the scripts to find out how to build the simulator
+
+## Building With Docker
+
+To build with the docker, the docker/docker_build.sh can be used. `cd docker` and `./docker_build.sh`. This builds a simple Ubuntu image that is ran with the repository as a volume to build both the Simulator and Debug builds. A release build command needs to be added to docker_build.sh if that is needed in the future. The build output is put in the same location as the regular build - `./build`
+Note: you may have to `rm` the build directory if you get permission issues when mixing Docker and local build commands
+* Simulator: `./build/Simulator/main/COCONUTFSW`
+* Debug (to be flashed to an RP2040): `./build/Debug/main/COCONUTFSW.uf2`
 
 ### Debugging
 

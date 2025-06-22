@@ -4,6 +4,7 @@
 #include "hardware/spi.h"
 #include "hardware/gpio.h"
 #include "log.h"
+#include <stdio.h>
 
 //Global Modifiable Variables
 uint16_t memory_start;
@@ -43,7 +44,7 @@ int write_bytes(uint32_t addr, const uint8_t* buf, const uint32_t nbytes) {
     send_simple_command(WREN);
 
     uint32_t bendaddr = __builtin_bswap32(addr);
-    uint8_t *p_bendaddr = &bendaddr;
+    uint8_t *p_bendaddr = (uint8_t*) &bendaddr;
 
     uint8_t arr[4] = {WRITE, p_bendaddr[1], p_bendaddr[2], p_bendaddr[3]};
    
@@ -63,7 +64,7 @@ int read_bytes(uint32_t addr, uint8_t* buf, const uint32_t nbytes) {
     gpio_put(CS, 0);
 
     uint32_t bendaddr = __builtin_bswap32(addr);
-    uint8_t *p_bendaddr = &bendaddr;
+    uint8_t *p_bendaddr = (uint8_t*) &bendaddr;
 
     uint8_t arr[4] = {READ, p_bendaddr[1], p_bendaddr[2], p_bendaddr[3]};
 

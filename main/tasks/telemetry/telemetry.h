@@ -48,6 +48,7 @@ typedef struct __attribute__((__packed__)) {
 
 /// @brief Heartbeat packet definition 
 typedef struct __attribute__((__packed__)) {
+    char callsign[8];
     uint8_t state;
     uint32_t uptime;
     uint8_t hour;

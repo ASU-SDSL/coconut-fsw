@@ -44,6 +44,8 @@
  */
 void setup();
 
+void initialize_mram();
+
 /**
  * @brief Send a simple spi command to MRAM device 
  * 
