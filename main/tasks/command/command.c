@@ -43,9 +43,28 @@ void receive_command_bytes(uint8_t* packet, size_t packet_size) {
     }
 }
 
+static uint32_t command_count = 0;
+SemaphoreHandle_t commandCountMutex;
+
+//Initialize Mutex
+void initializeMutex(){
+    commandCountMutex = xSemaphoreCreateMutex();
+}
+
+uint32_t get_command_count(void){
+    uint32_t temp_commandCount;
+
+    xSemaphoreTake(commandCountMutex, portMAX_DELAY);
+    temp_commandCount = command_count;
+    xSemaphoreGive(commandCountMutex);
+
+    return temp_commandCount;
+}
+
 void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
     logln_info("Received command with APID: %hu", header.apid);
 
+    command_count++;
     // Used for the ack struct
     uint8_t command_status = 1; // 1 for success/true, 0 for failure/false
     // Data may or may not be returned, this data should be allocated and freed if needed depending on the packet
@@ -212,10 +231,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
 
     vPortFree(ack);
 }
-static uint32_t command_count = 0;
-uint32_t get_command_count(void){
-    return command_count;
-}
+
 
 void command_task(void* unused_arg) {
     // Initialize byte queue
