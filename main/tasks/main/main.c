@@ -28,11 +28,15 @@
  * ASU Sun Devil Satellite Lab
  */
 
+SemaphoreHandle_t commandCountMutex = NULL;
+
 int main() {
     
 #if defined(DEBUG) && !defined(SIMULATOR)
     timer_hw->dbgpause = 0;
 #endif
+
+    initializeCommandCountMutex();
 
     BaseType_t gse_task_status = xTaskCreate(gse_task, 
                                         "GSE", 
