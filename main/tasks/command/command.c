@@ -45,12 +45,6 @@ void receive_command_bytes(uint8_t* packet, size_t packet_size) {
 }
 
 static uint32_t command_count = 0;
-
-//Initialize Mutex
-void initializeCommandCountMutex(){
-    commandCountMutex = xSemaphoreCreateMutex();
-}
-
 uint32_t get_command_count(void){
     uint32_t temp_commandCount;
 
