@@ -17,6 +17,7 @@
 #include "max17048.h"
 #include "hb_tlm_log.h"
 #include "ds18b20.h"
+#include "command.h"
 
 void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
