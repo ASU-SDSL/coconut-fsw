@@ -19,6 +19,7 @@
 #include "set_rtc_job.h"
 #include "watchdog.h"
 #include "hb_tlm_log.h"
+#include "main.h"
 
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
@@ -43,7 +44,23 @@ void receive_command_bytes(uint8_t* packet, size_t packet_size) {
     }
 }
 
+
+uint32_t command_count = 0;
+uint32_t get_command_count(void){
+    uint32_t temp_commandCount;
+
+    xSemaphoreTake(commandCountMutex, portMAX_DELAY);
+    temp_commandCount = command_count;
+    xSemaphoreGive(commandCountMutex);
+   
+    return temp_commandCount;
+}
+
 void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
+    xSemaphoreTake(commandCountMutex, portMAX_DELAY);
+    command_count++;
+    xSemaphoreGive(commandCountMutex);
+
     logln_info("Received command with APID: %hu", header.apid);
 
     // Used for the ack struct
@@ -212,6 +229,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
 
     vPortFree(ack);
 }
+
 
 void command_task(void* unused_arg) {
     // Initialize byte queue
