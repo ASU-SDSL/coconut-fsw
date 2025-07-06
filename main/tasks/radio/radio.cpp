@@ -111,6 +111,18 @@ extern "C"
         }
         xQueueSendToBack(radio_queue, &buf, portMAX_DELAY); 
     }
+    void radio_queue_lora_mode_change(uint8_t new_mode){
+        radio_queue_operations_t buf; 
+        buf.operation_type = radio_operation_type_t::SET_LORA_MODE; 
+        uint8_t* heap_buf = static_cast<uint8_t *>(pvPortMalloc(1));
+        *(buf.data_buffer) = new_mode; 
+        buf.data_size = 1; 
+        while(!radio_queue) 
+        {
+            vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS); 
+        }
+        xQueueSendToBack(radio_queue, &buf, portMAX_DELAY); 
+    }
     uint8_t radio_which(){
         return (radio == &radioRFM); 
     }
@@ -142,6 +154,49 @@ void radio_general_flag_SX(){
     general_flag_SX = true; 
 }
 // end isrs
+
+static uint8_t radio_mode = RADIO_SAFE_MODE; 
+static uint32_t last_fast_mode_start = 0; 
+static bool radio_auto_safe_queued = false; 
+
+int radio_set_mode(uint8_t mode){
+    // safe can now be auto queued again 
+    if(mode == RADIO_SAFE_MODE) radio_auto_safe_queued = false; 
+    // check no change
+    if(radio_mode == mode) return 0; 
+
+    radio_mode = mode; 
+
+    // if we're switching to fast mode mark the time, auto switch back to safe mode eventually
+    if(mode == RADIO_FAST_MODE){  
+        last_fast_mode_start = to_ms_since_boot(get_absolute_time());
+    }
+
+    if(radio == &radioRFM){
+        radio_begin_rfm(); 
+    } else {
+        radio_begin_sx(); 
+    }
+    
+    return 0; 
+}
+
+// radio initializers 
+void radio_begin_rfm(){
+    if(radio_mode == RADIO_FAST_MODE){
+        radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW_FAST, RADIO_SF_FAST, RADIO_CR_FAST, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+    } else {
+        radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW_SAFE, RADIO_SF_SAFE, RADIO_CR_SAFE, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+    }
+}
+
+void radio_begin_sx(){
+    if(radio_mode == RADIO_FAST_MODE){
+        radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW_FAST, RADIO_SF_FAST, RADIO_CR_FAST, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+    } else {
+        radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW_SAFE, RADIO_SF_SAFE, RADIO_CR_SAFE, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+    }
+}
 
 /**
  * @brief Handle hardware switches between radios 
@@ -190,7 +245,8 @@ void radio_panic(){
 
             // initialize RFM98
             radio_hardware_switch_to(&radioRFM); 
-            radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+            //radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+            radio_begin_rfm(); 
             #if RADIO_LOGGING
             printf("Res: %d\n", radio_state_RFM); 
             #endif
@@ -218,7 +274,8 @@ void radio_panic(){
 
             radio_hardware_switch_to(&radioSX); 
             // initialize SX1268
-            radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+            // radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+            radio_begin_sx(); 
             #if RADIO_LOGGING
             printf("Res: %d\n", radio_state_SX); 
             #endif
@@ -270,7 +327,8 @@ void init_radio()
 
     // If the RFM is physically wired into the board it needs to call begin() before the SX1268
     // my current theory as to why is that it before begin() it is polluting the SPI line
-    radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+    // radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+    radio_begin_rfm(); 
 
     if(radio_state_RFM == 0){
         radioRFM.setDio0Action(radio_operation_done_RFM, GPIO_IRQ_EDGE_RISE);
@@ -279,7 +337,8 @@ void init_radio()
     }
     else {
         radio_hardware_switch_to(&radioSX); 
-        radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+        // radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+        radio_begin_sx(); 
         if(radio_state_SX == 0){
             radioSX.setDio1Action(radio_general_flag_SX);
             radio = &radioSX;
@@ -315,8 +374,8 @@ void init_radio()
 }
 
 void set_power_output(PhysicalLayer* radio_module, int8_t new_dbm){
-    radio_transmit_power = new_dbm;
-    radio_module->setOutputPower(new_dbm); 
+    radio_transmit_power = (new_dbm); 
+    radio_module->setOutputPower(radio_transmit_power); 
 }
 
 
@@ -344,19 +403,26 @@ void radio_task_cpp(){
         // save now time since boot 
         uint32_t radio_now = to_ms_since_boot(get_absolute_time());
         // if there's been no contact for a long time, try to switch radios 
-        if(abs((long long)(radio_now - last_receive_time)) > RADIO_NO_CONTACT_PANIC_TIME_MS){
+        if(time_between(radio_now, last_receive_time) > RADIO_NO_CONTACT_PANIC_TIME_MS){
             radio_panic(); 
         }
 
+        // if the radio has been in fast mode for too long 
+        if(radio_mode == RADIO_FAST_MODE && (radio_auto_safe_queued == false) && time_between(radio_now, last_fast_mode_start) > RADIO_FAST_MODE_MAX_DURATION_MS){
+            // queue a switch back to safe more 
+            radio_queue_lora_mode_change(RADIO_SAFE_MODE); 
+            radio_auto_safe_queued = true; 
+        }
+
         // check operation duration to avoid hanging in an operation mode 
-        if(receiving && abs((long long)(radio_now - operation_start_time)) > RADIO_RECEIVE_TIMEOUT_MS){
+        if(receiving && time_between(radio_now, operation_start_time) > RADIO_RECEIVE_TIMEOUT_MS){
             #if RADIO_LOGGING
             printf("receive timeout\n"); 
             #endif
             receiving = false;
             radio->startChannelScan();
         }
-        else if(transmitting && abs((long long)(radio_now - operation_start_time)) > RADIO_TRANSMIT_TIMEOUT_MS){
+        else if(transmitting && time_between(radio_now, operation_start_time) > RADIO_TRANSMIT_TIMEOUT_MS){
             #if TEMP_ON || RADIO_LOGGING
             printf("transmit timeout\n"); 
             #endif
@@ -519,7 +585,8 @@ void radio_task_cpp(){
                     printf("attempting to swap to RFM98...\n");
                     #endif
                     radio_hardware_switch_to(&radioRFM); 
-                    radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+                    // radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+                    radio_begin_rfm(); 
                     if(radio_state_RFM == 0){
                         radioSX.clearDio1Action(); 
                         radio = &radioRFM;
@@ -538,7 +605,8 @@ void radio_task_cpp(){
                         printf("switch to RFM failed with code: %d\n", radio_state_RFM); 
                         #endif
                         radio_hardware_switch_to(&radioSX); 
-                        radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+                        // radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+                        radio_begin_sx(); 
                         if(radio_state_SX != 0){
                             #if RADIO_LOGGING
                             printf("switch back to SX1268 failed with code: %d\n", radio_state_SX);
@@ -559,7 +627,8 @@ void radio_task_cpp(){
                     printf("attempting swap to SX1268...\n"); 
                     #endif
                     radio_hardware_switch_to(&radioSX); 
-                    radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+                    // radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+                    radio_begin_sx(); 
                     if(radio_state_SX == 0){
                         radioRFM.clearDio0Action();
                         radioRFM.clearDio1Action(); 
@@ -578,7 +647,8 @@ void radio_task_cpp(){
                         printf("switch to SX failed with code: %d\n", radio_state_SX); 
                         #endif
                         radio_hardware_switch_to(&radioRFM); 
-                        radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+                        // radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+                        radio_begin_rfm(); 
                         if(radio_state_RFM != 0){
                             #if RADIO_LOGGING
                             printf("switch back failed with code: %d\n", radio_state_RFM);
@@ -592,7 +662,8 @@ void radio_task_cpp(){
 
                     break;
 
-                case RETURN_STATS:
+                case RETURN_STATS: 
+                {
                     // get radio stats from last transmission
                     size_t payload_size = 3 * sizeof(float); 
                     char payload_buffer[payload_size]; 
@@ -606,7 +677,17 @@ void radio_task_cpp(){
                     logln_info("RADIO_STAT_RES queued"); 
                     // send the data to telemetry 
                     send_telemetry(RADIO_STAT_RES, payload_buffer, payload_size);
+                    
+                }
+                    break;
 
+                case SET_LORA_MODE: 
+                    radio_set_mode(*(rec.data_buffer)); 
+                    vPortFree(rec.data_buffer);
+                    break;
+
+                default:
+                    logln_error("Bad radio operation: %d", rec.operation_type); 
                     break;
             }
         }

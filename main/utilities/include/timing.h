@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FreeRTOS.h"
+#include <stdint.h>
 
 // Constants
 #define MS_IN_SEC 1000
@@ -14,3 +15,4 @@ unsigned long ms_to_secs(unsigned long ms);
 unsigned long mins_to_secs(unsigned long mins);
 unsigned long secs_to_mins(unsigned long mins);
 TickType_t get_uptime();
+uint32_t time_between(uint32_t before, uint32_t after); 

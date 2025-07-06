@@ -170,10 +170,20 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             radio_stat_t* radio_stat_args = (radio_stat_t*)payload_buf; 
             if(!is_admin(radio_stat_args->admin_token)) break;
 
-            logln("Queuing stat response"); 
+            logln_info("Queuing stat response"); 
             radio_queue_stat_response(); 
             break;
 
+        case RADIO_SET_MODE: 
+            if (payload_size < sizeof(radio_set_mode_t)) break;
+            radio_set_mode_t* radio_set_mode_args = (radio_set_mode_t*)payload_buf; 
+            if(!is_admin(radio_set_mode_args->admin_token)) break; 
+
+            logln_info("Changing radio mode to %d", radio_set_mode_args->radio_mode); 
+            radio_queue_lora_mode_change(radio_set_mode_args->radio_mode);
+
+            break;
+            
         case SET_RTC_TIME:
             if (payload_size < sizeof(set_rtc_time_t)) break;
             set_rtc_time_t* set_rtc_time_args = (set_rtc_time_t*)payload_buf; 
