@@ -157,8 +157,14 @@ void radio_general_flag_SX(){
 
 static uint8_t radio_mode = RADIO_SAFE_MODE; 
 static uint32_t last_fast_mode_start = 0; 
+static bool radio_auto_safe_queued = false; 
 
 int radio_set_mode(uint8_t mode){
+    // safe can now be auto queued again 
+    if(mode == RADIO_SAFE_MODE) radio_auto_safe_queued = false; 
+    // check no change
+    if(radio_mode == mode) return 0; 
+
     radio_mode = mode; 
 
     // if we're switching to fast mode mark the time, auto switch back to safe mode eventually
@@ -402,9 +408,10 @@ void radio_task_cpp(){
         }
 
         // if the radio has been in fast mode for too long 
-        if(time_between(radio_now, last_fast_mode_start) > RADIO_FAST_MODE_MAX_DURATION_MS){
+        if(radio_mode == RADIO_FAST_MODE && (radio_auto_safe_queued == false) && time_between(radio_now, last_fast_mode_start) > RADIO_FAST_MODE_MAX_DURATION_MS){
             // queue a switch back to safe more 
-            radio_set_mode(RADIO_SAFE_MODE); 
+            radio_queue_lora_mode_change(RADIO_SAFE_MODE); 
+            radio_auto_safe_queued = true; 
         }
 
         // check operation duration to avoid hanging in an operation mode 
