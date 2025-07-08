@@ -61,6 +61,7 @@ void run_steve_job(steve_job_t* job);
 void delete_steve_job(steve_job_t* job);
 void cleanup_steve_jobs_list();
 void initialize_steve();
+void print_steve_jobs();
 
 // Main Task
 void steve_task(void* unused_arg);

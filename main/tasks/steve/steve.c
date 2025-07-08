@@ -1,4 +1,4 @@
-
+#include "build_id_job.h"
 #include "pico/stdlib.h"
 
 #include <string.h>
@@ -238,6 +238,9 @@ void initialize_steve() {
                             hello_job,
                             HELLO_JOB_DEFAULT_INTERVAL);
 
+    schedule_delayed_job_ms(BUILD_ID_JOB_NAME,
+                            build_id_job,
+                            250);
 }
 
 // Main thread job for scheduling and executing STEVE jobs
