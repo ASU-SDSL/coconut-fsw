@@ -15,7 +15,7 @@
 
 #include "heartbeat_job.h"
 #include "miscellaneous_jobs.h"
-
+#include "hello_job.h"
 #include "steve.h"
 
 /* 
@@ -233,6 +233,11 @@ void initialize_steve() {
     g_payload_state = INIT;
     // Create jobs
     schedule_recurring_job_secs(HEARTBEAT_JOB_NAME, heartbeat_telemetry_job, HEARTBEAT_TELEMETRY_DEFAULT_INTERVAL);
+
+    schedule_recurring_job_secs(HELLO_JOB_NAME,
+                            hello_job,
+                            HELLO_JOB_DEFAULT_INTERVAL);
+
 }
 
 // Main thread job for scheduling and executing STEVE jobs

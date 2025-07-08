@@ -13,6 +13,7 @@ add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
 
 ## Create a sources variable with a link to all cpp files to compile
 set(SOURCES
+    ${MAIN_DIRECTORY}/tasks/steve/jobs/hello_job.c
     ${MAIN_DIRECTORY}/tasks/gse/gse.c
     ${MAIN_DIRECTORY}/tasks/steve/steve.c
     ${MAIN_DIRECTORY}/tasks/command/command.c
