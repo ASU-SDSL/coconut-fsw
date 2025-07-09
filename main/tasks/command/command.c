@@ -65,7 +65,6 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
 
     logln_info("Received command with APID: %hu", header.apid);
     
-    
     // Used for the ack struct
     uint8_t command_status = 1; // 1 for success/true, 0 for failure/false
     // Data may or may not be returned, this data should be allocated and freed if needed depending on the packet
@@ -217,7 +216,6 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     }
 
     // Send ack
-
     int ack_size = sizeof(ack_telemetry_t) + return_data_len;
     ack_telemetry_t *ack = pvPortMalloc(ack_size);
     ack->command_status = command_status;
