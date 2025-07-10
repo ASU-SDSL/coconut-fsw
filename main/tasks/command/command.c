@@ -21,6 +21,7 @@
 #include "hb_tlm_log.h"
 #include "main.h"
 
+
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
     // Send to command queue
@@ -44,8 +45,8 @@ void receive_command_bytes(uint8_t* packet, size_t packet_size) {
     }
 }
 
-
-uint32_t command_count = 0;
+SemaphoreHandle_t commandCountMutex = NULL;
+static uint32_t command_count = 0;
 
 uint32_t get_command_count(void){
     uint32_t temp_commandCount;

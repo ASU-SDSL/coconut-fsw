@@ -28,7 +28,7 @@
  * ASU Sun Devil Satellite Lab
  */
 
-SemaphoreHandle_t commandCountMutex = NULL;
+
 
 int main() {
     
