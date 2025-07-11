@@ -19,10 +19,42 @@
 #include "ds18b20.h"
 #include "command.h"
 
+
+uint32_t bootcount;
+bool bootcountset;
+
 void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
     heartbeat_telemetry_t payload;
 
+    FILE *file;
+    if(!bootcountset){
+        file = fopen("bootcount.bin", "r");
+        //check if file is found
+        if(file){
+            fscanf(file, "%u", &bootcount);
+            fclose(file);
+            bootcount++;//increment bootcount
+
+            //Write to file 
+            file = fopen("boootcount.bin", "w");
+            if (file){
+                fprintf(file, "%u", bootcount);
+                fclose(file);
+            } 
+            bootcountset = true;
+        }
+        //Make new file and write to it
+        else{
+            file = fopen("bootcount.bin", "w");
+            if(file){
+                bootcount = 1; 
+                fprintf(file, "%u", bootcount);
+                fclose(file);
+                bootcountset = true;
+            }
+        }
+    }
     // logln_info("%s", get_current_task_name());
 
     //Incorporate callsign, using Tyler's for now.
