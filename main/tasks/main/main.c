@@ -36,7 +36,6 @@ int main() {
     timer_hw->dbgpause = 0;
 #endif
 
-    commandCountMutex = xSemaphoreCreateMutex();
 
     BaseType_t gse_task_status = xTaskCreate(gse_task, 
                                         "GSE", 

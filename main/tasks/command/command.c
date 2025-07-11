@@ -19,7 +19,7 @@
 #include "set_rtc_job.h"
 #include "watchdog.h"
 #include "hb_tlm_log.h"
-#include "main.h"
+
 
 
 void receive_command_byte_from_isr(char ch) {
@@ -235,9 +235,9 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
 
 void command_task(void* unused_arg) {
     // Initialize byte queue
+    commandCountMutex = xSemaphoreCreateMutex();
     command_count = 0; // Reset command count
     
-
     command_byte_queue = xQueueCreate(COMMAND_MAX_QUEUE_ITEMS, sizeof(command_byte_t));
     while (true) {
         // Keep gathering bytes until we get the sync bytes
