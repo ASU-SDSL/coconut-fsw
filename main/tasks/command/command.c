@@ -20,6 +20,8 @@
 #include "watchdog.h"
 #include "hb_tlm_log.h"
 
+
+
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
     // Send to command queue
@@ -43,9 +45,27 @@ void receive_command_bytes(uint8_t* packet, size_t packet_size) {
     }
 }
 
-void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
-    logln_info("Received command with APID: %hu", header.apid);
+SemaphoreHandle_t commandCountMutex = NULL;
+static uint32_t command_count = 0;
 
+uint32_t get_command_count(void){
+    uint32_t temp_commandCount;
+
+    xSemaphoreTake(commandCountMutex, portMAX_DELAY);
+    temp_commandCount = command_count;
+    xSemaphoreGive(commandCountMutex);
+    
+    return temp_commandCount;
+}
+
+void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
+    
+    xSemaphoreTake(commandCountMutex, portMAX_DELAY);
+    command_count++;
+    xSemaphoreGive(commandCountMutex);
+
+    logln_info("Received command with APID: %hu", header.apid);
+    
     // Used for the ack struct
     uint8_t command_status = 1; // 1 for success/true, 0 for failure/false
     // Data may or may not be returned, this data should be allocated and freed if needed depending on the packet
@@ -197,7 +217,6 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     }
 
     // Send ack
-
     int ack_size = sizeof(ack_telemetry_t) + return_data_len;
     ack_telemetry_t *ack = pvPortMalloc(ack_size);
     ack->command_status = command_status;
@@ -213,8 +232,12 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     vPortFree(ack);
 }
 
+
 void command_task(void* unused_arg) {
     // Initialize byte queue
+    commandCountMutex = xSemaphoreCreateMutex();
+    command_count = 0; // Reset command count
+    
     command_byte_queue = xQueueCreate(COMMAND_MAX_QUEUE_ITEMS, sizeof(command_byte_t));
     while (true) {
         // Keep gathering bytes until we get the sync bytes
