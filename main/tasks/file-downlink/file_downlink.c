@@ -100,7 +100,11 @@ void file_downlink_task(void *unused) {
   file_downlink_queue_command_t cmd;
 
   while (1) {
-    /* Process incoming queue messages */
+    /* Process incoming queue messages
+      run infinitely until  send_next_packet returns 1 (none left)
+      defined ack->sequence_number assuming its the first packet
+
+    */
     if (xQueueReceive(file_downlink_queue, &cmd, pdMS_TO_TICKS(10)) == pdPASS) {
       if (cmd.queue_command == FILE_DOWNLINK_INIT) {
         start_new_transfer(&ctx, &cmd);
@@ -123,6 +127,7 @@ void file_downlink_task(void *unused) {
     }
 
     if (ctx.file_path[0] != '\0') {
+      // according to past definition the first index should be null value
       if (ctx.next_seq <= ctx.window_end) {
         int result = send_next_packet(&ctx);
 
@@ -137,11 +142,12 @@ void file_downlink_task(void *unused) {
           continue;
         }
 
-        ctx.next_seq += 1u;
+        ctx.next_seq += 1;
+        // increment int index to next seq
       }
 
       int now = tick_uptime_in_ms();
-
+      // using RTOS clock
       if ((now - ctx.window_timer_ms) > ACK_WINDOW_TIMEOUT) {
         ctx.next_seq = ctx.window_start;
         ctx.window_timer_ms = now;
