@@ -32,6 +32,7 @@ void heartbeat_telemetry_job(void* unused) {
         file = fopen("bootcount.bin", "r");
         //check if file is found
         if(file){
+            //read the file
             fscanf(file, "%u", &bootcount);
             fclose(file);
             bootcount++;//increment bootcount
@@ -46,9 +47,10 @@ void heartbeat_telemetry_job(void* unused) {
         }
         //Make new file and write to it
         else{
+            bootcount = 0; //set bootcount to 0
             file = fopen("bootcount.bin", "w");
             if(file){
-                bootcount = 1; 
+                //Write to file
                 fprintf(file, "%u", bootcount);
                 fclose(file);
                 bootcountset = true;
@@ -226,6 +228,7 @@ void heartbeat_telemetry_job(void* unused) {
     payload.rfm_state = radio_get_RFM_state(); 
     payload.sx_state = radio_get_SX_state(); 
     payload.command_count = get_command_count();
+    payload.boot_count = bootcount;
     
     // Send it
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
