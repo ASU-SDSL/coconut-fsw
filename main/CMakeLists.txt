@@ -13,6 +13,7 @@ add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
 
 ## Create a sources variable with a link to all cpp files to compile
 set(SOURCES
+    ${MAIN_DIRECTORY}/tasks/file-downlink/file_downlink.c
     ${MAIN_DIRECTORY}/tasks/steve/jobs/build_id_job.c
     ${MAIN_DIRECTORY}/tasks/steve/jobs/hello_job.c
     ${MAIN_DIRECTORY}/tasks/gse/gse.c
@@ -107,6 +108,7 @@ set (INTERNAL_INCLUDE_DIRS
     PRIVATE ${MAIN_DIRECTORY}/tasks/telemetry
     PRIVATE ${MAIN_DIRECTORY}/tasks/filesystem
     PRIVATE ${MAIN_DIRECTORY}/tasks/watchdog
+    PRIVATE ${MAIN_DIRECTORY}/tasks/file-downlink
 
     PRIVATE ${MAIN_DIRECTORY}/utilities/include
     PRIVATE ${MAIN_DIRECTORY}/drivers/include
