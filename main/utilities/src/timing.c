@@ -31,3 +31,8 @@ TickType_t get_uptime() {
     // TODO: Maybe get an RTC instead of using CPU ticks
     return xTaskGetTickCount();
 }
+
+uint32_t time_between(uint32_t before, uint32_t after) {
+    if(after > before) return after - before;
+    else return UINT32_MAX - before + after; // catch rollover 
+}
