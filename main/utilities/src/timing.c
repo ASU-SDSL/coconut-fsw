@@ -3,6 +3,8 @@
 
 #include "timing.h"
 
+#include <time.h>
+
 TickType_t ms_to_ticks(unsigned long ms) {
     return pdMS_TO_TICKS(ms);
 }
@@ -30,4 +32,49 @@ unsigned long mins_to_secs(unsigned long mins) {
 TickType_t get_uptime() {
     // TODO: Maybe get an RTC instead of using CPU ticks
     return xTaskGetTickCount();
+}
+
+// persistent timing 
+uint64_t epoch_time = 0; 
+SemaphoreHandle_t epoch_time_mutex; 
+
+uint64_t get_epoch_time(){
+    uint64_t value; 
+
+    if(xSemaphoreTake(epoch_time_mutex, portMAX_DELAY) == pdTRUE){
+        value = epoch_time; 
+        xSemaphoreGive(epoch_time_mutex); 
+    } else {
+        return 0; 
+    }
+
+    return value; 
+}
+
+void update_epoch_time(uint8_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second){
+    struct tm temp = {
+        .tm_year = year + 100,  
+        .tm_mon = month, 
+        .tm_mday = date, 
+        .tm_hour = hour, 
+        .tm_min = minute, 
+        .tm_sec = second
+    }; 
+
+    time_t temp_time = mktime(&temp); 
+
+    epoch_time = ((uint64_t)gmtime(&temp_time)) * 1000; // epoch time should be in seconds 
+}
+
+// timing with back up of since boot
+// using the size of the time_t to determine if the readings are unix epoch or since boot 
+uint64_t time_since_ms(uint64_t past_time){
+  // less than 5 years worth of milliseconds -> past was a since boot 
+  if(past_time < (157784760000L)){
+    return to_us_since_boot(get_absolute_time()) - past_time; 
+  }
+  // otherwise past was an epoch time 
+  else {
+    return get_epoch_time() - past_time; 
+  }
 }
