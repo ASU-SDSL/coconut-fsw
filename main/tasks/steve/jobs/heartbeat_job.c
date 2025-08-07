@@ -20,28 +20,28 @@
 #include "command.h"
 #include "filesystem.h"
 
-static uint32_t bootcount;
-bool bootcountset;
 
-void heartbeat_telemetry_job(void* unused) {
-    // Create heartbeat struct
-    heartbeat_telemetry_t payload;
-    
+static uint32_t bootcount;
+bool bootcountset = false;
+
+void test_bootcount(void){
     if(!bootcountset){
         //check if bootcount file exist
-        if (file_exists("bootcount.bin")){
-            if(read_file("bootcount.bin", (char*)&bootcount, sizeof(bootcount)) > 0){
+        if (file_exists("boot.bin")){
+            if(read_file("boot.bin", (char*)&bootcount, sizeof(bootcount)) > 0){
                 bootcount++;
+                
                 //write to file
-                write_file("bootcount.bin", (char*)&bootcount, sizeof(bootcount), false);
+                write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
+                logln_error("Current Bootcount: %d", bootcount);
                 bootcountset = true;
             }
             else{
                 //if bootcount file exists but read failed, set bootcount to 0
-                delete_file("bootcount.bin");
+                delete_file("boot.bin");
                 logln_error("Failed to read bootcount file, setting bootcount to 0");
                 bootcount = 0;
-                write_file("bootcount.bin", (char*)&bootcount, sizeof(bootcount), false);
+                write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
                 bootcountset = true;
             }
     }
@@ -49,11 +49,17 @@ void heartbeat_telemetry_job(void* unused) {
         //set bootcount to 0 if no file exist 
         bootcount = 0;
         //write to file
-        write_file("bootcount.bin", (char*)&bootcount, sizeof(bootcount), false);
+        write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
         bootcountset = true;
     }
 }
-        
+}
+
+void heartbeat_telemetry_job(void* unused) {
+    // Create heartbeat struct
+    heartbeat_telemetry_t payload;
+    
+    test_bootcount(); // Initialize bootcount if not already done   
     // logln_info("%s", get_current_task_name());
 
     //Incorporate callsign, using Tyler's for now.

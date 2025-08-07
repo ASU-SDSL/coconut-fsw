@@ -237,6 +237,9 @@ void _mkfs() {
     logln_info("Making filesystem...\n");
     void* buf = pvPortMalloc(0x400);
     fr = f_mkfs("", NULL, buf, 0x400);
+
+    logln_info("Value of fr: %d", fr);
+
     vPortFree(buf);
     if (fr != FR_OK) {
         logln_error("Failed to make filesystem (%d)", fr);
@@ -246,6 +249,9 @@ void _mkfs() {
     // mount disk
     logln_info("Mounting filesystem...\n");
     fr = f_mount(&fs, "0:", 1);
+
+    logln_info("Value of fr: %d", fr);
+
     if (fr != FR_OK) {
         logln_error("Failed to mount filesystem (%d)", fr);
         return;
@@ -253,9 +259,10 @@ void _mkfs() {
 }
 
 int32_t _fwrite(const char* file_name, const uint8_t *data, size_t size, bool append_flag) {
+
     FRESULT fr;
     FIL fil;
-
+    
     logln_info("Writing to file: %s", file_name);
 
     int file_open_flags = FA_WRITE | FA_CREATE_ALWAYS;

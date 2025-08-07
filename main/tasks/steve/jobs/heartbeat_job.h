@@ -11,3 +11,4 @@ uint32_t iteration_counter;
  * @param unused 
  */
 void heartbeat_telemetry_job(void* unused);
+void test_bootcount(void);
