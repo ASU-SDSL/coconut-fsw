@@ -107,6 +107,11 @@ typedef struct __attribute__((__packed__)) {
     uint8_t *data; ///< Any extra data that might be returned by a command
 } ack_telemetry_t;
 
+typedef struct __attribute__((__packed__)) {
+    uint8_t processor_load; 
+    uint8_t memory_load; 
+} system_info_telemetry_t;
+
 /* USER FUNCTIONS */
 void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t payload_size);
 
