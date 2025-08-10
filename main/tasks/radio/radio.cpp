@@ -34,6 +34,7 @@
 #define RADIO_TRANSMIT_TIMEOUT_MS 10000
 #define RADIO_NO_CONTACT_PANIC_TIME_MS (1000UL * 60 * 60 * 24 * 7) //  7 days in ms
 #define RADIO_NO_CONTACT_DEADMAN_MS (1000UL * 60 * 60 * 24 * 7) // 8 days in ms
+#define RADIO_SAVE_INTERVAL_MS (1000UL * 60 * 5) // 5 minutes
 
 PicoHal *picoHal = new PicoHal(spi0, PICO_DEFAULT_SPI_TX_PIN, PICO_DEFAULT_SPI_RX_PIN, PICO_DEFAULT_SPI_SCK_PIN);
 // Add interupt pin
@@ -136,7 +137,15 @@ extern "C"
         return radio_state_SX; 
     }
     void radio_flag_valid_packet(){ 
+        static uint64_t last_saved_received_time = 0; 
         radio_last_received_time = timing_now();  
+
+        if(radio_last_received_time - last_saved_received_time > RADIO_SAVE_INTERVAL_MS){
+            char buffer[sizeof(uint64_t)]; 
+            memcpy(buffer, &radio_last_received_time, sizeof(uint64_t)); 
+            write_file(RADIO_STATE_FILE_NAME, buffer, sizeof(uint64_t), false); 
+            last_saved_received_time = radio_last_received_time; 
+        }
     }
 #ifdef __cplusplus
 }
