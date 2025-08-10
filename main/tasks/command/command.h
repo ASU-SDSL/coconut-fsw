@@ -1,3 +1,9 @@
+/**
+ * @file command.h
+ * @brief Handles decoding and triggering responses to received commands 
+ * 
+ */
+
 #pragma once
 
 #include <stdint.h>
@@ -6,11 +12,16 @@
 #include "user_auth.h"
 
 #define COMMAND_MAX_QUEUE_ITEMS 0x200
-#define COMMAND_SYNC_BYTES "\x35\x2E\xF8\x53"
-
+#define COMMAND_SYNC_BYTES "\x35\x2E\xF8\x53" 
 #define AX25_FLAG 0x7E
 
-// Command Structs and Types
+/**
+ * @brief Command Structs and Types
+ * Groups: 
+ * 00 - general and file system 
+ * 01 - radio
+ * 02 - device 
+ */
 typedef enum command_apid {
     // 00 - general and file system 
     UPLOAD_USER_DATA = 0,
@@ -38,6 +49,8 @@ typedef enum command_apid {
     // 02 - device 
     SET_RTC_TIME = 201, 
 } command_apid_t;
+
+// Command type definitions 
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
@@ -100,15 +113,20 @@ typedef struct __attribute__((__packed__)) {
 } upload_user_data_t;
 
 typedef struct __attribute__((__packed__)) {
-uint16_t number_of_packets;
-uint16_t every_x_packet; // Used to adjust for less resolution but cover more time
-uint16_t go_back_x_packets; // Used to start the playback from a certain point in the past
+    uint8_t admin_token[TOKEN_LENGTH];
+} mcu_power_cycle_t; 
+
+typedef struct __attribute__((__packed__)) {
+    uint8_t admin_token[TOKEN_LENGTH];
+    uint16_t number_of_packets;
+    uint16_t every_x_packet; ///< Used to adjust for less resolution but cover more time
+    uint16_t go_back_x_packets; ///< Used to start the playback from a certain point in the past
 } playback_hb_tlm_payload_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    uint8_t selected_radio; // radio to switch to (1 == RFM, 0 == SX, anything else no change)
-    uint8_t updated_power; // output power to set (0 == no change)
+    uint8_t selected_radio; ///< radio to switch to (1 == RFM, 0 == SX, anything else no change)
+    uint8_t updated_power; ///< output power to set (0 == no change)
 } radio_config_t; 
 
 typedef struct __attribute__((__packed__)) { 
@@ -125,7 +143,7 @@ typedef struct __attribute__((__packed__)) {
     uint8_t second;
 } set_rtc_time_t; 
 
-// Internal Command Thread Structs
+/// Internal Command Thread Structs
 QueueHandle_t command_byte_queue;
 typedef uint8_t command_byte_t;
 
@@ -134,7 +152,7 @@ typedef uint8_t command_byte_t;
 void receive_command_byte_from_isr(char ch);
 void receive_command_byte(char ch);
 void receive_command_bytes(uint8_t* packet, size_t packet_size);
-
+uint32_t get_command_count(void);
 /* INTERNAL FUNCTIONS */
 void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size);
 

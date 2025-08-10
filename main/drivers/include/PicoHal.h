@@ -1,3 +1,9 @@
+/**
+ * @file PicoHal.h
+ * @brief Adapted from RadioLib's provided PicoHal
+ *
+ */
+
 #ifndef PICO_HAL_H
 #define PICO_HAL_H
 

@@ -16,6 +16,8 @@
 #include "radio.h"
 #include "max17048.h"
 #include "hb_tlm_log.h"
+#include "ds18b20.h"
+#include "command.h"
 
 void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
@@ -23,12 +25,27 @@ void heartbeat_telemetry_job(void* unused) {
 
     // logln_info("%s", get_current_task_name());
 
+    //Incorporate callsign, using Tyler's for now.
+    payload.callsign[0] = 'K';
+    payload.callsign[1] = 'K';
+    payload.callsign[2] = '7';
+    payload.callsign[3] = 'L';
+    payload.callsign[4] = 'T';
+    payload.callsign[5] = 'W';
+    payload.callsign[6] = '\0';
+    payload.callsign[7] = '\0';
+
+
+
     // State data
     payload.state = (uint8_t)g_payload_state;
     payload.uptime = (uint32_t)get_uptime();
 
     // i2c instance
     i2c_inst_t *i2c = i2c1;
+
+    // start pio conversion 
+    uint8_t ds18b20_conversion_res = ds18b20_start_conversion(); 
 
     // MAX17048 data
     float max17048Voltage;
@@ -161,10 +178,22 @@ void heartbeat_telemetry_job(void* unused) {
     if(!vega_ant_status(i2c, &vega_ant_buf)) payload.vega_ant_status = vega_ant_buf;
     else payload.vega_ant_status = UINT8_MAX;
 
+    if(ds18b20_conversion_res == 0){
+        payload.temp_u100 = ds18b20_read_temp(DS18B_ROMCODE_U100); 
+        payload.temp_u102 = ds18b20_read_temp(DS18B_ROMCODE_U102); 
+        payload.temp_u104 = ds18b20_read_temp(DS18B_ROMCODE_U104); 
+    } else {
+        payload.temp_u100 = INT16_MAX; 
+        payload.temp_u102 = INT16_MAX; 
+        payload.temp_u104 = INT16_MAX; 
+        logln_error("DS18B20 Temp conversion failed"); 
+    }
+
     // radio status reporting
     payload.which_radio = radio_which(); 
     payload.rfm_state = radio_get_RFM_state(); 
     payload.sx_state = radio_get_SX_state(); 
+    payload.command_count = get_command_count();
     
     // Send it
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));

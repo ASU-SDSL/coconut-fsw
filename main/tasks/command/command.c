@@ -20,6 +20,8 @@
 #include "watchdog.h"
 #include "hb_tlm_log.h"
 
+
+
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
     // Send to command queue
@@ -43,9 +45,27 @@ void receive_command_bytes(uint8_t* packet, size_t packet_size) {
     }
 }
 
-void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
-    logln_info("Received command with APID: %hu", header.apid);
+SemaphoreHandle_t commandCountMutex = NULL;
+static uint32_t command_count = 0;
 
+uint32_t get_command_count(void){
+    uint32_t temp_commandCount;
+
+    xSemaphoreTake(commandCountMutex, portMAX_DELAY);
+    temp_commandCount = command_count;
+    xSemaphoreGive(commandCountMutex);
+    
+    return temp_commandCount;
+}
+
+void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
+    
+    xSemaphoreTake(commandCountMutex, portMAX_DELAY);
+    command_count++;
+    xSemaphoreGive(commandCountMutex);
+
+    logln_info("Received command with APID: %hu", header.apid);
+    
     // Used for the ack struct
     uint8_t command_status = 1; // 1 for success/true, 0 for failure/false
     // Data may or may not be returned, this data should be allocated and freed if needed depending on the packet
@@ -135,12 +155,18 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             break;
 
         case MCU_POWER_CYCLE:
+            if(payload_size < sizeof(mcu_power_cycle_t)) break;
+            mcu_power_cycle_t* mcu_power_cycle_args = (mcu_power_cycle_t*)payload_buf; 
+            if (!is_admin(mcu_power_cycle_args->admin_token)) break; // check admin
+
             watchdog_freeze(); // Freezing the watchdog will cause a reboot within a few seconds
             break;
 
         case PLAYBACK_HEARTBEAT_PACKETS:
             if (payload_size < sizeof(playback_hb_tlm_payload_t)) break; // Should probably return an error to the ground
             playback_hb_tlm_payload_t* playback_hb_payload = (playback_hb_tlm_payload_t*)payload_buf;
+            if (!is_admin(playback_hb_payload->admin_token)) break; // check admin
+
             int status = hb_tlm_playback(playback_hb_payload);
             if (status != 0) command_status = 0;
             break;
@@ -191,7 +217,6 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     }
 
     // Send ack
-
     int ack_size = sizeof(ack_telemetry_t) + return_data_len;
     ack_telemetry_t *ack = pvPortMalloc(ack_size);
     ack->command_status = command_status;
@@ -207,8 +232,12 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     vPortFree(ack);
 }
 
+
 void command_task(void* unused_arg) {
     // Initialize byte queue
+    commandCountMutex = xSemaphoreCreateMutex();
+    command_count = 0; // Reset command count
+    
     command_byte_queue = xQueueCreate(COMMAND_MAX_QUEUE_ITEMS, sizeof(command_byte_t));
     while (true) {
         // Keep gathering bytes until we get the sync bytes
@@ -248,25 +277,24 @@ void command_task(void* unused_arg) {
         if(ax25_mode){
             // receive the rest of the bytes 
             bool msg_err = false; 
-            int msg_len = 20; 
+            int msg_len = 255;  // max packet size is 256
             uint8_t* msg = (uint8_t*)pvPortMalloc(sizeof(uint8_t) * msg_len);
             int msg_index = 0; 
             msg[msg_index++] = AX25_FLAG; // put this in again from the trigger 
             uint8_t command_byte = 0; 
             do {
                 xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
-                if(msg_index >= msg_len){ // msg is too large (add reallocation later)
-                    msg_len += 20; 
-                    uint8_t* temp = (uint8_t*)pvPortMalloc(sizeof(uint8_t) * msg_len);
-                    memcpy(temp, msg, msg_len); 
-                    vPortFree(msg); 
-                    msg = temp; 
+                if(msg_index >= msg_len){ // msg is too large, toss it all
+                    msg_err = true; 
+                    logln_error("AX25 mode overflow error"); 
+                    break; 
                 } 
                 msg[msg_index++] = command_byte;
             } while(command_byte != AX25_FLAG);
             
-            // recieved the entire message 
+            // if no error and received the entire message, echo it
             if(msg_err == false) radio_queue_message(msg, msg_index);
+            // clean up buffer 
             vPortFree(msg); 
         }
         else {
