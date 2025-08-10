@@ -26,3 +26,5 @@ uint64_t get_epoch_time();
 void update_epoch_time(uint8_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second); 
 
 uint64_t time_since_ms(uint64_t past_time); 
+
+uint64_t timing_now(); 

@@ -5,6 +5,8 @@
 
 #include <time.h>
 
+static bool epoch_time_updated = false; 
+
 TickType_t ms_to_ticks(unsigned long ms) {
     return pdMS_TO_TICKS(ms);
 }
@@ -52,6 +54,8 @@ uint64_t get_epoch_time(){
 }
 
 void update_epoch_time(uint8_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second){
+    epoch_time_updated = true;
+
     struct tm temp = {
         .tm_year = year + 100,  
         .tm_mon = month, 
@@ -71,10 +75,18 @@ void update_epoch_time(uint8_t year, uint8_t month, uint8_t date, uint8_t hour, 
 uint64_t time_since_ms(uint64_t past_time){
   // less than 5 years worth of milliseconds -> past was a since boot 
   if(past_time < (157784760000L)){
-    return to_us_since_boot(get_absolute_time()) - past_time; 
+    return to_ms_since_boot(get_absolute_time()) - past_time; 
   }
   // otherwise past was an epoch time 
   else {
     return get_epoch_time() - past_time; 
   }
+}
+
+uint64_t timing_now(){
+    if(epoch_time_updated) { 
+        return get_epoch_time(); 
+    } else {
+        return to_ms_since_boot(get_absolute_time()); 
+    }
 }

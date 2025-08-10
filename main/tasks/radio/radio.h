@@ -78,6 +78,7 @@ extern "C" {
     #include "telemetry.h"
     #include "log.h"
     #include "command.h"
+    #include "timing.h"
 }
 #endif
 
@@ -145,6 +146,12 @@ extern "C"
      * @return int16_t 
      */
     int16_t radio_get_SX_state(); 
+
+    /**
+     * @brief Signals to the radio task that a valid packet has been received, resetting 
+     * deadman's timer 
+     */
+    void radio_flag_valid_packet();
 #ifdef __cplusplus
 }
 #endif
@@ -160,3 +167,4 @@ void init_radio();
  * 
  */
 void radio_task_cpp();
+

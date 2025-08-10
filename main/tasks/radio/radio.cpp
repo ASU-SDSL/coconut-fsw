@@ -7,6 +7,7 @@
 #include "gse.h"
 #include "spacepacket.h"
 #include "command.h"
+#include "timing.h"
 
 #define ERR_NONE 0
 #define NULL_QUEUE_WAIT_TIME 100
@@ -32,12 +33,14 @@
 #define RADIO_RECEIVE_TIMEOUT_MS 1000
 #define RADIO_TRANSMIT_TIMEOUT_MS 10000
 #define RADIO_NO_CONTACT_PANIC_TIME_MS (1000UL * 60 * 60 * 24 * 7) //  7 days in ms
+#define RADIO_NO_CONTACT_DEADMAN_MS (1000UL * 60 * 60 * 24 * 7) // 8 days in ms
 
 PicoHal *picoHal = new PicoHal(spi0, PICO_DEFAULT_SPI_TX_PIN, PICO_DEFAULT_SPI_RX_PIN, PICO_DEFAULT_SPI_SCK_PIN);
 // Add interupt pin
 RFM98 radioRFM = new Module(picoHal, RADIO_RFM_NSS_PIN, RADIO_RFM_DIO0_PIN, RADIO_RFM_NRST_PIN, RADIO_RFM_DIO1_PIN); //RADIOLIB_NC); // RFM98 is an alias for SX1278
 SX1268 radioSX = new Module(picoHal, RADIO_SX_NSS_PIN, RADIO_SX_DIO1_PIN, RADIO_SX_NRST_PIN, RADIO_SX_BUSY_PIN); 
 PhysicalLayer* radio = &radioSX;
+uint64_t radio_last_received_time = 0; 
 
 int radio_state_RFM = RADIO_STATE_NO_ATTEMPT; 
 int radio_state_SX = RADIO_STATE_NO_ATTEMPT;
@@ -119,6 +122,9 @@ extern "C"
     }
     int16_t radio_get_SX_state(){
         return radio_state_SX; 
+    }
+    void radio_flag_valid_packet(){ 
+        radio_last_received_time = timing_now();  
     }
 #ifdef __cplusplus
 }
@@ -312,6 +318,10 @@ void init_radio()
         #endif
         radio_panic(); 
     }
+
+    // load last received time from persistent storage: TODO 
+
+    // radio_last_received_time = ; 
 }
 
 void set_power_output(PhysicalLayer* radio_module, int8_t new_dbm){
@@ -343,6 +353,7 @@ void radio_task_cpp(){
     while(true){
         // save now time since boot 
         uint32_t radio_now = to_ms_since_boot(get_absolute_time());
+
         // if there's been no contact for a long time, try to switch radios 
         if(abs((long long)(radio_now - last_receive_time)) > RADIO_NO_CONTACT_PANIC_TIME_MS){
             radio_panic(); 
@@ -483,6 +494,14 @@ void radio_task_cpp(){
         {
             switch (rec.operation_type) {
                 case TRANSMIT:
+                    // if the radio should be silenced from deadman switch, don't transmit, but still receive from queue 
+                    // check if radio_last_received_time is 0 because if it is that means that we're on since boot time and 
+                    // should wait for contact
+                    if(radio_last_received_time != 0 && time_since_ms(radio_last_received_time) > RADIO_NO_CONTACT_DEADMAN_MS){
+                        // free buffer 
+                        vPortFree(rec.data_buffer);
+                        break;
+                    }
                     #if TEMP_ON || RADIO_LOGGING
                     {
                     char message[rec.data_size+1];
