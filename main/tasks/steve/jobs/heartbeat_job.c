@@ -85,6 +85,12 @@ void heartbeat_telemetry_job(void* unused) {
     float rtcTemp = 5500;
     if(!rtc_get_temp(i2c, &rtcTemp)) payload.rtcTemp = rtcTemp;
 
+    // use timestamp to update absolute time (check for failure first)
+    if(payload.year != UINT8_MAX && payload.month != UINT8_MAX && 
+        payload.date != UINT8_MAX && payload.hour != UINT8_MAX && 
+        payload.minute != UINT8_MAX && payload.second != UINT8_MAX) {
+        update_epoch_time(payload.year, payload.month, payload.date, payload.hour, payload.minute, payload.second); 
+    }
 
     // ina0 data
     config(i2c, INA0_ADDR); 

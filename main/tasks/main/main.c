@@ -7,7 +7,7 @@
 #include <FreeRTOS.h>
 #include <task.h>
 #include <queue.h>
-
+#include "timing.h"
 
 #include "gse.h"
 #include "command.h"
@@ -16,6 +16,9 @@
 #include "steve.h"
 #include "filesystem.h"
 #include "watchdog.h"
+
+// for initial timing setup only 
+#include "rtc_ds3231.h"
 
 #ifndef SIMULATOR
 #include "radio.h"
@@ -36,6 +39,24 @@ int main() {
     timer_hw->dbgpause = 0;
 #endif
 
+    // set up mutexes 
+    epoch_time_mutex = xSemaphoreCreateMutex(); 
+    if(epoch_time_mutex == NULL){
+        logln_error("Epoch time mutex creation failed"); 
+    }
+
+    // initialize epoch clock 
+    // i2c instance
+    i2c_inst_t *i2c = i2c1;
+    // temps 
+    uint8_t year, month, date, hour, minute, second;
+    if(!rtc_get_year(i2c, &year) && !rtc_get_month(i2c, &month) && 
+            !rtc_get_date(i2c, &date) && !rtc_get_hour(i2c, &hour) && 
+            !rtc_get_minute(i2c, &minute) && !rtc_get_second(i2c, &second)){
+        update_epoch_time(year, month, date, hour, minute, second); 
+    } else {
+        logln_error("Epoch time initialization failed"); 
+    }
 
     BaseType_t gse_task_status = xTaskCreate(gse_task, 
                                         "GSE", 
