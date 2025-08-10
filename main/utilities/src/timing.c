@@ -81,7 +81,7 @@ void update_epoch_time(uint8_t year, uint8_t month, uint8_t date, uint8_t hour, 
 uint64_t time_since_ms(uint64_t past_time){
   // less than 5 years worth of milliseconds -> past was a since boot 
   if(past_time < (157784760000L)){
-    return time_between(past_time, to_ms_since_boot(get_absolute_time())); 
+    return (uint64_t) time_between(past_time, to_ms_since_boot(get_absolute_time())); 
   }
   // otherwise past was an epoch time 
   else {

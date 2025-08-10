@@ -379,8 +379,27 @@ void init_radio()
     }
 
     // load last received time from persistent storage: TODO 
+    // check if the persistent log file already exists
+    if(file_exists(RADIO_STATE_FILE_NAME)){
+        // if it does load the last received time from it
+        char result_buffer[sizeof(uint64_t)]; 
 
-    // radio_last_received_time = ; 
+        if(read_file(RADIO_STATE_FILE_NAME, result_buffer, sizeof(uint64_t)) == sizeof(uint64_t)) {
+            memcpy(&radio_last_received_time, result_buffer, sizeof(uint64_t)); 
+            logln_info("Last received time loaded as %ull", radio_last_received_time); 
+        } else {
+            logln_error("Error on persistent radio time load"); 
+        }
+
+    } else { 
+        // if it doesn't create it and populate it 
+        logln_info("Creating last received time persistent storage...");
+
+        touch(RADIO_STATE_FILE_NAME); 
+        char zero[sizeof(uint64_t)] = {0, 0, 0, 0, 0, 0, 0, 0}; 
+        write_file(RADIO_STATE_FILE_NAME, zero, sizeof(uint64_t), false); 
+    }
+
 }
 
 void set_power_output(PhysicalLayer* radio_module, int8_t new_dbm){
@@ -406,7 +425,6 @@ void radio_task_cpp(){
     bool transmitting = false; 
     int state = 0; 
     uint32_t operation_start_time = to_ms_since_boot(get_absolute_time());
-    uint32_t last_receive_time = to_ms_since_boot(get_absolute_time());
     int transmission_size = 0;  
 
     while(true){
@@ -414,7 +432,7 @@ void radio_task_cpp(){
         uint32_t radio_now = to_ms_since_boot(get_absolute_time());
 
         // if there's been no contact for a long time, try to switch radios 
-        if(time_between(radio_now, last_receive_time) > RADIO_NO_CONTACT_PANIC_TIME_MS){
+        if(time_since_ms(radio_last_received_time) > RADIO_NO_CONTACT_PANIC_TIME_MS){
             radio_panic(); 
         }
 
@@ -467,7 +485,6 @@ void radio_task_cpp(){
 
                 if (packet_state == RADIOLIB_ERR_NONE)
                 {
-                    last_receive_time = to_ms_since_boot(get_absolute_time()); 
                     // parse out sync bytes and grab packet with header
                     // create command.c function to read packet
                     #if TEMP_ON || RADIO_LOGGING
