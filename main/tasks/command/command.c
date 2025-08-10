@@ -59,6 +59,7 @@ uint32_t get_command_count(void){
 }
 
 void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
+    radio_flag_valid_packet(); 
     
     xSemaphoreTake(commandCountMutex, portMAX_DELAY);
     command_count++;
