@@ -14,6 +14,20 @@
 #include "spacepacket.h"
 #include "log.h"
 
+
+void system_info(){
+    system_info_telemetry_t sys_info;
+
+    uint32_t memory_load;
+    uint32_t processor_load;
+    
+    uint32_t total_memory = xPortGetFreeHeapSize();
+    //uint32_t used_memory = total_memory - xPortGetMinimumEverFreeHeapSize();
+
+    logln_info("CPU load: %d%%, Memory load: %d%%");
+
+}
+
 void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t payload_size) {
     // Build transmission buffer struct
     telemetry_queue_transmission_t telemetry;
@@ -26,6 +40,7 @@ void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t pa
         xQueueSendToBack(telemetry_queue, &telemetry, portMAX_DELAY);
     }
 }
+
 
 void telemetry_task(void* unused_arg) {
     // Initialize telemetry context
