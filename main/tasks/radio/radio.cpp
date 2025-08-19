@@ -141,6 +141,7 @@ extern "C"
         radio_last_received_time = timing_now();  
 
         if(radio_last_received_time - last_saved_received_time > RADIO_SAVE_INTERVAL_MS){
+            logln_info("Saving last recieved time as %ull", radio_last_received_time);
             char buffer[sizeof(uint64_t)]; 
             memcpy(buffer, &radio_last_received_time, sizeof(uint64_t)); 
             write_file(RADIO_STATE_FILE_NAME, buffer, sizeof(uint64_t), false); 
