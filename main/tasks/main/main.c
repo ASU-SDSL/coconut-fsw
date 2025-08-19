@@ -16,6 +16,7 @@
 #include "steve.h"
 #include "filesystem.h"
 #include "watchdog.h"
+#include "i2c.h"
 
 // for initial timing setup only 
 #include "rtc_ds3231.h"
@@ -48,6 +49,7 @@ int main() {
     // initialize epoch clock 
     // i2c instance
     i2c_inst_t *i2c = i2c1;
+    config_i2c1(); // initialize i2c1
     // temps 
     uint8_t year, month, date, hour, minute, second;
     if(!rtc_get_year(i2c, &year) && !rtc_get_month(i2c, &month) && 
