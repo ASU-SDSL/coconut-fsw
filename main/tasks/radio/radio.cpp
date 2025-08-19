@@ -405,7 +405,6 @@ void init_radio()
         // if it doesn't create it and populate it 
         logln_info("Creating last received time persistent storage...");
 
-        touch(RADIO_STATE_FILE_NAME); 
         char buf[sizeof(uint64_t)] = {0, 0, 0, 0, 0, 0, 0, 0}; 
         memcpy(buf, &radio_last_received_time, sizeof(uint64_t));
         write_file(RADIO_STATE_FILE_NAME, buf, sizeof(uint64_t), false); 
