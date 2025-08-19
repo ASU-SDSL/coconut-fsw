@@ -17,6 +17,7 @@
 #include "max17048.h"
 #include "hb_tlm_log.h"
 #include "ds18b20.h"
+#include "command.h"
 
 void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
@@ -192,6 +193,7 @@ void heartbeat_telemetry_job(void* unused) {
     payload.which_radio = radio_which(); 
     payload.rfm_state = radio_get_RFM_state(); 
     payload.sx_state = radio_get_SX_state(); 
+    payload.command_count = get_command_count();
     
     // Send it
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
