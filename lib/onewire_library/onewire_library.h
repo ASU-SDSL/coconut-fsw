@@ -15,7 +15,7 @@ typedef struct {
 
 bool ow_init (OW *ow, PIO pio, uint offset, uint gpio);
 void ow_send (OW *ow, uint data);
-uint8_t ow_read (OW *ow);
+int16_t ow_read (OW *ow);
 bool ow_reset (OW *ow);
 int ow_romsearch (OW *ow, uint64_t *romcodes, int maxdevs, uint command);
 
