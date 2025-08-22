@@ -21,7 +21,7 @@
 #include "filesystem.h"
 
 static uint32_t bootcount;
-bool bootcountset;
+static bool bootcountset;
 
 void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
