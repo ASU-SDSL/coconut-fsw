@@ -33,6 +33,7 @@ typedef enum {
     DOWNLINK_TELEMETRY_DATA = 3,
     HEARTBEAT_PLAYBACK = 4,
     ACK = 5,
+    SIMPLE_DOWNLINK_GROUNDNODE_DATA = 6, 
 
     // 01 - radio
     RADIO_STAT_RES = 101,
@@ -106,6 +107,12 @@ typedef struct __attribute__((__packed__)) {
     char last_logged_error[24];
     uint8_t *data; ///< Any extra data that might be returned by a command
 } ack_telemetry_t;
+
+typedef struct __attribute__((__packed__)) { 
+    uint16_t count; 
+    uint16_t total;
+    char data; 
+} simple_downlink_telemetry_t; 
 
 /* USER FUNCTIONS */
 void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t payload_size);
