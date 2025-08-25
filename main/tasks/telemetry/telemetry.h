@@ -111,7 +111,7 @@ typedef struct __attribute__((__packed__)) {
 typedef struct __attribute__((__packed__)) { 
     uint16_t count; 
     uint16_t total;
-    char data; 
+    char* data; 
 } simple_downlink_telemetry_t; 
 
 /* USER FUNCTIONS */

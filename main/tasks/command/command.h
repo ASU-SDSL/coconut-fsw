@@ -142,6 +142,11 @@ typedef struct __attribute__((__packed__)) {
     uint8_t second;
 } set_rtc_time_t; 
 
+typedef struct __attribute__((__packed__)){
+    uint8_t admin_token[TOKEN_LENGTH]; 
+    uint8_t user_token[TOKEN_LENGTH]; 
+} request_simple_downlink_data_t; 
+
 /// Internal Command Thread Structs
 QueueHandle_t command_byte_queue;
 typedef uint8_t command_byte_t;

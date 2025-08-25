@@ -1,14 +1,11 @@
 #include "simple_downlink_job.h"
 
 void simple_downlink_job(void * args){
-  simple_downlink_args_t* arg_struct = (simple_downlink_args_t*) args; 
-
-  char *file_name = arg_struct->file_name; 
+  char *file_name = (char*) args; 
 
   // check if the file exists 
   if(!file_exists(file_name)){
     logln_error("File %s does not exist", file_name); 
-    vPortFree(arg_struct->file_name); 
     vPortFree(args); 
     return; 
   }
@@ -18,7 +15,6 @@ void simple_downlink_job(void * args){
 
   if(stat(file_name, &f_info) != 0){
     logln_error("File %s stat failed", file_name); 
-    vPortFree(arg_struct->file_name); 
     vPortFree(args); 
     return; 
   }
@@ -40,7 +36,7 @@ void simple_downlink_job(void * args){
 
     memcpy(packet.data, buf + chunk_num * SDJ_CHUNK_SIZE, SDJ_CHUNK_SIZE); 
 
-    send_telemetry(SIMPLE_DOWNLINK_GROUNDNODE_DATA, &packet, sizeof(simple_downlink_telemetry_t));
+    send_telemetry(SIMPLE_DOWNLINK_GROUNDNODE_DATA, (char*) &packet, sizeof(simple_downlink_telemetry_t));
 
     chunk_num++; 
   }
@@ -51,9 +47,8 @@ void simple_downlink_job(void * args){
 
   memcpy(end_packet.data, buf + chunk_num * SDJ_CHUNK_SIZE, f_info.fsize - (chunk_num * SDJ_CHUNK_SIZE)); 
 
-  send_telemetry(SIMPLE_DOWNLINK_GROUNDNODE_DATA, &end_packet, sizeof(simple_downlink_telemetry_t));
+  send_telemetry(SIMPLE_DOWNLINK_GROUNDNODE_DATA, (char*) &end_packet, sizeof(simple_downlink_telemetry_t));
 
   // free memory 
-  vPortFree(arg_struct->file_name); 
   vPortFree(args); 
 }

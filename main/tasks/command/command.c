@@ -19,8 +19,7 @@
 #include "set_rtc_job.h"
 #include "watchdog.h"
 #include "hb_tlm_log.h"
-
-
+#include "simple_downlink_job.h"
 
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
@@ -71,6 +70,8 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     // Data may or may not be returned, this data should be allocated and freed if needed depending on the packet
     uint8_t *return_data = NULL;
     int return_data_len = 0;
+    // used in downlink, here to avoid jumping to VLA in switch 
+    char data_path[DATA_PATH_SIZE + 1];
 
     switch (header.apid) {
         case UPLOAD_USER_DATA:
@@ -87,7 +88,28 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             break;
         case REQUEST_DOWNLINK_GROUNDNODE_DATA:
             // TODO: Implement
-            logln_error("REQUEST_DOWNLINK_GROUNDNODE_DATA unimplemented");
+            if (payload_size < sizeof(request_simple_downlink_data_t)) break; 
+            request_simple_downlink_data_t* request_downlink_args =  (request_simple_downlink_data_t*)payload_buf; 
+
+            if(!is_admin(request_downlink_args->admin_token)) return; 
+            
+            char user_name[MAX_USERNAME_LEN + 1]; 
+            if(get_user(request_downlink_args->user_token, user_name, sizeof(user_name)) == -1){
+                logln_error("User not found"); 
+                return; 
+            }
+
+            get_user_data_path(user_name, data_path, sizeof(data_path)); 
+
+            const char * simple_downlink_job_name = "DOWNLINK_DATA";
+            void* downlink_args = pvPortMalloc(DATA_PATH_SIZE + 1); 
+            memcpy(downlink_args, data_path, DATA_PATH_SIZE + 1); 
+
+            schedule_delayed_job_ms(simple_downlink_job_name, &simple_downlink_job, 100);
+            steve_job_t* simple_downlink_job = find_steve_job(simple_downlink_job_name); 
+            simple_downlink_job->arg_data = downlink_args; 
+            logln_info("Simple downlink job created"); 
+
             break;
         case REQUEST_DOWNLINK_TELEMETRY_DATA:
             // TODO: Implement
