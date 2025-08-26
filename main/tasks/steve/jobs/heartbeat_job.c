@@ -18,11 +18,42 @@
 #include "hb_tlm_log.h"
 #include "ds18b20.h"
 #include "command.h"
+#include "filesystem.h"
+
+static uint32_t bootcount;
+static bool bootcountset;
 
 void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
     heartbeat_telemetry_t payload;
-
+    
+    if(!bootcountset){
+        //check if bootcount file exist
+        if (file_exists("boot.bin")){
+            if(read_file("boot.bin", (char*)&bootcount, sizeof(bootcount)) > 0){
+                bootcount++;
+                //write to file
+                write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
+                bootcountset = true;
+            }
+            else{
+                //if bootcount file exists but read failed, set bootcount to 0
+                delete_file("boot.bin");
+                logln_error("Failed to read bootcount file, setting bootcount to 0");
+                bootcount = 0;
+                write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
+                bootcountset = true;
+            }
+    }
+    else{
+        //set bootcount to 0 if no file exist 
+        bootcount = 0;
+        //write to file
+        write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
+        bootcountset = true;
+    }
+}
+        
     // logln_info("%s", get_current_task_name());
 
     //Incorporate callsign, using Tyler's for now.
@@ -200,6 +231,7 @@ void heartbeat_telemetry_job(void* unused) {
     payload.rfm_state = radio_get_RFM_state(); 
     payload.sx_state = radio_get_SX_state(); 
     payload.command_count = get_command_count();
+    payload.boot_count = bootcount;
     
     // Send it
     send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
