@@ -368,7 +368,7 @@ void radio_task_cpp(){
         // handle interrupt flags 
         if(cad_detected_RFM || operation_done_RFM || general_flag_SX){
             // handle finished transmission
-            if(transmitting && operation_done_RFM){
+            if(transmitting && (operation_done_RFM || general_flag_SX)){
                 transmitting = false; 
                 radio->finishTransmit();
                 #if RADIO_LOGGING
