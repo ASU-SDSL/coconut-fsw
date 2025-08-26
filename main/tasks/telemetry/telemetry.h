@@ -97,6 +97,7 @@ typedef struct __attribute__((__packed__)) {
     
     uint8_t which_radio; ///< 1 for RFM
     uint32_t command_count;
+    uint32_t boot_count; 
 } heartbeat_telemetry_t;
 
 /// @brief Telemetry response to any commands sent to the satellite
