@@ -110,6 +110,7 @@ void watchdog_task(void *pvParameters) {
         // See if reset signal was received
         if (ulTaskNotifyTake(pdTRUE, 0) > 0) {
             // Freeze watchdog toggling to cause a reset
+            logln_error("Watchdog triggered, rebooting...");
             while(1) {}
         }
 
