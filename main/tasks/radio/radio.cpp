@@ -1,11 +1,14 @@
-#include <RadioLib.h>
-#include "radio.h"
 #include <FreeRTOS.h>
-#include "PicoHal.h"
 #include <stdlib.h>
+
+#include <RadioLib.h>
+#include "spacepacket.h"
+#include "semphr.h"
+
+#include "radio.h"
+#include "PicoHal.h"
 #include "log.h"
 #include "gse.h"
-#include "spacepacket.h"
 #include "command.h"
 #include "timing.h"
 
@@ -41,7 +44,37 @@ PicoHal *picoHal = new PicoHal(spi0, PICO_DEFAULT_SPI_TX_PIN, PICO_DEFAULT_SPI_R
 RFM98 radioRFM = new Module(picoHal, RADIO_RFM_NSS_PIN, RADIO_RFM_DIO0_PIN, RADIO_RFM_NRST_PIN, RADIO_RFM_DIO1_PIN); //RADIOLIB_NC); // RFM98 is an alias for SX1278
 SX1268 radioSX = new Module(picoHal, RADIO_SX_NSS_PIN, RADIO_SX_DIO1_PIN, RADIO_SX_NRST_PIN, RADIO_SX_BUSY_PIN); 
 PhysicalLayer* radio = &radioSX;
-uint64_t radio_last_received_time = 0; 
+
+///< Timestamp of last radio packet received
+static uint64_t radio_last_received_time = 0; 
+static SemaphoreHandle_t radio_last_received_time_mutex = NULL;
+
+/**
+ * @brief Get the radio last received time with mutex protection
+ * 
+ * @return uint64_t The timestamp of the last received packet
+ */
+static uint64_t get_radio_last_received_time(){
+    uint64_t temp = 0; 
+    if(radio_last_received_time_mutex == NULL || xSemaphoreTake(radio_last_received_time_mutex, portMAX_DELAY) == pdTRUE) {
+        temp = radio_last_received_time;
+        xSemaphoreGive(radio_last_received_time_mutex); 
+    }
+
+    return temp; 
+}
+
+/**
+ * @brief Set the radio last received time with mutex protection
+ * 
+ * @param new_time New time to set
+ */
+static void set_radio_last_received_time(uint64_t new_time){
+    if(radio_last_received_time_mutex == NULL || xSemaphoreTake(radio_last_received_time_mutex, portMAX_DELAY) == pdTRUE) {
+        radio_last_received_time = new_time;
+        xSemaphoreGive(radio_last_received_time_mutex); 
+    }
+}
 
 int radio_state_RFM = RADIO_STATE_NO_ATTEMPT; 
 int radio_state_SX = RADIO_STATE_NO_ATTEMPT;
@@ -137,15 +170,17 @@ extern "C"
         return radio_state_SX; 
     }
     void radio_flag_valid_packet(){ 
-        static uint64_t last_saved_received_time = 0; 
-        radio_last_received_time = timing_now();  
+        static uint64_t last_saved_received_time = 0;
+        
+        uint64_t new_time = timing_now();
+        set_radio_last_received_time(new_time);  
 
-        if(radio_last_received_time - last_saved_received_time > RADIO_SAVE_INTERVAL_MS){
-            logln_info("Saving last recieved time as %ull", radio_last_received_time);
+        if(new_time - last_saved_received_time > RADIO_SAVE_INTERVAL_MS){
+            logln_info("Saving last received time as %ull", new_time);
             char buffer[sizeof(uint64_t)]; 
-            memcpy(buffer, &radio_last_received_time, sizeof(uint64_t)); 
+            memcpy(buffer, &new_time, sizeof(uint64_t)); 
             write_file(RADIO_STATE_FILE_NAME, buffer, sizeof(uint64_t), false); 
-            last_saved_received_time = radio_last_received_time; 
+            last_saved_received_time = new_time; 
         }
     }
 #ifdef __cplusplus
@@ -323,6 +358,14 @@ void radio_panic(){
 
 void init_radio()
 {
+    // initialize mutex for last received time
+    radio_last_received_time_mutex = xSemaphoreCreateMutex();
+    if (radio_last_received_time_mutex == NULL)
+    {
+        logln_error("radio_last_received_time_mutex creation failed");
+    }
+    
+
     vTaskDelay(pdMS_TO_TICKS(1000)); // for debugging
 
     // initialize rf switch and power switch gpio
@@ -395,7 +438,9 @@ void init_radio()
         char result_buffer[sizeof(uint64_t)]; 
 
         if(read_file(RADIO_STATE_FILE_NAME, result_buffer, sizeof(uint64_t)) == sizeof(uint64_t)) {
-            memcpy(&radio_last_received_time, result_buffer, sizeof(uint64_t)); 
+            uint64_t new_time = 0; 
+            memcpy(&new_time, result_buffer, sizeof(uint64_t)); 
+            set_radio_last_received_time(new_time);
             logln_info("Last received time loaded as %ull", radio_last_received_time); 
         } else {
             logln_error("Error on persistent radio time load"); 
@@ -405,8 +450,9 @@ void init_radio()
         // if it doesn't create it and populate it 
         logln_info("Creating last received time persistent storage...");
 
+        uint64_t new_time = get_radio_last_received_time();
         char buf[sizeof(uint64_t)] = {0, 0, 0, 0, 0, 0, 0, 0}; 
-        memcpy(buf, &radio_last_received_time, sizeof(uint64_t));
+        memcpy(buf, &new_time, sizeof(uint64_t));
         write_file(RADIO_STATE_FILE_NAME, buf, sizeof(uint64_t), false); 
     }
 
@@ -585,12 +631,14 @@ void radio_task_cpp(){
 
         if(!transmitting && !receiving && xQueueReceive(radio_queue, &rec, 0))
         {
+            uint64_t last_received_time_copy = 0; 
             switch (rec.operation_type) {
                 case TRANSMIT:
                     // if the radio should be silenced from deadman switch, don't transmit, but still receive from queue 
                     // check if radio_last_received_time is 0 because if it is that means that we're on since boot time and 
                     // should wait for contact
-                    if(radio_last_received_time != 0 && time_since_ms(radio_last_received_time) > RADIO_NO_CONTACT_DEADMAN_MS){
+                    last_received_time_copy = get_radio_last_received_time();
+                    if(last_received_time_copy != 0 && time_since_ms(last_received_time_copy) > RADIO_NO_CONTACT_DEADMAN_MS){
                         // free buffer 
                         vPortFree(rec.data_buffer);
                         break;

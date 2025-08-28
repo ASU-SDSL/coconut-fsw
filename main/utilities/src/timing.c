@@ -2,6 +2,7 @@
 #include "task.h"
 
 #include "timing.h"
+#include "log.h"
 
 #include <time.h>
 
@@ -47,8 +48,9 @@ SemaphoreHandle_t epoch_time_mutex;
 
 uint64_t get_epoch_time(){
     uint64_t value; 
-
-    if(xSemaphoreTake(epoch_time_mutex, portMAX_DELAY) == pdTRUE){
+    
+    // check for null to just go for it and hope 
+    if(epoch_time_mutex == NULL || xSemaphoreTake(epoch_time_mutex, portMAX_DELAY) == pdTRUE){
         value = epoch_time; 
         xSemaphoreGive(epoch_time_mutex); 
     } else {
@@ -73,7 +75,12 @@ void update_epoch_time(uint8_t year, uint8_t month, uint8_t date, uint8_t hour, 
 
     time_t temp_time = mktime(&temp); 
 
-    epoch_time = ((uint64_t)(temp_time)) * 1000; // epoch time should be in seconds 
+    if(xSemaphoreTake(epoch_time_mutex, portMAX_DELAY) == pdTRUE){
+        epoch_time = ((uint64_t)(temp_time)) * 1000; // epoch time should be in seconds 
+        xSemaphoreGive(epoch_time_mutex);
+    } else {
+        logln_error("Epoch time update failed");
+    }
 }
 
 // timing with back up of since boot
