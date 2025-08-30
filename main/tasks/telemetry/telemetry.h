@@ -49,6 +49,7 @@ typedef struct __attribute__((__packed__)) {
 
 /// @brief Heartbeat packet definition 
 typedef struct __attribute__((__packed__)) {
+    char callsign[8];
     uint8_t state;
     uint32_t uptime;
     uint8_t hour;
@@ -92,10 +93,12 @@ typedef struct __attribute__((__packed__)) {
     int16_t temp_u100;
     int16_t temp_u102;
     int16_t temp_u104; 
-    
-    int16_t rfm_state; 
+    int16_t rfm_state;
     int16_t sx_state; 
+    
     uint8_t which_radio; ///< 1 for RFM
+    uint32_t command_count;
+    uint32_t boot_count; 
 } heartbeat_telemetry_t;
 
 /// @brief Telemetry response to any commands sent to the satellite

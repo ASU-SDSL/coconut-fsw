@@ -29,11 +29,14 @@
  * ASU Sun Devil Satellite Lab
  */
 
+
+
 int main() {
     
 #if defined(DEBUG) && !defined(SIMULATOR)
     timer_hw->dbgpause = 0;
 #endif
+
 
     BaseType_t gse_task_status = xTaskCreate(gse_task, 
                                         "GSE", 
