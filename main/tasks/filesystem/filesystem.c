@@ -23,11 +23,11 @@ int32_t read_file(const char* file_name, char* result_buffer, size_t size) {
     return read_file_offset(file_name, result_buffer, size, 0); // read from the beginning of the file
 }
 
-// Returns -1 on file does not exist
+// Returns FILE_DOES_NOT_EXIST on file does not exist and FILE_READ_TIMEOUT on file task notification timeout
 int read_file_offset(const char* file_name, char* result_buffer, size_t size, uint32_t offset) {
     if ((strnlen(file_name, MAX_PATH_SIZE) + 1) > MAX_PATH_SIZE) return 0;
     // See if path exists
-    if (!file_exists(file_name)) return -1;
+    if (!file_exists(file_name)) return FILE_DOES_NOT_EXIST;
 
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = READ;
@@ -49,8 +49,8 @@ int read_file_offset(const char* file_name, char* result_buffer, size_t size, ui
     // Wait for notification that file read is finished
     uint32_t notification_retval = ulTaskNotifyTake(pdTRUE, NOTIFICATION_WAIT_TIME);
     if (notification_retval != 1) {
-        logln_info("Timed out waiting for file read on %s task", get_current_task_name());
-        return -1;
+        logln_error("Timed out waiting for file read on %s task", get_current_task_name());
+        return FILE_READ_TIMEOUT;
     }
 
     // Return size

@@ -77,7 +77,7 @@
             "request": "launch",
             "preLaunchTask": "buildsimulator",
             "program": "${workspaceRoot}/build/Simulator/main/COCONUTFSW",
-            "args": [ ">", "/dev/pts/3", "<", "/dev/pts/3"],
+            "args": [ ">", "/dev/pts/5", "<", "/dev/pts/5"],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [],

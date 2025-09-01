@@ -11,6 +11,7 @@
 #include "queue.h"
 #include "task.h"
 #include "ff.h"
+#include "filesystem_errors.h"
 
 #include <semphr.h>
 

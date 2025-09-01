@@ -2,17 +2,24 @@
 #include "timing.h"
 #include "telemetry.h"
 #include "log.h"
+#include "file_downlink_codes.h"
 
 #include <FreeRTOS.h>
 #include <task.h>
 #include <string.h>
 
-void initialize_file_downlink(char *file_path, int file_path_len) {
+/* This return needs uint8_t to be able to be returned in an ack */
+uint8_t initialize_file_downlink(char *file_path, int file_path_len) {
     // Initialize file downlink only has the string as a parameter
 
     // This should be checked in the command task but verify here in case there are other users of this function
     if (file_path_len > MAX_PATH_SIZE) {
-        return;
+        return FILE_DOWNLINK_PATH_OVERFLOW;
+    }
+
+    if (!file_exists(file_path)) {
+        logln_error("No file '%s' on file downlink initialize command", file_path);
+        return FILE_DOWNLINK_FILE_DOES_NOT_EXIST;
     }
 
     file_downlink_queue_command_t command = {
@@ -29,6 +36,8 @@ void initialize_file_downlink(char *file_path, int file_path_len) {
     if (file_downlink_queue) {
         xQueueSendToBack(file_downlink_queue, &command, portMAX_DELAY);
     }
+
+    return 0;
 }
 
 void file_downlink_ack_command(uint8_t transaction_id, uint16_t sequence_number) {
@@ -38,7 +47,7 @@ void file_downlink_ack_command(uint8_t transaction_id, uint16_t sequence_number)
     };
     
     file_downlink_queue_command_t command = {
-        .queue_command_id = (uint8_t) CMD_ID_FILE_DOWNLINK_INIT,
+        .queue_command_id = (uint8_t) CMD_ID_FILE_DOWNLINK_ACK,
     };
     memcpy(command.data, &command_data, sizeof(file_downlink_queue_command_ack_data_t));
 
@@ -77,29 +86,36 @@ typedef struct current_file_downlink_data {
 } current_file_downlink_data_t;
 
 // Sends 1 chunk of a file in a packet depending on the current state of the file downlink
-// Returns 0 on success, 1 on end of file and negative numbers for errors
-int send_n_packet(current_file_downlink_data_t *current_file_data, uint32_t packet_size) {
+// Returns 0 on success, SEND_N_PACKET_EOF on end of file or read_file_offset error
+int send_n_packet(current_file_downlink_data_t *current_file_data, uint32_t packet_size, uint8_t transaction_id) {
 
-    file_downlink_telemetry_t *downlink_packet = (file_downlink_telemetry_t*) pvPortMalloc(sizeof(file_downlink_telemetry_t) + packet_size);
-    strncpy(downlink_packet->path_name, current_file_data->file_path, FILE_DOWNLINK_PATH_NAME_CHARS - 1);
-    downlink_packet->path_name[FILE_DOWNLINK_PATH_NAME_CHARS - 1] = '\0'; // Make sure there is a null-terminator - this may be unnecessary
+    file_downlink_telemetry_t downlink_packet;
+    strncpy(downlink_packet.path_name, current_file_data->file_path, FILE_DOWNLINK_PATH_NAME_CHARS - 1);
+    downlink_packet.path_name[FILE_DOWNLINK_PATH_NAME_CHARS - 1] = '\0'; // Make sure there is a null-terminator - this may be unnecessary
 
-    int bytes_read = read_file_offset(current_file_data->file_path, downlink_packet->data, packet_size, current_file_data->current_sending_packet_index * packet_size);
+    int bytes_read = read_file_offset(current_file_data->file_path, downlink_packet.data, packet_size, current_file_data->current_sending_packet_index * packet_size);
 
     if (bytes_read <= 0) {
-        vPortFree(downlink_packet);
         return bytes_read; // Error
     }
     
-    downlink_packet->sequence_number = current_file_data->current_sending_packet_index; // packet index is incremented in the state machine loop
-    send_telemetry(FILE_DOWNLINK_APID, (char*) downlink_packet, sizeof(file_downlink_telemetry_t) + bytes_read);
-    
-    if (bytes_read < packet_size) {
-        vPortFree(downlink_packet);
-        return 1; // End of file
-    } else {
-        return 0; // Success
+    downlink_packet.transaction_id = transaction_id;
+    downlink_packet.sequence_number = current_file_data->current_sending_packet_index; // packet index is incremented in the state machine loop
+    // Make sure we don't send more data from the buffer than we need to
+    size_t buffer_empty_space = sizeof(downlink_packet.data) - bytes_read + 1; // + 1 for some weird indexing
+
+    int return_code = 0; // Success
+    downlink_packet.eof = false;
+    if (bytes_read < packet_size) { // End of file
+        return_code = SEND_N_PACKET_EOF;
+        downlink_packet.eof = true;
     }
+
+    send_telemetry(FILE_DOWNLINK_APID, (char*) &downlink_packet, sizeof(file_downlink_telemetry_t) - buffer_empty_space);
+
+    logln_info("Downlink file message: %s", downlink_packet.data);
+    
+    return return_code;
 }
 
 // Helper function to setup new transfer
@@ -136,8 +152,8 @@ typedef enum file_downlink_state {
 
 void file_downlink_task(void* unused_arg) {
 
-    // For testing, log an error so the error log file exists
-    logln_error("File Downlink Task started");
+    // @todo remove testing - For testing, log an error so the error log file exists
+    logln_error("Error test");
 
     uint32_t packet_downlink_size = MAX_DOWNLINK_PACKET_SIZE; // This can be changed by command when in idle state
 
@@ -176,11 +192,11 @@ void file_downlink_task(void* unused_arg) {
             case SENDING: {
                 // If we have not sent all packets in the window, send the next packet in the window
                 if (current_file_downlink_data.current_sending_packet_index < current_file_downlink_data.window_end) {
-                    int result = send_n_packet(&current_file_downlink_data, packet_downlink_size);
+                    int result = send_n_packet(&current_file_downlink_data, packet_downlink_size, current_transaction_id);
                     switch (result) {
                         case 0: // success
                             break;
-                        case 1: // end of file
+                        case SEND_N_PACKET_EOF:
                             current_file_downlink_data.reached_eof = true;
                             break;
                         default: // error
@@ -212,6 +228,7 @@ void file_downlink_task(void* unused_arg) {
 
                             // Check if it is the end of the transfer
                             if (current_file_downlink_data.reached_eof == true && ack_command_data->sequence_number == current_file_downlink_data.window_end) {
+                                logln_info("Last ack received: Transaction finished for %x", current_transaction_id);
                                 state = IDLE;
                                 break;
                             }
@@ -222,6 +239,7 @@ void file_downlink_task(void* unused_arg) {
 
                             current_file_downlink_data.expiration_timer = tick_uptime_in_ms();
                             current_file_downlink_data.last_ack_received_time = tick_uptime_in_ms();
+                            logln_info("ACK RECEIVED");
                         }
                     // If we receive a new file downlink request, terminate this transfer and start the new one
                     } else if (queue_command.queue_command_id == CMD_ID_FILE_DOWNLINK_INIT) {
@@ -229,7 +247,7 @@ void file_downlink_task(void* unused_arg) {
                         initialize_file_transfer(&current_file_downlink_data, queue_command.data, &current_transaction_id); // continue with new transfer - data contains path
                         break;
                     }
-                } else {
+                } else { // Ack timeout
                     // Resend packets starting at the last in-order ack received sequence number
                     current_file_downlink_data.current_sending_packet_index = current_file_downlink_data.window_start;
                     current_file_downlink_data.expiration_timer = tick_uptime_in_ms(); // Only update the timer

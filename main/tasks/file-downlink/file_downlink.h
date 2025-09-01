@@ -1,3 +1,5 @@
+#pragma once
+
 #include "FreeRTOS.h"
 #include "queue.h"
 
@@ -24,7 +26,7 @@
 #define ACK_WINDOW_TIMEOUT 5000 // ms to wait for an ack before resending the window
 #define ACK_TRANSFER_TIMEOUT 600000 // ms to wait since the last received ack to cancel the transfer
 
-#define MAX_DOWNLINK_PACKET_SIZE 256 // size of each packet in the file downlink protocol until the last packet - this can be commanded to be smaller
+#define MAX_DOWNLINK_PACKET_SIZE 200 // size of each data-portion packet in the file downlink protocol until the last packet - this can be commanded to be smaller
 
 QueueHandle_t file_downlink_queue;
 
@@ -58,7 +60,7 @@ void file_downlink_task();
 /*
 *  Used by the command task to initialize a file downlink - starts transmitting with sequence_number 0
 */
-void initialize_file_downlink(char *file_path, int file_path_len);
+uint8_t initialize_file_downlink(char *file_path, int file_path_len);
 
 /*
 *  Used by the command task when an ack is received from the ground after n packets are sent

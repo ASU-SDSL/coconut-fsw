@@ -45,6 +45,9 @@ void _log(bool is_error, const char *str, ...) {
     va_end(args);
 
     if (is_error) {
+        if (packet->str == NULL) {
+            return; // This happens sometimes in the simulator at least
+        }
         write_error_log(packet->str); // Write to the log
     }
 

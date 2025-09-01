@@ -7,6 +7,7 @@
 
 #include "FreeRTOS.h" // This is needed because it gets included from "hb_tlm_log.h" before anything with an '#include "FreeRTOS.h"' is included for some reason
 #include "queue.h"
+#include "file_downlink.h"
 
 #define TELEMETRY_SYNC_BYTES "\x35\x2E\xF8\x53"
 #define TELEMETRY_SYNC_SIZE 4U
@@ -111,9 +112,11 @@ typedef struct __attribute__((__packed__)) {
 // File downlink from file-downlink task
 #define FILE_DOWNLINK_PATH_NAME_CHARS 24
 typedef struct __attribute__((__packed__)) {
+    bool eof; // If this packet is the end of the file - the ground should ack if this is true
+    uint8_t transaction_id;
     uint16_t sequence_number;
     char path_name[FILE_DOWNLINK_PATH_NAME_CHARS]; // Limit this buffer so the radio packet doesn't get too big
-    uint8_t *data; // File data
+    uint8_t data[MAX_DOWNLINK_PACKET_SIZE]; // File data - the max this can be is 255 byte chunks of downlinked data at a time (length is only 1 byte)
 } file_downlink_telemetry_t;
 
 /* USER FUNCTIONS */

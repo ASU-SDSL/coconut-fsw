@@ -215,9 +215,10 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
         case APID_INITIALIZE_FILE_DOWNLINK:
             // This payload is just a string
             if (strlen(payload_buf) > MAX_PATH_SIZE + 1) break; // Verify it looks like a string (+ \0) and isn't too long
-            initialize_file_downlink(payload_buf, payload_size);
+            command_status = initialize_file_downlink(payload_buf, payload_size);
             break;
         case APID_FILE_DOWNLINK_ACK:
+            logln_info("ACK RECEIVED");
             // It's ok if it is smaller, the string will be different sizes
             if (payload_size > sizeof(file_downlink_queue_command_ack_data_t)) break;
             file_downlink_queue_command_ack_data_t* ack_args = (file_downlink_queue_command_ack_data_t*)payload_buf;
@@ -263,8 +264,6 @@ void command_task(void* unused_arg) {
             command_byte_t command_byte = 0;
             xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
             
-            logln_info("Byte Received: 0x%hhx", command_byte);
-
             // check if current sync index byte matches
             uint8_t check_byte = COMMAND_SYNC_BYTES[sync_index];
             // logln_info("Comparing with Sync Byte %d: 0x%hhx", sync_index, check_byte);
@@ -303,7 +302,7 @@ void command_task(void* unused_arg) {
             logln_error("Failed to allocate payload buf of size 0x%x!", payload_size);
             continue;
         }
-        // Read payload
+        // Read payload - @todo NEEDS TIMEOUT
         for (int i = 0; i < payload_size; i++) {
             xQueueReceive(command_byte_queue, &payload_buf[i], portMAX_DELAY);
         }
