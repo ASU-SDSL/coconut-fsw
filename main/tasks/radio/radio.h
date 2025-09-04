@@ -36,15 +36,15 @@
 
 #define RADIO_FREQ 434.0
 
-// fast mode (21.875 kbps)
-#define RADIO_BW_FAST 500.0
-#define RADIO_SF_FAST 7
-#define RADIO_CR_FAST 1
+// fast mode (~4 kbps)
+#define RADIO_BW_FAST 62.5
+#define RADIO_SF_FAST 6
+#define RADIO_CR_FAST 5
 
-// safe mode (1.171 kbps)
-#define RADIO_BW_SAFE 500.0
-#define RADIO_SF_SAFE 12
-#define RADIO_CR_SAFE 1
+// safe mode (~400 bps)
+#define RADIO_BW_SAFE 62.5
+#define RADIO_SF_SAFE 10
+#define RADIO_CR_SAFE 5
 
 #define RADIO_SYNC_WORD 18
 #define RADIO_PREAMBLE_LEN 8
