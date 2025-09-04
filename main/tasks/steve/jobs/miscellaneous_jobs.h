@@ -9,6 +9,6 @@
  * @brief This method beeps the (CMT-8504-100-SMT-TR) buzzer 3 times using pwm
  * 
  */
-void buzzer_beep_job();
+void buzzer_beep_job(void * unused);
 
 
