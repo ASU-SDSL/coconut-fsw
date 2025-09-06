@@ -14,8 +14,8 @@
   - [Repository Overview and Structure](#repository-overview-and-structure)
     - [Tasks/Threads Overview](#tasksthreads-overview)
   - [Users Guide](#users-guide)
-    - [Cloning and Building](#cloning-and-building)
-    - [Building with Docker](#building-with-docker)
+    - [Setting up Dev Environment](#setting-up-dev-environment)
+    - [Building and Deploying](#building-and-deploying)
     - [Debugging](#debugging)
     - [Using the Simulator](#using-the-simulator)
     - [Creating Device Drivers](#creating-device-drivers)
@@ -40,7 +40,7 @@ For further questions please reach out to the Interplanetary Initiative Lab at A
 ### Flight Heritage
 
 This is a growing list of projects and satellites that this flight software has flown on or will be flown on in the future.
-* Coconut CubeSat - Arizona State University (Launch Q4 2025)
+* Coconut CubeSat - Arizona State University (Launch Q1 2026)
 * SquidSat CubeSat - Arizona State University (Launch TBD)
 
 ### Coconut Hardware Overview
@@ -143,26 +143,40 @@ A Figure of the ground software and the radio/GSE redundancy
 
 ## Users Guide
 
-### Cloning and Building
+### Setting up Dev Environment
+
+You can choose between the following options to setup your Development Environment 
+
+1. [Using Ubuntu (24.04) natively or using Windows WSL](using-ubuntu-or-windows-wsl)
+2. [Using a Docker Container](using-a-docker-container)
+
+#### Using Ubuntu or Windows WSL
 
 To setup this repository, you can follow these steps:
 1. Install dependencies: `sudo apt install -y python3 cmake gcc-arm-none-eabi build-essential git`
 2. Clone with submodules (submodules contains all external libraries including the pic_sdk and freertos): `git clone --recurse-submodules https://github.com/ASU-SDSL/coconut-fsw`
-3. Build and deploy the firmware to the RP2040
+
+#### Using a Docker Container
+
+1. Ensure you have `docker` setup on your system, with docker daemon running. Ensure that you've logged into docker
+2. Create a new empty folder and download only the `Dockerfile` as is from this repository and build a docker image ussing the command `docker build -it coconut-fsw .`
+3. Create a container using this image by using the command `docker run --name coconut-flight-software -d -it coconut-fsw`. You'll be making use of this container for the entire development cycle. 
+4. You can now use `Dev Containers` VS Code Extension to access the contents and make changes to the codebase. 
+5. If you are making use of this extension, and have setup your Git on your computer using HTTPS (Not SSH), the Dev Containers extension will automatically add proper git credentialing. If not, you'd have to setup your git again in the docker container for merging your changes. 
+
+
+### Building and Deploying
+
+1. Build and deploy the firmware to the RP2040
     1. Hold the white `BOOTSEL` button on the RP2040
     2. Connect the RP2040 to your computer with Micro-USB
     3. Let go of the `BOOTSEL` button
     4. A USB flashdrive called `RPI-RP2` should connect to your computer
     5. Run `./deploy.sh` - this will also build the firmware
     6. The codebase will now be running on the board. It will boot back into the flashed firmware even if powered off and powered on again 
-4. If you wish to just build and not deploy, run `./build.sh` - this will generate the `./build/` directory where you can find the uf2 executable under `./build/Debug/main/COCONUTFSW.uf2`. You can also check the contents of the scripts to find out how to build the simulator
+2. If you wish to just build and not deploy, run `./build.sh` - this will generate the `./build/` directory where you can find the uf2 executable under `./build/Debug/main/COCONUTFSW.uf2`. You can also check the contents of the scripts to find out how to build the simulator
 
-## Building With Docker
 
-To build with the docker, the docker/docker_build.sh can be used. `cd docker` and `./docker_build.sh`. This builds a simple Ubuntu image that is ran with the repository as a volume to build both the Simulator and Debug builds. A release build command needs to be added to docker_build.sh if that is needed in the future. The build output is put in the same location as the regular build - `./build`
-Note: you may have to `rm` the build directory if you get permission issues when mixing Docker and local build commands
-* Simulator: `./build/Simulator/main/COCONUTFSW`
-* Debug (to be flashed to an RP2040): `./build/Debug/main/COCONUTFSW.uf2`
 
 ### Debugging
 
