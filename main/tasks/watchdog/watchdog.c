@@ -9,12 +9,16 @@
 
 #define WATCHDOG_MAX_QUEUE_ITEMS 16
 #define WATCHDOG_INTERTASK_CHECK_PERIOD_MS 1000 * 60 // every minute 
-#define WATCHDOG_CONNECTED_TASKS 2 
+#define WATCHDOG_CONNECTED_TASKS 0
 #define WATCHDOG_CHECK_DELAY_MS 500
 
 static QueueHandle_t watchdog_queue;
+#if WATCHDOG_CONNECTED_TASKS > 0 
 static bool heartbeats[WATCHDOG_CONNECTED_TASKS]; 
+#endif 
+
 static uint32_t last_check = 0; 
+
 
 void watchdog_freeze() {
     // Notify main loop in watchdog_task() to freeze
@@ -44,6 +48,7 @@ void watchdog_task(void *pvParameters) {
             while(1) {}
         }
 
+        #if WATCHDOG_CONNECTED_TASKS > 0
         // receive intertask heartbeats from queue
         uint8_t heartbeat_index; 
         while(xQueueReceive(watchdog_queue, &heartbeat_index, 0) == pdPASS){
@@ -62,6 +67,7 @@ void watchdog_task(void *pvParameters) {
                 heartbeats[i] = false; 
             }
         }
+        #endif 
 
         state = !state; // Flip state to toggle on and off
         gpio_put(WDI_PIN, state);
