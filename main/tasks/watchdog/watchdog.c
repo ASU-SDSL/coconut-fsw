@@ -4,6 +4,7 @@
 #include "hardware/gpio.h"
 #include "log.h"
 #include <stdlib.h>
+#include "hardware/watchdog.h"
 
 #define WDI_PIN 21 // from FCR schematic
 
@@ -16,6 +17,8 @@ static QueueHandle_t watchdog_queue;
 #if WATCHDOG_CONNECTED_TASKS > 0 
 static bool heartbeats[WATCHDOG_CONNECTED_TASKS]; 
 #endif 
+
+#define WATCHDOG_USE_BUILT_IN 1
 
 static uint32_t last_check = 0; 
 
@@ -32,6 +35,10 @@ void watchdog_task(void *pvParameters) {
 
     // update last check 
     last_check = to_ms_since_boot(get_absolute_time()); 
+
+    #if WATCHDOG_USE_BUILT_IN
+    watchdog_enable(0x7fffff, true); 
+    #endif
 
     // Initialize the watchdog GPIO and set it high
     gpio_init(WDI_PIN);
@@ -73,11 +80,15 @@ void watchdog_task(void *pvParameters) {
         gpio_put(WDI_PIN, state);
         vTaskDelay(500);
 
+        #if WATCHDOG_USE_BUILT_IN
+        watchdog_update(); 
+        #endif 
+
     }
 
 }
 
-void watchdog_kick(uint8_t id){
+void watchdog_intertask_kick(uint8_t id){
     while(!watchdog_queue)
     {
         vTaskDelay(WATCHDOG_CHECK_DELAY_MS / portTICK_PERIOD_MS); 

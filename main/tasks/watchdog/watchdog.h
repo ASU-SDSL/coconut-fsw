@@ -26,4 +26,4 @@ void watchdog_task(void *pvParameters);
  * 
  * @param id ID of watchdog to kick 
  */
-void watchdog_kick(uint8_t id); 
+void watchdog_intertask_kick(uint8_t id); 
