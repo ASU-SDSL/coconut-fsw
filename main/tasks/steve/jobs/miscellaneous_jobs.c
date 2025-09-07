@@ -14,7 +14,7 @@
 #define BUZZER_BEEP_DELAY_MS 500
 #define BUZZER_BEEP_COUNT 3
 
-void buzzer_beep_job() {
+void buzzer_beep_job(void* unused) {
   //Initialize pwm stuff
   logln_info("Beep!"); 
   gpio_set_function(BUZZER_PIN,  GPIO_FUNC_PWM);
