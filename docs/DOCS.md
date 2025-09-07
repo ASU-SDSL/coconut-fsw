@@ -159,7 +159,7 @@ To setup this repository, you can follow these steps:
 #### Using a Docker Container
 
 1. Ensure you have `docker` setup on your system, with docker daemon running. Ensure that you've logged into docker
-2. Create a new empty folder and download only the `Dockerfile` as is from this repository and build a docker image ussing the command `docker build -it coconut-fsw .`
+2. Create a new empty folder and download only the `Dockerfile` as is from this repository and build a docker image ussing the command `docker build -t coconut-fsw .`
 3. Create a container using this image by using the command `docker run --name coconut-flight-software -d -it coconut-fsw`. You'll be making use of this container for the entire development cycle. 
 4. You can now use `Dev Containers` VS Code Extension to access the contents and make changes to the codebase. 
 5. If you are making use of this extension, and have setup your Git on your computer using HTTPS (Not SSH), the Dev Containers extension will automatically add proper git credentialing. If not, you'd have to setup your git again in the docker container for merging your changes. 
