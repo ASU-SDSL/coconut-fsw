@@ -28,6 +28,8 @@ typedef enum command_apid {
     REQUEST_DOWNLINK_GROUNDNODE_DATA = 2, 
     REQUEST_DOWNLINK_TELEMETRY_DATA = 3,
     LIST_STEVE_TASKS = 4,
+
+    // Should add encryption to File, Radio, and user commands
     FILE_LS = 5,
     FILE_MKDIR = 6,
     FILE_CAT = 7,
@@ -47,9 +49,25 @@ typedef enum command_apid {
 
     // 02 - device 
     SET_RTC_TIME = 201, 
+
+    // New APID for encryption
+    SECURE_COMMAND = 250,
+
 } command_apid_t;
 
 // Command type definitions 
+
+// encrypted packets
+typedef struct __attribute__((__packed__)) {
+    uint8_t admin_token[TOKEN_LENGTH];
+    uint8_t ciphertext[];
+} secure_coomand_t;
+
+// 
+typedef struct __attribute__((__packed__)) {
+    uint16_t apid;
+    uint8_t command_data[];
+} text_command_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
