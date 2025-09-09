@@ -12,6 +12,56 @@
 #include "command.h"
 #include "timing.h"
 
+// pinout for on breadboard
+// #define RADIO_SX_NSS_PIN 28
+// #define RADIO_SX_DIO1_PIN 15
+// #define RADIO_SX_NRST_PIN 27
+// #define RADIO_SX_BUSY_PIN 5
+
+// #define RADIO_RFM_NSS_PIN 7
+// #define RADIO_RFM_DIO0_PIN 17
+// #define RADIO_RFM_NRST_PIN 22
+// #define RADIO_RFM_DIO1_PIN 26
+
+// pinout for on pcb
+#define RADIO_SX_NSS_PIN 5
+#define RADIO_SX_DIO1_PIN 22
+#define RADIO_SX_NRST_PIN 24
+#define RADIO_SX_BUSY_PIN 23
+
+#define RADIO_RFM_NSS_PIN 17
+#define RADIO_RFM_DIO0_PIN 27
+#define RADIO_RFM_NRST_PIN 20
+#define RADIO_RFM_DIO1_PIN 29
+
+#define RADIO_FREQ 434.0
+
+// fast mode (~4 kbps)
+#define RADIO_BW_FAST 62.5
+#define RADIO_SF_FAST 6
+#define RADIO_CR_FAST 5
+
+// safe mode (~400 bps)
+#define RADIO_BW_SAFE 62.5
+#define RADIO_SF_SAFE 10
+#define RADIO_CR_SAFE 5
+
+#define RADIO_SYNC_WORD 18
+#define RADIO_PREAMBLE_LEN 8
+#define RADIO_RFM_GAIN 0
+#define RADIO_SX_TXCO_VOLT 0.0
+#define RADIO_SX_USE_REG_LDO false
+
+#define RADIO_MAX_QUEUE_ITEMS 64
+
+#define RADIO_RF_SWITCH_PIN 12
+#define RADIO_SX_POWER_PIN 7
+#define RADIO_RFM_POWER_PIN 14
+
+// Sets radio switch gpio level to select a radio 
+#define RADIO_RF_SWITCH_RFM 1
+#define RADIO_RF_SWITCH_SX 0
+
 #define ERR_NONE 0
 #define NULL_QUEUE_WAIT_TIME 100
 
