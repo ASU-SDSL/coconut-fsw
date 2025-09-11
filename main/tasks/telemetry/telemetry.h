@@ -109,7 +109,10 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     uint8_t processor_load; 
-    uint8_t memory_load; 
+    uint8_t free_heap_memory; 
+    uint8_t min_heap_memory;
+    uint8_t current_stack_memory; 
+    uint8_t min_stack_memory;;
 } system_info_telemetry_t;
 
 /* USER FUNCTIONS */

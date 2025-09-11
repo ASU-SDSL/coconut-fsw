@@ -6,6 +6,7 @@
 #include <FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
+#include <portable.h>
 
 #include "gse.h"
 #include "radio.h"
@@ -13,18 +14,26 @@
 #include "telemetry.h"
 #include "spacepacket.h"
 #include "log.h"
+#include "heartbeat_job.h"
+#include "command.h"
 
 
 void system_info(){
-    system_info_telemetry_t sys_info;
-
-    uint32_t memory_load;
-    uint32_t processor_load;
+    system_info_telemetry_t sys_info;  // Uses your NEW system struct (not heartbeat)
     
-    uint32_t total_memory = xPortGetFreeHeapSize();
-    //uint32_t used_memory = total_memory - xPortGetMinimumEverFreeHeapSize();
-
-    logln_info("CPU load: %d%%, Memory load: %d%%");
+    //get heap memory
+    uint32_t heap_memory = xPortGetFreeHeapSize();
+    sys_info.free_heap_memory = heap_memory;
+    sys_info.min_heap_memory = xPortGetMinimumEverFreeHeapSize();
+    
+    //get stack memory
+    sys_info.current_stack_memory = uxTaskGetStackHighWaterMark(NULL);
+    
+    
+    //Send telemetry
+    send_telemetry(SYS_INFO, (char*)&sys_info, sizeof(sys_info));
+    
+    logln_info("Min heap ever: %ld bytes", sys_info.min_heap_memory);
 
 }
 
