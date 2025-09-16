@@ -63,10 +63,10 @@ typedef struct __attribute__((__packed__)) {
     uint8_t ciphertext[];
 } secure_coomand_t;
 
-// 
+// plaintext
 typedef struct __attribute__((__packed__)) {
-    uint16_t apid;
-    uint8_t command_data[];
+    uint16_t apid; // 
+    uint8_t command_data[]; // the decrypted command
 } text_command_t;
 
 typedef struct __attribute__((__packed__)) {

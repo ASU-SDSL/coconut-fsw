@@ -32,6 +32,15 @@ IF (${DESKTOP_BUILD})
     add_definitions(-DSIMULATOR) 
 ENDIF()
 
+#TinyAES
+add_library(tinyaes STATIC 
+    ${CMAKE_SOURCE_DIR}/lib/tiny-AES-c/aes.c
+)
+
+target_include_directories(tinyaes PUBLIC
+    ${CMAKE_SOURCE_DIR}/lib/tiny-AES-c
+)
+
 # Include the Pico SDK
 IF (NOT ${DESKTOP_BUILD})
     include(pico_sdk_import.cmake) # - uses environment variable PICO_SDK_PATH

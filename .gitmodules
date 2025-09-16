@@ -19,3 +19,6 @@
 [submodule "lib/libspacepacket"]
 	path = lib/libspacepacket
 	url = https://github.com/mzakocs/libspacepacket.git
+[submodule "lib/tinyaes"]
+	path = lib/tinyaes
+	url = https://github.com/kokke/tiny-AES-c.git
