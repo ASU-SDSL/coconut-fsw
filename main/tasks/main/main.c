@@ -75,7 +75,7 @@ int main() {
 #ifndef SIMULATOR
     radio_task_status = xTaskCreate(radio_task, 
                                          "RADIO", 
-                                         256, 
+                                         512, 
                                          NULL, 
                                          1,
                                          NULL);
@@ -101,4 +101,14 @@ int main() {
     
     // We should never get here, but just in case...
     while(true){};
+}
+
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
+    // breakpoint to debug, should be able to see pcTaskName in the debugger
+    __asm__("BKPT #0");
+}  
+
+void vApplicationMallocFailedHook( void ) {
+    // see call history in debugger?
+    __asm__("BKPT #0");
 }
