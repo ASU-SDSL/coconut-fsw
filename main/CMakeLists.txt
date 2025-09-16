@@ -35,6 +35,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/drivers/src/mag_lis3mdltr.c
     ${MAIN_DIRECTORY}/drivers/src/vega_ant.c
     ${MAIN_DIRECTORY}/drivers/src/ds18b20.c
+    ${MAIN_DIRECTORY}/drivers/src/bh1750.c
 )
 
 # build certain files depending on simulator build
