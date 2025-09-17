@@ -20,7 +20,15 @@ void make_filesystem() {
 // the caller is responsible for allocating memory for this buffer and freeing the memory
 // returns -1 on failure
 int32_t read_file(const char* file_name, char* result_buffer, size_t size) {
+    return read_file_offset(file_name, result_buffer, size, 0); // read from the beginning of the file
+}
+
+// Returns FILE_DOES_NOT_EXIST on file does not exist and FILE_READ_TIMEOUT on file task notification timeout
+int read_file_offset(const char* file_name, char* result_buffer, size_t size, uint32_t offset) {
     if ((strnlen(file_name, MAX_PATH_SIZE) + 1) > MAX_PATH_SIZE) return 0;
+    // See if path exists
+    if (!file_exists(file_name)) return FILE_DOES_NOT_EXIST;
+
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = READ;
     strncpy(new_file_operation.file_operation.read_op.file_name, file_name, MAX_PATH_SIZE);
@@ -31,6 +39,7 @@ int32_t read_file(const char* file_name, char* result_buffer, size_t size) {
     new_file_operation.file_operation.read_op.size = size;
     new_file_operation.file_operation.read_op.out_size = &out_size;
     new_file_operation.file_operation.read_op.calling_task = xTaskGetCurrentTaskHandle();
+    new_file_operation.file_operation.read_op.offset = offset;
 
     while(filesystem_queue == NULL) {
         vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
@@ -40,8 +49,8 @@ int32_t read_file(const char* file_name, char* result_buffer, size_t size) {
     // Wait for notification that file read is finished
     uint32_t notification_retval = ulTaskNotifyTake(pdTRUE, NOTIFICATION_WAIT_TIME);
     if (notification_retval != 1) {
-        logln_info("Timed out waiting for file read on %s task", get_current_task_name());
-        return -1;
+        logln_error("Timed out waiting for file read on %s task", get_current_task_name());
+        return FILE_READ_TIMEOUT;
     }
 
     // Return size
@@ -285,7 +294,7 @@ int32_t _fwrite(const char* file_name, const uint8_t *data, size_t size, bool ap
     return bytes_written;
 }
 
-int32_t _fread(const char *file_name, char *result_buffer, size_t size) { 
+int32_t _fread(const char *file_name, char *result_buffer, size_t size, uint32_t offset) { 
     // this function takes in a buffer where the result will be placed
     // the caller of this function is responsible for allocating the space for this buffer
     FRESULT fr;
@@ -296,7 +305,17 @@ int32_t _fread(const char *file_name, char *result_buffer, size_t size) {
     if (fr != FR_OK) {
         logln_error("Could not open file before read: %s (%d)\n", file_name, fr);
         return -1;
-    }    
+    }
+
+    // If there is an offset, increment file pointer
+    if (offset > 0) {
+        // Try to incremenet the file pointer to the offset
+        fr = f_lseek(&fil, offset);
+        if (fr != FR_OK) {
+            logln_error("Could not seek to file offset: %s (%d)\n", file_name, fr);
+            return -1;
+        }
+    }
 
     // read from file
     int32_t bytes_read = -1;
@@ -406,7 +425,7 @@ void _test() {
 
     // read file
     char outbuf[0x10];
-    size_t bytes_read = _fread(test_filepath, outbuf, sizeof(outbuf));
+    size_t bytes_read = _fread(test_filepath, outbuf, sizeof(outbuf), 0);
     logln_info("Read %d bytes from %s: %s\n", bytes_read, test_filepath, outbuf);
 
     // ls
@@ -460,7 +479,7 @@ void filesystem_task(void* unused_arg) {
             }
             case READ: {
                 read_operation_t read_op = received_operation.file_operation.read_op;
-                size_t read_size = _fread(read_op.file_name, read_op.read_buffer, read_op.size);
+                size_t read_size = _fread(read_op.file_name, read_op.read_buffer, read_op.size, read_op.offset);
                 *read_op.out_size = read_size;
                 xTaskNotifyGive(read_op.calling_task);
                 break;

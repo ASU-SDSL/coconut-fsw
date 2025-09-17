@@ -31,3 +31,7 @@ TickType_t get_uptime() {
     // TODO: Maybe get an RTC instead of using CPU ticks
     return xTaskGetTickCount();
 }
+
+TickType_t tick_uptime_in_ms() {
+    return ticks_to_ms(xTaskGetTickCount());
+}
