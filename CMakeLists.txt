@@ -67,7 +67,7 @@ set (FREERTOS_SOURCE_FILES
     ${FREERTOS_SRC_DIRECTORY}/stream_buffer.c
     ${FREERTOS_SRC_DIRECTORY}/tasks.c
     ${FREERTOS_SRC_DIRECTORY}/timers.c
-    ${FREERTOS_SRC_DIRECTORY}/portable/MemMang/heap_3.c 
+    ${FREERTOS_SRC_DIRECTORY}/portable/MemMang/heap_4.c 
 )
 
 # Add FreeRTOS source files
