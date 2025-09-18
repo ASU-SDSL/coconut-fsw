@@ -130,10 +130,6 @@ extern "C"
 }
 #endif
 
-void radio_begin_rfm(); 
-
-void radio_begin_sx(); 
-
 int radio_set_mode(uint8_t mode); 
 
 /**

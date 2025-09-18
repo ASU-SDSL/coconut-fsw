@@ -283,7 +283,7 @@ int radio_set_mode(uint8_t mode){
 }
 
 // radio initializers 
-void radio_begin_rfm(){
+static void radio_begin_rfm(){
     if(radio_mode == RADIO_FAST_MODE){
         radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW_FAST, RADIO_SF_FAST, RADIO_CR_FAST, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
     } else {
@@ -291,7 +291,7 @@ void radio_begin_rfm(){
     }
 }
 
-void radio_begin_sx(){
+static void radio_begin_sx(){
     if(radio_mode == RADIO_FAST_MODE){
         radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW_FAST, RADIO_SF_FAST, RADIO_CR_FAST, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
     } else {
