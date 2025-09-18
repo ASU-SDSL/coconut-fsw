@@ -21,6 +21,7 @@ typedef enum radio_operation_type {
     ENABLE_RFM98,
     ENABLE_SX1268,
     RETURN_STATS,
+    SET_LORA_MODE, 
 } radio_operation_type_t;
 
 /// @brief Radio operation to be added to the radio_queue
@@ -30,6 +31,13 @@ typedef struct radio_queue_operations {
     size_t data_size; ///< Could be 0
 } radio_queue_operations_t;
 
+// radio mode 
+#define RADIO_SAFE_MODE 0
+#define RADIO_FAST_MODE 1
+#define RADIO_FAST_MODE_MAX_DURATION_MS (1000 * 60 * 30) // 30 minutes 
+
+#define RADIO_STATE_FILE_NAME "radio_state.bin"
+
 /* C FUNC DECLARATIONS */
 
 #ifdef __cplusplus
@@ -37,6 +45,7 @@ extern "C" {
     #include "telemetry.h"
     #include "log.h"
     #include "command.h"
+    #include "timing.h"
 }
 #endif
 
@@ -85,6 +94,13 @@ extern "C"
     void radio_queue_stat_response(); 
 
     /**
+     * @brief Queues a change in the LoRa settings 
+     * 
+     * @param new_mode RADIO_FAST_MODE or RADIO_SAFE_MODE
+     */
+    void radio_queue_lora_mode_change(uint8_t new_mode); 
+
+    /**
      * @brief Returns which radio is currently set to be used 
      * 
      * @return uint8_t 1 if radio is RFM98, 0 if radio is SX1268
@@ -104,9 +120,17 @@ extern "C"
      * @return int16_t 
      */
     int16_t radio_get_SX_state(); 
+
+    /**
+     * @brief Signals to the radio task that a valid packet has been received, resetting 
+     * deadman's timer 
+     */
+    void radio_flag_valid_packet();
 #ifdef __cplusplus
 }
 #endif
+
+int radio_set_mode(uint8_t mode); 
 
 /**
  * @brief Initializes necessary peripherals/settings for the radio task
@@ -119,3 +143,4 @@ void init_radio();
  * 
  */
 void radio_task_cpp();
+
