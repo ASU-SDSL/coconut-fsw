@@ -10,13 +10,25 @@
 #include "i2c.h"
 
 // combine begin and calibrate and start 
+// assumes i2c inst has been initialized 
 uint8_t bh1750_init(i2c_inst_t* i2c, uint8_t addr){
+  // set the quality? 
 
   return 0; 
 }
 
+// trigger a reading 
+uint8_t bh1750_start_reading(i2c_inst_t* i2c, uint8_t addr){
+  // power on 
+  uint8_t msg = 
+  return i2c_write_timeout_us(i2c, addr, &msg, 1, false, I2CTimeout_us);
+
+  // 
+}
+
 // combine get reading and restart sampling? 
 uint8_t bh1750_get_lux(i2c_inst_t* i2c, uint8_t addr, uint8_t* buf){
+  // wait for reading to be done? 
 
   return 0; 
 }
