@@ -2,6 +2,7 @@
 #include "task.h"
 
 #include "vega_ant.h"
+#include "log.h"
 
 #define VEGA_ANT_ADDR 0x55
 #define STATUS_COMMAND 0x05
@@ -16,16 +17,44 @@ uint8_t vega_ant_status(i2c_inst_t* i2c, uint8_t* output){
     return 0; 
 }
 
+static uint8_t vega_ant_deploy_A(i2c_inst_t* i2c){
+    uint8_t msg = BURN_A_COMMAND;
+
+    return i2c_write_timeout_us(i2c, VEGA_ANT_ADDR, &msg, 1, false,
+                         I2CTimeout_us);
+}
+
+static int vega_ant_deploy_B(i2c_inst_t* i2c){
+    uint8_t msg = BURN_B_COMMAND;
+
+    return i2c_write_timeout_us(i2c, VEGA_ANT_ADDR, &msg, 1, false,
+                         I2CTimeout_us);
+}
+
 uint8_t vega_ant_deploy(i2c_inst_t* i2c){
     uint8_t buf = 0; // garbage because we aren't actually writing to a register 
 
-    if(!i2c_write_to_register(i2c, VEGA_ANT_ADDR, BURN_A_COMMAND, &buf, 1)){
-        return 1; 
+    // burn A
+    int res = vega_ant_deploy_A(i2c); 
+
+    // check output 
+    if(res == PICO_ERROR_GENERIC || res == PICO_ERROR_TIMEOUT){
+        logln_error("error on burn A: %d", res); 
+        return res; 
     }
 
-    if(!i2c_write_to_register(i2c, VEGA_ANT_ADDR, BURN_B_COMMAND, &buf, 1)){
-        return 1; 
+    // delay for the state to go back to idle? ~10s 
+    vTaskDelay(pdMS_TO_TICKS(10000)); 
+
+    // burn B 
+    res = vega_ant_deploy_B(i2c); 
+    
+    // check output 
+    if(res == PICO_ERROR_GENERIC || res == PICO_ERROR_TIMEOUT){
+        logln_error("error on burn B: %d", res); 
+        return res; 
     }
+
 
     gpio_init(VEGA_ANT_GPIO_PIN);
     gpio_set_dir(VEGA_ANT_GPIO_PIN, GPIO_OUT);

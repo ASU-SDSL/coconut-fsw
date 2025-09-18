@@ -235,6 +235,10 @@ void initialize_steve() {
     schedule_recurring_job_secs(HEARTBEAT_JOB_NAME, heartbeat_telemetry_job, HEARTBEAT_TELEMETRY_DEFAULT_INTERVAL);
 }
 
+// temp
+size_t heap_size = 0; 
+size_t minimum_ever_heap_size = 0; 
+
 // Main thread job for scheduling and executing STEVE jobs
 void steve_task(void* unused_arg) {
     // Setup STEVE jobs and state
@@ -254,6 +258,12 @@ void steve_task(void* unused_arg) {
 
     // Run main task loop
     while (true) {
+
+        // temp for tracking
+        heap_size = xPortGetFreeHeapSize(); 
+        minimum_ever_heap_size = xPortGetMinimumEverFreeHeapSize(); 
+        
+
         // Take mutex
         xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
         // Check each job to see if it needs to be executed
