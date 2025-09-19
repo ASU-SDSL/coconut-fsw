@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <pthread.h>
 
 #include <FreeRTOS.h>
 #include <task.h>
@@ -19,6 +20,7 @@
 #include "set_rtc_job.h"
 #include "watchdog.h"
 #include "hb_tlm_log.h"
+
 
 
 
@@ -57,6 +59,10 @@ uint32_t get_command_count(void){
     
     return temp_commandCount;
 }
+
+bool command_enabled = false;
+SemaphoreHandle_t ax25_Mutex = NULL;
+
 
 void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
     
@@ -209,7 +215,19 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             job->arg_data = args; 
             logln_info("RTC job created"); 
             break;
-            
+        
+        case AX25_ON_OFF:
+            //Get the status; maybe block until we get the mutex
+            // Make an if statement for if we dont get the mutex; binary semifor 
+            if(xSemaphoreTake(ax25_Mutex, portMAX_DELAY)){
+                if(command_enabled) command_enabled = false;
+                if(!command_enabled) command_enabled = true;
+                xSemaphoreGive(ax25_Mutex);
+                break;
+            }else{
+                logln_info("Mutex was never reached");
+                break;
+            }
         case FSW_ACK:
             break; // This will just send the ack
         default:
@@ -236,6 +254,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
 void command_task(void* unused_arg) {
     // Initialize byte queue
     commandCountMutex = xSemaphoreCreateMutex();
+    ax25_Mutex = xSemaphoreCreateMutex();
     command_count = 0; // Reset command count
     
     command_byte_queue = xQueueCreate(COMMAND_MAX_QUEUE_ITEMS, sizeof(command_byte_t));
@@ -274,7 +293,7 @@ void command_task(void* unused_arg) {
             sync_index += 1;
         }
 
-        if(ax25_mode){
+        if(ax25_mode && command_enabled) {
             // receive the rest of the bytes 
             bool msg_err = false; 
             int msg_len = 255;  // max packet size is 256
@@ -296,6 +315,9 @@ void command_task(void* unused_arg) {
             if(msg_err == false) radio_queue_message(msg, msg_index);
             // clean up buffer 
             vPortFree(msg); 
+        }
+        else if(ax25_mode && !command_enabled) {
+            logln_info("Couldn't read the package because command is off");
         }
         else {
             logln_info("Received sync bytes, moving to decode"); 
