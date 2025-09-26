@@ -58,34 +58,34 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
 } file_ls_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
 } file_mkdir_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
 } file_cat_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
 } file_delete_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
     uint16_t data_len;
     uint8_t data[];
 } file_append_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
 } file_touch_t;
 
 typedef struct __attribute__((__packed__)) {
