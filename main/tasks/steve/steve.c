@@ -15,6 +15,7 @@
 
 #include "heartbeat_job.h"
 #include "miscellaneous_jobs.h"
+#include "antenna_deploy_job.h"
 
 #include "steve.h"
 
@@ -249,11 +250,15 @@ void steve_task(void* unused_arg) {
     // startup beeping 
     schedule_delayed_job_ms("Buzzer beep", &buzzer_beep_job, 10);
 
+    // queue antenna deployment 
+    schedule_delayed_job_mins("DEPLOY_ANTENNA", &deploy_antenna_job, 45);
+
     // set up PIO block for onewire 
     onewire_init(); 
 
     // Run main task loop
     while (true) {
+
         // Take mutex
         xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
         // Check each job to see if it needs to be executed
