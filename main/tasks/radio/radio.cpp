@@ -101,21 +101,6 @@ static uint64_t radio_last_received_time = 0;
 static SemaphoreHandle_t radio_last_received_time_mutex = NULL;
 
 /**
- * @brief Get the radio last received time with mutex protection
- * 
- * @return uint64_t The timestamp of the last received packet
- */
-static uint64_t get_radio_last_received_time(){
-    uint64_t temp = 0; 
-    if(radio_last_received_time_mutex == NULL || xSemaphoreTake(radio_last_received_time_mutex, portMAX_DELAY) == pdTRUE) {
-        temp = radio_last_received_time;
-        xSemaphoreGive(radio_last_received_time_mutex); 
-    }
-
-    return temp; 
-}
-
-/**
  * @brief Set the radio last received time with mutex protection
  * 
  * @param new_time New time to set
@@ -139,6 +124,17 @@ extern "C"
     void radio_task(void *unused_arg){
         radio_task_cpp();
     }
+
+    uint64_t get_radio_last_received_time(){
+        uint64_t temp = 0; 
+        if(radio_last_received_time_mutex == NULL || xSemaphoreTake(radio_last_received_time_mutex, portMAX_DELAY) == pdTRUE) {
+            temp = radio_last_received_time;
+            xSemaphoreGive(radio_last_received_time_mutex); 
+        }
+
+        return temp; 
+    }
+
     void radio_queue_message(char *buffer, size_t size)
     {
         // Create new transmission structure
