@@ -33,6 +33,7 @@ typedef enum {
     DOWNLINK_TELEMETRY_DATA = 3,
     HEARTBEAT_PLAYBACK = 4,
     ACK = 5,
+    FS_LOG = 6, 
 
     // 01 - radio
     RADIO_STAT_RES = 101,

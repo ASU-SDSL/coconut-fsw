@@ -1,9 +1,35 @@
 #include <string.h>
+#include <stdarg.h>
 
 #include "log.h"
 #include "filesystem.h"
 
 FATFS fs;
+
+static 
+void fs_log(const char *str, ...) {
+    // alloc telemetry packet
+    log_telemetry_t *packet = pvPortMalloc(sizeof(log_telemetry_t) + MAX_LOG_STR_SIZE + 1);
+
+    // copy str to packet
+    va_list args;
+    va_start(args, str);
+    size_t strsize = vsnprintf(packet->str, MAX_LOG_STR_SIZE, str, args);
+    // size_t strsize = vprintf(args, str);
+    packet->size = strsize;
+    va_end(args);
+
+#ifdef SIMULATOR
+    // write to stdout
+    //write(1, packet->str, strsize);
+    send_telemetry(LOG, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
+#else
+    // send to telemetry task
+    send_telemetry(FS_LOG, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
+#endif
+
+    vPortFree(packet);
+}
 
 /* USER FUNCTIONS */
 void make_filesystem() {
@@ -106,7 +132,7 @@ void make_dir(const char* directory_name) {
 
 // creates an empty file
 void touch(const char* file_name) {
-    write_file(file_name, "", 0, 0);
+    write_file(file_name, "", 0, 0);    
 }
 
 // prints file contents to logln
@@ -349,8 +375,8 @@ void _flist(const char *dir_name) {
             return;
         }
 
-        logln("%s\n", dir);
-        logln("\t%c%c%c%c\t%10d\t%s/%s",
+        fs_log("%s\n", dir);
+        fs_log("\t%c%c%c%c\t%10d\t%s/%s",
             ((fno.fattrib & AM_DIR) ? 'D' : '-'),
             ((fno.fattrib & AM_RDO) ? 'R' : '-'),
             ((fno.fattrib & AM_SYS) ? 'S' : '-'),
@@ -467,7 +493,8 @@ void filesystem_task(void* unused_arg) {
             }
             case WRITE: {
                 write_operation_t write_op = received_operation.file_operation.write_op;
-                _fwrite(write_op.file_name, write_op.data, write_op.size, write_op.append_flag);
+                int32_t res = _fwrite(write_op.file_name, write_op.data, write_op.size, write_op.append_flag);
+                fs_log("Write result: %d\n", res);
                 break;
             }
             case LIST_DIRECTORY: {
