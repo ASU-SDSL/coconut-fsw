@@ -14,3 +14,4 @@ unsigned long ms_to_secs(unsigned long ms);
 unsigned long mins_to_secs(unsigned long mins);
 unsigned long secs_to_mins(unsigned long mins);
 TickType_t get_uptime();
+unsigned long tick_uptime_in_ms();

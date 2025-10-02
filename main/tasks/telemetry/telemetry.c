@@ -66,7 +66,7 @@ void telemetry_task(void* unused_arg) {
         gse_queue_message(payload_buffer, total_payload_size);
 
         // TODO: Send payload through radio
-        if(header.apid != LOG){
+        if(header.apid != APID_LOG){
             radio_queue_message(payload_buffer, total_payload_size);
         }
         
