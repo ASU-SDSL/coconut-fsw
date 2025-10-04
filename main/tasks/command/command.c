@@ -17,6 +17,7 @@
 #include "radio.h"
 #include "command.h"
 #include "set_rtc_job.h"
+#include "antenna_deploy_job.h"
 #include "watchdog.h"
 #include "hb_tlm_log.h"
 
@@ -57,6 +58,9 @@ uint32_t get_command_count(void){
     
     return temp_commandCount;
 }
+
+// Some messages stored as string literals for better memory usage
+#define DEPLOY_JOB_ACK "Deploy Job Scheduled"
 
 void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
     
@@ -193,6 +197,14 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             logln("Queuing stat response"); 
             radio_queue_stat_response(); 
             break;
+
+        case ANTENNA_DEPLOY:
+            // Schedule deployment in STEVE for right now
+            schedule_delayed_job_ms("DEPLOY_ANTENNA", &deploy_antenna_job, 10); 
+            
+            return_data = pvPortMalloc(sizeof(DEPLOY_JOB_ACK)); 
+            memcpy(return_data, DEPLOY_JOB_ACK, sizeof(DEPLOY_JOB_ACK));
+            return_data_len = sizeof(DEPLOY_JOB_ACK); 
 
         case SET_RTC_TIME:
             if (payload_size < sizeof(set_rtc_time_t)) break;
