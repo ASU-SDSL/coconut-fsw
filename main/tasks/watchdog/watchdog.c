@@ -9,7 +9,7 @@
 #define WDI_PIN 21 // from FCR schematic
 
 #define WATCHDOG_MAX_QUEUE_ITEMS 16
-#define WATCHDOG_INTERTASK_CHECK_PERIOD_MS 1000 * 60 // every minute 
+#define WATCHDOG_INTERTASK_CHECK_PERIOD_MS 1000 * 60 // every minute - needs to be at least more than 5s for if used in radio due to packet air time 
 #define WATCHDOG_CONNECTED_TASKS 0
 #define WATCHDOG_CHECK_DELAY_MS 500
 
@@ -19,6 +19,10 @@ static bool heartbeats[WATCHDOG_CONNECTED_TASKS];
 #endif 
 
 #define WATCHDOG_USE_BUILT_IN 1
+/// @brief Number of milliseconds before watchdog will reboot without watchdog_update
+// there is a mistake in our pico-sdk version documentation this should be ms not us
+// see here: https://github.com/raspberrypi/pico-sdk/issues/1238 
+#define WATCHDOG_BUILT_IN_TIMEOUT_MS (5 * 1000) // 5s  
 
 static uint32_t last_check = 0; 
 
@@ -37,7 +41,7 @@ void watchdog_task(void *pvParameters) {
     last_check = to_ms_since_boot(get_absolute_time()); 
 
     #if WATCHDOG_USE_BUILT_IN
-    watchdog_enable(0x7fffff, true); 
+    watchdog_enable(WATCHDOG_BUILT_IN_TIMEOUT_MS, true); 
     #endif
 
     // Initialize the watchdog GPIO and set it high
