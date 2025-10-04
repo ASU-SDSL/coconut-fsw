@@ -90,7 +90,9 @@ $(function(){ initResizable(false); });
 <div id="doc-content">
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">command.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -110,6 +112,7 @@ $(function(){ initResizable(false); });
 <code>#include &quot;radio.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="command_8h_source.html">command.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="set__rtc__job_8h_source.html">set_rtc_job.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="antenna__deploy__job_8h_source.html">antenna_deploy_job.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="watchdog_8h_source.html">watchdog.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="hb__tlm__log_8h_source.html">hb_tlm_log.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -118,6 +121,11 @@ Include dependency graph for command.c:</div>
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="command_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a070f5eb6af1677c98a6d2cae3e634cf1" id="r_a070f5eb6af1677c98a6d2cae3e634cf1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a070f5eb6af1677c98a6d2cae3e634cf1">DEPLOY_JOB_ACK</a>&#160;&#160;&#160;&quot;Deploy Job Scheduled&quot;</td></tr>
+<tr class="separator:a070f5eb6af1677c98a6d2cae3e634cf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ab3063ab697200daa8d385b7b2c1cd364" id="r_ab3063ab697200daa8d385b7b2c1cd364"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab3063ab697200daa8d385b7b2c1cd364">receive_command_byte_from_isr</a> (char ch)</td></tr>
@@ -126,11 +134,37 @@ Functions</h2></td></tr>
 <tr class="separator:a4f5fb387e54e9f86c0201fff500341a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac090b79f5dfeeaa73978dc9df75fe1a0" id="r_ac090b79f5dfeeaa73978dc9df75fe1a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac090b79f5dfeeaa73978dc9df75fe1a0">receive_command_bytes</a> (uint8_t *packet, size_t packet_size)</td></tr>
 <tr class="separator:ac090b79f5dfeeaa73978dc9df75fe1a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a635f0068a737eb2a03b2fb101c9e025e" id="r_a635f0068a737eb2a03b2fb101c9e025e"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a635f0068a737eb2a03b2fb101c9e025e">get_command_count</a> (void)</td></tr>
+<tr class="separator:a635f0068a737eb2a03b2fb101c9e025e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a659f541debc1151493914063c723a0b1" id="r_a659f541debc1151493914063c723a0b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a659f541debc1151493914063c723a0b1">parse_command_packet</a> (spacepacket_header_t header, uint8_t *payload_buf, uint32_t payload_size)</td></tr>
 <tr class="separator:a659f541debc1151493914063c723a0b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a661d128b0c529a2ccf2418bc3de76e32" id="r_a661d128b0c529a2ccf2418bc3de76e32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a661d128b0c529a2ccf2418bc3de76e32">command_task</a> (void *unused_arg)</td></tr>
 <tr class="separator:a661d128b0c529a2ccf2418bc3de76e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a8495264463ce0d650a8cb637d34bcbf7" id="r_a8495264463ce0d650a8cb637d34bcbf7"><td class="memItemLeft" align="right" valign="top">SemaphoreHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8495264463ce0d650a8cb637d34bcbf7">commandCountMutex</a> = NULL</td></tr>
+<tr class="separator:a8495264463ce0d650a8cb637d34bcbf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ec70c46910534a193439e8dd4d32916" id="r_a7ec70c46910534a193439e8dd4d32916"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ec70c46910534a193439e8dd4d32916">command_enabled</a> = false</td></tr>
+<tr class="separator:a7ec70c46910534a193439e8dd4d32916"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a818345bf008cb519142d40dfc1a342de" id="r_a818345bf008cb519142d40dfc1a342de"><td class="memItemLeft" align="right" valign="top">SemaphoreHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a818345bf008cb519142d40dfc1a342de">ax25_Mutex</a> = NULL</td></tr>
+<tr class="separator:a818345bf008cb519142d40dfc1a342de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a070f5eb6af1677c98a6d2cae3e634cf1" name="a070f5eb6af1677c98a6d2cae3e634cf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a070f5eb6af1677c98a6d2cae3e634cf1">&#9670;&#160;</a></span>DEPLOY_JOB_ACK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEPLOY_JOB_ACK&#160;&#160;&#160;&quot;Deploy Job Scheduled&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a661d128b0c529a2ccf2418bc3de76e32" name="a661d128b0c529a2ccf2418bc3de76e32"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a661d128b0c529a2ccf2418bc3de76e32">&#9670;&#160;</a></span>command_task()</h2>
@@ -151,6 +185,23 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="command_8c_a661d128b0c529a2ccf2418bc3de76e32_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+
+</div>
+</div>
+<a id="a635f0068a737eb2a03b2fb101c9e025e" name="a635f0068a737eb2a03b2fb101c9e025e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a635f0068a737eb2a03b2fb101c9e025e">&#9670;&#160;</a></span>get_command_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t get_command_count </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -242,6 +293,49 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="command_8c_ac090b79f5dfeeaa73978dc9df75fe1a0_cgraph.svg" width="384" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a818345bf008cb519142d40dfc1a342de" name="a818345bf008cb519142d40dfc1a342de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a818345bf008cb519142d40dfc1a342de">&#9670;&#160;</a></span>ax25_Mutex</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SemaphoreHandle_t ax25_Mutex = NULL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7ec70c46910534a193439e8dd4d32916" name="a7ec70c46910534a193439e8dd4d32916"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ec70c46910534a193439e8dd4d32916">&#9670;&#160;</a></span>command_enabled</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool command_enabled = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8495264463ce0d650a8cb637d34bcbf7" name="a8495264463ce0d650a8cb637d34bcbf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8495264463ce0d650a8cb637d34bcbf7">&#9670;&#160;</a></span>commandCountMutex</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SemaphoreHandle_t commandCountMutex = NULL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

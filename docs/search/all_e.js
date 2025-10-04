@@ -12,6 +12,6 @@ var searchData=
   ['note_3a_20these_20functions_20should_20em_20strong_20never_20strong_20em_20be_20run_20outside_20of_20tt_20gse_20c_20tt_9',['Note: These functions should &lt;em&gt;&lt;strong&gt;NEVER&lt;/strong&gt;&lt;/em&gt; be run outside of &lt;tt&gt;gse.c&lt;/tt&gt;',['../md_docs_2docs_2tasks_2gse.html#note-these-functions-should-never-be-run-outside-of-gsec',1,'']]],
   ['note_3a_20these_20functions_20should_20em_20strong_20never_20strong_20em_20be_20run_20outside_20of_20tt_20steve_20c_20tt_10',['Note: These functions should &lt;em&gt;&lt;strong&gt;NEVER&lt;/strong&gt;&lt;/em&gt; be run outside of &lt;tt&gt;steve.c&lt;/tt&gt;',['../md_docs_2docs_2tasks_2steve.html#note-these-functions-should-never-be-run-outside-of-stevec',1,'']]],
   ['notification_5fwait_5ftime_11',['NOTIFICATION_WAIT_TIME',['../filesystem_8h.html#aac5bb89f63282142437b51c2deb517b3',1,'filesystem.h']]],
-  ['null_5fqueue_5fwait_5ftime_12',['NULL_QUEUE_WAIT_TIME',['../filesystem_8h.html#a277756e611642420e524ed6a98f06a57',1,'NULL_QUEUE_WAIT_TIME:&#160;filesystem.h'],['../radio_8cpp.html#a277756e611642420e524ed6a98f06a57',1,'NULL_QUEUE_WAIT_TIME:&#160;radio.cpp']]],
+  ['null_5fqueue_5fwait_5ftime_12',['NULL_QUEUE_WAIT_TIME',['../filesystem_8h.html#a277756e611642420e524ed6a98f06a57',1,'NULL_QUEUE_WAIT_TIME:&#160;filesystem.h'],['../group__Radio.html#ga277756e611642420e524ed6a98f06a57',1,'NULL_QUEUE_WAIT_TIME:&#160;radio.cpp']]],
   ['num_5fsectors_13',['NUM_SECTORS',['../simulator_2drivers_2src_2diskio_8c.html#ac5656d686c3863cc1e0f1533c3f6c685',1,'diskio.c']]]
 ];

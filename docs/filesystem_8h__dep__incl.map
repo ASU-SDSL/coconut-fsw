@@ -1,36 +1,38 @@
 <map id="filesystem.h" name="filesystem.h">
-<area shape="rect" id="Node000001" title="Handles file system operations and management." alt="" coords="626,5,729,31"/>
-<area shape="rect" id="Node000002" href="$command_8c.html" title=" " alt="" coords="5,299,104,324"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="613,35,530,55,439,81,381,98,328,108,238,125,197,137,158,156,118,185,77,227,66,244,60,263,57,298,52,298,55,262,61,242,73,224,114,181,155,152,195,132,236,120,327,103,379,92,438,76,528,50,612,30"/>
-<area shape="rect" id="Node000003" href="$command__fuzzer_8cpp.html" title=" " alt="" coords="432,225,592,251"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="663,44,563,179,524,227,520,223,559,176,659,41"/>
-<area shape="rect" id="Node000004" href="$filesystem_8c.html" title=" " alt="" coords="745,79,847,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="710,35,778,76,775,81,707,40"/>
-<area shape="rect" id="Node000005" href="$hb__tlm__log_8c.html" title=" " alt="" coords="482,299,587,324"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="691,43,706,85,718,140,720,169,718,198,710,226,697,252,675,275,647,291,617,302,588,308,587,303,616,297,645,286,671,271,693,249,705,224,712,197,714,169,712,141,701,87,686,44"/>
-<area shape="rect" id="Node000006" href="$utilities_2src_2log_8c.html" title=" " alt="" coords="871,79,924,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="727,32,871,79,870,84,725,37"/>
-<area shape="rect" id="Node000007" href="$log__test__unittest_8c.html" title=" " alt="" coords="949,79,1091,104"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="743,30,965,76,964,81,742,35"/>
-<area shape="rect" id="Node000008" href="$main_8c.html" title=" " alt="" coords="616,225,683,251"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="677,45,653,225,648,225,671,45"/>
-<area shape="rect" id="Node000009" href="$user__auth_8h.html" title=" " alt="" coords="451,79,549,104"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="637,38,530,81,528,76,635,33"/>
-<area shape="rect" id="Node000010" href="$command_8h.html" title="Handles decoding and triggering responses to received commands." alt="" coords="317,152,416,177"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="468,113,390,154,387,149,465,108"/>
-<area shape="rect" id="Node000015" href="$user__auth_8c.html" title=" " alt="" coords="451,152,549,177"/>
-<area shape="poly" id="edge19_Node000009_Node000015" title=" " alt="" coords="503,118,503,152,497,152,497,118"/>
-<area shape="poly" id="edge10_Node000010_Node000002" title=" " alt="" coords="304,169,256,173,204,183,152,201,104,227,88,244,76,263,60,299,56,297,71,260,84,240,101,223,150,196,203,178,256,168,303,163"/>
-<area shape="poly" id="edge11_Node000010_Node000003" title=" " alt="" coords="403,181,489,223,487,228,401,186"/>
-<area shape="poly" id="edge17_Node000010_Node000008" title=" " alt="" coords="426,178,617,226,615,231,425,183"/>
-<area shape="rect" id="Node000011" href="$gse_8c.html" title=" " alt="" coords="245,225,301,251"/>
-<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="343,188,290,227,287,223,339,183"/>
-<area shape="rect" id="Node000012" href="$hb__tlm__log_8h.html" title=" " alt="" coords="115,225,221,251"/>
-<area shape="poly" id="edge13_Node000010_Node000012" title=" " alt="" coords="323,184,201,228,200,223,321,179"/>
-<area shape="rect" id="Node000014" href="$radio_8cpp.html" title=" " alt="" coords="325,225,408,251"/>
-<area shape="poly" id="edge18_Node000010_Node000014" title=" " alt="" coords="369,191,369,225,364,225,364,191"/>
-<area shape="poly" id="edge14_Node000012_Node000002" title=" " alt="" coords="139,260,75,301,72,296,136,256"/>
-<area shape="poly" id="edge15_Node000012_Node000005" title=" " alt="" coords="235,250,482,297,481,302,234,255"/>
-<area shape="rect" id="Node000013" href="$heartbeat__job_8c.html" title=" " alt="" coords="128,299,251,324"/>
-<area shape="poly" id="edge16_Node000012_Node000013" title=" " alt="" coords="178,263,188,298,183,299,173,265"/>
+<area shape="rect" id="Node000001" title="Handles file system operations and management." alt="" coords="212,5,315,31"/>
+<area shape="rect" id="Node000002" href="$command_8c.html" title=" " alt="" coords="313,299,412,324"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,22,162,27,126,37,92,55,64,80,39,124,32,145,30,166,32,186,38,206,64,249,80,261,105,272,171,289,246,299,313,305,312,310,245,305,170,294,103,277,78,266,60,252,33,209,26,187,24,165,27,144,34,122,60,77,89,50,124,33,161,22,198,17"/>
+<area shape="rect" id="Node000003" href="$command__fuzzer_8cpp.html" title=" " alt="" coords="74,225,234,251"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="254,44,163,226,158,224,249,42"/>
+<area shape="rect" id="Node000004" href="$filesystem_8c.html" title=" " alt="" coords="74,79,176,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="231,39,149,81,147,76,228,34"/>
+<area shape="rect" id="Node000005" href="$hb__tlm__log_8c.html" title=" " alt="" coords="59,299,164,324"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="199,23,160,28,118,38,79,55,44,81,27,100,16,120,10,140,8,160,18,203,42,249,66,276,93,296,90,301,62,280,38,252,13,205,3,161,4,139,11,118,23,97,41,77,76,51,117,33,159,23,199,17"/>
+<area shape="rect" id="Node000006" href="$heartbeat__job_8c.html" title=" " alt="" coords="562,299,685,324"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="329,20,414,27,510,38,598,54,633,64,658,76,712,113,735,132,754,153,768,175,774,199,771,225,758,252,743,269,725,283,684,301,682,296,722,278,740,266,753,249,766,223,768,199,763,177,750,156,732,136,709,117,656,81,631,69,596,59,509,43,414,32,329,26"/>
+<area shape="rect" id="Node000007" href="$utilities_2src_2log_8c.html" title=" " alt="" coords="301,79,354,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="285,39,319,77,315,80,281,43"/>
+<area shape="rect" id="Node000008" href="$log__test__unittest_8c.html" title=" " alt="" coords="379,79,522,104"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="307,33,421,76,419,81,305,38"/>
+<area shape="rect" id="Node000009" href="$main_8c.html" title=" " alt="" coords="258,225,325,251"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="270,45,293,225,288,225,264,45"/>
+<area shape="rect" id="Node000010" href="$user__auth_8h.html" title=" " alt="" coords="546,79,645,104"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="329,30,547,77,546,82,328,36"/>
+<area shape="rect" id="Node000011" href="$command_8h.html" title="Handles decoding and triggering responses to received commands." alt="" coords="509,152,608,177"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="586,117,567,153,562,151,581,115"/>
+<area shape="rect" id="Node000015" href="$user__auth_8c.html" title=" " alt="" coords="387,152,484,177"/>
+<area shape="poly" id="edge21_Node000010_Node000015" title=" " alt="" coords="559,112,463,154,461,149,557,107"/>
+<area shape="poly" id="edge11_Node000011_Node000002" title=" " alt="" coords="498,183,433,204,407,215,390,227,378,244,371,264,365,299,360,298,366,262,373,242,386,223,404,211,432,199,497,178"/>
+<area shape="poly" id="edge12_Node000011_Node000003" title=" " alt="" coords="496,180,221,228,220,223,495,175"/>
+<area shape="poly" id="edge18_Node000011_Node000006" title=" " alt="" coords="578,187,601,224,616,264,624,298,619,299,610,266,596,226,574,190"/>
+<area shape="poly" id="edge19_Node000011_Node000009" title=" " alt="" coords="503,183,326,230,325,225,502,178"/>
+<area shape="rect" id="Node000012" href="$gse_8c.html" title=" " alt="" coords="530,225,586,251"/>
+<area shape="poly" id="edge13_Node000011_Node000012" title=" " alt="" coords="561,191,561,225,556,225,556,191"/>
+<area shape="rect" id="Node000013" href="$hb__tlm__log_8h.html" title=" " alt="" coords="400,225,506,251"/>
+<area shape="poly" id="edge14_Node000011_Node000013" title=" " alt="" coords="531,187,472,227,469,223,528,183"/>
+<area shape="rect" id="Node000014" href="$radio_8cpp.html" title="Radio operations and the task handling them." alt="" coords="661,225,744,251"/>
+<area shape="poly" id="edge20_Node000011_Node000014" title=" " alt="" coords="595,181,680,223,678,228,593,186"/>
+<area shape="poly" id="edge15_Node000013_Node000002" title=" " alt="" coords="429,261,379,301,376,296,426,257"/>
+<area shape="poly" id="edge16_Node000013_Node000005" title=" " alt="" coords="387,256,165,302,164,296,385,251"/>
+<area shape="poly" id="edge17_Node000013_Node000006" title=" " alt="" coords="494,253,597,296,595,301,492,258"/>
 </map>

@@ -1,7 +1,9 @@
 <map id="vega_ant.h" name="vega_ant.h">
-<area shape="rect" id="Node000001" title="Vega Antenna Board Driver." alt="" coords="85,5,179,31"/>
-<area shape="rect" id="Node000002" href="$heartbeat__job_8c.html" title=" " alt="" coords="5,79,128,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,43,79,80,75,77,110,39"/>
-<area shape="rect" id="Node000003" href="$vega__ant_8c.html" title=" " alt="" coords="152,79,245,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="154,39,190,77,186,80,151,43"/>
+<area shape="rect" id="Node000001" title="Vega Antenna Board Driver." alt="" coords="208,5,303,31"/>
+<area shape="rect" id="Node000002" href="$antenna__deploy__job_8c.html" title=" " alt="" coords="5,79,169,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,38,116,81,114,76,215,34"/>
+<area shape="rect" id="Node000003" href="$heartbeat__job_8c.html" title=" " alt="" coords="194,79,317,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="258,44,258,79,253,79,253,44"/>
+<area shape="rect" id="Node000004" href="$vega__ant_8c.html" title=" " alt="" coords="341,79,434,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="290,35,367,76,364,81,287,39"/>
 </map>

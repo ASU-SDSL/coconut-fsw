@@ -96,10 +96,10 @@ $(function(){ initResizable(false); });
 </div><!--header-->
 <div class="contents">
 
-<p>Driver for PIO Onewire DS18B20 Temperature Sensors.  
+<p>Driver for <a class="el" href="pio_8h.html#ac8e1b544d15c6d0c146052922ff986fb">PIO</a> Onewire DS18B20 Temperature Sensors.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="stdlib_8h_source.html">pico/stdlib.h</a>&quot;</code><br />
-<code>#include &quot;pico/binary_info.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="binary__info_8h_source.html">pico/binary_info.h</a>&quot;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ds18b20.h:</div>
@@ -116,8 +116,6 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a4a29698db5ef031543df84d51da3e16a" id="r_a4a29698db5ef031543df84d51da3e16a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a29698db5ef031543df84d51da3e16a">PICO_DEFAULT_LED_PIN</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:a4a29698db5ef031543df84d51da3e16a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7ade73278da5f29684fd682ec3ed6bb" id="r_ae7ade73278da5f29684fd682ec3ed6bb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae7ade73278da5f29684fd682ec3ed6bb">DS18B_ROMCODE_U100</a>&#160;&#160;&#160;0xCF00000FD8AF0A28</td></tr>
 <tr class="separator:ae7ade73278da5f29684fd682ec3ed6bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcfdbafbb600fe84572233fd179f43a0" id="r_abcfdbafbb600fe84572233fd179f43a0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abcfdbafbb600fe84572233fd179f43a0">DS18B_ROMCODE_U102</a>&#160;&#160;&#160;0x2600000FD8AF1C28</td></tr>
@@ -128,7 +126,7 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a77ee2f32d90e72a84b5dcddf9f4222c4" id="r_a77ee2f32d90e72a84b5dcddf9f4222c4"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77ee2f32d90e72a84b5dcddf9f4222c4">onewire_init</a> ()</td></tr>
-<tr class="memdesc:a77ee2f32d90e72a84b5dcddf9f4222c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the PIO block to be a OneWire bus.  <br /></td></tr>
+<tr class="memdesc:a77ee2f32d90e72a84b5dcddf9f4222c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the <a class="el" href="pio_8h.html#ac8e1b544d15c6d0c146052922ff986fb">PIO</a> block to be a OneWire bus.  <br /></td></tr>
 <tr class="separator:a77ee2f32d90e72a84b5dcddf9f4222c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac28489af27a9b70d2c7a03eb35617bea" id="r_ac28489af27a9b70d2c7a03eb35617bea"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac28489af27a9b70d2c7a03eb35617bea">ds18b20_start_conversion</a> ()</td></tr>
 <tr class="memdesc:ac28489af27a9b70d2c7a03eb35617bea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers a temperature conversion on all ds18b20 devices on the onewire line. This can take up to 750ms.  <br /></td></tr>
@@ -144,7 +142,7 @@ Functions</h2></td></tr>
 <tr class="separator:a9f12d0ab8eaacfce053804381a428ea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Driver for PIO Onewire DS18B20 Temperature Sensors. </p>
+<div class="textblock"><p>Driver for <a class="el" href="pio_8h.html#ac8e1b544d15c6d0c146052922ff986fb">PIO</a> Onewire DS18B20 Temperature Sensors. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ae7ade73278da5f29684fd682ec3ed6bb" name="ae7ade73278da5f29684fd682ec3ed6bb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae7ade73278da5f29684fd682ec3ed6bb">&#9670;&#160;</a></span>DS18B_ROMCODE_U100</h2>
@@ -188,20 +186,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a4a29698db5ef031543df84d51da3e16a" name="a4a29698db5ef031543df84d51da3e16a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a29698db5ef031543df84d51da3e16a">&#9670;&#160;</a></span>PICO_DEFAULT_LED_PIN</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PICO_DEFAULT_LED_PIN&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a5f77a33a7d9243a4c2035db0e66a7eb7" name="a5f77a33a7d9243a4c2035db0e66a7eb7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5f77a33a7d9243a4c2035db0e66a7eb7">&#9670;&#160;</a></span>ds18b20_read_temp()</h2>
@@ -226,6 +210,11 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>int16_t The temperature in C * 16 </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="ds18b20_8h_a5f77a33a7d9243a4c2035db0e66a7eb7_cgraph.svg" width="295" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -245,6 +234,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>More general ds18b20 onewire test, scans for all devices on the onewire bus. The pio config selection used is internal to this function (pin, pio block, etc.) </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="ds18b20_8h_a9f12d0ab8eaacfce053804381a428ea5_cgraph.svg" width="291" height="234"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -265,6 +259,11 @@ Functions</h2></td></tr>
 
 <p>Triggers a temperature conversion on all ds18b20 devices on the onewire line. This can take up to 750ms. </p>
 <dl class="section return"><dt>Returns</dt><dd>uint8_t Status code 0 -&gt; success 3 -&gt; ONEWIRE_NO_RESPONSES </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="ds18b20_8h_ac28489af27a9b70d2c7a03eb35617bea_cgraph.svg" width="332" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -287,7 +286,7 @@ Functions</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ds18b20_8h_a846305b21f5e58359bea3b8f9f79773a_cgraph.svg" width="360" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ds18b20_8h_a846305b21f5e58359bea3b8f9f79773a_cgraph.svg" width="490" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -307,8 +306,13 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes the PIO block to be a OneWire bus. </p>
+<p>Initializes the <a class="el" href="pio_8h.html#ac8e1b544d15c6d0c146052922ff986fb">PIO</a> block to be a OneWire bus. </p>
 <dl class="section return"><dt>Returns</dt><dd>uint8_t Status code 0 -&gt; success 1 -&gt; ONEWIRE_PROGRAM_ADD_FAIL 2 -&gt; ONEWIRE_DRIVER_INIT_FAIL </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="ds18b20_8h_a77ee2f32d90e72a84b5dcddf9f4222c4_cgraph.svg" width="231" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

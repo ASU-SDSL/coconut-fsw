@@ -121,6 +121,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a594dbd14874f83f5660ab7210cc6ac1e" id="r_a594dbd14874f83f5660ab7210cc6ac1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a594dbd14874f83f5660ab7210cc6ac1e">watchdog_task</a> (void *pvParameters)</td></tr>
 <tr class="memdesc:a594dbd14874f83f5660ab7210cc6ac1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the watchdog reset loop and will stop if given the freeze signal from the watchdog_freeze function.  <br /></td></tr>
 <tr class="separator:a594dbd14874f83f5660ab7210cc6ac1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab992d4e0b5759fa8dc32c6df4b7f19ef" id="r_ab992d4e0b5759fa8dc32c6df4b7f19ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab992d4e0b5759fa8dc32c6df4b7f19ef">watchdog_intertask_kick</a> (uint8_t id)</td></tr>
+<tr class="memdesc:ab992d4e0b5759fa8dc32c6df4b7f19ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kicks the watchdog associated with the given ID.  <br /></td></tr>
+<tr class="separator:ab992d4e0b5759fa8dc32c6df4b7f19ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -150,6 +153,31 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="ab992d4e0b5759fa8dc32c6df4b7f19ef" name="ab992d4e0b5759fa8dc32c6df4b7f19ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab992d4e0b5759fa8dc32c6df4b7f19ef">&#9670;&#160;</a></span>watchdog_intertask_kick()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void watchdog_intertask_kick </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Kicks the watchdog associated with the given ID. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>ID of watchdog to kick </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a594dbd14874f83f5660ab7210cc6ac1e" name="a594dbd14874f83f5660ab7210cc6ac1e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a594dbd14874f83f5660ab7210cc6ac1e">&#9670;&#160;</a></span>watchdog_task()</h2>
 
@@ -166,6 +194,11 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Runs the watchdog reset loop and will stop if given the freeze signal from the watchdog_freeze function. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="watchdog_8h_a594dbd14874f83f5660ab7210cc6ac1e_cgraph.svg" width="312" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

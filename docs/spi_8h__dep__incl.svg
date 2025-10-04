@@ -85,7 +85,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="radio_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="radio_8cpp.html" target="_top" xlink:title="Radio operations and the task handling them.">
 <polygon fill="white" stroke="#666666" points="62,-19 0,-19 0,0 62,0 62,-19"/>
 <text text-anchor="middle" x="31" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">radio.cpp</text>
 </a>

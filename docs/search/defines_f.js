@@ -1,11 +1,13 @@
 var searchData=
 [
-  ['telemetry_5fcheck_5fdelay_5fms_0',['TELEMETRY_CHECK_DELAY_MS',['../telemetry_8h.html#a2ac19a407c8cd1d0c2acfe5ff28c9ad7',1,'telemetry.h']]],
-  ['telemetry_5fmax_5fqueue_5fitems_1',['TELEMETRY_MAX_QUEUE_ITEMS',['../telemetry_8h.html#ad817b3e1aba5ccaf06a683fcaa6d6678',1,'telemetry.h']]],
-  ['telemetry_5fsync_5fbytes_2',['TELEMETRY_SYNC_BYTES',['../telemetry_8h.html#af3ec80c2027f4396f0fc88538dfd76ea',1,'telemetry.h']]],
-  ['telemetry_5fsync_5fsize_3',['TELEMETRY_SYNC_SIZE',['../telemetry_8h.html#ae1d4e662d423146b6c2a4e4d84154ac6',1,'telemetry.h']]],
-  ['temp_5fon_4',['TEMP_ON',['../radio_8cpp.html#a190eb6794824f5bf084e78db1042cbd8',1,'radio.cpp']]],
-  ['token_5ffile_5',['TOKEN_FILE',['../user__auth_8h.html#ac7b70e32eadf7212ea84e6fdebf0209d',1,'user_auth.h']]],
-  ['token_5flength_6',['TOKEN_LENGTH',['../user__auth_8h.html#a261dec01ec114c053d945304449c9103',1,'user_auth.h']]],
-  ['token_5fpath_5fsize_7',['TOKEN_PATH_SIZE',['../user__auth_8h.html#a0bf71f7ee484429b05b3d238327bbab9',1,'user_auth.h']]]
+  ['scheduler_5fcheck_5fdelay_5fms_0',['SCHEDULER_CHECK_DELAY_MS',['../steve_8h.html#a895aa2bbaef9b3d844e2284bb85bda03',1,'steve.h']]],
+  ['scheduler_5fcheck_5fdelay_5fticks_1',['SCHEDULER_CHECK_DELAY_TICKS',['../steve_8h.html#a80c1f404496b1a9bbc112ed2191f96a8',1,'steve.h']]],
+  ['sck_2',['SCK',['../mram_8c.html#a2dd443a4430713d325ab86895a4a45eb',1,'mram.c']]],
+  ['secs_5fin_5fmin_3',['SECS_IN_MIN',['../timing_8h.html#a1e463c21bb9edd45edefd0f724219b0f',1,'timing.h']]],
+  ['si_4',['SI',['../mram_8c.html#aa1be7844620ac7bffe73137a180aa044',1,'mram.c']]],
+  ['sleep_5',['SLEEP',['../mram_8c.html#a44e89d523436fcbbf2c56e4fb335d509',1,'mram.c']]],
+  ['so_6',['SO',['../mram_8c.html#a02cc6d026fad97c4a8c84675a0619d03',1,'mram.c']]],
+  ['spi_5fbus_7',['SPI_BUS',['../mram_8c.html#abc52a50e07f79a25a6de181238b9d9aa',1,'mram.c']]],
+  ['status_5fcommand_8',['STATUS_COMMAND',['../vega__ant_8c.html#ac677c415f1906778eb635d7ff290cd39',1,'vega_ant.c']]],
+  ['sys_5fclock_5ffreq_9',['SYS_CLOCK_FREQ',['../miscellaneous__jobs_8c.html#a37e9f102f1c0070d64370b094b22d46e',1,'miscellaneous_jobs.c']]]
 ];

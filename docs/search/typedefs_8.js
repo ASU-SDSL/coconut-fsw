@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['taskfunction_5ft_0',['TaskFunction_t',['../log__test__unittest_8c.html#a9b32502ff92c255c686dacde53c1cba0',1,'log_test_unittest.c']]],
-  ['telemetry_5fqueue_5ftransmission_5ft_1',['telemetry_queue_transmission_t',['../gse_8h.html#a698ec95fe9d1ec6c04712c1a0f506891',1,'gse.h']]]
+  ['spi_5finst_5ft_0',['spi_inst_t',['../spi_8h.html#a9b7b2428cfc34b20c3857980811b51a9',1,'spi.h']]],
+  ['steve_5fcontext_5ft_1',['steve_context_t',['../steve_8h.html#a817235360af6665352ce7b8146d1ffc5',1,'steve.h']]],
+  ['steve_5fjob_5ft_2',['steve_job_t',['../steve_8h.html#a25929e46953687fd6d5ee3b8e20f43fb',1,'steve.h']]]
 ];

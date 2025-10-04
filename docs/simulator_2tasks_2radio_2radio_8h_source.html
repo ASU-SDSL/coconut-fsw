@@ -95,19 +95,49 @@ $(function(){ initResizable(false); });
 <a href="simulator_2tasks_2radio_2radio_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">static</span> <span class="keywordtype">void</span> radio_queue_message(<span class="keywordtype">char</span> *buffer, <span class="keywordtype">size_t</span> size) {<span class="keywordflow">return</span>;}</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">static</span> uint8_t radio_which() {</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <span class="keywordflow">return</span> 0; </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>}</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">static</span> uint16_t radio_get_RFM_state() {</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keywordflow">return</span> 0; </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>}</div>
+<div class="foldopen" id="foldopen00004" data-start="{" data-end="};">
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83">    4</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code hl_enumeration" href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83">radio_operation_type</a> {</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83ad208fa8c08969a9d78096817bf0a6377">    5</a></span>    <a class="code hl_enumvalue" href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83ad208fa8c08969a9d78096817bf0a6377">TRANSMIT</a>,</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83a66685a8e7736aebf0170236f8f3eda5b">    6</a></span>    <a class="code hl_enumvalue" href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83a66685a8e7736aebf0170236f8f3eda5b">SET_OUTPUT_POWER</a>,</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83aaffbea7b0fa53a123976286d84817641">    7</a></span>    <a class="code hl_enumvalue" href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83aaffbea7b0fa53a123976286d84817641">ENABLE_RFM98</a>,</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83af9c0a9f1c31555e3b05a9a6706ad750c">    8</a></span>    <a class="code hl_enumvalue" href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83af9c0a9f1c31555e3b05a9a6706ad750c">ENABLE_SX1268</a>,</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83a80446df5c2d4dc5cd3c22116e1188a8a">    9</a></span>    <a class="code hl_enumvalue" href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83a80446df5c2d4dc5cd3c22116e1188a8a">RETURN_STATS</a>,</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="simulator_2tasks_2radio_2radio_8h.html#ace0b4fef871cb7679e839891a34882dd">   10</a></span>} <a class="code hl_typedef" href="simulator_2tasks_2radio_2radio_8h.html#ace0b4fef871cb7679e839891a34882dd">radio_operation_type_t</a>;</div>
+</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">static</span> <span class="keywordtype">void</span> radio_queue_message(<span class="keywordtype">char</span> *buffer, <span class="keywordtype">size_t</span> size) {<span class="keywordflow">return</span>;}</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">static</span> uint16_t radio_get_SX_state() {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">static</span> uint8_t radio_which() {</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordflow">return</span> 0; </div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>}</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">static</span> uint16_t radio_get_RFM_state() {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordflow">return</span> 0; </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>}</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">static</span> uint16_t radio_get_SX_state() {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordflow">return</span> 0; </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>}</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">static</span> <span class="keywordtype">void</span> radio_set_module(<a class="code hl_typedef" href="simulator_2tasks_2radio_2radio_8h.html#ace0b4fef871cb7679e839891a34882dd">radio_operation_type_t</a> op) {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>}</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">static</span> <span class="keywordtype">void</span> radio_set_transmit_power(uint8_t output_power) {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>}</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">static</span> <span class="keywordtype">void</span> radio_queue_stat_response() {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="ttc" id="asimulator_2tasks_2radio_2radio_8h_html_a4dc2c5c36fcf9d34a191545cc8968b83"><div class="ttname"><a href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83">radio_operation_type</a></div><div class="ttdeci">radio_operation_type</div><div class="ttdef"><b>Definition</b> simulator/tasks/radio/radio.h:4</div></div>
+<div class="ttc" id="asimulator_2tasks_2radio_2radio_8h_html_a4dc2c5c36fcf9d34a191545cc8968b83a66685a8e7736aebf0170236f8f3eda5b"><div class="ttname"><a href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83a66685a8e7736aebf0170236f8f3eda5b">SET_OUTPUT_POWER</a></div><div class="ttdeci">@ SET_OUTPUT_POWER</div><div class="ttdef"><b>Definition</b> simulator/tasks/radio/radio.h:6</div></div>
+<div class="ttc" id="asimulator_2tasks_2radio_2radio_8h_html_a4dc2c5c36fcf9d34a191545cc8968b83a80446df5c2d4dc5cd3c22116e1188a8a"><div class="ttname"><a href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83a80446df5c2d4dc5cd3c22116e1188a8a">RETURN_STATS</a></div><div class="ttdeci">@ RETURN_STATS</div><div class="ttdef"><b>Definition</b> simulator/tasks/radio/radio.h:9</div></div>
+<div class="ttc" id="asimulator_2tasks_2radio_2radio_8h_html_a4dc2c5c36fcf9d34a191545cc8968b83aaffbea7b0fa53a123976286d84817641"><div class="ttname"><a href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83aaffbea7b0fa53a123976286d84817641">ENABLE_RFM98</a></div><div class="ttdeci">@ ENABLE_RFM98</div><div class="ttdef"><b>Definition</b> simulator/tasks/radio/radio.h:7</div></div>
+<div class="ttc" id="asimulator_2tasks_2radio_2radio_8h_html_a4dc2c5c36fcf9d34a191545cc8968b83ad208fa8c08969a9d78096817bf0a6377"><div class="ttname"><a href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83ad208fa8c08969a9d78096817bf0a6377">TRANSMIT</a></div><div class="ttdeci">@ TRANSMIT</div><div class="ttdef"><b>Definition</b> simulator/tasks/radio/radio.h:5</div></div>
+<div class="ttc" id="asimulator_2tasks_2radio_2radio_8h_html_a4dc2c5c36fcf9d34a191545cc8968b83af9c0a9f1c31555e3b05a9a6706ad750c"><div class="ttname"><a href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83af9c0a9f1c31555e3b05a9a6706ad750c">ENABLE_SX1268</a></div><div class="ttdeci">@ ENABLE_SX1268</div><div class="ttdef"><b>Definition</b> simulator/tasks/radio/radio.h:8</div></div>
+<div class="ttc" id="asimulator_2tasks_2radio_2radio_8h_html_ace0b4fef871cb7679e839891a34882dd"><div class="ttname"><a href="simulator_2tasks_2radio_2radio_8h.html#ace0b4fef871cb7679e839891a34882dd">radio_operation_type_t</a></div><div class="ttdeci">enum radio_operation_type radio_operation_type_t</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
