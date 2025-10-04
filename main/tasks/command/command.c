@@ -68,9 +68,10 @@ SemaphoreHandle_t ax25_Mutex = NULL;
 
 void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
     
-    xSemaphoreTake(commandCountMutex, portMAX_DELAY);
-    command_count++;
-    xSemaphoreGive(commandCountMutex);
+    if(xSemaphoreTake(commandCountMutex, portMAX_DELAY)){
+        command_count++;
+        xSemaphoreGive(commandCountMutex);
+    }
 
     logln_info("Received command with APID: %hu", header.apid);
     
@@ -206,7 +207,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             // Schedule deployment in STEVE for right now
             schedule_delayed_job_ms("DEPLOY_ANTENNA", &deploy_antenna_job, 10); 
             
-            return_data = pvPortMalloc(sizeof(DEPLOY_JOB_ACK)); 
+            return_data = (uint8_t*) pvPortMalloc(sizeof(DEPLOY_JOB_ACK)); 
             memcpy(return_data, DEPLOY_JOB_ACK, sizeof(DEPLOY_JOB_ACK));
             return_data_len = sizeof(DEPLOY_JOB_ACK); 
 
@@ -232,17 +233,27 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             ax25_on_off_t* ax25_on_of_args = (ax25_on_off_t*)payload_buf; 
             if(!is_admin(ax25_on_of_args->admin_token)) break;
 
+            // return info on success or failure 
+            return_data = (uint8_t*) pvPortMalloc(sizeof(uint8_t)); 
+            return_data_len = 1; 
             //Get the status; maybe block until we get the mutex
             // Make an if statement for if we dont get the mutex; binary semifor 
             if(xSemaphoreTake(ax25_Mutex, portMAX_DELAY)){
-                if(command_enabled) command_enabled = false;
-                if(!command_enabled) command_enabled = true;
+                if(command_enabled) {
+                    command_enabled = false;
+                    *return_data = 0;
+                }
+                if(!command_enabled) {
+                    command_enabled = true;
+                    *return_data = 1; 
+                }
                 xSemaphoreGive(ax25_Mutex);
-                break;
             }else{
                 logln_error("Mutex was never reached");
-                break;
+                *return_data = 2; 
             }
+
+            break;
         case FSW_ACK:
             break; // This will just send the ack
         default:
