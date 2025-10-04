@@ -44,8 +44,9 @@ typedef enum command_apid {
 
     // 01 - radio
     RADIO_CONFIG = 101,
-    RADIO_STAT = 104,
-    AX25_ON_OFF = 105, 
+    RADIO_STAT = 104, 
+    ANTENNA_DEPLOY = 105,
+    AX25_ON_OFF = 106,
 
     // 02 - device 
     SET_RTC_TIME = 201, 

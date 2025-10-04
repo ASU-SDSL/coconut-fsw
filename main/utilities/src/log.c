@@ -48,14 +48,14 @@ void _log(bool is_error, const char *str, ...) {
         write_error_log(packet->str); // Write to the log
     }
 
-#ifdef SIMULATOR
+//#ifdef SIMULATOR
     // write to stdout
     //write(1, packet->str, strsize);
-    send_telemetry(LOG, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
-#else
+    //send_telemetry(LOG, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
+//#else
     // send to telemetry task
     send_telemetry(LOG, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
-#endif
+//#endif
 
     vPortFree(packet);
 }
