@@ -1,19 +1,32 @@
-FROM ubuntu:20.04
+FROM ubuntu:24.04
+# EOL  31 May 2029
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV SHELL=bash
 
-# Install deps
-RUN apt -y update && apt -y upgrade
-RUN apt install -y python3 cmake gcc-arm-none-eabi build-essential git
+RUN apt-get update && apt-get install -y \
+    git=1:2.43.0-1ubuntu7 \
+    python3-dev \
+    gcc-arm-none-eabi=15:13.2.rel1-2 \
+    socat=1.8.0.0-4build3 \
+    cmake=3.28.3-1build7 \
+    build-essential=12.10ubuntu1 \
+    && rm -rf /var/lib/apt/lists/*
 
-# Get repo in the container
-COPY . /coconut-fsw
+# Python 3.12 - EOL October 2028
+
+# Prevent package upgrades by holding specific versions
+RUN apt-mark hold \
+    git \
+    python3 \
+    gcc-arm-none-eabi \
+    socat \
+    cmake \
+    build-essential
+
+RUN git clone --recurse-submodules https://github.com/ASU-SDSL/coconut-fsw
+
 WORKDIR /coconut-fsw
 
-# Update submodules if needed
-RUN git submodule update --init --recursive
-
-# Build repo
-ENV PICO_SDK_PATH="/coconut-fsw/lib/pico-sdk"
-RUN ./build.sh
+# Default command
+CMD ["/bin/bash"]
