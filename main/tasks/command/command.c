@@ -17,8 +17,12 @@
 #include "radio.h"
 #include "command.h"
 #include "set_rtc_job.h"
+#include "antenna_deploy_job.h"
 #include "watchdog.h"
 #include "hb_tlm_log.h"
+
+
+
 
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
@@ -43,9 +47,34 @@ void receive_command_bytes(uint8_t* packet, size_t packet_size) {
     }
 }
 
-void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
-    logln_info("Received command with APID: %hu", header.apid);
+SemaphoreHandle_t commandCountMutex = NULL;
+static uint32_t command_count = 0;
 
+uint32_t get_command_count(void){
+    uint32_t temp_commandCount;
+
+    xSemaphoreTake(commandCountMutex, portMAX_DELAY);
+    temp_commandCount = command_count;
+    xSemaphoreGive(commandCountMutex);
+    
+    return temp_commandCount;
+}
+
+bool command_enabled = false;
+SemaphoreHandle_t ax25_Mutex = NULL;
+
+// Some messages stored as string literals for better memory usage
+#define DEPLOY_JOB_ACK "Deploy Job Scheduled"
+
+void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
+    
+    if(xSemaphoreTake(commandCountMutex, portMAX_DELAY)){
+        command_count++;
+        xSemaphoreGive(commandCountMutex);
+    }
+
+    logln_info("Received command with APID: %hu", header.apid);
+    
     // Used for the ack struct
     uint8_t command_status = 1; // 1 for success/true, 0 for failure/false
     // Data may or may not be returned, this data should be allocated and freed if needed depending on the packet
@@ -135,12 +164,18 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             break;
 
         case MCU_POWER_CYCLE:
+            if(payload_size < sizeof(mcu_power_cycle_t)) break;
+            mcu_power_cycle_t* mcu_power_cycle_args = (mcu_power_cycle_t*)payload_buf; 
+            if (!is_admin(mcu_power_cycle_args->admin_token)) break; // check admin
+
             watchdog_freeze(); // Freezing the watchdog will cause a reboot within a few seconds
             break;
 
         case PLAYBACK_HEARTBEAT_PACKETS:
             if (payload_size < sizeof(playback_hb_tlm_payload_t)) break; // Should probably return an error to the ground
             playback_hb_tlm_payload_t* playback_hb_payload = (playback_hb_tlm_payload_t*)payload_buf;
+            if (!is_admin(playback_hb_payload->admin_token)) break; // check admin
+
             int status = hb_tlm_playback(playback_hb_payload);
             if (status != 0) command_status = 0;
             break;
@@ -168,6 +203,14 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             radio_queue_stat_response(); 
             break;
 
+        case ANTENNA_DEPLOY:
+            // Schedule deployment in STEVE for right now
+            schedule_delayed_job_ms("DEPLOY_ANTENNA", &deploy_antenna_job, 10); 
+            
+            return_data = (uint8_t*) pvPortMalloc(sizeof(DEPLOY_JOB_ACK)); 
+            memcpy(return_data, DEPLOY_JOB_ACK, sizeof(DEPLOY_JOB_ACK));
+            return_data_len = sizeof(DEPLOY_JOB_ACK); 
+
         case SET_RTC_TIME:
             if (payload_size < sizeof(set_rtc_time_t)) break;
             set_rtc_time_t* set_rtc_time_args = (set_rtc_time_t*)payload_buf; 
@@ -183,7 +226,34 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             job->arg_data = args; 
             logln_info("RTC job created"); 
             break;
-            
+        
+        case AX25_ON_OFF:
+            // check auth token 
+            if(payload_size < sizeof(ax25_on_off_t)) break; 
+            ax25_on_off_t* ax25_on_of_args = (ax25_on_off_t*)payload_buf; 
+            if(!is_admin(ax25_on_of_args->admin_token)) break;
+
+            // return info on success or failure 
+            return_data = (uint8_t*) pvPortMalloc(sizeof(uint8_t)); 
+            return_data_len = 1; 
+            //Get the status; maybe block until we get the mutex
+            // Make an if statement for if we dont get the mutex; binary semifor 
+            if(xSemaphoreTake(ax25_Mutex, portMAX_DELAY)){
+                if(command_enabled) {
+                    command_enabled = false;
+                    *return_data = 0;
+                }
+                if(!command_enabled) {
+                    command_enabled = true;
+                    *return_data = 1; 
+                }
+                xSemaphoreGive(ax25_Mutex);
+            }else{
+                logln_error("Mutex was never reached");
+                *return_data = 2; 
+            }
+
+            break;
         case FSW_ACK:
             break; // This will just send the ack
         default:
@@ -191,7 +261,6 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     }
 
     // Send ack
-
     int ack_size = sizeof(ack_telemetry_t) + return_data_len;
     ack_telemetry_t *ack = pvPortMalloc(ack_size);
     ack->command_status = command_status;
@@ -207,18 +276,31 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     vPortFree(ack);
 }
 
+
 void command_task(void* unused_arg) {
     // Initialize byte queue
+    commandCountMutex = xSemaphoreCreateMutex();
+    ax25_Mutex = xSemaphoreCreateMutex();
+    command_count = 0; // Reset command count
+    
     command_byte_queue = xQueueCreate(COMMAND_MAX_QUEUE_ITEMS, sizeof(command_byte_t));
     while (true) {
         // Keep gathering bytes until we get the sync bytes
         uint32_t sync_index = 0;
+
+        bool ax25_mode = false; 
         while (true) {
             // stall thread until we get a byte
             command_byte_t command_byte = 0;
             xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
             
             logln_info("Byte Received: 0x%hhx", command_byte);
+
+            // check for AX25 flag field (0x7E)
+            if(command_byte == AX25_FLAG){
+                ax25_mode = true; 
+                break;
+            }
 
             // check if current sync index byte matches
             uint8_t check_byte = COMMAND_SYNC_BYTES[sync_index];
@@ -236,35 +318,64 @@ void command_task(void* unused_arg) {
             // otherwise keep checking bytes
             sync_index += 1;
         }
-        logln_info("Received sync bytes, moving to decode"); 
-        // We've succesfully received all sync bytes if we've reached here
-        // logln_info("Received all sync bytes!");
-        // TODO: Add better error checks and handling here
-        // Gather spacepacket header bytes
-        uint8_t spacepacket_header_bytes[SPACEPACKET_ENCODED_HEADER_SIZE];
-        for (int i = 0; i < sizeof(spacepacket_header_bytes); i++) {
-            xQueueReceive(command_byte_queue, &spacepacket_header_bytes[i], portMAX_DELAY);
+
+        if(ax25_mode && command_enabled) {
+            // receive the rest of the bytes 
+            bool msg_err = false; 
+            int msg_len = 255;  // max packet size is 256
+            uint8_t* msg = (uint8_t*)pvPortMalloc(sizeof(uint8_t) * msg_len);
+            int msg_index = 0; 
+            msg[msg_index++] = AX25_FLAG; // put this in again from the trigger 
+            uint8_t command_byte = 0; 
+            do {
+                xQueueReceive(command_byte_queue, &command_byte, portMAX_DELAY);
+                if(msg_index >= msg_len){ // msg is too large, toss it all
+                    msg_err = true; 
+                    logln_error("AX25 mode overflow error"); 
+                    break; 
+                } 
+                msg[msg_index++] = command_byte;
+            } while(command_byte != AX25_FLAG);
+            
+            // if no error and received the entire message, echo it
+            if(msg_err == false) radio_queue_message(msg, msg_index);
+            // clean up buffer 
+            vPortFree(msg); 
         }
-        // Parse spacepacket header
-        spacepacket_header_t header;
-        if (decode_spacepacket_header(spacepacket_header_bytes, sizeof(spacepacket_header_bytes), &header) == -1) {
-            logln_error("Failed to decode SpacePacket header!");
-            continue;
+        else if(ax25_mode && !command_enabled) {
+            logln_error("Couldn't read the package because command is off");
         }
-        // Allocate correct size buffer
-        size_t payload_size = header.packet_length + 1; // 4.1.3.5.3 transmits data size field as payload_length - 1
-        uint8_t* payload_buf = pvPortMalloc(payload_size);
-        if (payload_buf == 0) {
-            logln_error("Failed to allocate payload buf of size 0x%x!", payload_size);
-            continue;
+        else {
+            logln_info("Received sync bytes, moving to decode"); 
+            // We've succesfully received all sync bytes if we've reached here
+            // logln_info("Received all sync bytes!");
+            // TODO: Add better error checks and handling here
+            // Gather spacepacket header bytes
+            uint8_t spacepacket_header_bytes[SPACEPACKET_ENCODED_HEADER_SIZE];
+            for (int i = 0; i < sizeof(spacepacket_header_bytes); i++) {
+                xQueueReceive(command_byte_queue, &spacepacket_header_bytes[i], portMAX_DELAY);
+            }
+            // Parse spacepacket header
+            spacepacket_header_t header;
+            if (decode_spacepacket_header(spacepacket_header_bytes, sizeof(spacepacket_header_bytes), &header) == -1) {
+                logln_error("Failed to decode SpacePacket header!");
+                continue;
+            }
+            // Allocate correct size buffer
+            size_t payload_size = header.packet_length + 1; // 4.1.3.5.3 transmits data size field as payload_length - 1
+            uint8_t* payload_buf = pvPortMalloc(payload_size);
+            if (payload_buf == 0) {
+                logln_error("Failed to allocate payload buf of size 0x%x!", payload_size);
+                continue;
+            }
+            // Read payload
+            for (int i = 0; i < payload_size; i++) {
+                xQueueReceive(command_byte_queue, &payload_buf[i], portMAX_DELAY);
+            }
+            // Parse packet payload
+            parse_command_packet(header, payload_buf, payload_size);
+            // Free payload buffer
+            vPortFree(payload_buf);
         }
-        // Read payload
-        for (int i = 0; i < payload_size; i++) {
-            xQueueReceive(command_byte_queue, &payload_buf[i], portMAX_DELAY);
-        }
-        // Parse packet payload
-        parse_command_packet(header, payload_buf, payload_size);
-        // Free payload buffer
-        vPortFree(payload_buf);
     }
 }

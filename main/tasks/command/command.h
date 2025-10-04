@@ -13,6 +13,7 @@
 
 #define COMMAND_MAX_QUEUE_ITEMS 0x200
 #define COMMAND_SYNC_BYTES "\x35\x2E\xF8\x53" 
+#define AX25_FLAG 0x7E
 
 /**
  * @brief Command Structs and Types
@@ -44,6 +45,8 @@ typedef enum command_apid {
     // 01 - radio
     RADIO_CONFIG = 101,
     RADIO_STAT = 104, 
+    ANTENNA_DEPLOY = 105,
+    AX25_ON_OFF = 106,
 
     // 02 - device 
     SET_RTC_TIME = 201, 
@@ -58,34 +61,34 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
 } file_ls_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
 } file_mkdir_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
 } file_cat_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
 } file_delete_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
     uint16_t data_len;
     uint8_t data[];
 } file_append_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
 } file_touch_t;
 
 typedef struct __attribute__((__packed__)) {
@@ -112,6 +115,11 @@ typedef struct __attribute__((__packed__)) {
 } upload_user_data_t;
 
 typedef struct __attribute__((__packed__)) {
+    uint8_t admin_token[TOKEN_LENGTH];
+} mcu_power_cycle_t; 
+
+typedef struct __attribute__((__packed__)) {
+    uint8_t admin_token[TOKEN_LENGTH];
     uint16_t number_of_packets;
     uint16_t every_x_packet; ///< Used to adjust for less resolution but cover more time
     uint16_t go_back_x_packets; ///< Used to start the playback from a certain point in the past
@@ -137,6 +145,10 @@ typedef struct __attribute__((__packed__)) {
     uint8_t second;
 } set_rtc_time_t; 
 
+typedef struct __attribute__((__packed__)) { 
+    uint8_t admin_token[TOKEN_LENGTH];
+} ax25_on_off_t; 
+
 /// Internal Command Thread Structs
 QueueHandle_t command_byte_queue;
 typedef uint8_t command_byte_t;
@@ -146,7 +158,7 @@ typedef uint8_t command_byte_t;
 void receive_command_byte_from_isr(char ch);
 void receive_command_byte(char ch);
 void receive_command_bytes(uint8_t* packet, size_t packet_size);
-
+uint32_t get_command_count(void);
 /* INTERNAL FUNCTIONS */
 void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size);
 

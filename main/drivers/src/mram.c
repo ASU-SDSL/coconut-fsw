@@ -4,6 +4,34 @@
 #include "hardware/spi.h"
 #include "hardware/gpio.h"
 #include "log.h"
+#include <stdio.h>
+
+//Project specific constants
+#define SPI_BUS spi1
+#define FREQ 1000000
+#define PACKET_SIZE 8
+#define MAX_BYTES 32768
+
+// PINS ON Raspberry Pi - to be set by electrical team.
+#define SO 8    /// MISO/SDO/SO are all same thing
+#define CS 9 
+#define SCK 10 
+#define SI 11   /// MOSI/SDI/SI are all same thing
+
+#define WP 0 
+#define HOLD 0
+#define GND 0   /// Wired up to random place
+#define PS 0    /// Wired up to random place
+
+/// Command codes
+#define WREN 0x06
+#define WRDI 0x04
+#define RDSR 0x05
+#define WRSR 0x01
+#define READ 0x03
+#define WRITE 0x02
+#define SLEEP 0xB9
+#define WAKE 0xAB
 
 //Global Modifiable Variables
 uint16_t memory_start;
@@ -43,7 +71,7 @@ int write_bytes(uint32_t addr, const uint8_t* buf, const uint32_t nbytes) {
     send_simple_command(WREN);
 
     uint32_t bendaddr = __builtin_bswap32(addr);
-    uint8_t *p_bendaddr = &bendaddr;
+    uint8_t *p_bendaddr = (uint8_t*) &bendaddr;
 
     uint8_t arr[4] = {WRITE, p_bendaddr[1], p_bendaddr[2], p_bendaddr[3]};
    
@@ -63,7 +91,7 @@ int read_bytes(uint32_t addr, uint8_t* buf, const uint32_t nbytes) {
     gpio_put(CS, 0);
 
     uint32_t bendaddr = __builtin_bswap32(addr);
-    uint8_t *p_bendaddr = &bendaddr;
+    uint8_t *p_bendaddr = (uint8_t*) &bendaddr;
 
     uint8_t arr[4] = {READ, p_bendaddr[1], p_bendaddr[2], p_bendaddr[3]};
 

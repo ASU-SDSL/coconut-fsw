@@ -21,6 +21,7 @@ set(SOURCES
     ${MAIN_DIRECTORY}/tasks/watchdog/watchdog.c
 
     ${MAIN_DIRECTORY}/tasks/steve/jobs/heartbeat_job.c
+    ${MAIN_DIRECTORY}/tasks/steve/jobs/antenna_deploy_job.c
     ${MAIN_DIRECTORY}/tasks/steve/jobs/set_rtc_job.c
     ${MAIN_DIRECTORY}/tasks/steve/jobs/miscellaneous_jobs.c 
 
@@ -66,7 +67,6 @@ set (LINK_LIBS
     FreeRTOS
     FatFs
     libspacepacket
-    onewire_library
 )
 
 IF (${DESKTOP_BUILD})
@@ -88,6 +88,7 @@ ELSE()
         hardware_pwm
         hardware_clocks
         RadioLib
+        onewire_library
     )
 ENDIF()
 

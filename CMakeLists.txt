@@ -67,7 +67,7 @@ set (FREERTOS_SOURCE_FILES
     ${FREERTOS_SRC_DIRECTORY}/stream_buffer.c
     ${FREERTOS_SRC_DIRECTORY}/tasks.c
     ${FREERTOS_SRC_DIRECTORY}/timers.c
-    ${FREERTOS_SRC_DIRECTORY}/portable/MemMang/heap_3.c 
+    ${FREERTOS_SRC_DIRECTORY}/portable/MemMang/heap_4.c 
 )
 
 # Add FreeRTOS source files
@@ -128,9 +128,9 @@ ENDIF()
 # Include libraries
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/fatfs/ build)
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/libspacepacket/)
-add_subdirectory(${CMAKE_SOURCE_DIR}/lib/onewire_library/)
 IF (NOT ${DESKTOP_BUILD})
     add_subdirectory(${CMAKE_SOURCE_DIR}/lib/RadioLib)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/lib/onewire_library/)
 ENDIF()
 
 # Include the app's source code

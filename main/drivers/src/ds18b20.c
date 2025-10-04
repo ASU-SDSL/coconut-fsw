@@ -25,6 +25,8 @@
 #define OW_ALARM_SEARCH     0xEC
 #define OW_SEARCH_ROM       0xF0
 
+#define DS18B20_TIMEOUT_MS 1000
+
 // pio block config variables 
 PIO ds_pio = pio0; 
 uint ds_gpio = 25;  
@@ -64,8 +66,8 @@ uint8_t ds18b20_start_conversion(){
 }
 
 int16_t ds18b20_read_temp(uint64_t romcode){
-    // busy wait until conversion is done 
-    while(ow_read(&ds_ow) == 0); 
+    // busy wait until conversion is done
+    while(ow_read(&ds_ow) == 0);
 
     // read the result 
     ow_reset(&ds_ow); 
@@ -105,7 +107,7 @@ void ds18b20_scan(){
 
                 printf("Found %d devices\n", num_devs);      
                 for (int i = 0; i < num_devs; i += 1) {
-                    printf("\t%d: 0x%llx\n", i, romcode[i]);
+                    printf("\t%d: 0x%lx\n", i, romcode[i]);
                 }
                 putchar ('\n');
 
@@ -133,19 +135,19 @@ void ds18b20_scan(){
                     }
                     putchar ('\n');
                 }
-                sleep_ms(1000); 
+                vTaskDelay(pdMS_TO_TICKS(1000)); 
             }
             
         } else {
             while(1){
                 puts ("could not initialise the driver");
-                sleep_ms(1000); 
+                vTaskDelay(pdMS_TO_TICKS(1000)); 
             }
         }
     } else {
         while(1){
             puts ("could not add the program");
-            sleep_ms(1000); 
+            vTaskDelay(pdMS_TO_TICKS(1000)); 
         }
     }
 }
