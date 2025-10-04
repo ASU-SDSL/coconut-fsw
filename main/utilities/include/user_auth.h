@@ -8,7 +8,7 @@
 #define TOKEN_LENGTH 8U
 #define USER_MAX_TOTAL_DATA_SIZE 25 * 1024 /* 250Kb divided between 10 users (half of 0.5Mb MRAM)*/
 
-#define MAX_USERNAME_LEN 128
+#define MAX_USERNAME_LEN 64 // 8 character usernames 
 #define USERS_DIR "/users"
 #define USER_PATH_SIZE (strlen(USERS_DIR) + MAX_USERNAME_LEN + 1) /* +1 for extra "/" */
 
