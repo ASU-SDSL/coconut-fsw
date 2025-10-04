@@ -10,7 +10,7 @@ var searchData=
   ['secs_5fto_5fms_7',['secs_to_ms',['../timing_8h.html#afd3999513ea688f512ea1d35aed46a43',1,'secs_to_ms(unsigned long secs):&#160;timing.c'],['../timing_8c.html#afd3999513ea688f512ea1d35aed46a43',1,'secs_to_ms(unsigned long secs):&#160;timing.c']]],
   ['send_5fsimple_5fcommand_8',['send_simple_command',['../mram_8h.html#a52ab33155b91ce8971434bf4e30e4d98',1,'send_simple_command(uint8_t cmd):&#160;mram.c'],['../mram_8c.html#a52ab33155b91ce8971434bf4e30e4d98',1,'send_simple_command(uint8_t cmd):&#160;mram.c']]],
   ['send_5ftelemetry_9',['send_telemetry',['../telemetry_8c.html#a6dbf6c6cfd75451e5642ca0b64bf7f5a',1,'send_telemetry(telemetry_apid_t apid, const char *payload_buffer, size_t payload_size):&#160;telemetry.c'],['../telemetry_8h.html#a6dbf6c6cfd75451e5642ca0b64bf7f5a',1,'send_telemetry(telemetry_apid_t apid, const char *payload_buffer, size_t payload_size):&#160;telemetry.c']]],
-  ['set_5fpower_5foutput_10',['set_power_output',['../radio_8cpp.html#a74c252dc0de25701a447a67c039e9804',1,'radio.cpp']]],
+  ['set_5fpower_5foutput_10',['set_power_output',['../group__Radio.html#ga74c252dc0de25701a447a67c039e9804',1,'radio.cpp']]],
   ['set_5frtc_5fjob_11',['set_rtc_job',['../set__rtc__job_8c.html#af31d3e6e7b984cd9aca01db95eac999a',1,'set_rtc_job(void *args):&#160;set_rtc_job.c'],['../set__rtc__job_8h.html#af31d3e6e7b984cd9aca01db95eac999a',1,'set_rtc_job(void *args):&#160;set_rtc_job.c']]],
   ['setup_12',['setup',['../mram_8h.html#a4fc01d736fe50cf5b977f755b675f11d',1,'mram.h']]],
   ['spibegin_13',['spiBegin',['../classPicoHal.html#a2922f187934112a343bbd27d91b833bf',1,'PicoHal::spiBegin()'],['../classPiPicoHal.html#a8ace89698f02c002f3b075c88ed7d383',1,'PiPicoHal::spiBegin()']]],

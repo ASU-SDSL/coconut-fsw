@@ -1,25 +1,33 @@
 <map id="ds18b20.c" name="ds18b20.c">
-<area shape="rect" id="Node000001" title=" " alt="" coords="351,5,439,31"/>
-<area shape="rect" id="Node000002" href="$ds18b20_8h.html" title="Driver for PIO Onewire DS18B20 Temperature Sensors." alt="" coords="155,79,245,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="364,33,245,76,244,71,362,28"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="269,79,403,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="387,33,356,70,352,67,383,29"/>
-<area shape="rect" id="Node000007" href="$log_8h.html" title=" " alt="" coords="427,79,482,104"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="407,29,438,66,434,70,403,33"/>
-<area shape="rect" id="Node000012" href="$stdio_8h.html" title=" " alt="" coords="507,79,573,104"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="419,28,505,70,503,75,417,33"/>
-<area shape="rect" id="Node000003" href="$stdlib_8h.html" title=" " alt="" coords="5,152,107,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="178,106,93,148,91,143,176,102"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="131,152,269,177"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="203,104,203,138,197,138,197,104"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="294,152,365,177"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="222,102,297,143,295,147,220,106"/>
-<area shape="rect" id="Node000008" href="$telemetry_8h.html" title="Functions for packaging and queuing telemetry packets for sending." alt="" coords="399,152,495,177"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="456,105,452,139,447,138,451,104"/>
-<area shape="rect" id="Node000011" title=" " alt="" coords="519,152,601,177"/>
-<area shape="poly" id="edge10_Node000007_Node000011" title=" " alt="" coords="473,102,533,142,530,147,470,106"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="344,225,440,251"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="440,179,411,216,407,213,436,176"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="464,225,539,251"/>
-<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="458,176,486,213,482,216,454,179"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="381,5,469,31"/>
+<area shape="rect" id="Node000002" href="$ds18b20_8h.html" title="Driver for PIO Onewire DS18B20 Temperature Sensors." alt="" coords="91,152,181,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="398,33,289,81,168,147,166,143,287,76,395,28"/>
+<area shape="rect" id="Node000006" href="$onewire__library_8h.html" title=" " alt="" coords="300,79,433,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="418,33,387,70,383,67,414,29"/>
+<area shape="rect" id="Node000009" href="$log_8h.html" title=" " alt="" coords="473,79,527,104"/>
+<area shape="poly" id="edge13_Node000001_Node000009" title=" " alt="" coords="439,29,480,67,476,71,435,33"/>
+<area shape="rect" id="Node000013" href="$stdio_8h.html" title=" " alt="" coords="552,79,619,104"/>
+<area shape="poly" id="edge18_Node000001_Node000013" title=" " alt="" coords="452,28,548,71,546,75,450,33"/>
+<area shape="rect" id="Node000003" href="$stdlib_8h.html" title=" " alt="" coords="168,225,269,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="151,175,196,214,193,218,148,179"/>
+<area shape="rect" id="Node000004" href="$binary__info_8h.html" title=" " alt="" coords="5,225,144,251"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="128,179,96,217,92,213,124,176"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="294,225,365,251"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="168,175,286,218,284,223,166,180"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="350,106,320,127,289,154,260,185,237,215,232,212,256,182,285,150,317,123,347,102"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="346,106,319,126,297,153,294,168,296,184,312,213,307,216,291,185,288,168,292,151,315,122,343,102"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="423,225,505,251"/>
+<area shape="poly" id="edge8_Node000006_Node000007" title=" " alt="" coords="387,102,414,122,440,151,454,181,463,211,457,212,449,183,435,153,411,126,384,106"/>
+<area shape="rect" id="Node000008" href="$pio_8h.html" title=" " alt="" coords="307,152,426,177"/>
+<area shape="poly" id="edge9_Node000006_Node000008" title=" " alt="" coords="369,104,369,138,364,138,364,104"/>
+<area shape="poly" id="edge12_Node000008_Node000003" title=" " alt="" coords="344,180,256,222,254,217,342,175"/>
+<area shape="poly" id="edge10_Node000008_Node000005" title=" " alt="" coords="363,179,344,215,339,212,358,176"/>
+<area shape="poly" id="edge11_Node000008_Node000007" title=" " alt="" coords="384,175,438,215,435,219,381,180"/>
+<area shape="poly" id="edge17_Node000009_Node000007" title=" " alt="" coords="501,105,485,178,475,213,470,211,480,177,495,104"/>
+<area shape="rect" id="Node000010" href="$telemetry_8h.html" title="Functions for packaging and queuing telemetry packets for sending." alt="" coords="552,152,648,177"/>
+<area shape="poly" id="edge14_Node000009_Node000010" title=" " alt="" coords="518,102,574,142,571,146,515,106"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="541,225,637,251"/>
+<area shape="poly" id="edge15_Node000010_Node000011" title=" " alt="" coords="601,178,596,212,590,211,596,177"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="661,225,736,251"/>
+<area shape="poly" id="edge16_Node000010_Node000012" title=" " alt="" coords="617,175,673,215,670,219,614,180"/>
 </map>

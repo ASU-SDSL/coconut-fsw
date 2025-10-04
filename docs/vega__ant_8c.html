@@ -98,10 +98,11 @@ $(function(){ initResizable(false); });
 <div class="textblock"><code>#include &quot;FreeRTOS.h&quot;</code><br />
 <code>#include &quot;task.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="vega__ant_8h_source.html">vega_ant.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="log_8h_source.html">log.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for vega_ant.c:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="vega__ant_8c__incl.svg" width="563" height="330"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="vega__ant_8c__incl.svg" width="611" height="330"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -114,8 +115,10 @@ Macros</h2></td></tr>
 <tr class="separator:a7381d0901a50c2ca2018ffca2bc93ba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a564fb78acc952b8f21926adb2d7e2aac" id="r_a564fb78acc952b8f21926adb2d7e2aac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a564fb78acc952b8f21926adb2d7e2aac">BURN_B_COMMAND</a>&#160;&#160;&#160;0x02</td></tr>
 <tr class="separator:a564fb78acc952b8f21926adb2d7e2aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a196ddb3e286ad0447a2ce5fe98721e59" id="r_a196ddb3e286ad0447a2ce5fe98721e59"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a196ddb3e286ad0447a2ce5fe98721e59">VEGA_ANT_GPIO_PIN</a>&#160;&#160;&#160;20</td></tr>
-<tr class="separator:a196ddb3e286ad0447a2ce5fe98721e59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76993f47711c5fca0f04577143398355" id="r_a76993f47711c5fca0f04577143398355"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a76993f47711c5fca0f04577143398355">VEGA_ANT_GPIO_PINA</a>&#160;&#160;&#160;6</td></tr>
+<tr class="separator:a76993f47711c5fca0f04577143398355"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac36b56e1cc0f5e34aa9d0538087f495d" id="r_ac36b56e1cc0f5e34aa9d0538087f495d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac36b56e1cc0f5e34aa9d0538087f495d">VEGA_ANT_GPIO_PINB</a>&#160;&#160;&#160;15</td></tr>
+<tr class="separator:ac36b56e1cc0f5e34aa9d0538087f495d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -183,14 +186,28 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a196ddb3e286ad0447a2ce5fe98721e59" name="a196ddb3e286ad0447a2ce5fe98721e59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a196ddb3e286ad0447a2ce5fe98721e59">&#9670;&#160;</a></span>VEGA_ANT_GPIO_PIN</h2>
+<a id="a76993f47711c5fca0f04577143398355" name="a76993f47711c5fca0f04577143398355"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76993f47711c5fca0f04577143398355">&#9670;&#160;</a></span>VEGA_ANT_GPIO_PINA</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define VEGA_ANT_GPIO_PIN&#160;&#160;&#160;20</td>
+          <td class="memname">#define VEGA_ANT_GPIO_PINA&#160;&#160;&#160;6</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac36b56e1cc0f5e34aa9d0538087f495d" name="ac36b56e1cc0f5e34aa9d0538087f495d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac36b56e1cc0f5e34aa9d0538087f495d">&#9670;&#160;</a></span>VEGA_ANT_GPIO_PINB</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define VEGA_ANT_GPIO_PINB&#160;&#160;&#160;15</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -221,11 +238,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>uint8_t Status </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="vega__ant_8c_a2f0326deb24f883f2cb4288ee52f5981_cgraph.svg" width="351" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

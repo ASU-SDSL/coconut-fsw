@@ -100,16 +100,30 @@ $(function(){ initResizable(false); });
 <code>#include &quot;<a class="el" href="stdlib_8h_source.html">pico/stdlib.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="gpio_8h_source.html">hardware/gpio.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="log_8h_source.html">log.h</a>&quot;</code><br />
+<code>#include &quot;hardware/watchdog.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for watchdog.c:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="watchdog_8c__incl.svg" width="530" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="watchdog_8c__incl.svg" width="100%" height="492"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:aa98318a40a13782db11e74f3dad8106f" id="r_aa98318a40a13782db11e74f3dad8106f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa98318a40a13782db11e74f3dad8106f">WDI_PIN</a>&#160;&#160;&#160;21</td></tr>
 <tr class="separator:aa98318a40a13782db11e74f3dad8106f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a21200e6796c3d85a32a984195a4fc7" id="r_a5a21200e6796c3d85a32a984195a4fc7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a21200e6796c3d85a32a984195a4fc7">WATCHDOG_MAX_QUEUE_ITEMS</a>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:a5a21200e6796c3d85a32a984195a4fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbc7ddda9aedbc2599fedf93e5151815" id="r_abbc7ddda9aedbc2599fedf93e5151815"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abbc7ddda9aedbc2599fedf93e5151815">WATCHDOG_INTERTASK_CHECK_PERIOD_MS</a>&#160;&#160;&#160;1000 * 60</td></tr>
+<tr class="separator:abbc7ddda9aedbc2599fedf93e5151815"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade2115dfc4b045f3abcf7870255dd06f" id="r_ade2115dfc4b045f3abcf7870255dd06f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ade2115dfc4b045f3abcf7870255dd06f">WATCHDOG_CONNECTED_TASKS</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:ade2115dfc4b045f3abcf7870255dd06f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85c3bf44ec9e02a467f12cf00f090cbe" id="r_a85c3bf44ec9e02a467f12cf00f090cbe"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85c3bf44ec9e02a467f12cf00f090cbe">WATCHDOG_CHECK_DELAY_MS</a>&#160;&#160;&#160;500</td></tr>
+<tr class="separator:a85c3bf44ec9e02a467f12cf00f090cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ada441be13fcc168e85bcde040dacf4" id="r_a5ada441be13fcc168e85bcde040dacf4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ada441be13fcc168e85bcde040dacf4">WATCHDOG_USE_BUILT_IN</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a5ada441be13fcc168e85bcde040dacf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab67d95cc98fa5f681a5c6510d1ac75e9" id="r_ab67d95cc98fa5f681a5c6510d1ac75e9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab67d95cc98fa5f681a5c6510d1ac75e9">WATCHDOG_BUILT_IN_TIMEOUT_MS</a>&#160;&#160;&#160;(5 * 1000)</td></tr>
+<tr class="memdesc:ab67d95cc98fa5f681a5c6510d1ac75e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of milliseconds before watchdog will reboot without watchdog_update.  <br /></td></tr>
+<tr class="separator:ab67d95cc98fa5f681a5c6510d1ac75e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -119,8 +133,97 @@ Functions</h2></td></tr>
 <tr class="memitem:a594dbd14874f83f5660ab7210cc6ac1e" id="r_a594dbd14874f83f5660ab7210cc6ac1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a594dbd14874f83f5660ab7210cc6ac1e">watchdog_task</a> (void *pvParameters)</td></tr>
 <tr class="memdesc:a594dbd14874f83f5660ab7210cc6ac1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the watchdog reset loop and will stop if given the freeze signal from the watchdog_freeze function.  <br /></td></tr>
 <tr class="separator:a594dbd14874f83f5660ab7210cc6ac1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab992d4e0b5759fa8dc32c6df4b7f19ef" id="r_ab992d4e0b5759fa8dc32c6df4b7f19ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab992d4e0b5759fa8dc32c6df4b7f19ef">watchdog_intertask_kick</a> (uint8_t id)</td></tr>
+<tr class="memdesc:ab992d4e0b5759fa8dc32c6df4b7f19ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kicks the watchdog associated with the given ID.  <br /></td></tr>
+<tr class="separator:ab992d4e0b5759fa8dc32c6df4b7f19ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ab67d95cc98fa5f681a5c6510d1ac75e9" name="ab67d95cc98fa5f681a5c6510d1ac75e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab67d95cc98fa5f681a5c6510d1ac75e9">&#9670;&#160;</a></span>WATCHDOG_BUILT_IN_TIMEOUT_MS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define WATCHDOG_BUILT_IN_TIMEOUT_MS&#160;&#160;&#160;(5 * 1000)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Number of milliseconds before watchdog will reboot without watchdog_update. </p>
+
+</div>
+</div>
+<a id="a85c3bf44ec9e02a467f12cf00f090cbe" name="a85c3bf44ec9e02a467f12cf00f090cbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85c3bf44ec9e02a467f12cf00f090cbe">&#9670;&#160;</a></span>WATCHDOG_CHECK_DELAY_MS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define WATCHDOG_CHECK_DELAY_MS&#160;&#160;&#160;500</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ade2115dfc4b045f3abcf7870255dd06f" name="ade2115dfc4b045f3abcf7870255dd06f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade2115dfc4b045f3abcf7870255dd06f">&#9670;&#160;</a></span>WATCHDOG_CONNECTED_TASKS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define WATCHDOG_CONNECTED_TASKS&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abbc7ddda9aedbc2599fedf93e5151815" name="abbc7ddda9aedbc2599fedf93e5151815"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbc7ddda9aedbc2599fedf93e5151815">&#9670;&#160;</a></span>WATCHDOG_INTERTASK_CHECK_PERIOD_MS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define WATCHDOG_INTERTASK_CHECK_PERIOD_MS&#160;&#160;&#160;1000 * 60</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5a21200e6796c3d85a32a984195a4fc7" name="a5a21200e6796c3d85a32a984195a4fc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a21200e6796c3d85a32a984195a4fc7">&#9670;&#160;</a></span>WATCHDOG_MAX_QUEUE_ITEMS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define WATCHDOG_MAX_QUEUE_ITEMS&#160;&#160;&#160;16</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5ada441be13fcc168e85bcde040dacf4" name="a5ada441be13fcc168e85bcde040dacf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ada441be13fcc168e85bcde040dacf4">&#9670;&#160;</a></span>WATCHDOG_USE_BUILT_IN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define WATCHDOG_USE_BUILT_IN&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aa98318a40a13782db11e74f3dad8106f" name="aa98318a40a13782db11e74f3dad8106f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa98318a40a13782db11e74f3dad8106f">&#9670;&#160;</a></span>WDI_PIN</h2>
 
@@ -155,6 +258,31 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ab992d4e0b5759fa8dc32c6df4b7f19ef" name="ab992d4e0b5759fa8dc32c6df4b7f19ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab992d4e0b5759fa8dc32c6df4b7f19ef">&#9670;&#160;</a></span>watchdog_intertask_kick()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void watchdog_intertask_kick </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Kicks the watchdog associated with the given ID. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>ID of watchdog to kick </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a594dbd14874f83f5660ab7210cc6ac1e" name="a594dbd14874f83f5660ab7210cc6ac1e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a594dbd14874f83f5660ab7210cc6ac1e">&#9670;&#160;</a></span>watchdog_task()</h2>
 
@@ -171,6 +299,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Runs the watchdog reset loop and will stop if given the freeze signal from the watchdog_freeze function. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="watchdog_8c_a594dbd14874f83f5660ab7210cc6ac1e_cgraph.svg" width="312" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

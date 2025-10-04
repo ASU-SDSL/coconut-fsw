@@ -1,0 +1,9 @@
+<map id="ds18b20_read_temp" name="ds18b20_read_temp">
+<area shape="rect" id="Node000001" title="Reads the temperature from a ds18b20 This requires waiting for that conversion to finish,..." alt="" coords="5,55,160,80"/>
+<area shape="rect" id="Node000002" href="$onewire__library_8h.html#adaf73c76a41dc4bd34ff4e4a2b17781f" title=" " alt="" coords="210,5,287,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,52,196,31,198,36,127,57"/>
+<area shape="rect" id="Node000003" href="$onewire__library_8h.html#aaefd21819e57b6063ff29519a48c76f8" title=" " alt="" coords="208,55,289,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="160,65,194,65,194,70,160,70"/>
+<area shape="rect" id="Node000004" href="$onewire__library_8h.html#ab92be9bb3fe3a2d3ca76272733888739" title=" " alt="" coords="209,104,288,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="127,77,197,99,196,104,125,83"/>
+</map>

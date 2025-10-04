@@ -35,7 +35,7 @@ var searchData=
   ['flight_20heritage_32',['Flight Heritage',['../md_docs_2docs_2DOCS.html#flight-heritage',1,'']]],
   ['flight_20software_33',['Flight Software',['../index.html#coconut-flight-software',1,'Coconut Flight Software'],['../md_docs_2docs_2DOCS.html',1,'Coconut Flight-Software']]],
   ['force_5fmount_34',['FORCE_MOUNT',['../filesystem_8h.html#adf2fbe27a51ec1fb696ebbdd4126274fa9193b7f5e3ef55df52437fa55aa5d184',1,'filesystem.h']]],
-  ['freq_35',['FREQ',['../mram_8h.html#a1b04ec1cde4d3032f558ed8ad05930a4',1,'mram.h']]],
+  ['freq_35',['FREQ',['../mram_8c.html#a1b04ec1cde4d3032f558ed8ad05930a4',1,'mram.c']]],
   ['fs_36',['fs',['../filesystem_8c.html#ae5bcde72e0e0b29ec86d00ba3e5cd51f',1,'filesystem.c']]],
   ['fs_5foperation_5ftype_37',['fs_operation_type',['../filesystem_8h.html#a92320da9db076eaf40dfdd204028a237',1,'filesystem.h']]],
   ['fs_5foperation_5ftype_5ft_38',['fs_operation_type_t',['../filesystem_8h.html#ac7c24302415a152d42bc9216c8136c37',1,'filesystem.h']]],

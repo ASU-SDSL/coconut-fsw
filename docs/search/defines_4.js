@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['filesystem_5fqueue_5flength_0',['FILESYSTEM_QUEUE_LENGTH',['../filesystem_8h.html#af2f50316b6040b99868ca6d765bc2bd1',1,'filesystem.h']]],
-  ['freq_1',['FREQ',['../mram_8h.html#a1b04ec1cde4d3032f558ed8ad05930a4',1,'mram.h']]]
+  ['empty_5fqueue_5fwait_5ftime_0',['EMPTY_QUEUE_WAIT_TIME',['../filesystem_8h.html#a176f06bc74d696ebac0f62ad61897364',1,'filesystem.h']]],
+  ['error_5flogs_5ffs_5fallocation_1',['ERROR_LOGS_FS_ALLOCATION',['../filesystem_8h.html#aa94c689b3d199f0049892fe25c3ec207',1,'filesystem.h']]]
 ];

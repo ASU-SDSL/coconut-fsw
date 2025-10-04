@@ -1,0 +1,7 @@
+<map id="ds18b20_start_conversion" name="ds18b20_start_conversion">
+<area shape="rect" id="Node000001" title="Triggers a temperature conversion on all ds18b20 devices on the onewire line. This can take up to 750..." alt="" coords="5,31,197,56"/>
+<area shape="rect" id="Node000002" href="$onewire__library_8h.html#aaefd21819e57b6063ff29519a48c76f8" title=" " alt="" coords="245,5,327,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,28,231,23,232,28,195,33"/>
+<area shape="rect" id="Node000003" href="$onewire__library_8h.html#ab92be9bb3fe3a2d3ca76272733888739" title=" " alt="" coords="247,55,325,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="198,53,233,58,233,63,197,58"/>
+</map>

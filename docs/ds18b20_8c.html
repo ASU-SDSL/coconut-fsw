@@ -97,13 +97,13 @@ $(function(){ initResizable(false); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ds18b20_8h_source.html">ds18b20.h</a>&quot;</code><br />
-<code>#include &quot;onewire_library.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="onewire__library_8h_source.html">onewire_library.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="log_8h_source.html">log.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="stdio_8h_source.html">stdio.h</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ds18b20.c:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ds18b20_8c__incl.svg" width="607" height="256"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="ds18b20_8c__incl.svg" width="100%" height="492"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -130,6 +130,8 @@ Macros</h2></td></tr>
 <tr class="separator:a5ad0ee303bc8a6145aaba4df2af4c2d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec59de92144356c5eee4cdaa806c2bb5" id="r_aec59de92144356c5eee4cdaa806c2bb5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aec59de92144356c5eee4cdaa806c2bb5">OW_SEARCH_ROM</a>&#160;&#160;&#160;0xF0</td></tr>
 <tr class="separator:aec59de92144356c5eee4cdaa806c2bb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa812fa3fa9648eca54a8d4c190ec7e01" id="r_aa812fa3fa9648eca54a8d4c190ec7e01"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa812fa3fa9648eca54a8d4c190ec7e01">DS18B20_TIMEOUT_MS</a>&#160;&#160;&#160;1000</td></tr>
+<tr class="separator:aa812fa3fa9648eca54a8d4c190ec7e01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d4cbd354934c5bbcb3f18a9d67d117b" id="r_a2d4cbd354934c5bbcb3f18a9d67d117b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d4cbd354934c5bbcb3f18a9d67d117b">ONEWIRE_PROGRAM_ADD_FAIL</a>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:a2d4cbd354934c5bbcb3f18a9d67d117b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b1533cb63d9e900805c4dbd16c909f1" id="r_a9b1533cb63d9e900805c4dbd16c909f1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b1533cb63d9e900805c4dbd16c909f1">ONEWIRE_DRIVER_INIT_FAIL</a>&#160;&#160;&#160;2</td></tr>
@@ -140,7 +142,7 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a77ee2f32d90e72a84b5dcddf9f4222c4" id="r_a77ee2f32d90e72a84b5dcddf9f4222c4"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77ee2f32d90e72a84b5dcddf9f4222c4">onewire_init</a> ()</td></tr>
-<tr class="memdesc:a77ee2f32d90e72a84b5dcddf9f4222c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the PIO block to be a OneWire bus.  <br /></td></tr>
+<tr class="memdesc:a77ee2f32d90e72a84b5dcddf9f4222c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the <a class="el" href="pio_8h.html#ac8e1b544d15c6d0c146052922ff986fb">PIO</a> block to be a OneWire bus.  <br /></td></tr>
 <tr class="separator:a77ee2f32d90e72a84b5dcddf9f4222c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac28489af27a9b70d2c7a03eb35617bea" id="r_ac28489af27a9b70d2c7a03eb35617bea"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac28489af27a9b70d2c7a03eb35617bea">ds18b20_start_conversion</a> ()</td></tr>
 <tr class="memdesc:ac28489af27a9b70d2c7a03eb35617bea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers a temperature conversion on all ds18b20 devices on the onewire line. This can take up to 750ms.  <br /></td></tr>
@@ -157,11 +159,11 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a6fd010ba63edf27e04dc3b3e2fd229e0" id="r_a6fd010ba63edf27e04dc3b3e2fd229e0"><td class="memItemLeft" align="right" valign="top">PIO&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6fd010ba63edf27e04dc3b3e2fd229e0">ds_pio</a> = pio0</td></tr>
+<tr class="memitem:a6fd010ba63edf27e04dc3b3e2fd229e0" id="r_a6fd010ba63edf27e04dc3b3e2fd229e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pio_8h.html#ac8e1b544d15c6d0c146052922ff986fb">PIO</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6fd010ba63edf27e04dc3b3e2fd229e0">ds_pio</a> = <a class="el" href="pio_8h.html#a916d05e71da7f2173cd22b46bbfa0a11">pio0</a></td></tr>
 <tr class="separator:a6fd010ba63edf27e04dc3b3e2fd229e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97afe35eeabac08d933d83e334614fae" id="r_a97afe35eeabac08d933d83e334614fae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#a91ad9478d81a7aaf2593e8d9c3d06a14">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97afe35eeabac08d933d83e334614fae">ds_gpio</a> = 25</td></tr>
 <tr class="separator:a97afe35eeabac08d933d83e334614fae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1cfd62d352b31c00cc36e6eb3a2ea1e" id="r_ad1cfd62d352b31c00cc36e6eb3a2ea1e"><td class="memItemLeft" align="right" valign="top">OW&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad1cfd62d352b31c00cc36e6eb3a2ea1e">ds_ow</a></td></tr>
+<tr class="memitem:ad1cfd62d352b31c00cc36e6eb3a2ea1e" id="r_ad1cfd62d352b31c00cc36e6eb3a2ea1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structOW.html">OW</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad1cfd62d352b31c00cc36e6eb3a2ea1e">ds_ow</a></td></tr>
 <tr class="separator:ad1cfd62d352b31c00cc36e6eb3a2ea1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae399e69e4ebeb264c2394f33806916b5" id="r_ae399e69e4ebeb264c2394f33806916b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="simulator_2pico-sdk_2hardware_2i2c_8h.html#a91ad9478d81a7aaf2593e8d9c3d06a14">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae399e69e4ebeb264c2394f33806916b5">ds_offset</a></td></tr>
 <tr class="separator:ae399e69e4ebeb264c2394f33806916b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -231,6 +233,20 @@ Variables</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">#define DS18B20_RECALL_EE&#160;&#160;&#160;0xb8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa812fa3fa9648eca54a8d4c190ec7e01" name="aa812fa3fa9648eca54a8d4c190ec7e01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa812fa3fa9648eca54a8d4c190ec7e01">&#9670;&#160;</a></span>DS18B20_TIMEOUT_MS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DS18B20_TIMEOUT_MS&#160;&#160;&#160;1000</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -387,6 +403,11 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>int16_t The temperature in C * 16 </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="ds18b20_8c_a5f77a33a7d9243a4c2035db0e66a7eb7_cgraph.svg" width="295" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -406,6 +427,11 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>More general ds18b20 onewire test, scans for all devices on the onewire bus. The pio config selection used is internal to this function (pin, pio block, etc.) </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="ds18b20_8c_a9f12d0ab8eaacfce053804381a428ea5_cgraph.svg" width="291" height="234"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -426,6 +452,11 @@ Variables</h2></td></tr>
 
 <p>Triggers a temperature conversion on all ds18b20 devices on the onewire line. This can take up to 750ms. </p>
 <dl class="section return"><dt>Returns</dt><dd>uint8_t Status code 0 -&gt; success 3 -&gt; ONEWIRE_NO_RESPONSES </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="ds18b20_8c_ac28489af27a9b70d2c7a03eb35617bea_cgraph.svg" width="332" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -448,7 +479,7 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ds18b20_8c_a846305b21f5e58359bea3b8f9f79773a_cgraph.svg" width="360" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ds18b20_8c_a846305b21f5e58359bea3b8f9f79773a_cgraph.svg" width="490" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -468,8 +499,13 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes the PIO block to be a OneWire bus. </p>
+<p>Initializes the <a class="el" href="pio_8h.html#ac8e1b544d15c6d0c146052922ff986fb">PIO</a> block to be a OneWire bus. </p>
 <dl class="section return"><dt>Returns</dt><dd>uint8_t Status code 0 -&gt; success 1 -&gt; ONEWIRE_PROGRAM_ADD_FAIL 2 -&gt; ONEWIRE_DRIVER_INIT_FAIL </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="ds18b20_8c_a77ee2f32d90e72a84b5dcddf9f4222c4_cgraph.svg" width="231" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -509,7 +545,7 @@ Here is the call graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">OW ds_ow</td>
+          <td class="memname"><a class="el" href="structOW.html">OW</a> ds_ow</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -523,7 +559,7 @@ Here is the call graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">PIO ds_pio = pio0</td>
+          <td class="memname"><a class="el" href="pio_8h.html#ac8e1b544d15c6d0c146052922ff986fb">PIO</a> ds_pio = <a class="el" href="pio_8h.html#a916d05e71da7f2173cd22b46bbfa0a11">pio0</a></td>
         </tr>
       </table>
 </div><div class="memdoc">

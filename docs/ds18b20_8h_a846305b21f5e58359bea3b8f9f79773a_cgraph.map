@@ -1,9 +1,19 @@
 <map id="ds18b20_test" name="ds18b20_test">
-<area shape="rect" id="Node000001" title="Test function for ds18b20." alt="" coords="5,55,115,80"/>
-<area shape="rect" id="Node000002" href="$ds18b20_8c.html#a5f77a33a7d9243a4c2035db0e66a7eb7" title="Reads the temperature from a ds18b20 This requires waiting for that conversion to finish,..." alt="" coords="181,5,336,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,52,193,31,194,37,112,57"/>
-<area shape="rect" id="Node000003" href="$ds18b20_8c.html#ac28489af27a9b70d2c7a03eb35617bea" title="Triggers a temperature conversion on all ds18b20 devices on the onewire line. This can take up to 750..." alt="" coords="163,55,355,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="115,65,149,65,149,70,115,70"/>
-<area shape="rect" id="Node000004" href="$ds18b20_8c.html#a77ee2f32d90e72a84b5dcddf9f4222c4" title="Initializes the PIO block to be a OneWire bus." alt="" coords="207,104,310,129"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="112,77,195,98,193,103,111,83"/>
+<area shape="rect" id="Node000001" title="Test function for ds18b20." alt="" coords="5,104,115,129"/>
+<area shape="rect" id="Node000002" href="$ds18b20_8c.html#a5f77a33a7d9243a4c2035db0e66a7eb7" title="Reads the temperature from a ds18b20 This requires waiting for that conversion to finish,..." alt="" coords="181,55,336,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,101,193,81,194,86,112,107"/>
+<area shape="rect" id="Node000006" href="$ds18b20_8c.html#ac28489af27a9b70d2c7a03eb35617bea" title="Triggers a temperature conversion on all ds18b20 devices on the onewire line. This can take up to 750..." alt="" coords="163,104,355,129"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="115,114,149,114,149,119,115,119"/>
+<area shape="rect" id="Node000007" href="$ds18b20_8c.html#a77ee2f32d90e72a84b5dcddf9f4222c4" title="Initializes the PIO block to be a OneWire bus." alt="" coords="207,153,310,179"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="112,127,195,147,193,153,111,132"/>
+<area shape="rect" id="Node000003" href="$onewire__library_8h.html#adaf73c76a41dc4bd34ff4e4a2b17781f" title=" " alt="" coords="405,5,482,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="306,52,391,29,392,34,308,57"/>
+<area shape="rect" id="Node000004" href="$onewire__library_8h.html#aaefd21819e57b6063ff29519a48c76f8" title=" " alt="" coords="403,55,484,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="336,65,389,65,389,70,336,70"/>
+<area shape="rect" id="Node000005" href="$onewire__library_8h.html#ab92be9bb3fe3a2d3ca76272733888739" title=" " alt="" coords="404,104,483,129"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="312,78,355,89,392,99,390,104,354,94,311,83"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="307,101,354,89,389,79,390,84,355,94,308,107"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="355,114,390,114,390,119,355,119"/>
+<area shape="rect" id="Node000008" href="$onewire__library_8h.html#a6fb6df98c0d1ce0c677876b55b12f032" title=" " alt="" coords="409,153,478,179"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="310,163,395,163,395,169,310,169"/>
 </map>

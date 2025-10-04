@@ -1,0 +1,5 @@
+<map id="watchdog_task" name="watchdog_task">
+<area shape="rect" id="Node000001" title="Runs the watchdog reset loop and will stop if given the freeze signal from the watchdog_freeze functi..." alt="" coords="5,5,125,31"/>
+<area shape="rect" id="Node000002" href="$watchdog_8c.html#acebf79aaf42978286eec0c3e016d7b0a" title="Task that controls the resetting of the hardware watchdog &#45; MAX706RESA &#45; this module needs to be rese..." alt="" coords="173,5,307,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,15,160,15,160,21,125,21"/>
+</map>
