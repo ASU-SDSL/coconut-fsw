@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include <pthread.h>
 
 #include <FreeRTOS.h>
 #include <task.h>
@@ -228,6 +227,11 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             break;
         
         case AX25_ON_OFF:
+            // check auth token 
+            if(payload_size < sizeof(ax25_on_off_t)) break; 
+            ax25_on_off_t* ax25_on_of_args = (ax25_on_off_t*)payload_buf; 
+            if(!is_admin(ax25_on_of_args->admin_token)) break;
+
             //Get the status; maybe block until we get the mutex
             // Make an if statement for if we dont get the mutex; binary semifor 
             if(xSemaphoreTake(ax25_Mutex, portMAX_DELAY)){
@@ -236,7 +240,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
                 xSemaphoreGive(ax25_Mutex);
                 break;
             }else{
-                logln_info("Mutex was never reached");
+                logln_error("Mutex was never reached");
                 break;
             }
         case FSW_ACK:
@@ -328,7 +332,7 @@ void command_task(void* unused_arg) {
             vPortFree(msg); 
         }
         else if(ax25_mode && !command_enabled) {
-            logln_info("Couldn't read the package because command is off");
+            logln_error("Couldn't read the package because command is off");
         }
         else {
             logln_info("Received sync bytes, moving to decode"); 

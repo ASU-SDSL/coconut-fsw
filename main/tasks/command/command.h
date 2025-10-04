@@ -145,6 +145,10 @@ typedef struct __attribute__((__packed__)) {
     uint8_t second;
 } set_rtc_time_t; 
 
+typedef struct __attribute__((__packed__)) { 
+    uint8_t admin_token[TOKEN_LENGTH];
+} ax25_on_off_t; 
+
 /// Internal Command Thread Structs
 QueueHandle_t command_byte_queue;
 typedef uint8_t command_byte_t;
