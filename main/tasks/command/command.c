@@ -80,6 +80,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     // Data may or may not be returned, this data should be allocated and freed if needed depending on the packet
     uint8_t *return_data = NULL;
     int return_data_len = 0;
+    uint8_t res = 0; 
 
     switch (header.apid) {
         case UPLOAD_USER_DATA:
@@ -153,14 +154,24 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (payload_size < sizeof(add_user_t)) break;
             add_user_t* add_user_args = (add_user_t*)payload_buf;
             if (!is_admin(add_user_args->admin_token)) break;
-            add_user(add_user_args->new_user_name, add_user_args->new_user_token);
+            res = (uint8_t) add_user(add_user_args->new_user_name, add_user_args->new_user_token);
+
+            return_data = (uint8_t *) pvPortMalloc(sizeof(uint8_t)); 
+            memcpy(return_data, &res, sizeof(uint8_t)); 
+            return_data_len = 1;
+
             break;
         case DELETE_USER:
             if (payload_size < sizeof(delete_user_t)) break;
             delete_user_t* delete_user_args = (delete_user_t*)payload_buf;
             if (!is_admin(delete_user_args->admin_token)) break;
             if (mkfs_args->confirm != 1) break;
-            delete_user(delete_user_args->user_name);
+            res = (uint8_t) delete_user(delete_user_args->user_name);
+
+            return_data = (uint8_t *) pvPortMalloc(sizeof(uint8_t)); 
+            memcpy(return_data, &res, sizeof(uint8_t)); 
+            return_data_len = 1;
+
             break;
 
         case MCU_POWER_CYCLE:

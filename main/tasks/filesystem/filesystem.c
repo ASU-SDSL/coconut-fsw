@@ -6,7 +6,6 @@
 
 FATFS fs;
 
-static 
 void fs_log(const char *str, ...) {
     // alloc telemetry packet
     log_telemetry_t *packet = pvPortMalloc(sizeof(log_telemetry_t) + MAX_LOG_STR_SIZE + 1);
@@ -266,6 +265,7 @@ void _mkfs() {
     vPortFree(buf);
     if (fr != FR_OK) {
         logln_error("Failed to make filesystem (%d)", fr);
+        fs_log("Failed make fs (%d)", fr);
         return;
     }
     
@@ -274,8 +274,11 @@ void _mkfs() {
     fr = f_mount(&fs, "0:", 1);
     if (fr != FR_OK) {
         logln_error("Failed to mount filesystem (%d)", fr);
+        fs_log("Failed mount fs (%d)", fr);
         return;
     }
+
+    fs_log("mkfs success"); 
 }
 
 int32_t _fwrite(const char* file_name, const uint8_t *data, size_t size, bool append_flag) {
@@ -347,6 +350,9 @@ void _fdelete(const char *file_name) {
     fr = f_unlink(file_name);
     if (fr != FR_OK) {
         logln_error("Could not remove file: %s (%d)\n", file_name, fr);
+        fs_log("rm file %s failed (%d)\n", file_name, fr);
+    } else {
+        fs_log("File removed"); 
     }
 }
 
@@ -391,6 +397,9 @@ void _fmkdir(const char *dir_name) {
     fr = f_mkdir(dir_name);
     if (fr != FR_OK) {
         logln_error("Failed to make directory %s during mkdir (%d)\n", dir_name, fr);
+        fs_log("Failed to make directory %s during mkdir (%d)\n", dir_name, fr);
+    } else {
+        fs_log("mkdir %s success\n", dir_name);
     }
 }
 
@@ -494,7 +503,7 @@ void filesystem_task(void* unused_arg) {
             case WRITE: {
                 write_operation_t write_op = received_operation.file_operation.write_op;
                 int32_t res = _fwrite(write_op.file_name, write_op.data, write_op.size, write_op.append_flag);
-                fs_log("Write result: %d\n", res);
+                fs_log("Write res: %d\n", res);
                 break;
             }
             case LIST_DIRECTORY: {
