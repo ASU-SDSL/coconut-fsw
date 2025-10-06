@@ -1,3 +1,21 @@
+/**
+ * @file radio.cpp
+ * @brief Radio operations and the task handling them
+ * 
+ * Notes:
+ * one thread
+ * queue polling to check on the size of queue each iteration
+ * radio receive polling
+ * On receive:
+ * Send an interrupt when packet receive https://jgromes.github.io/RadioLib/class_s_x127x.html#ad63322c9c58dd82e4b9982f10e546f33
+ * In interrupt set a flag -- set the flag to be volatile
+ * send to command.c to parse
+ * On send:
+ * poll the queue
+ * if smt in queue send on radio
+ *
+ * RadioLib: https://github.com/jgromes/RadioLib
+ */
 #include <RadioLib.h>
 #include "radio.h"
 #include <FreeRTOS.h>
@@ -8,18 +26,11 @@
 #include "spacepacket.h"
 #include "command.h"
 
-// pinout for on breadboard
-// #define RADIO_SX_NSS_PIN 28
-// #define RADIO_SX_DIO1_PIN 15
-// #define RADIO_SX_NRST_PIN 27
-// #define RADIO_SX_BUSY_PIN 5
-
-// #define RADIO_RFM_NSS_PIN 7
-// #define RADIO_RFM_DIO0_PIN 17
-// #define RADIO_RFM_NRST_PIN 22
-// #define RADIO_RFM_DIO1_PIN 26
-
-// pinout for on pcb
+/**
+ * @defgroup Radio Pinouts
+ * @brief Radio pinouts for PCB
+ * @{
+ */
 #define RADIO_SX_NSS_PIN 5
 #define RADIO_SX_DIO1_PIN 22
 #define RADIO_SX_NRST_PIN 24
@@ -29,16 +40,24 @@
 #define RADIO_RFM_DIO0_PIN 27
 #define RADIO_RFM_NRST_PIN 20
 #define RADIO_RFM_DIO1_PIN 29
+/* @} end of Radio Pinouts */
 
-#define RADIO_FREQ 434.0
-#define RADIO_BW 125.0
-#define RADIO_SF 9
-#define RADIO_CR 7
+/**
+ * @defgroup LoRa Macros
+ * @brief Macros to set LoRa Radio Configuration 
+ * 
+ * @{
+ */
+#define RADIO_FREQ 437.400
+#define RADIO_BW 62.5
+#define RADIO_SF 10
+#define RADIO_CR 5
 #define RADIO_SYNC_WORD 18
 #define RADIO_PREAMBLE_LEN 8
 #define RADIO_RFM_GAIN 0
 #define RADIO_SX_TXCO_VOLT 0.0
 #define RADIO_SX_USE_REG_LDO false
+/** @} end of LoRa Macros */
 
 #define RADIO_MAX_QUEUE_ITEMS 64
 
@@ -56,28 +75,21 @@
 #define RADIO_LOGGING_CAD 0
 #define TEMP_ON 0
 
-/**
- * one thread
- * queue polling to check on the size of queue each iteration
- * radio receive polling
- * On receive:
- * Send an interrupt when packet receive https://jgromes.github.io/RadioLib/class_s_x127x.html#ad63322c9c58dd82e4b9982f10e546f33
- * In interrupt set a flag -- set the flag to be volatile
- * send to command.c to parse
- * On send:
- * poll the queue
- * if smt in queue send on radio
- */
+
 #define RADIO_STATE_NO_ATTEMPT 1 
 #define RADIO_ERROR_CUSTOM 2
-#define RADIO_RECEIVE_TIMEOUT_MS 1000
-#define RADIO_TRANSMIT_TIMEOUT_MS 10000
+#define RADIO_RECEIVE_TIMEOUT_MS 5000 ///< to account for SF 10 and BW 62.5 giving an airtime of 4.5-5s for 256 byte packet
+#define RADIO_TRANSMIT_TIMEOUT_MS 5000 ///< to account for SF 10 and BW 62.5 giving an airtime of 4.5-5s for 256 byte packet
 #define RADIO_NO_CONTACT_PANIC_TIME_MS (1000UL * 60 * 60 * 24 * 7) //  7 days in ms
 
+/// @brief RadioLib Hal for the Pico SDK 
 PicoHal *picoHal = new PicoHal(spi0, PICO_DEFAULT_SPI_TX_PIN, PICO_DEFAULT_SPI_RX_PIN, PICO_DEFAULT_SPI_SCK_PIN);
 // Add interupt pin
-RFM98 radioRFM = new Module(picoHal, RADIO_RFM_NSS_PIN, RADIO_RFM_DIO0_PIN, RADIO_RFM_NRST_PIN, RADIO_RFM_DIO1_PIN); //RADIOLIB_NC); // RFM98 is an alias for SX1278
+/// @brief RFM98PW Radio (RFM98 is slightly different but it's really just power settings)
+RFM98 radioRFM = new Module(picoHal, RADIO_RFM_NSS_PIN, RADIO_RFM_DIO0_PIN, RADIO_RFM_NRST_PIN, RADIO_RFM_DIO1_PIN); // RFM98 is an alias for SX1278
+/// @brief SX1268F30 Radio (SX1268 is slightly different but it's really just power settings)
 SX1268 radioSX = new Module(picoHal, RADIO_SX_NSS_PIN, RADIO_SX_DIO1_PIN, RADIO_SX_NRST_PIN, RADIO_SX_BUSY_PIN); 
+/// @brief Pointer to current radio module in use
 PhysicalLayer* radio = &radioSX;
 
 int radio_state_RFM = RADIO_STATE_NO_ATTEMPT; 

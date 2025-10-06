@@ -13,6 +13,7 @@
 
 #define COMMAND_MAX_QUEUE_ITEMS 0x200
 #define COMMAND_SYNC_BYTES "\x35\x2E\xF8\x53" 
+#define AX25_FLAG 0x7E
 
 /**
  * @brief Command Structs and Types
@@ -44,6 +45,8 @@ typedef enum command_apid {
     // 01 - radio
     RADIO_CONFIG = 101,
     RADIO_STAT = 104, 
+    ANTENNA_DEPLOY = 105,
+    AX25_ON_OFF = 106,
 
     // 02 - device 
     SET_RTC_TIME = 201, 
@@ -58,34 +61,34 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
 } file_ls_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
 } file_mkdir_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
 } file_cat_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
 } file_delete_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
     uint16_t data_len;
     uint8_t data[];
 } file_append_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char path[0xFF];
+    char path[MAX_PATH_SIZE];
 } file_touch_t;
 
 typedef struct __attribute__((__packed__)) {
@@ -141,6 +144,10 @@ typedef struct __attribute__((__packed__)) {
     uint8_t minute;
     uint8_t second;
 } set_rtc_time_t; 
+
+typedef struct __attribute__((__packed__)) { 
+    uint8_t admin_token[TOKEN_LENGTH];
+} ax25_on_off_t; 
 
 /// Internal Command Thread Structs
 QueueHandle_t command_byte_queue;
