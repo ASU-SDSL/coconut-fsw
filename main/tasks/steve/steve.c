@@ -67,13 +67,14 @@ void schedule_delayed_job_mins(const char* job_name, job_func job_func_ptr, unsi
 
 void kill_steve_job(const char* job_name) {
     // Take mutex
-    xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
-    // Find job
-    steve_job_t* job = find_steve_job(job_name);
-    // Delete job
-    delete_steve_job(job);
-    // Give mutex back
-    xSemaphoreGive(g_steve_context.mutex);
+    if(xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY)){
+        // Find job
+        steve_job_t* job = find_steve_job(job_name);
+        // Delete job
+        delete_steve_job(job);
+        // Give mutex back
+        xSemaphoreGive(g_steve_context.mutex);
+    }
 };
 
 void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time) {
@@ -83,43 +84,46 @@ void edit_steve_job_recur_time(const char* job_name, unsigned long ms_recur_time
         logln_warn("Recur time for task %s less than scheduler check time resolution (%d ms)! May lead to inaccurate timings", job_name, SCHEDULER_CHECK_DELAY_MS);
     }
     // Take mutex
-    xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
-    // Find job
-    steve_job_t* job = find_steve_job(job_name);
-    if (job == NULL) {
-        logln_error("Can't find task to change recur time! %s", job_name)
-        return;
+    if(xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY)){
+        // Find job
+        steve_job_t* job = find_steve_job(job_name);
+        if (job == NULL) {
+            xSemaphoreGive(g_steve_context.mutex);
+            logln_error("Can't find task to change recur time! %s", job_name)
+            return;
+        }
+        // Calculate exec time in ticks
+        TickType_t tick_delay = ms_to_ticks(ms_recur_time);
+        // Roll back execution time
+        job->execute_time -= job->recur_time;
+        // Edit recur time
+        job->recur_time = tick_delay;
+        // Set new execution time
+        job->execute_time += job->recur_time;
+        // Give mutex back
+        xSemaphoreGive(g_steve_context.mutex);
     }
-    // Calculate exec time in ticks
-    TickType_t tick_delay = ms_to_ticks(ms_recur_time);
-    // Roll back execution time
-    job->execute_time -= job->recur_time;
-    // Edit recur time
-    job->recur_time = tick_delay;
-    // Set new execution time
-    job->execute_time += job->recur_time;
-    // Give mutex back
-    xSemaphoreGive(g_steve_context.mutex);
 }
 
 
 void print_debug_exec_times() {
     logln_info("S.T.E.V.E. Tasks:");
     // Take mutex
-    xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
-    for (int i = 0; i < g_steve_context.job_count; i++) {
-        steve_job_t *temp = g_steve_context.jobs[i];
-        // make sure job is valid
-        if (temp == NULL) {
-            continue;
+    if(xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY)){
+        for (int i = 0; i < g_steve_context.job_count; i++) {
+            steve_job_t *temp = g_steve_context.jobs[i];
+            // make sure job is valid
+            if (temp == NULL) {
+                continue;
+            }
+            // print details
+            int ms_until_exec = ticks_to_ms(temp->execute_time - get_uptime()); // NOTE: will not be 100% accurate until get_uptime uses a RTC, currently per-task
+            int secs_until_exec = ms_to_secs(ms_until_exec);
+            logln("\t%s\t\t%ds", temp->name, secs_until_exec); // example: "heartbeat_telemetry      23s"
         }
-        // print details
-        int ms_until_exec = ticks_to_ms(temp->execute_time - get_uptime()); // NOTE: will not be 100% accurate until get_uptime uses a RTC, currently per-task
-        int secs_until_exec = ms_to_secs(ms_until_exec);
-        logln("\t%s\t\t%ds", temp->name, secs_until_exec); // example: "heartbeat_telemetry      23s"
+        // Give mutex back
+        xSemaphoreGive(g_steve_context.mutex);
     }
-    // Give mutex back
-    xSemaphoreGive(g_steve_context.mutex);
 }
 
 // Internal Scheduler Functions
@@ -148,12 +152,14 @@ void create_steve_job(const char* job_name, TickType_t execute_time, TickType_t 
     if ((recur_time > 0) && (recur_time < SCHEDULER_CHECK_DELAY_TICKS)) {
         logln_warn("Recur time for task %s less than scheduler check time resolution (%d ms)! May lead to inaccurate timings", job_name, SCHEDULER_CHECK_DELAY_MS);
     }
-    xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
-    if (g_steve_context.job_count >= (MAX_JOBS-1)) {
-        logln_error("Too many jobs!!! You can only create %d jobs", MAX_JOBS);
-        return;
+    if(xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY)){
+        if (g_steve_context.job_count >= (MAX_JOBS-1)) {
+            logln_error("Too many jobs!!! You can only create %d jobs", MAX_JOBS);
+            xSemaphoreGive(g_steve_context.mutex);
+            return;
+        }
+        xSemaphoreGive(g_steve_context.mutex);
     }
-    xSemaphoreGive(g_steve_context.mutex);
     // Check name
     size_t job_name_len = strlen(job_name);
     if (job_name_len + 1 > MAX_JOB_NAME_LEN) {
@@ -170,9 +176,10 @@ void create_steve_job(const char* job_name, TickType_t execute_time, TickType_t 
     sr->recur_time = recur_time;
     sr->func_ptr = job_func_ptr;
     // Add job to list
-    xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
-    g_steve_context.jobs[g_steve_context.job_count++] = sr;
-    xSemaphoreGive(g_steve_context.mutex);
+    if(xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY)){
+        g_steve_context.jobs[g_steve_context.job_count++] = sr;
+        xSemaphoreGive(g_steve_context.mutex);
+    }
 }
 
 void run_steve_job(steve_job_t* job) {
@@ -262,24 +269,25 @@ void steve_task(void* unused_arg) {
     while (true) {
 
         // Take mutex
-        xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);
-        // Check each job to see if it needs to be executed
-        for (int i = 0; i < g_steve_context.job_count; i++) {
-            // Get indexed job
-            steve_job_t* indexed_job = g_steve_context.jobs[i];
-            // Check if job is valid
-            if (indexed_job == NULL) {
-                continue;
+        if(xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY)){
+            // Check each job to see if it needs to be executed
+            for (int i = 0; i < g_steve_context.job_count; i++) {
+                // Get indexed job
+                steve_job_t* indexed_job = g_steve_context.jobs[i];
+                // Check if job is valid
+                if (indexed_job == NULL) {
+                    continue;
+                }
+                // Check if job is ready to run
+                TickType_t task_tick_count = get_uptime();
+                if (task_tick_count >= indexed_job->execute_time) {
+                    // Run the job if so
+                    run_steve_job(indexed_job);
+                }
             }
-            // Check if job is ready to run
-            TickType_t task_tick_count = get_uptime();
-            if (task_tick_count >= indexed_job->execute_time) {
-                // Run the job if so
-                run_steve_job(indexed_job);
-            }
+            // Give back mutex
+            xSemaphoreGive(g_steve_context.mutex);
         }
-        // Give back mutex
-        xSemaphoreGive(g_steve_context.mutex);
         // Sleep for a bit before checking again
         vTaskDelay(ms_to_ticks(SCHEDULER_CHECK_DELAY_MS));
     }
