@@ -13,6 +13,7 @@
 #include <stdint.h>
 
 QueueHandle_t radio_queue;
+extern TaskHandle_t xRadioTaskHandler;
 
 /// @brief Radio operation types for use in radio_queue_operations_t in the radio_queue
 typedef enum radio_operation_type {
@@ -21,7 +22,6 @@ typedef enum radio_operation_type {
     ENABLE_RFM98,
     ENABLE_SX1268,
     RETURN_STATS,
-    SET_LORA_MODE, 
 } radio_operation_type_t;
 
 /// @brief Radio operation to be added to the radio_queue
@@ -32,8 +32,9 @@ typedef struct radio_queue_operations {
 } radio_queue_operations_t;
 
 // radio mode 
-#define RADIO_SAFE_MODE 0
-#define RADIO_FAST_MODE 1
+#define RADIO_NO_MODE 0   // resets notifier to this - can't be a mode
+#define RADIO_SAFE_MODE 1
+#define RADIO_FAST_MODE 2
 #define RADIO_FAST_MODE_MAX_DURATION_MS (1000 * 60 * 30) // 30 minutes 
 
 #define RADIO_STATE_FILE_NAME "radio_state.bin"

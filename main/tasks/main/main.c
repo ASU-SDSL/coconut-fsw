@@ -101,7 +101,7 @@ int main() {
                                          512, 
                                          NULL, 
                                          1,
-                                         NULL);
+                                         &xRadioTaskHandler);
 #endif
 
 

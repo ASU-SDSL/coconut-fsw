@@ -106,6 +106,7 @@ RFM98 radioRFM = new Module(picoHal, RADIO_RFM_NSS_PIN, RADIO_RFM_DIO0_PIN, RADI
 SX1268 radioSX = new Module(picoHal, RADIO_SX_NSS_PIN, RADIO_SX_DIO1_PIN, RADIO_SX_NRST_PIN, RADIO_SX_BUSY_PIN); 
 /// @brief Pointer to current radio module in use
 PhysicalLayer* radio = &radioSX;
+TaskHandle_t xRadioTaskHandler; 
 
 ///< Timestamp of last radio packet received
 static uint64_t radio_last_received_time = 0; 
@@ -206,18 +207,6 @@ extern "C"
         }
         xQueueSendToBack(radio_queue, &buf, portMAX_DELAY); 
     }
-    void radio_queue_lora_mode_change(uint8_t new_mode){
-        radio_queue_operations_t buf; 
-        buf.operation_type = radio_operation_type_t::SET_LORA_MODE; 
-        uint8_t* heap_buf = static_cast<uint8_t *>(pvPortMalloc(1));
-        *(buf.data_buffer) = new_mode; 
-        buf.data_size = 1; 
-        while(!radio_queue) 
-        {
-            vTaskDelay(GSE_CHECK_DELAY_MS / portTICK_PERIOD_MS); 
-        }
-        xQueueSendToBack(radio_queue, &buf, portMAX_DELAY); 
-    }
     uint8_t radio_which(){
         return (radio == &radioRFM); 
     }
@@ -268,7 +257,6 @@ void radio_general_flag_SX(){
 
 static uint8_t radio_mode = RADIO_SAFE_MODE; 
 static uint32_t last_fast_mode_start = 0; 
-static bool radio_auto_safe_queued = false; 
 
 // radio initializers 
 static void radio_begin_rfm98(){
@@ -288,8 +276,6 @@ static void radio_begin_sx1268(){
 }
 
 int radio_set_mode(uint8_t mode){
-    // safe can now be auto queued again 
-    if(mode == RADIO_SAFE_MODE) radio_auto_safe_queued = false; 
     // check no change
     if(radio_mode == mode) return 0; 
 
@@ -546,6 +532,12 @@ void radio_task_cpp(){
     int transmission_size = 0;  
 
     while(true){
+        // take notification for LoRa mode switching 
+        uint32_t mode = ulTaskNotifyTake(pdTRUE, 0);
+        // if there is a setting 
+        if(mode > 0){
+            radio_set_mode(mode);
+        }
         // save now time since boot 
         uint32_t radio_now = to_ms_since_boot(get_absolute_time());
 
@@ -555,10 +547,9 @@ void radio_task_cpp(){
         }
 
         // if the radio has been in fast mode for too long 
-        if(radio_mode == RADIO_FAST_MODE && (radio_auto_safe_queued == false) && time_between(radio_now, last_fast_mode_start) > RADIO_FAST_MODE_MAX_DURATION_MS){
+        if(radio_mode == RADIO_FAST_MODE && time_between(radio_now, last_fast_mode_start) > RADIO_FAST_MODE_MAX_DURATION_MS){
             // queue a switch back to safe more 
-            radio_queue_lora_mode_change(RADIO_SAFE_MODE); 
-            radio_auto_safe_queued = true; 
+            radio_set_mode(RADIO_SAFE_MODE); 
         }
 
         // check operation duration to avoid hanging in an operation mode 
@@ -835,11 +826,6 @@ void radio_task_cpp(){
                     send_telemetry(RADIO_STAT_RES, payload_buffer, payload_size);
                     
                 }
-                    break;
-
-                case SET_LORA_MODE: 
-                    radio_set_mode(*(rec.data_buffer)); 
-                    vPortFree(rec.data_buffer);
                     break;
 
                 default:
