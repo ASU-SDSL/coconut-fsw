@@ -44,6 +44,7 @@ typedef enum command_apid {
 
     // 01 - radio
     RADIO_CONFIG = 101,
+    RADIO_ECHO = 102, // not used
     RADIO_SET_MODE = 103,
     RADIO_STAT = 104, 
     ANTENNA_DEPLOY = 105,
