@@ -67,6 +67,7 @@ SemaphoreHandle_t ax25_Mutex = NULL;
 #define DEPLOY_JOB_ACK "Deploy Job Scheduled"
 
 void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
+    radio_flag_valid_packet(); 
     
     if(xSemaphoreTake(commandCountMutex, portMAX_DELAY)){
         command_count++;
@@ -199,10 +200,21 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             radio_stat_t* radio_stat_args = (radio_stat_t*)payload_buf; 
             if(!is_admin(radio_stat_args->admin_token)) break;
 
-            logln("Queuing stat response"); 
+            logln_info("Queuing stat response"); 
             radio_queue_stat_response(); 
             break;
 
+        case RADIO_SET_MODE: 
+            if (payload_size < sizeof(radio_set_mode_t)) break;
+            radio_set_mode_t* radio_set_mode_args = (radio_set_mode_t*)payload_buf; 
+            if(!is_admin(radio_set_mode_args->admin_token)) break; 
+
+            logln_info("Changing radio mode to %d", radio_set_mode_args->radio_mode); 
+            // bypass radio queue 
+            xTaskNotify(xRadioTaskHandler, radio_set_mode_args->radio_mode, eSetValueWithOverwrite);
+
+            break;
+            
         case ANTENNA_DEPLOY:
             // Schedule deployment in STEVE for right now
             schedule_delayed_job_ms("DEPLOY_ANTENNA", &deploy_antenna_job, 10); 
