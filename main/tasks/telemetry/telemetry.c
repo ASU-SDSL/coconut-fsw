@@ -20,7 +20,7 @@
 
 
 
-#define configTOTAL_HEAP_SIZE 4096; //for testing only
+
 void system_info(){
     system_info_telemetry_t sys_info;
 
