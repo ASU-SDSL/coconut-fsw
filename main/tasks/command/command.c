@@ -163,8 +163,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             delete_user(delete_user_args->user_name);
             break;
         case SYS_INFO:
-            // This is a placeholder for system info, not implemented yet
-            logln_info("System info command received, but not implemented yet.");
+            system_info();
             break;
         case MCU_POWER_CYCLE:
             if(payload_size < sizeof(mcu_power_cycle_t)) break;

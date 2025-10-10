@@ -108,11 +108,10 @@ typedef struct __attribute__((__packed__)) {
 } ack_telemetry_t;
 
 typedef struct __attribute__((__packed__)) {
-    uint8_t processor_load; 
-    uint8_t free_heap_memory; 
-    uint8_t min_heap_memory;
-    uint8_t current_stack_memory; 
-    uint8_t min_stack_memory;;
+    uint8_t processor_load;
+    uint8_t task_count;
+    uint8_t heap_percent;
+    uint8_t stack_percent; 
 } system_info_telemetry_t;
 
 /* USER FUNCTIONS */
@@ -121,3 +120,4 @@ void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t pa
 /* INTERNAL FUNCTIONS */
 // Main Task
 void telemetry_task(void* unused_arg);
+void system_info(void);
