@@ -6,6 +6,7 @@
 #include <FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
+#include <portable.h>
 
 #include "gse.h"
 #include "radio.h"
@@ -13,6 +14,57 @@
 #include "telemetry.h"
 #include "spacepacket.h"
 #include "log.h"
+#include "heartbeat_job.h"
+#include "command.h"
+#include "FreeRTOSConfig.h"
+
+
+
+
+void system_info(){
+    system_info_telemetry_t sys_info;
+
+    //get cpu load
+    sys_info.processor_load = uxTaskGetNumberOfTasks(); //get number of task 
+    TaskStatus_t *pTaskStatus; //task array
+    uint32_t totalTask; //total number of tasks
+    
+    //allocate memory for task array
+    pTaskStatus = pvPortMalloc(sys_info.task_count * sizeof(TaskStatus_t));
+    //check if malloc return null
+    if (pTaskStatus != NULL){
+        sys_info.task_count = uxTaskGetSystemState(pTaskStatus, sys_info.task_count, &totalTask);
+    }
+
+    logln_info("Task CPU Usage:\n");
+    for(int i = 0; i < sys_info.task_count;i++){
+        uint8_t cpu_percentage = 0;
+        if(totalTask > 0){
+            //get percentage 
+            cpu_percentage = (pTaskStatus[i].ulRunTimeCounter * 100) / totalTask;
+        }   
+    }
+    //free memory
+    vPortFree(pTaskStatus);
+
+    //get heap memory
+    uint32_t free_heap_memory = xPortGetFreeHeapSize();
+    uint8_t min_heap_memory = xPortGetMinimumEverFreeHeapSize();
+
+    //used heap memory
+    uint16_t used_heap =  configTOTAL_HEAP_SIZE - free_heap_memory;
+    sys_info.heap_percent = (used_heap * 100) / configTOTAL_HEAP_SIZE;
+
+    //get stack memory
+    uint16_t stack_free = uxTaskGetStackHighWaterMark(NULL);
+    uint16_t stack_total = configMINIMAL_STACK_SIZE;
+    uint16_t used_stack = stack_total - stack_free; 
+    sys_info.stack_percent = (used_stack * 100) / stack_total;
+
+    //Send telemetry
+    send_telemetry(SYS_INFO, (char*)&sys_info, sizeof(sys_info));
+
+}
 
 void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t payload_size) {
     // Build transmission buffer struct
@@ -26,6 +78,7 @@ void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t pa
         xQueueSendToBack(telemetry_queue, &telemetry, portMAX_DELAY);
     }
 }
+
 
 void telemetry_task(void* unused_arg) {
     // Initialize telemetry context

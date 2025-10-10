@@ -162,7 +162,9 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (mkfs_args->confirm != 1) break;
             delete_user(delete_user_args->user_name);
             break;
-
+        case SYS_INFO:
+            system_info();
+            break;
         case MCU_POWER_CYCLE:
             if(payload_size < sizeof(mcu_power_cycle_t)) break;
             mcu_power_cycle_t* mcu_power_cycle_args = (mcu_power_cycle_t*)payload_buf; 
