@@ -69,6 +69,8 @@
 #define RADIO_RFM_GAIN 0
 #define RADIO_SX_TXCO_VOLT 0.0
 #define RADIO_SX_USE_REG_LDO false
+#define RADIO_SX_POWER 21           // to get 30 dBm
+#define RADIO_RFM_POWER 22          // to get 30 dBm
 /** @} end of LoRa Macros */
 
 #define RADIO_MAX_QUEUE_ITEMS 64
@@ -127,7 +129,6 @@ static void set_radio_last_received_time(uint64_t new_time){
 int radio_state_RFM = RADIO_STATE_NO_ATTEMPT; 
 int radio_state_SX = RADIO_STATE_NO_ATTEMPT;
 
-uint8_t radio_transmit_power = 21;
 
 #ifdef __cplusplus
 extern "C"
@@ -261,17 +262,17 @@ static uint32_t last_fast_mode_start = 0;
 // radio initializers 
 static void radio_begin_rfm98(){
     if(radio_mode == RADIO_FAST_MODE){
-        radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW_FAST, RADIO_SF_FAST, RADIO_CR_FAST, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+        radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW_FAST, RADIO_SF_FAST, RADIO_CR_FAST, RADIO_SYNC_WORD, RADIO_RFM_POWER, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
     } else {
-        radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW_SAFE, RADIO_SF_SAFE, RADIO_CR_SAFE, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
+        radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW_SAFE, RADIO_SF_SAFE, RADIO_CR_SAFE, RADIO_SYNC_WORD, RADIO_RFM_POWER, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
     }
 }
 
 static void radio_begin_sx1268(){
     if(radio_mode == RADIO_FAST_MODE){
-        radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW_FAST, RADIO_SF_FAST, RADIO_CR_FAST, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+        radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW_FAST, RADIO_SF_FAST, RADIO_CR_FAST, RADIO_SYNC_WORD, RADIO_SX_POWER, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
     } else {
-        radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW_SAFE, RADIO_SF_SAFE, RADIO_CR_SAFE, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
+        radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW_SAFE, RADIO_SF_SAFE, RADIO_CR_SAFE, RADIO_SYNC_WORD, RADIO_SX_POWER, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
     }
 }
 
@@ -344,7 +345,6 @@ void radio_panic(){
 
             // initialize RFM98
             radio_hardware_switch_to(&radioRFM); 
-            //radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
             radio_begin_rfm98(); 
             #if RADIO_LOGGING
             printf("Res: %d\n", radio_state_RFM); 
@@ -373,7 +373,6 @@ void radio_panic(){
 
             radio_hardware_switch_to(&radioSX); 
             // initialize SX1268
-            // radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
             radio_begin_sx1268(); 
             #if RADIO_LOGGING
             printf("Res: %d\n", radio_state_SX); 
@@ -434,7 +433,6 @@ void init_radio()
 
     // If the RFM is physically wired into the board it needs to call begin() before the SX1268
     // my current theory as to why is that it before begin() it is polluting the SPI line
-    // radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
     radio_begin_rfm98(); 
 
     if(radio_state_RFM == 0){
@@ -444,7 +442,6 @@ void init_radio()
     }
     else {
         radio_hardware_switch_to(&radioSX); 
-        // radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
         radio_begin_sx1268(); 
         if(radio_state_SX == 0){
             radioSX.setDio1Action(radio_general_flag_SX);
@@ -507,8 +504,9 @@ void init_radio()
 }
 
 void set_power_output(PhysicalLayer* radio_module, int8_t new_dbm){
-    radio_transmit_power = (new_dbm); 
-    radio_module->setOutputPower(radio_transmit_power); 
+    // do nothing bc the radios don't play nice on the same power settings 
+    // radio_transmit_power = (new_dbm); 
+    // radio_module->setOutputPower(radio_transmit_power); 
 }
 
 
@@ -774,7 +772,6 @@ void radio_task_cpp(){
                     printf("attempting swap to SX1268...\n"); 
                     #endif
                     radio_hardware_switch_to(&radioSX); 
-                    // radio_state_SX = radioSX.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_SX_TXCO_VOLT, RADIO_SX_USE_REG_LDO);
                     radio_begin_sx1268(); 
                     if(radio_state_SX == 0){
                         radioRFM.clearDio0Action();
@@ -794,7 +791,6 @@ void radio_task_cpp(){
                         printf("switch to SX failed with code: %d\n", radio_state_SX); 
                         #endif
                         radio_hardware_switch_to(&radioRFM); 
-                        // radio_state_RFM = radioRFM.begin(RADIO_FREQ, RADIO_BW, RADIO_SF, RADIO_CR, RADIO_SYNC_WORD, radio_transmit_power, RADIO_PREAMBLE_LEN, RADIO_RFM_GAIN);
                         radio_begin_rfm98(); 
                         if(radio_state_RFM != 0){
                             #if RADIO_LOGGING
