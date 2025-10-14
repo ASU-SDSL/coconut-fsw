@@ -38,7 +38,7 @@ TickType_t get_uptime() {
 }
 
 uint32_t time_between(uint32_t after, uint32_t before) {
-    if(after > before) return after - before;
+    if(after >= before) return after - before;
     else return (UINT32_MAX - before) + after; // catch rollover 
 }
 
@@ -76,7 +76,7 @@ void update_epoch_time(uint8_t year, uint8_t month, uint8_t date, uint8_t hour, 
     time_t temp_time = mktime(&temp); 
 
     if(xSemaphoreTake(epoch_time_mutex, portMAX_DELAY) == pdTRUE){
-        epoch_time = ((uint64_t)(temp_time)) * 1000; // epoch time should be in seconds 
+        epoch_time = ((uint64_t)(temp_time)) * 1000; // epoch time should be in milliseconds 
         xSemaphoreGive(epoch_time_mutex);
     } else {
         logln_error("Epoch time update failed");
@@ -87,7 +87,7 @@ void update_epoch_time(uint8_t year, uint8_t month, uint8_t date, uint8_t hour, 
 // using the size of the time_t to determine if the readings are unix epoch or since boot 
 uint64_t time_since_ms(uint64_t past_time){
   // less than 5 years worth of milliseconds -> past was a since boot 
-  if(past_time < (157784760000L)){
+  if(past_time < (31536000000ULL)){
     return (uint64_t) time_between(to_ms_since_boot(get_absolute_time()), past_time); 
   }
   // otherwise past was an epoch time 

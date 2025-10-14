@@ -86,7 +86,7 @@
 #define ERR_NONE 0
 #define NULL_QUEUE_WAIT_TIME 100
 
-#define RADIO_LOGGING 0
+#define RADIO_LOGGING 1
 #define RADIO_LOGGING_CAD 0
 #define TEMP_ON 1
 
@@ -330,7 +330,7 @@ int radio_hardware_switch_to(PhysicalLayer* new_radio){
 // toggle the radio until one of them works
 void radio_panic(){
     #if TEMP_ON || RADIO_LOGGING
-    printf("Critical Radio fail, panicking...\n");
+    printf("Critical Radio (%s : %d) fail, panicking...\n", (radio == &radioSX) ? "SX1268" : "RFM98", (radio == &radioSX) ? radio_state_SX : radio_state_RFM);
     #endif
 
     do {
@@ -540,7 +540,10 @@ void radio_task_cpp(){
         uint32_t radio_now = to_ms_since_boot(get_absolute_time());
 
         // if there's been no contact for a long time, try to switch radios 
-        if(time_since_ms(radio_last_received_time) > RADIO_NO_CONTACT_PANIC_TIME_MS){
+        if(time_since_ms(get_radio_last_received_time()) > RADIO_NO_CONTACT_PANIC_TIME_MS){
+            #if RADIO_LOGGING
+            printf("No contact for %llu ms (since %llu, now is %llu/%llu), panicking radio...\n", time_since_ms(get_radio_last_received_time()), get_radio_last_received_time(), get_epoch_time(), to_ms_since_boot(get_absolute_time()));
+            #endif
             radio_panic(); 
         }
 
@@ -553,7 +556,7 @@ void radio_task_cpp(){
         // check operation duration to avoid hanging in an operation mode 
         if(receiving && time_between(radio_now, operation_start_time) > RADIO_RECEIVE_TIMEOUT_MS){
             #if RADIO_LOGGING
-            printf("receive timeout\n"); 
+            printf("receive timeout %lu - %lu = %lu \n", radio_now, operation_start_time, time_between(radio_now, operation_start_time)); 
             #endif
             receiving = false;
             radio->startChannelScan();
@@ -624,12 +627,12 @@ void radio_task_cpp(){
             // this is the main difference between the 2 modules 
             else {
                 if(radio == &radioRFM && cad_detected_RFM){
-                    #if RADIO_LOGGING_CAD
+                    #if RADIO_LOGGING
                     printf("CAD Detected, starting receive... "); 
                     #endif
                     state = radio->startReceive(); 
                     operation_start_time = to_ms_since_boot(get_absolute_time()); 
-                    #if RADIO_LOGGING_CAD
+                    #if RADIO_LOGGING
                     if(state == 0){
                         printf("success\n"); 
                     }
@@ -644,11 +647,11 @@ void radio_task_cpp(){
                     state = radioSX.getChannelScanResult(); // not a PhysicalLayer function
 
                     if(state == RADIOLIB_LORA_DETECTED){
-                        #if RADIO_LOGGING_CAD
+                        #if RADIO_LOGGING
                         printf("CAD Detected, starting receive... ");
                         #endif
                         state = radio->startReceive();
-                        #if RADIO_LOGGING_CAD
+                        #if RADIO_LOGGING
                         if(state == 0){
                             printf("success\n");
                         }

@@ -235,7 +235,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             // logln_info("args[0]: %d payload_buf: %d len: %d", (((uint8_t*)args)[0]), *payload_buf, payload_size); 
 
             const char* job_name = "SET_RTC";
-            schedule_delayed_job_ms(job_name, &set_rtc_job, 10); 
+            schedule_delayed_job_ms(job_name, &set_rtc_job, 1000); 
             steve_job_t* job = find_steve_job(job_name); 
             job->arg_data = args; 
             logln_info("RTC job created"); 
