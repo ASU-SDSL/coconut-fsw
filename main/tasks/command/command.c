@@ -67,7 +67,6 @@ SemaphoreHandle_t ax25_Mutex = NULL;
 #define DEPLOY_JOB_ACK "Deploy Job Scheduled"
 
 void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
-    radio_flag_valid_packet(); 
     
     if(xSemaphoreTake(commandCountMutex, portMAX_DELAY)){
         command_count++;
@@ -81,6 +80,9 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     // Data may or may not be returned, this data should be allocated and freed if needed depending on the packet
     uint8_t *return_data = NULL;
     int return_data_len = 0;
+
+    // needs to mark that we got something to be able to transmit a response
+    radio_flag_valid_packet(); 
 
     switch (header.apid) {
         case UPLOAD_USER_DATA:

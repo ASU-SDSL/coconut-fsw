@@ -69,8 +69,8 @@
 #define RADIO_RFM_GAIN 0
 #define RADIO_SX_TXCO_VOLT 0.0
 #define RADIO_SX_USE_REG_LDO false
-#define RADIO_SX_POWER 21           // to get 30 dBm
-#define RADIO_RFM_POWER 10          // to get 30 dBm
+#define RADIO_SX_POWER 22           // to get 30 dBm
+#define RADIO_RFM_POWER 17          // to get 30 dBm (check both of these as the library doesn't know we're using the higher power versions)
 /** @} end of LoRa Macros */
 
 #define RADIO_MAX_QUEUE_ITEMS 64
@@ -88,7 +88,7 @@
 
 #define RADIO_LOGGING 0
 #define RADIO_LOGGING_CAD 0
-#define TEMP_ON 0
+#define TEMP_ON 1
 
 
 #define RADIO_STATE_NO_ATTEMPT 1 
@@ -276,9 +276,9 @@ static void radio_begin_sx1268(){
     }
 }
 
-int radio_set_mode(uint8_t mode){
+static int radio_set_mode(uint8_t mode){
     // check no change
-    if(radio_mode == mode) return 0; 
+    if(radio_mode == mode || mode == RADIO_NO_MODE) return 0; 
 
     // record the mode switch 
     radio_mode = mode; 
@@ -534,6 +534,7 @@ void radio_task_cpp(){
         // if there is a setting 
         if(mode > 0){
             radio_set_mode(mode);
+            logln_info("Radio mode set to %s", (mode == RADIO_FAST_MODE) ? "FAST" : "SAFE");
         }
         // save now time since boot 
         uint32_t radio_now = to_ms_since_boot(get_absolute_time());

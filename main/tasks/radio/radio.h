@@ -138,8 +138,6 @@ extern "C"
 }
 #endif
 
-int radio_set_mode(uint8_t mode); 
-
 /**
  * @brief Initializes necessary peripherals/settings for the radio task
  * 
