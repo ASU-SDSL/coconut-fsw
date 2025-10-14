@@ -485,7 +485,7 @@ void init_radio()
             uint64_t new_time = 0; 
             memcpy(&new_time, result_buffer, sizeof(uint64_t)); 
             set_radio_last_received_time(new_time);
-            logln_info("Last received time loaded as %ull", radio_last_received_time); 
+            logln_info("Last received time loaded as %llu", radio_last_received_time); 
         } else {
             logln_error("Error on persistent radio time load"); 
         }
