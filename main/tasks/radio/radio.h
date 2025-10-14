@@ -37,7 +37,7 @@ typedef struct radio_queue_operations {
 #define RADIO_FAST_MODE 2
 #define RADIO_FAST_MODE_MAX_DURATION_MS (1000 * 60 * 30) // 30 minutes 
 
-#define RADIO_STATE_FILE_NAME "radio_state.bin"
+#define RADIO_STATE_FILE_NAME "radio.bin"
 
 /* C FUNC DECLARATIONS */
 

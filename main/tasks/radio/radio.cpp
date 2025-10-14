@@ -56,7 +56,7 @@
 
 // fast mode (~4 kbps)
 #define RADIO_BW_FAST 62.5
-#define RADIO_SF_FAST 6
+#define RADIO_SF_FAST 7
 #define RADIO_CR_FAST 5
 
 // safe mode (~400 bps)
@@ -70,7 +70,7 @@
 #define RADIO_SX_TXCO_VOLT 0.0
 #define RADIO_SX_USE_REG_LDO false
 #define RADIO_SX_POWER 21           // to get 30 dBm
-#define RADIO_RFM_POWER 22          // to get 30 dBm
+#define RADIO_RFM_POWER 10          // to get 30 dBm
 /** @} end of LoRa Macros */
 
 #define RADIO_MAX_QUEUE_ITEMS 64
@@ -223,7 +223,7 @@ extern "C"
         uint64_t new_time = timing_now();
         set_radio_last_received_time(new_time);  
 
-        if(new_time - last_saved_received_time > RADIO_SAVE_INTERVAL_MS){
+        if(time_since_ms(last_saved_received_time) > RADIO_SAVE_INTERVAL_MS){
             logln_info("Saving last received time as %ull", new_time);
             char buffer[sizeof(uint64_t)]; 
             memcpy(buffer, &new_time, sizeof(uint64_t)); 
@@ -476,7 +476,6 @@ void init_radio()
         radio_panic(); 
     }
 
-    // load last received time from persistent storage: TODO 
     // check if the persistent log file already exists
     if(file_exists(RADIO_STATE_FILE_NAME)){
         // if it does load the last received time from it
@@ -498,7 +497,7 @@ void init_radio()
         uint64_t new_time = get_radio_last_received_time();
         char buf[sizeof(uint64_t)] = {0, 0, 0, 0, 0, 0, 0, 0}; 
         memcpy(buf, &new_time, sizeof(uint64_t));
-        write_file(RADIO_STATE_FILE_NAME, buf, sizeof(uint64_t), false); 
+        write_file(RADIO_STATE_FILE_NAME, buf, sizeof(uint64_t), false);
     }
 
 }
@@ -689,7 +688,7 @@ void radio_task_cpp(){
                     // check if radio_last_received_time is 0 because if it is that means that we're on since boot time and 
                     // should wait for contact
                     last_received_time_copy = get_radio_last_received_time();
-                    if(last_received_time_copy != 0 && time_since_ms(last_received_time_copy) > RADIO_NO_CONTACT_DEADMAN_MS){
+                    if(false && last_received_time_copy != 0 && time_since_ms(last_received_time_copy) > RADIO_NO_CONTACT_DEADMAN_MS){
                         // free buffer 
                         vPortFree(rec.data_buffer);
                         break;
@@ -702,6 +701,8 @@ void radio_task_cpp(){
                         else message[i] = rec.data_buffer[i]; 
                     }
                     message[rec.data_size] = '\0';
+                    if(radio == &radioRFM) printf("Using RFM98 to ");
+                    else printf("Using SX1268 to ");
                     printf("transmitting %s...\n", message);
                     }
                     #endif
