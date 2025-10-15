@@ -13,6 +13,7 @@
 #include <stdint.h>
 
 QueueHandle_t radio_queue;
+extern TaskHandle_t xRadioTaskHandler;
 
 /// @brief Radio operation types for use in radio_queue_operations_t in the radio_queue
 typedef enum radio_operation_type {
@@ -30,6 +31,14 @@ typedef struct radio_queue_operations {
     size_t data_size; ///< Could be 0
 } radio_queue_operations_t;
 
+// radio mode 
+#define RADIO_NO_MODE 0   // resets notifier to this - can't be a mode
+#define RADIO_SAFE_MODE 1
+#define RADIO_FAST_MODE 2
+#define RADIO_FAST_MODE_MAX_DURATION_MS (1000 * 60 * 30) // 30 minutes 
+
+#define RADIO_STATE_FILE_NAME "radio.bin"
+
 /* C FUNC DECLARATIONS */
 
 #ifdef __cplusplus
@@ -37,6 +46,7 @@ extern "C" {
     #include "telemetry.h"
     #include "log.h"
     #include "command.h"
+    #include "timing.h"
 }
 #endif
 
@@ -50,6 +60,20 @@ extern "C"
      * @param unused_arg 
      */
     void radio_task(void *unused_arg);
+
+    /**
+     * @brief Set the radio last received time with mutex protection
+     * 
+     * @param new_time New time to set
+     */
+    void set_radio_last_received_time(uint64_t new_time);
+
+    /**
+     * @brief Get the radio last received time with mutex protection
+     * 
+     * @return uint64_t The timestamp of the last received packet
+     */
+    uint64_t get_radio_last_received_time();
 
     /**
      * @brief Adds a message to the radio queue to be transmitted
@@ -85,6 +109,13 @@ extern "C"
     void radio_queue_stat_response(); 
 
     /**
+     * @brief Queues a change in the LoRa settings 
+     * 
+     * @param new_mode RADIO_FAST_MODE or RADIO_SAFE_MODE
+     */
+    void radio_queue_lora_mode_change(uint8_t new_mode); 
+
+    /**
      * @brief Returns which radio is currently set to be used 
      * 
      * @return uint8_t 1 if radio is RFM98, 0 if radio is SX1268
@@ -104,6 +135,12 @@ extern "C"
      * @return int16_t 
      */
     int16_t radio_get_SX_state(); 
+
+    /**
+     * @brief Signals to the radio task that a valid packet has been received, resetting 
+     * deadman's timer 
+     */
+    void radio_flag_valid_packet();
 #ifdef __cplusplus
 }
 #endif
@@ -119,3 +156,4 @@ void init_radio();
  * 
  */
 void radio_task_cpp();
+
