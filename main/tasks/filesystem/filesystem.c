@@ -434,11 +434,11 @@ void filesystem_task(void* unused_arg) {
     }
     
     // mount disk
-    FATFS fs;
-    fr = f_mount(&fs, "0:", 1);
-    if (fr != FR_OK) {
-        logln_warn("Failed to mount filesystem, you probably need to run make_filesystem (mkfs)!", fr);
-    }
+    // FATFS fs;
+    // fr = f_mount(&fs, "0:", 1);
+    // if (fr != FR_OK) {
+    //     logln_warn("Failed to mount filesystem, you probably need to run make_filesystem (mkfs)!", fr);
+    // }
 
     // init queue
     filesystem_queue = xQueueCreate(FILESYSTEM_QUEUE_LENGTH, sizeof(filesystem_queue_operations_t));
