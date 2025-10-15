@@ -495,6 +495,14 @@ void init_radio()
         if(read_file(RADIO_STATE_FILE_NAME, result_buffer, sizeof(uint64_t)) == sizeof(uint64_t)) {
             uint64_t new_time = 0; 
             memcpy(&new_time, result_buffer, sizeof(uint64_t)); 
+            if(new_time > timing_now()){
+                logln_warn("Last received time from persistent storage is in the future: %llu (now = %llu)", new_time, timing_now()); 
+                new_time = timing_now(); 
+                // override in persistent storage
+                char buf[sizeof(uint64_t)] = {0, 0, 0, 0, 0, 0, 0, 0}; 
+                memcpy(buf, &new_time, sizeof(uint64_t));
+                write_file(RADIO_STATE_FILE_NAME, buf, sizeof(uint64_t), false);
+            }
             set_radio_last_received_time(new_time);
             logln_info("Last received time loaded as %llu (%llx)", radio_last_received_time, radio_last_received_time); 
         } else {
