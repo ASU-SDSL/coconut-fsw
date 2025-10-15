@@ -139,6 +139,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (!is_admin(append_args->admin_token)) break;
             if (append_args->data_len > (payload_size - sizeof(file_append_t))) break;
             write_file(append_args->path, append_args->data, append_args->data_len, true);
+            // no feedback for this one, use cat or something  
             break;
         case FILE_TOUCH:
             if (payload_size < sizeof(file_touch_t)) break;

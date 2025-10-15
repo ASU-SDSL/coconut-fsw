@@ -503,7 +503,7 @@ void filesystem_task(void* unused_arg) {
             case WRITE: {
                 write_operation_t write_op = received_operation.file_operation.write_op;
                 int32_t res = _fwrite(write_op.file_name, write_op.data, write_op.size, write_op.append_flag);
-                fs_log("Write res: %d\n", res);
+                logln_info("Write res: %d\n", res);
                 break;
             }
             case LIST_DIRECTORY: {
