@@ -62,6 +62,13 @@ extern "C"
     void radio_task(void *unused_arg);
 
     /**
+     * @brief Set the radio last received time with mutex protection
+     * 
+     * @param new_time New time to set
+     */
+    void set_radio_last_received_time(uint64_t new_time);
+
+    /**
      * @brief Get the radio last received time with mutex protection
      * 
      * @return uint64_t The timestamp of the last received packet

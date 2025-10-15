@@ -4,6 +4,9 @@
 #include "timing.h"
 #include "log.h"
 
+#include <stdint.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <time.h>
 
 static bool epoch_time_updated = false; 
@@ -60,12 +63,11 @@ uint64_t get_epoch_time(){
     return value; 
 }
 
-void update_epoch_time(uint8_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second){
-    epoch_time_updated = true;
+void initial_update_epoch_time(uint8_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second){
 
     struct tm temp = {
         .tm_year = year + 100,  
-        .tm_mon = month, 
+        .tm_mon = month - 1, 
         .tm_mday = date, 
         .tm_hour = hour, 
         .tm_min = minute, 
@@ -78,6 +80,30 @@ void update_epoch_time(uint8_t year, uint8_t month, uint8_t date, uint8_t hour, 
     if(xSemaphoreTake(epoch_time_mutex, portMAX_DELAY) == pdTRUE){
         epoch_time = ((uint64_t)(temp_time)) * 1000; // epoch time should be in milliseconds 
         xSemaphoreGive(epoch_time_mutex);
+        epoch_time_updated = true;
+    } else {
+        printf("Epoch time update failed");
+    }
+}
+
+void update_epoch_time(uint8_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second){
+
+    struct tm temp = {
+        .tm_year = year + 100,  
+        .tm_mon = month - 1, 
+        .tm_mday = date, 
+        .tm_hour = hour, 
+        .tm_min = minute, 
+        .tm_sec = second
+    }; 
+
+
+    time_t temp_time = mktime(&temp); 
+
+    if(xSemaphoreTake(epoch_time_mutex, portMAX_DELAY) == pdTRUE){
+        epoch_time = ((uint64_t)(temp_time)) * 1000; // epoch time should be in milliseconds 
+        xSemaphoreGive(epoch_time_mutex);
+        epoch_time_updated = true;
     } else {
         logln_error("Epoch time update failed");
     }

@@ -86,9 +86,9 @@
 #define ERR_NONE 0
 #define NULL_QUEUE_WAIT_TIME 100
 
-#define RADIO_LOGGING 1
+#define RADIO_LOGGING 0
 #define RADIO_LOGGING_CAD 0
-#define TEMP_ON 1
+#define TEMP_ON 0
 
 
 #define RADIO_STATE_NO_ATTEMPT 1 
@@ -114,17 +114,6 @@ TaskHandle_t xRadioTaskHandler;
 static uint64_t radio_last_received_time = 0; 
 static SemaphoreHandle_t radio_last_received_time_mutex = NULL;
 
-/**
- * @brief Set the radio last received time with mutex protection
- * 
- * @param new_time New time to set
- */
-static void set_radio_last_received_time(uint64_t new_time){
-    if(radio_last_received_time_mutex == NULL || xSemaphoreTake(radio_last_received_time_mutex, portMAX_DELAY) == pdTRUE) {
-        radio_last_received_time = new_time;
-        xSemaphoreGive(radio_last_received_time_mutex); 
-    }
-}
 
 int radio_state_RFM = RADIO_STATE_NO_ATTEMPT; 
 int radio_state_SX = RADIO_STATE_NO_ATTEMPT;
@@ -136,6 +125,13 @@ extern "C"
 #endif
     void radio_task(void *unused_arg){
         radio_task_cpp();
+    }
+
+    void set_radio_last_received_time(uint64_t new_time){
+        if(radio_last_received_time_mutex == NULL || xSemaphoreTake(radio_last_received_time_mutex, portMAX_DELAY) == pdTRUE) {
+            radio_last_received_time = new_time;
+            xSemaphoreGive(radio_last_received_time_mutex); 
+        }
     }
 
     uint64_t get_radio_last_received_time(){
@@ -223,7 +219,7 @@ extern "C"
         uint64_t new_time = timing_now();
         set_radio_last_received_time(new_time);  
 
-        if(time_since_ms(last_saved_received_time) > RADIO_SAVE_INTERVAL_MS){
+        if(time_since_ms(last_saved_received_time) > RADIO_SAVE_INTERVAL_MS || last_saved_received_time > new_time){
             logln_info("Saving last received time as %ull", new_time);
             char buffer[sizeof(uint64_t)]; 
             memcpy(buffer, &new_time, sizeof(uint64_t)); 
@@ -231,6 +227,7 @@ extern "C"
             last_saved_received_time = new_time; 
         }
     }
+    
 #ifdef __cplusplus
 }
 #endif
@@ -328,7 +325,7 @@ int radio_hardware_switch_to(PhysicalLayer* new_radio){
 }
 
 // toggle the radio until one of them works
-void radio_panic(){
+static void radio_panic(){
     #if TEMP_ON || RADIO_LOGGING
     printf("Critical Radio (%s : %d) fail, panicking...\n", (radio == &radioSX) ? "SX1268" : "RFM98", (radio == &radioSX) ? radio_state_SX : radio_state_RFM);
     #endif
@@ -401,6 +398,20 @@ void radio_panic(){
     if(radio == &radioSX) printf("Resolved to SX1268.\n");
     else printf("Resolved to RFM98.\n");
     #endif
+}
+
+#define MINIMUM_PANIC_INTERVAL_MS 1000 * 10 // 10 seconds
+static void radio_passive_panic(){
+    static uint32_t last_panic = 0; 
+
+    
+    if(time_between(to_ms_since_boot(get_absolute_time()), last_panic) > MINIMUM_PANIC_INTERVAL_MS){
+        #if TEMP_ON || RADIO_LOGGING
+        printf("(Passive: %llu)", time_since_ms(last_panic));
+        #endif
+        radio_panic(); 
+        last_panic = to_ms_since_boot(get_absolute_time()); 
+    }
 }
 
 void init_radio()
@@ -485,7 +496,7 @@ void init_radio()
             uint64_t new_time = 0; 
             memcpy(&new_time, result_buffer, sizeof(uint64_t)); 
             set_radio_last_received_time(new_time);
-            logln_info("Last received time loaded as %llu", radio_last_received_time); 
+            logln_info("Last received time loaded as %llu (%llx)", radio_last_received_time, radio_last_received_time); 
         } else {
             logln_error("Error on persistent radio time load"); 
         }
@@ -541,10 +552,7 @@ void radio_task_cpp(){
 
         // if there's been no contact for a long time, try to switch radios 
         if(time_since_ms(get_radio_last_received_time()) > RADIO_NO_CONTACT_PANIC_TIME_MS){
-            #if RADIO_LOGGING
-            printf("No contact for %llu ms (since %llu, now is %llu/%llu), panicking radio...\n", time_since_ms(get_radio_last_received_time()), get_radio_last_received_time(), get_epoch_time(), to_ms_since_boot(get_absolute_time()));
-            #endif
-            radio_panic(); 
+            radio_passive_panic(); 
         }
 
         // if the radio has been in fast mode for too long 
@@ -692,6 +700,7 @@ void radio_task_cpp(){
                     // check if radio_last_received_time is 0 because if it is that means that we're on since boot time and 
                     // should wait for contact
                     last_received_time_copy = get_radio_last_received_time();
+                    printf("Last received time: %llu (%llx)\n", last_received_time_copy, last_received_time_copy);
                     if(false && last_received_time_copy != 0 && time_since_ms(last_received_time_copy) > RADIO_NO_CONTACT_DEADMAN_MS){
                         // free buffer 
                         vPortFree(rec.data_buffer);

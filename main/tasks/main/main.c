@@ -17,6 +17,7 @@
 #include "filesystem.h"
 #include "watchdog.h"
 #include "i2c.h"
+#include <stdio.h>
 
 // for initial timing setup only 
 #include "rtc_ds3231.h"
@@ -50,7 +51,7 @@ int main() {
     // set up mutexes 
     epoch_time_mutex = xSemaphoreCreateMutex(); 
     if(epoch_time_mutex == NULL){
-        logln_error("Epoch time mutex creation failed"); 
+        printf("Epoch time mutex creation failed"); 
     }
 
     // initialize epoch clock 
@@ -64,7 +65,7 @@ int main() {
             !rtc_get_minute(i2c, &minute) && !rtc_get_second(i2c, &second)){
         update_epoch_time(year, month, date, hour, minute, second); 
     } else {
-        logln_error("Epoch time initialization failed"); 
+        printf("Epoch time initialization failed"); 
     }
 
     gse_task_status = xTaskCreate(gse_task, 
