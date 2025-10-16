@@ -19,33 +19,11 @@
 #include "FreeRTOSConfig.h"
 
 
-
-
 void system_info(){
     system_info_telemetry_t sys_info;
 
-    //get cpu load
-    sys_info.processor_load = uxTaskGetNumberOfTasks(); //get number of task 
-    TaskStatus_t *pTaskStatus; //task array
-    uint32_t totalTask; //total number of tasks
-    
-    //allocate memory for task array
-    pTaskStatus = pvPortMalloc(sys_info.task_count * sizeof(TaskStatus_t));
-    //check if malloc return null
-    if (pTaskStatus != NULL){
-        sys_info.task_count = uxTaskGetSystemState(pTaskStatus, sys_info.task_count, &totalTask);
-    }
-
-    logln_info("Task CPU Usage:\n");
-    for(int i = 0; i < sys_info.task_count;i++){
-        uint8_t cpu_percentage = 0;
-        if(totalTask > 0){
-            //get percentage 
-            cpu_percentage = (pTaskStatus[i].ulRunTimeCounter * 100) / totalTask;
-        }   
-    }
-    //free memory
-    vPortFree(pTaskStatus);
+    //get task count
+    sys_info.task_count = (uint8_t)uxTaskGetNumberOfTasks();
 
     //get heap memory
     uint32_t free_heap_memory = xPortGetFreeHeapSize();
