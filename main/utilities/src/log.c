@@ -67,6 +67,7 @@ void _write_log(const char *bytes, size_t size) {
     memcpy(packet.str, bytes, size);
     packet.size = size;
     send_telemetry(LOG, (char*)&packet, sizeof(log_telemetry_t) + size);
+    send_telemetry(FS_LOG, (char*)&packet, sizeof(log_telemetry_t) + size);
 }
 
 void write_error_log(char *str) {
