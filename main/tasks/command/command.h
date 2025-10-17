@@ -41,6 +41,7 @@ typedef enum command_apid {
     MCU_POWER_CYCLE = 14,
     PLAYBACK_HEARTBEAT_PACKETS = 15,
     FSW_ACK = 16,
+    SYS_INFO = 17,
 
     // 01 - radio
     RADIO_CONFIG = 101,

@@ -6,6 +6,7 @@
 #include <FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
+#include <portable.h>
 
 #include "gse.h"
 #include "radio.h"
@@ -13,6 +14,32 @@
 #include "telemetry.h"
 #include "spacepacket.h"
 #include "log.h"
+#include "heartbeat_job.h"
+#include "command.h"
+#include "FreeRTOSConfig.h"
+
+
+void system_info(){
+    system_info_telemetry_t sys_info;
+
+    //get heap memory
+    uint32_t free_heap_memory = xPortGetFreeHeapSize();
+    uint8_t min_heap_memory = xPortGetMinimumEverFreeHeapSize();
+
+    //used heap memory
+    uint16_t used_heap =  configTOTAL_HEAP_SIZE - free_heap_memory;
+    sys_info.heap_percent = (used_heap * 100) / configTOTAL_HEAP_SIZE;
+
+    //get stack memory
+    uint16_t stack_free = uxTaskGetStackHighWaterMark(NULL);
+    uint16_t stack_total = configMINIMAL_STACK_SIZE;
+    uint16_t used_stack = stack_total - stack_free; 
+    sys_info.stack_percent = (used_stack * 100) / stack_total;
+
+    //Send telemetry
+    send_telemetry(SYS_INFO, (char*)&sys_info, sizeof(sys_info));
+
+}
 
 void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t payload_size) {
     // Build transmission buffer struct
@@ -26,6 +53,7 @@ void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t pa
         xQueueSendToBack(telemetry_queue, &telemetry, portMAX_DELAY);
     }
 }
+
 
 void telemetry_task(void* unused_arg) {
     // Initialize telemetry context
