@@ -22,9 +22,6 @@
 void system_info(){
     system_info_telemetry_t sys_info;
 
-    //get task count
-    sys_info.task_count = (uint8_t)uxTaskGetNumberOfTasks();
-
     //get heap memory
     uint32_t free_heap_memory = xPortGetFreeHeapSize();
     uint8_t min_heap_memory = xPortGetMinimumEverFreeHeapSize();
