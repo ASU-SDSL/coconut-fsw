@@ -88,6 +88,7 @@ ELSE()
         hardware_clocks
         RadioLib
         onewire_library
+        tiny_AES_c
     )
 ENDIF()
 

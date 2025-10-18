@@ -20,7 +20,14 @@
 #include "watchdog.h"
 #include "hb_tlm_log.h"
 
+static AES_ctx* ctx;
 
+static uint8_t key[16] = {
+    0x2b, 0x7e, 0x15, 0x16,
+    0x28, 0xae, 0xd2, 0xa6,
+    0xab, 0xf7, 0x15, 0x88,
+    0x09, 0xcf, 0x4f, 0x3c
+}; 
 
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
@@ -59,7 +66,25 @@ uint32_t get_command_count(void){
 }
 
 void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uint32_t payload_size) {
+    /*
+    TODO: have each case that will be encrypted, decrypt the payload_buf. 
+    FILE_LS = 5,
+    FILE_MKDIR = 6,
+    FILE_CAT = 7,
+    FILE_DELETE = 8,
+    FILE_APPEND = 9,
+    FILE_TOUCH = 10,
+    FILE_MKFS = 11,
+    ADD_USER = 12,
+    DELETE_USER = 13,
+    MCU_POWER_CYCLE = 14,
+    PLAYBACK_HEARTBEAT_PACKETS = 15,
+    FSW_ACK = 16,
+    */
     
+    // TODO: take the IV out from the payload_buf, should be the first 8 bits
+
+    AES_init_ctx_iv(ctx, key, iv);
     xSemaphoreTake(commandCountMutex, portMAX_DELAY);
     command_count++;
     xSemaphoreGive(commandCountMutex);
@@ -98,6 +123,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             break;
         case FILE_LS:
             if (payload_size < sizeof(file_ls_t)) break;
+            AES_CTR_xcrypt_buffer(ctx, &(payload_buf), payload_size);
             file_ls_t* ls_args = (file_ls_t*)payload_buf;
             if (!is_admin(ls_args->admin_token)) break;
             list_dir(ls_args->path);
