@@ -13,6 +13,7 @@
 
 #define COMMAND_MAX_QUEUE_ITEMS 0x200
 #define COMMAND_SYNC_BYTES "\x35\x2E\xF8\x53" 
+#define IV_SIZE 4
 
 /**
  * @brief Command Structs and Types

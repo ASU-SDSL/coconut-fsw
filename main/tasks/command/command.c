@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include <FreeRTOS.h>
+#include <aes.h>
 #include <task.h>
 #include <semphr.h>
 
@@ -82,9 +83,14 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     FSW_ACK = 16,
     */
     
-    // TODO: take the IV out from the payload_buf, should be the first 8 bits
+    // TODO: take the IV out from the payload_buf, should be the first 4 bytes
+    uint8_t* iv = malloc(IV_SIZE);
+    memcpy(iv, payload_buf, IV_SIZE);
+    memmove(payload_buf, payload_buf + IV_SIZE, payload_size - IV_SIZE); // do I have to free memory?
 
     AES_init_ctx_iv(ctx, key, iv);
+
+
     xSemaphoreTake(commandCountMutex, portMAX_DELAY);
     command_count++;
     xSemaphoreGive(commandCountMutex);

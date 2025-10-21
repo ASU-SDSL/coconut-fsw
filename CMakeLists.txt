@@ -32,14 +32,6 @@ IF (${DESKTOP_BUILD})
     add_definitions(-DSIMULATOR) 
 ENDIF()
 
-#TinyAES
-add_library(tinyaes STATIC 
-    ${CMAKE_SOURCE_DIR}/lib/tiny-AES-c/aes.c
-)
-
-target_include_directories(tinyaes PUBLIC
-    ${CMAKE_SOURCE_DIR}/lib/tiny-AES-c
-)
 
 # Include the Pico SDK
 IF (NOT ${DESKTOP_BUILD})
@@ -137,6 +129,7 @@ ENDIF()
 # Include libraries
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/fatfs/ build)
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/libspacepacket/)
+add_subdirectory(${CMAKE_SOURCE_DIR}/lib/tiny-aes/ build)
 IF (NOT ${DESKTOP_BUILD})
     add_subdirectory(${CMAKE_SOURCE_DIR}/lib/RadioLib)
     add_subdirectory(${CMAKE_SOURCE_DIR}/lib/onewire_library/)
