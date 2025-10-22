@@ -163,6 +163,9 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             delete_user(delete_user_args->user_name);
             break;
         case SYS_INFO:
+            if(payload_size < sizeof(sys_info_t)) break;
+            sys_info_t* sys_info_t_args = (sys_info_t*)payload_buf; 
+            if (!is_admin(sys_info_t_args->admin_token)) break;
             system_info();
             break;
         case MCU_POWER_CYCLE:

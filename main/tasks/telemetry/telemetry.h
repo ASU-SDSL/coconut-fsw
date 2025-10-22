@@ -108,8 +108,6 @@ typedef struct __attribute__((__packed__)) {
 } ack_telemetry_t;
 
 typedef struct __attribute__((__packed__)) {
-    uint8_t processor_load;
-    uint8_t task_count;
     uint8_t heap_percent;
     uint8_t stack_percent; 
 } system_info_telemetry_t;
