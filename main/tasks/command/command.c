@@ -5,9 +5,11 @@
 #include <stdbool.h>
 
 #include <FreeRTOS.h>
-#include <aes.h>
 #include <task.h>
 #include <semphr.h>
+
+#include <aes.h>
+#include <aes.c>
 
 #include "queue.h"
 #include "gse.h"
@@ -21,7 +23,7 @@
 #include "watchdog.h"
 #include "hb_tlm_log.h"
 
-static AES_ctx* ctx;
+static struct AES_ctx* ctx;
 
 static uint8_t key[16] = {
     0x2b, 0x7e, 0x15, 0x16,
@@ -80,13 +82,11 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     DELETE_USER = 13,
     MCU_POWER_CYCLE = 14,
     PLAYBACK_HEARTBEAT_PACKETS = 15,
-    FSW_ACK = 16,
     */
     
     // TODO: take the IV out from the payload_buf, should be the first 4 bytes
     uint8_t* iv = malloc(IV_SIZE);
     memcpy(iv, payload_buf, IV_SIZE);
-    memmove(payload_buf, payload_buf + IV_SIZE, payload_size - IV_SIZE); // do I have to free memory?
 
     AES_init_ctx_iv(ctx, key, iv);
 
@@ -129,31 +129,40 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             break;
         case FILE_LS:
             if (payload_size < sizeof(file_ls_t)) break;
-            AES_CTR_xcrypt_buffer(ctx, &(payload_buf), payload_size);
+            memmove(payload_buf, payload_buf + IV_SIZE, payload_size - IV_SIZE); // do I have to free memory?
+            AES_CTR_xcrypt_buffer(ctx, payload_buf, payload_size);
             file_ls_t* ls_args = (file_ls_t*)payload_buf;
             if (!is_admin(ls_args->admin_token)) break;
             list_dir(ls_args->path);
             break;
         case FILE_MKDIR:
             if (payload_size < sizeof(file_mkdir_t)) break;
+            memmove(payload_buf, payload_buf + IV_SIZE, payload_size - IV_SIZE);
+            AES_CTR_xcrypt_buffer(ctx, payload_buf, payload_size);
             file_mkdir_t* mkdir_args = (file_mkdir_t*)payload_buf;
             if (!is_admin(mkdir_args->admin_token)) break;
             make_dir(mkdir_args->path);
             break;
         case FILE_CAT:
             if (payload_size < sizeof(file_cat_t)) break;
+            memmove(payload_buf, payload_buf + IV_SIZE, payload_size - IV_SIZE);
+            AES_CTR_xcrypt_buffer(ctx, payload_buf, payload_size);
             file_cat_t* cat_args = (file_cat_t*)payload_buf;
             if (!is_admin(cat_args->admin_token)) break;
             cat(cat_args->path);
             break;
         case FILE_DELETE: 
             if (payload_size < sizeof(file_delete_t)) break;
+            memmove(payload_buf, payload_buf + IV_SIZE, payload_size - IV_SIZE);
+            AES_CTR_xcrypt_buffer(ctx, payload_buf, payload_size);
             file_delete_t* delete_args = (file_delete_t*)payload_buf;
             if (!is_admin(delete_args->admin_token)) break;
             delete_file(delete_args->path);
             break;
         case FILE_APPEND:
             if (payload_size < sizeof(file_append_t)) break;
+            memmove(payload_buf, payload_buf + IV_SIZE, payload_size - IV_SIZE);
+            AES_CTR_xcrypt_buffer(ctx, payload_buf, payload_size);
             file_append_t* append_args = (file_append_t*)payload_buf;
             if (!is_admin(append_args->admin_token)) break;
             if (append_args->data_len > (payload_size - sizeof(file_append_t))) break;
@@ -161,12 +170,16 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             break;
         case FILE_TOUCH:
             if (payload_size < sizeof(file_touch_t)) break;
+            memmove(payload_buf, payload_buf + IV_SIZE, payload_size - IV_SIZE);
+            AES_CTR_xcrypt_buffer(ctx, payload_buf, payload_size);
             file_touch_t* touch_args = (file_touch_t*)payload_buf;
             if (!is_admin(touch_args->admin_token)) break;
             touch(touch_args->path);
             break;
         case FILE_MKFS:
             if (payload_size < sizeof(file_mkfs_t)) break;
+            memmove(payload_buf, payload_buf + IV_SIZE, payload_size - IV_SIZE);
+            AES_CTR_xcrypt_buffer(ctx, payload_buf, payload_size);
             file_mkfs_t* mkfs_args = (file_mkfs_t*)payload_buf;
             if (!is_admin(mkfs_args->admin_token)) break;
             if (mkfs_args->confirm != 1) break;
@@ -174,12 +187,16 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             break;
         case ADD_USER:
             if (payload_size < sizeof(add_user_t)) break;
+            memmove(payload_buf, payload_buf + IV_SIZE, payload_size - IV_SIZE);
+            AES_CTR_xcrypt_buffer(ctx, payload_buf, payload_size);
             add_user_t* add_user_args = (add_user_t*)payload_buf;
             if (!is_admin(add_user_args->admin_token)) break;
             add_user(add_user_args->new_user_name, add_user_args->new_user_token);
             break;
         case DELETE_USER:
             if (payload_size < sizeof(delete_user_t)) break;
+            memmove(payload_buf, payload_buf + IV_SIZE, payload_size - IV_SIZE);
+            AES_CTR_xcrypt_buffer(ctx, payload_buf, payload_size);
             delete_user_t* delete_user_args = (delete_user_t*)payload_buf;
             if (!is_admin(delete_user_args->admin_token)) break;
             if (mkfs_args->confirm != 1) break;
@@ -188,6 +205,8 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
 
         case MCU_POWER_CYCLE:
             if(payload_size < sizeof(mcu_power_cycle_t)) break;
+            memmove(payload_buf, payload_buf + IV_SIZE, payload_size - IV_SIZE);
+            AES_CTR_xcrypt_buffer(ctx, payload_buf, payload_size);
             mcu_power_cycle_t* mcu_power_cycle_args = (mcu_power_cycle_t*)payload_buf; 
             if (!is_admin(mcu_power_cycle_args->admin_token)) break; // check admin
 
@@ -196,6 +215,8 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
 
         case PLAYBACK_HEARTBEAT_PACKETS:
             if (payload_size < sizeof(playback_hb_tlm_payload_t)) break; // Should probably return an error to the ground
+            memmove(payload_buf, payload_buf + IV_SIZE, payload_size - IV_SIZE);
+            AES_CTR_xcrypt_buffer(ctx, payload_buf, payload_size);
             playback_hb_tlm_payload_t* playback_hb_payload = (playback_hb_tlm_payload_t*)payload_buf;
             if (!is_admin(playback_hb_payload->admin_token)) break; // check admin
 
