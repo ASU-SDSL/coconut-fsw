@@ -25,6 +25,7 @@
 
 static struct AES_ctx* ctx;
 
+// TODO: remove this key, and change the key on the groundstation
 static uint8_t key[16] = {
     0x2b, 0x7e, 0x15, 0x16,
     0x28, 0xae, 0xd2, 0xa6,
