@@ -90,7 +90,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     memcpy(iv, payload_buf, IV_SIZE);
 
     AES_init_ctx_iv(ctx, key, iv);
-
+    logln_info("Initialized ctx");
 
     xSemaphoreTake(commandCountMutex, portMAX_DELAY);
     command_count++;
@@ -133,6 +133,9 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             memmove(payload_buf, payload_buf + IV_SIZE, payload_size - IV_SIZE); // do I have to free memory?
             AES_CTR_xcrypt_buffer(ctx, payload_buf, payload_size);
             file_ls_t* ls_args = (file_ls_t*)payload_buf;
+
+            logln_info("decrypted file_ls");
+
             if (!is_admin(ls_args->admin_token)) break;
             list_dir(ls_args->path);
             break;
