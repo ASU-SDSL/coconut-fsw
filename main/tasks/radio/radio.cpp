@@ -830,18 +830,14 @@ void radio_task_cpp(){
                 case RETURN_STATS: 
                 {
                     // get radio stats from last transmission
-                    size_t payload_size = 3 * sizeof(float); 
-                    char payload_buffer[payload_size]; 
-                    float temp = radio->getRSSI(); 
-                    memcpy(payload_buffer, &temp, sizeof(float));
-                    temp = radio->getSNR(); 
-                    memcpy(payload_buffer + sizeof(float), &temp, sizeof(float));
-                    temp = (radio == &radioSX)? radioSX.getFrequencyError(): radioRFM.getFrequencyError(); 
-                    memcpy(payload_buffer + (2*sizeof(float)), &temp, sizeof(float));
+                    radio_stat_telemetry_t stats;
+                    stats.rssi = radio->getRSSI(); 
+                    stats.snr = radio->getSNR(); 
+                    stats.frequency_error = (radio == &radioSX)? radioSX.getFrequencyError(): radioRFM.getFrequencyError(); 
 
                     logln_info("RADIO_STAT_RES queued"); 
                     // send the data to telemetry 
-                    send_telemetry(RADIO_STAT_RES, payload_buffer, payload_size);
+                    send_telemetry(RADIO_STAT_RES, (char*)&stats, sizeof(stats));
                     
                 }
                     break;
