@@ -119,6 +119,12 @@ typedef struct __attribute__((__packed__)) {
     uint8_t data[MAX_DOWNLINK_PACKET_SIZE]; // File data - the max this can be is 255 byte chunks of downlinked data at a time (length is only 1 byte)
 } file_downlink_telemetry_t;
 
+typedef struct __attribute__((__packed__)) {
+    float rssi;
+    float snr;
+    float frequency_error;
+} radio_stat_telemetry_t;
+
 /* USER FUNCTIONS */
 void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t payload_size);
 
