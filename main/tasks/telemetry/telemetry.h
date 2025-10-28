@@ -28,13 +28,13 @@ QueueHandle_t telemetry_queue;
  */
 typedef enum {
     // 00 - general and file system 
-    APID_LOG = 0,
+    LOG_APID = 0,
     HEARTBEAT_APID = 1, // just to keep the command and telemetry apid equal :)
-    DOWNLINK_GROUNDNODE_DATA_APID = 2, // currently unused
-    DOWNLINK_TELEMETRY_DATA_APID = 3, // currently unused
+    FILE_DOWNLINK_APID = 2, 
+    DOWNLINK_TELEMETRY_DATA_APID = 3,
     HEARTBEAT_PLAYBACK_APID = 4,
     ACK_APID = 5,
-    FILE_DOWNLINK_APID = 6,
+    FS_LOG_APID = 6, 
 
     // 01 - radio
     RADIO_STAT_RES = 101,

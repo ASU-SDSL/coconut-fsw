@@ -27,7 +27,7 @@
 #define CAT_SIZE_LIMIT 128
 #define NOTIFICATION_WAIT_TIME pdMS_TO_TICKS(10 * 1000)
 
-#define MAX_PATH_SIZE 0xFF
+#define MAX_PATH_SIZE 128
 #define MAX_WRITE_CONTENTS_SIZE 0x100
 
 /* File storage allocation */

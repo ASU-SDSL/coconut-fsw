@@ -20,3 +20,10 @@ void watchdog_freeze();
 *  @brief Runs the watchdog reset loop and will stop if given the freeze signal from the watchdog_freeze function
 */
 void watchdog_task(void *pvParameters);
+
+/**
+ * @brief Kicks the watchdog associated with the given ID 
+ * 
+ * @param id ID of watchdog to kick 
+ */
+void watchdog_intertask_kick(uint8_t id); 
