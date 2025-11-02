@@ -297,6 +297,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     get_most_recent_logged_error(last_error, MAX_ERROR_LOG_STR_SIZE);
     strncpy(ack->last_logged_error, last_error, sizeof(ack->last_logged_error)); // Copy only first 24 chars (or however many the ack struct says)
 
+    logln_info("Sending ACK for APID: %d", header.apid);
     send_telemetry(ACK, (char*) ack, ack_size); // Send ack
 
     vPortFree(ack);

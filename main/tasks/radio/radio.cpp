@@ -620,6 +620,7 @@ void radio_task_cpp(){
                     }
                     printf("\n"); 
                     #endif
+                    logln_info("Radio received packet of size %d", packet_size);
                     receive_command_bytes(packet, packet_size);
                     // Check if command is to set output power of the radio
 
