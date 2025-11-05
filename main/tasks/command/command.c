@@ -80,6 +80,10 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     // Data may or may not be returned, this data should be allocated and freed if needed depending on the packet
     uint8_t *return_data = NULL;
     int return_data_len = 0;
+    uint8_t res = 0; 
+
+    // needs to mark that we got something to be able to transmit a response
+    radio_flag_valid_packet(); 
 
     switch (header.apid) {
         case UPLOAD_USER_DATA:
@@ -135,6 +139,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (!is_admin(append_args->admin_token)) break;
             if (append_args->data_len > (payload_size - sizeof(file_append_t))) break;
             write_file(append_args->path, append_args->data, append_args->data_len, true);
+            // no feedback for this one, use cat or something  
             break;
         case FILE_TOUCH:
             if (payload_size < sizeof(file_touch_t)) break;
@@ -153,14 +158,24 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (payload_size < sizeof(add_user_t)) break;
             add_user_t* add_user_args = (add_user_t*)payload_buf;
             if (!is_admin(add_user_args->admin_token)) break;
-            add_user(add_user_args->new_user_name, add_user_args->new_user_token);
+            res = (uint8_t) add_user(add_user_args->new_user_name, add_user_args->new_user_token);
+
+            return_data = (uint8_t *) pvPortMalloc(sizeof(uint8_t)); 
+            memcpy(return_data, &res, sizeof(uint8_t)); 
+            return_data_len = 1;
+
             break;
         case DELETE_USER:
             if (payload_size < sizeof(delete_user_t)) break;
             delete_user_t* delete_user_args = (delete_user_t*)payload_buf;
             if (!is_admin(delete_user_args->admin_token)) break;
             if (mkfs_args->confirm != 1) break;
-            delete_user(delete_user_args->user_name);
+            res = (uint8_t) delete_user(delete_user_args->user_name);
+
+            return_data = (uint8_t *) pvPortMalloc(sizeof(uint8_t)); 
+            memcpy(return_data, &res, sizeof(uint8_t)); 
+            return_data_len = 1;
+
             break;
         case SYS_INFO:
             if(payload_size < sizeof(sys_info_t)) break;
@@ -204,10 +219,21 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             radio_stat_t* radio_stat_args = (radio_stat_t*)payload_buf; 
             if(!is_admin(radio_stat_args->admin_token)) break;
 
-            logln("Queuing stat response"); 
+            logln_info("Queuing stat response"); 
             radio_queue_stat_response(); 
             break;
 
+        case RADIO_SET_MODE: 
+            if (payload_size < sizeof(radio_set_mode_t)) break;
+            radio_set_mode_t* radio_set_mode_args = (radio_set_mode_t*)payload_buf; 
+            if(!is_admin(radio_set_mode_args->admin_token)) break; 
+
+            logln_info("Changing radio mode to %d", radio_set_mode_args->radio_mode); 
+            // bypass radio queue 
+            xTaskNotify(xRadioTaskHandler, radio_set_mode_args->radio_mode, eSetValueWithOverwrite);
+
+            break;
+            
         case ANTENNA_DEPLOY:
             // Schedule deployment in STEVE for right now
             schedule_delayed_job_ms("DEPLOY_ANTENNA", &deploy_antenna_job, 10); 
@@ -226,7 +252,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             // logln_info("args[0]: %d payload_buf: %d len: %d", (((uint8_t*)args)[0]), *payload_buf, payload_size); 
 
             const char* job_name = "SET_RTC";
-            schedule_delayed_job_ms(job_name, &set_rtc_job, 10); 
+            schedule_delayed_job_ms(job_name, &set_rtc_job, 100); 
             steve_job_t* job = find_steve_job(job_name); 
             job->arg_data = args; 
             logln_info("RTC job created"); 
