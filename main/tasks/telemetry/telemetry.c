@@ -6,7 +6,6 @@
 #include <FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
-#include <portable.h>
 
 #include "gse.h"
 #include "radio.h"
@@ -28,13 +27,13 @@ void system_info(){
 
     //used heap memory
     uint16_t used_heap =  configTOTAL_HEAP_SIZE - free_heap_memory;
-    sys_info.heap_percent = (used_heap * 100) / configTOTAL_HEAP_SIZE;
+    //sys_info.heap_percent = (used_heap * 100) / configTOTAL_HEAP_SIZE;
 
     //get stack memory
     uint16_t stack_free = uxTaskGetStackHighWaterMark(NULL);
     uint16_t stack_total = configMINIMAL_STACK_SIZE;
     uint16_t used_stack = stack_total - stack_free; 
-    sys_info.stack_percent = (used_stack * 100) / stack_total;
+    //sys_info.stack_percent = (used_stack * 100) / stack_total;
 
     //Send telemetry
     send_telemetry(SYS_INFO, (char*)&sys_info, sizeof(sys_info));

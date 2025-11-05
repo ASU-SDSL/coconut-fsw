@@ -96,12 +96,6 @@ int main() {
                                         NULL,
                                         1,
                                         NULL);
-    telemetry_task_status = xTaskCreate(telemetry_task,
-                                        "TELEMETRY",
-                                        1024,
-                                        NULL,
-                                        1,
-                                        NULL);
     sys_info_task_status = xTaskCreate(system_info_task,
                                         "SYS_INFO",
                                         512,
