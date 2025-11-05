@@ -41,6 +41,7 @@ static BaseType_t telemetry_task_status;
 static BaseType_t radio_task_status; 
 static BaseType_t filesystem_task_status;
 static BaseType_t watchdog_task_status; 
+static BaseType_t sys_info_task_status;
 
 int main() {
     
@@ -95,6 +96,18 @@ int main() {
                                         NULL,
                                         1,
                                         NULL);
+    telemetry_task_status = xTaskCreate(telemetry_task,
+                                        "TELEMETRY",
+                                        1024,
+                                        NULL,
+                                        1,
+                                        NULL);
+    sys_info_task_status = xTaskCreate(system_info_task,
+                                        "SYS_INFO",
+                                        512,
+                                        NULL,
+                                        1,
+                                        &xSysInfoTaskHandler);
 
 #ifndef SIMULATOR
     radio_task_status = xTaskCreate(radio_task, 
