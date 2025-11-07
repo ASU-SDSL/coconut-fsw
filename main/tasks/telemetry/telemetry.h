@@ -110,7 +110,13 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     uint8_t heap_percent;
-    uint8_t stack_percent;
+    uint8_t current_stack_percent;
+    uint8_t gse_stack_percent;
+    uint8_t filesystem_stack_percent;
+    uint8_t radio_stack_percent;
+    uint8_t command_stack_percent;
+    uint8_t steve_stack_percent;
+
 } system_info_telemetry_t;
 
 typedef struct __attribute__((__packed__)) {

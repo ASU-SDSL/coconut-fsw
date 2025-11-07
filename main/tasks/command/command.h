@@ -7,6 +7,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <FreeRTOS.h>
 
 #include "spacepacket.h"
 #include "user_auth.h"
@@ -14,6 +15,8 @@
 #define COMMAND_MAX_QUEUE_ITEMS 0x200
 #define COMMAND_SYNC_BYTES "\x35\x2E\xF8\x53" 
 #define AX25_FLAG 0x7E
+
+extern TaskHandle_t xCommandTaskHandler;
 
 /**
  * @brief Command Structs and Types

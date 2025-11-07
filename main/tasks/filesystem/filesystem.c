@@ -6,6 +6,8 @@
 
 FATFS fs;
 
+TaskHandle_t xFilesystemTaskHandler;
+
 void fs_log(const char *str, ...) {
     // alloc telemetry packet
     log_telemetry_t *packet = pvPortMalloc(sizeof(log_telemetry_t) + MAX_LOG_STR_SIZE + 1);

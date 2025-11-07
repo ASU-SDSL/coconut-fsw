@@ -22,7 +22,7 @@
 #include "hb_tlm_log.h"
 
 
-
+TaskHandle_t xCommandTaskHandler;
 
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS

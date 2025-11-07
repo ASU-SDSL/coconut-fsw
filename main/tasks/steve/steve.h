@@ -13,6 +13,8 @@
 #define SCHEDULER_CHECK_DELAY_MS 500
 #define SCHEDULER_CHECK_DELAY_TICKS pdMS_TO_TICKS(SCHEDULER_CHECK_DELAY_MS)
 
+extern TaskHandle_t xSteveTashHandler;
+
 // Job Structs and Types
 /// @brief Job function header type 
 typedef void (*job_func)(void*);

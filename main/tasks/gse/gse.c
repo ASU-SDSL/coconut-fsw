@@ -11,6 +11,8 @@
 #include "log.h"
 #include "gse.h"
 
+TaskHandle_t xGSETaskHandler;
+
 void gse_queue_message(char* buffer, size_t size) {
     // write to picosdk usb uart interface
     writebytes_usb(buffer, size);

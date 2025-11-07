@@ -29,11 +29,25 @@ void system_info(){
     uint16_t used_heap =  configTOTAL_HEAP_SIZE - free_heap_memory;
     sys_info.heap_percent = (used_heap * 100) / configTOTAL_HEAP_SIZE;
 
-    //get stack memory
-    uint16_t stack_free = uxTaskGetStackHighWaterMark(NULL);
-    uint16_t stack_total = configMINIMAL_STACK_SIZE;
-    uint16_t used_stack = stack_total - stack_free; 
-    sys_info.stack_percent = (used_stack * 100) / stack_total;
+    //get task hanlder for each task 
+    UBaseType_t radio_stack = uxTaskGetStackHighWaterMark(xRadioTaskHandler);
+    UBaseType_t command_stack = uxTaskGetStackHighWaterMark(xCommandTaskHandler);
+    UBaseType_t filesystem_stack = uxTaskGetStackHighWaterMark(xFilesystemTaskHandler);
+    UBaseType_t gse_stack = uxTaskGetStackHighWaterMark(xGSETaskHandler);
+    UBaseType_t steve_stack = uxTaskGetStackHighWaterMark(xSteveTaskHandler);
+
+    //get percent for each task
+    //sys_info.radio_stack_percentage
+    //sys_info.command_stack_percentage
+    //sys_info.filesystem_stack_percentage
+    //sys_info.gse_stack_percentage
+    //sys_info.steve_stack_percentage
+
+    //get current stack memory
+    uint32_t current_stack = uxTaskGetStackHighWaterMark(NULL);
+    uint32_t stack_total = configMINIMAL_STACK_SIZE;
+    uint32_t used_stack = stack_total - current_stack; 
+    sys_info.current_stack_percent = (used_stack * 100) / stack_total;
 
     //Send telemetry
     send_telemetry(SYS_INFO, (char*)&sys_info, sizeof(sys_info));
