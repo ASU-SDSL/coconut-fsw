@@ -29,19 +29,23 @@ void system_info(){
     uint16_t used_heap =  configTOTAL_HEAP_SIZE - free_heap_memory;
     sys_info.heap_percent = (used_heap * 100) / configTOTAL_HEAP_SIZE;
 
+    //total stack size
+    uint16_t RADIO_STACK_TOTAL = 512;
+    uint16_t COMMAND_STACK_TOTAL = 1024;
+    uint16_t FILESYSTEM_STACK_TOTAL = 1024;
+    uint16_t GSE_STACK_TOTAL = 256;
+    
     //get task hanlder for each task 
     UBaseType_t radio_stack = uxTaskGetStackHighWaterMark(xRadioTaskHandler);
     UBaseType_t command_stack = uxTaskGetStackHighWaterMark(xCommandTaskHandler);
     UBaseType_t filesystem_stack = uxTaskGetStackHighWaterMark(xFilesystemTaskHandler);
     UBaseType_t gse_stack = uxTaskGetStackHighWaterMark(xGSETaskHandler);
-    UBaseType_t steve_stack = uxTaskGetStackHighWaterMark(xSteveTaskHandler);
 
     //get percent for each task
-    //sys_info.radio_stack_percentage
-    //sys_info.command_stack_percentage
-    //sys_info.filesystem_stack_percentage
-    //sys_info.gse_stack_percentage
-    //sys_info.steve_stack_percentage
+    sys_info.radio_stack_percent = ((RADIO_STACK_TOTAL - radio_stack)*100)/RADIO_STACK_TOTAL;
+    sys_info.command_stack_percent = ((COMMAND_STACK_TOTAL - command_stack)*100)/COMMAND_STACK_TOTAL;
+    sys_info.filesystem_stack_percent = ((FILESYSTEM_STACK_TOTAL - filesystem_stack)*100)/FILESYSTEM_STACK_TOTAL;
+    sys_info.gse_stack_percent = ((GSE_STACK_TOTAL - gse_stack)*100)/GSE_STACK_TOTAL;
 
     //get current stack memory
     uint32_t current_stack = uxTaskGetStackHighWaterMark(NULL);

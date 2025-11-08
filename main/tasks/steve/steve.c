@@ -19,7 +19,7 @@
 
 #include "steve.h"
 
-TaskHandle_t xSteveTashHandler;
+TaskHandle_t xSteveTaskHandler;
 
 /* 
     S.T.E.V.E.

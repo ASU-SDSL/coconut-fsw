@@ -73,21 +73,21 @@ int main() {
                                         256, 
                                         NULL,
                                         1,
-                                        NULL);
+                                        &xGSETaskHandler);
          
     scheduler_task_status = xTaskCreate(steve_task, 
                                         "STEVE", 
                                         512, 
                                         NULL, 
                                         1,
-                                        NULL);
+                                        &xSteveTaskHandler);
 
     command_task_status = xTaskCreate(command_task,
                                         "COMMAND",
                                         1024,
                                         NULL,
                                         1,
-                                        NULL);
+                                        &xCommandTaskHandler);
     
     telemetry_task_status = xTaskCreate(telemetry_task,
                                         "TELEMETRY",
@@ -112,7 +112,7 @@ int main() {
                                         1024,
                                         NULL,
                                         1,
-                                        NULL);
+                                        &xFilesystemTaskHandler);
 
     watchdog_task_status = xTaskCreate(watchdog_task,
                                         "WATCHDOG",
