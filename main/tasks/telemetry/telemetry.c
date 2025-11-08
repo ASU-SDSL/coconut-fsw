@@ -15,7 +15,10 @@
 #include "log.h"
 #include "heartbeat_job.h"
 #include "command.h"
+#include "steve.h"
 #include "FreeRTOSConfig.h"
+
+
 
 
 void system_info(){
@@ -40,12 +43,14 @@ void system_info(){
     UBaseType_t command_stack = uxTaskGetStackHighWaterMark(xCommandTaskHandler);
     UBaseType_t filesystem_stack = uxTaskGetStackHighWaterMark(xFilesystemTaskHandler);
     UBaseType_t gse_stack = uxTaskGetStackHighWaterMark(xGSETaskHandler);
+    UBaseType_t steve_stack = uxTaskGetStackHighWaterMark(xSteveTaskHandler);
 
     //get percent for each task
     sys_info.radio_stack_percent = ((RADIO_STACK_TOTAL - radio_stack)*100)/RADIO_STACK_TOTAL;
     sys_info.command_stack_percent = ((COMMAND_STACK_TOTAL - command_stack)*100)/COMMAND_STACK_TOTAL;
     sys_info.filesystem_stack_percent = ((FILESYSTEM_STACK_TOTAL - filesystem_stack)*100)/FILESYSTEM_STACK_TOTAL;
     sys_info.gse_stack_percent = ((GSE_STACK_TOTAL - gse_stack)*100)/GSE_STACK_TOTAL;
+    sys_info.steve_stack_percent = ((GSE_STACK_TOTAL - steve_stack)*100)/GSE_STACK_TOTAL;
 
     //get current stack memory
     uint32_t current_stack = uxTaskGetStackHighWaterMark(NULL);
