@@ -19,17 +19,15 @@
 #include "FreeRTOSConfig.h"
 
 
-
-
 void system_info(){
     system_info_telemetry_t sys_info;
 
     //get heap memory
-    uint32_t free_heap_memory = xPortGetFreeHeapSize();
-    uint8_t min_heap_memory = xPortGetMinimumEverFreeHeapSize();
+    size_t free_heap_memory = xPortGetFreeHeapSize();
+    size_t min_heap_memory = xPortGetMinimumEverFreeHeapSize();
 
-    //used heap memory
-    uint16_t used_heap =  configTOTAL_HEAP_SIZE - free_heap_memory;
+    //heap percent used
+    size_t used_heap =  configTOTAL_HEAP_SIZE - free_heap_memory;
     sys_info.heap_percent = (used_heap * 100) / configTOTAL_HEAP_SIZE;
 
     //total stack size
@@ -37,6 +35,8 @@ void system_info(){
     uint16_t COMMAND_STACK_TOTAL = 1024;
     uint16_t FILESYSTEM_STACK_TOTAL = 1024;
     uint16_t GSE_STACK_TOTAL = 256;
+    uint16_t STEVE_STACK_TOTAL = 512;
+    uint16_t TELEMETRY_STACK_TOTAL = 1024;
     
     //get task hanlder for each task 
     UBaseType_t radio_stack = uxTaskGetStackHighWaterMark(xRadioTaskHandler);
@@ -52,11 +52,10 @@ void system_info(){
     sys_info.gse_stack_percent = ((GSE_STACK_TOTAL - gse_stack)*100)/GSE_STACK_TOTAL;
     sys_info.steve_stack_percent = ((GSE_STACK_TOTAL - steve_stack)*100)/GSE_STACK_TOTAL;
 
-    //get current stack memory
-    uint32_t current_stack = uxTaskGetStackHighWaterMark(NULL);
-    uint32_t stack_total = configMINIMAL_STACK_SIZE;
-    uint32_t used_stack = stack_total - current_stack; 
-    sys_info.current_stack_percent = (used_stack * 100) / stack_total;
+    //get current stack memory 
+    uint16_t current_stack = uxTaskGetStackHighWaterMark(NULL);
+    uint16_t used_stack = TELEMETRY_STACK_TOTAL - current_stack;
+    sys_info.current_stack_percent = (used_stack * 100) / TELEMETRY_STACK_TOTAL;
 
     //Send telemetry
     send_telemetry(SYS_INFO, (char*)&sys_info, sizeof(sys_info));
