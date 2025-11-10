@@ -16,6 +16,7 @@
 #include "heartbeat_job.h"
 #include "command.h"
 #include "steve.h"
+#include "main.h"
 #include "FreeRTOSConfig.h"
 
 
@@ -30,32 +31,22 @@ void system_info(){
     size_t used_heap =  configTOTAL_HEAP_SIZE - free_heap_memory;
     sys_info.heap_percent = (used_heap * 100) / configTOTAL_HEAP_SIZE;
 
-    //total stack size
-    uint16_t RADIO_STACK_TOTAL = 512;
-    uint16_t COMMAND_STACK_TOTAL = 1024;
-    uint16_t FILESYSTEM_STACK_TOTAL = 1024;
-    uint16_t GSE_STACK_TOTAL = 256;
-    uint16_t STEVE_STACK_TOTAL = 512;
-    uint16_t TELEMETRY_STACK_TOTAL = 1024;
-    
     //get task hanlder for each task 
     UBaseType_t radio_stack = uxTaskGetStackHighWaterMark(xRadioTaskHandler);
     UBaseType_t command_stack = uxTaskGetStackHighWaterMark(xCommandTaskHandler);
     UBaseType_t filesystem_stack = uxTaskGetStackHighWaterMark(xFilesystemTaskHandler);
     UBaseType_t gse_stack = uxTaskGetStackHighWaterMark(xGSETaskHandler);
     UBaseType_t steve_stack = uxTaskGetStackHighWaterMark(xSteveTaskHandler);
+    //testing telemetry stack
+    UBaseType_t telemetry_stack = uxTaskGetStackHighWaterMark(NULL);
 
     //get percent for each task
     sys_info.radio_stack_percent = ((RADIO_STACK_TOTAL - radio_stack)*100)/RADIO_STACK_TOTAL;
     sys_info.command_stack_percent = ((COMMAND_STACK_TOTAL - command_stack)*100)/COMMAND_STACK_TOTAL;
     sys_info.filesystem_stack_percent = ((FILESYSTEM_STACK_TOTAL - filesystem_stack)*100)/FILESYSTEM_STACK_TOTAL;
     sys_info.gse_stack_percent = ((GSE_STACK_TOTAL - gse_stack)*100)/GSE_STACK_TOTAL;
-    sys_info.steve_stack_percent = ((GSE_STACK_TOTAL - steve_stack)*100)/GSE_STACK_TOTAL;
-
-    //get current stack memory 
-    uint16_t current_stack = uxTaskGetStackHighWaterMark(NULL);
-    uint16_t used_stack = TELEMETRY_STACK_TOTAL - current_stack;
-    sys_info.current_stack_percent = (used_stack * 100) / TELEMETRY_STACK_TOTAL;
+    sys_info.steve_stack_percent = ((STEVE_STACK_TOTAL - steve_stack)*100)/STEVE_STACK_TOTAL;
+    sys_info.telemetry_stack_percent = ((TELEMETRY_STACK_TOTAL - telemetry_stack)*100)/TELEMETRY_STACK_TOTAL;
 
     //Send telemetry
     send_telemetry(SYS_INFO, (char*)&sys_info, sizeof(sys_info));
