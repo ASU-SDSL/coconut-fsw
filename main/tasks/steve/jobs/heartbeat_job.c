@@ -234,7 +234,7 @@ void heartbeat_telemetry_job(void* unused) {
     payload.boot_count = bootcount;
     
     // Send it
-    send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
+    send_telemetry(HEARTBEAT_APID, (char*)&payload, sizeof(payload));
     log_heartbeat_tlm(payload);
 
     iteration_counter += 1;

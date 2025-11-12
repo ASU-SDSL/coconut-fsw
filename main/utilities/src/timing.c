@@ -40,6 +40,10 @@ TickType_t get_uptime() {
     return xTaskGetTickCount();
 }
 
+TickType_t tick_uptime_in_ms() {
+    return ticks_to_ms(xTaskGetTickCount());
+}
+
 uint32_t time_between(uint32_t after, uint32_t before) {
     if(after >= before) return after - before;
     else return (UINT32_MAX - before) + after; // catch rollover 

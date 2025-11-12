@@ -34,4 +34,3 @@ static void radio_set_transmit_power(uint8_t output_power) {
 static void radio_queue_stat_response() {
     return;
 }
-
