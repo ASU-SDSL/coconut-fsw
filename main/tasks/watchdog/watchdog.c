@@ -24,6 +24,7 @@ static bool heartbeats[WATCHDOG_CONNECTED_TASKS];
 // see here: https://github.com/raspberrypi/pico-sdk/issues/1238 
 #define WATCHDOG_BUILT_IN_TIMEOUT_MS (5 * 1000) // 5s  
 
+TaskHandle_t xWatchdogTaskHandler;
 static uint32_t last_check = 0; 
 
 

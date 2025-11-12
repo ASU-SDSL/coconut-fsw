@@ -19,6 +19,8 @@
 #include "main.h"
 #include "FreeRTOSConfig.h"
 
+TaskHandle_t xTelemetryTaskHandler;
+
 
 void system_info(){
     system_info_telemetry_t sys_info;
@@ -37,8 +39,8 @@ void system_info(){
     UBaseType_t filesystem_stack = uxTaskGetStackHighWaterMark(xFilesystemTaskHandler);
     UBaseType_t gse_stack = uxTaskGetStackHighWaterMark(xGSETaskHandler);
     UBaseType_t steve_stack = uxTaskGetStackHighWaterMark(xSteveTaskHandler);
-    //testing telemetry stack
-    UBaseType_t telemetry_stack = uxTaskGetStackHighWaterMark(NULL);
+    UBaseType_t watchdog_stack = uxTaskGetStackHighWaterMark(xWatchdogTaskHandler);
+    UBaseType_t telemetry_stack = uxTaskGetStackHighWaterMark(xTelemetryTaskHandler);
 
     //get percent for each task
     sys_info.radio_stack_percent = ((RADIO_STACK_TOTAL - radio_stack)*100)/RADIO_STACK_TOTAL;
@@ -47,11 +49,14 @@ void system_info(){
     sys_info.gse_stack_percent = ((GSE_STACK_TOTAL - gse_stack)*100)/GSE_STACK_TOTAL;
     sys_info.steve_stack_percent = ((STEVE_STACK_TOTAL - steve_stack)*100)/STEVE_STACK_TOTAL;
     sys_info.telemetry_stack_percent = ((TELEMETRY_STACK_TOTAL - telemetry_stack)*100)/TELEMETRY_STACK_TOTAL;
+    sys_info.watchdog_stack_percent = ((WATCHDOG_STACK_TOTAL - watchdog_stack)*100)/WATCHDOG_STACK_TOTAL;
 
+    
     //Send telemetry
     send_telemetry(SYS_INFO, (char*)&sys_info, sizeof(sys_info));
 
 }
+
 
 void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t payload_size) {
     // Build transmission buffer struct

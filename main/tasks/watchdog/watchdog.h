@@ -14,6 +14,8 @@ TaskHandle_t xWatchdogTaskHandler;
 *  @brief Task that controls the resetting of the hardware watchdog - MAX706RESA - this module needs to be reset (GPIO toggled) within 1.6s with 100ns minimum pulse
 *  Any task can send this task a signal to stop reseting the watchdog, causing a simple processor reboot
 */
+
+extern TaskHandle_t xWatchdogTaskHandler;
 void watchdog_freeze();
 
 /**

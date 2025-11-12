@@ -94,7 +94,7 @@ int main() {
                                         TELEMETRY_STACK_TOTAL,
                                         NULL,
                                         1,
-                                        NULL);
+                                        &xTelemetryTaskHandler);
 
 
 #ifndef SIMULATOR

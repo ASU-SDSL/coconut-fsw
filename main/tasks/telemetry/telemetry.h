@@ -16,6 +16,7 @@
 uint16_t g_packet_sequence_number;
 
 QueueHandle_t telemetry_queue;
+extern TaskHandle_t xTelemetryTaskHandler;
 
 /* TELEMETRY DEFINITIONS*/
 /**
@@ -116,6 +117,7 @@ typedef struct __attribute__((__packed__)) {
     uint8_t radio_stack_percent;
     uint8_t command_stack_percent;
     uint8_t steve_stack_percent;
+    uint8_t watchdog_stack_percent;
 
 } system_info_telemetry_t;
 
