@@ -230,7 +230,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
 
             logln_info("Changing radio mode to %d", radio_set_mode_args->radio_mode); 
             // bypass radio queue 
-            xTaskNotify(xRadioTaskHandler, radio_set_mode_args->radio_mode, eSetValueWithOverwrite);
+            xTaskNotifyIndexed(1, xRadioTaskHandler, radio_set_mode_args->radio_mode, eSetValueWithOverwrite);
 
             break;
             

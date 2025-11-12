@@ -549,7 +549,7 @@ void radio_task_cpp(){
 
     while(true){
         // take notification for LoRa mode switching 
-        uint32_t mode = ulTaskNotifyTake(pdTRUE, 0);
+        uint32_t mode = ulTaskNotifyTakeIndexed(1, pdTRUE, 0);
         // if there is a setting 
         if(mode > 0){
             radio_set_mode(mode);
