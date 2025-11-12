@@ -113,7 +113,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (payload_size < sizeof(file_ls_t)) break;
             file_ls_t* ls_args = (file_ls_t*)payload_buf;
             if (!is_admin(ls_args->admin_token)) break;
-            logln_info("Listing directory: %s", ls_args->path);
+            fs_log("Listing directory: %s", ls_args->path);
             list_dir(ls_args->path);
             break;
         case FILE_MKDIR:

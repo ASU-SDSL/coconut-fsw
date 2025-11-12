@@ -147,3 +147,6 @@ void _test();
 
 // Main Task
 void filesystem_task(void* unused_arg);
+
+// special file system logging
+void fs_log(const char *str, ...); 
