@@ -7,6 +7,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <FreeRTOS.h>
 
 #include "spacepacket.h"
 #include "user_auth.h"
@@ -14,6 +15,8 @@
 #define COMMAND_MAX_QUEUE_ITEMS 0x200
 #define COMMAND_SYNC_BYTES "\x35\x2E\xF8\x53" 
 #define AX25_FLAG 0x7E
+
+extern TaskHandle_t xCommandTaskHandler;
 
 /**
  * @brief Command Structs and Types
@@ -41,6 +44,7 @@ typedef enum command_apid {
     MCU_POWER_CYCLE = 14,
     PLAYBACK_HEARTBEAT_PACKETS = 15,
     FSW_ACK = 16,
+    SYS_INFO = 17,
 
     // 01 - radio
     RADIO_CONFIG = 101,
@@ -151,6 +155,10 @@ typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
     uint8_t radio_mode; 
 } radio_set_mode_t; 
+
+typedef struct __attribute__((__packed__)) { 
+    uint8_t admin_token[TOKEN_LENGTH];
+} sys_info_t; 
 
 typedef struct __attribute__((__packed__)) { 
     uint8_t admin_token[TOKEN_LENGTH];

@@ -16,6 +16,7 @@
 uint16_t g_packet_sequence_number;
 
 QueueHandle_t telemetry_queue;
+extern TaskHandle_t xTelemetryTaskHandler;
 
 /* TELEMETRY DEFINITIONS*/
 /**
@@ -109,6 +110,19 @@ typedef struct __attribute__((__packed__)) {
 } ack_telemetry_t;
 
 typedef struct __attribute__((__packed__)) {
+    uint8_t heap_percent;
+    uint8_t current_stack_percent;
+    uint8_t gse_stack_percent;
+    uint8_t filesystem_stack_percent;
+    uint8_t radio_stack_percent;
+    uint8_t command_stack_percent;
+    uint8_t steve_stack_percent;
+    uint8_t watchdog_stack_percent;
+    uint8_t telemetry_stack_percent;
+
+} system_info_telemetry_t;
+
+typedef struct __attribute__((__packed__)) {
     float rssi;
     float snr;
     float frequency_error;
@@ -120,3 +134,4 @@ void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t pa
 /* INTERNAL FUNCTIONS */
 // Main Task
 void telemetry_task(void* unused_arg);
+void system_info(void);
