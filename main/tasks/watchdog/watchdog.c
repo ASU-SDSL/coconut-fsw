@@ -10,7 +10,7 @@
 
 #define WATCHDOG_MAX_QUEUE_ITEMS 16
 #define WATCHDOG_INTERTASK_CHECK_PERIOD_MS 1000 * 60 // every minute - needs to be at least more than 5s for if used in radio due to packet air time 
-#define WATCHDOG_CONNECTED_TASKS 0
+#define WATCHDOG_CONNECTED_TASKS 2
 #define WATCHDOG_CHECK_DELAY_MS 500
 
 static QueueHandle_t watchdog_queue;

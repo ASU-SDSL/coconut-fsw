@@ -10,6 +10,10 @@
 /// @brief Stores instance of this task, assigned in main.c and used for notifications (similar to binary semaphores)
 TaskHandle_t xWatchdogTaskHandler;
 
+// connected tasks handles 
+#define WATCHDOG_TASK_ID_RADIO 0
+#define WATCHDOG_TASK_ID_STEVE 1
+
 /**
 *  @brief Task that controls the resetting of the hardware watchdog - MAX706RESA - this module needs to be reset (GPIO toggled) within 1.6s with 100ns minimum pulse
 *  Any task can send this task a signal to stop reseting the watchdog, causing a simple processor reboot

@@ -12,6 +12,7 @@
 #include "ina219.h"
 #include "timing.h"
 #include "ds18b20.h"
+#include "watchdog.h"
 
 #include "heartbeat_job.h"
 #include "miscellaneous_jobs.h"
@@ -260,6 +261,8 @@ void steve_task(void* unused_arg) {
 
     // Run main task loop
     while (true) {
+        // kick the watchdog 
+        watchdog_intertask_kick(WATCHDOG_TASK_ID_STEVE);
 
         // Take mutex
         xSemaphoreTake(g_steve_context.mutex, portMAX_DELAY);

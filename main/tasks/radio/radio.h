@@ -40,16 +40,6 @@ typedef struct radio_queue_operations {
 #define RADIO_STATE_FILE_NAME "radio.bin"
 
 /* C FUNC DECLARATIONS */
-
-#ifdef __cplusplus
-extern "C" {
-    #include "telemetry.h"
-    #include "log.h"
-    #include "command.h"
-    #include "timing.h"
-}
-#endif
-
 #ifdef __cplusplus
 extern "C"
 {

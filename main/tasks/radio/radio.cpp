@@ -23,12 +23,19 @@
 #include "spacepacket.h"
 #include "semphr.h"
 
+#ifdef __cplusplus
+extern "C" {
+    #include "telemetry.h"
+    #include "log.h"
+    #include "command.h"
+    #include "timing.h"
+    #include "watchdog.h"
+    #include "gse.h"
+}
+#endif
+
 #include "radio.h"
 #include "PicoHal.h"
-#include "log.h"
-#include "gse.h"
-#include "command.h"
-#include "timing.h"
 
 /**
  * @defgroup Radio Pinouts
@@ -548,6 +555,9 @@ void radio_task_cpp(){
     int transmission_size = 0;  
 
     while(true){
+        // kick watchdog 
+        watchdog_intertask_kick(WATCHDOG_TASK_ID_RADIO);
+
         // take notification for LoRa mode switching 
         uint32_t mode = ulTaskNotifyTakeIndexed(1, pdTRUE, 0);
         // if there is a setting 
