@@ -44,6 +44,11 @@ void watchdog_task(void *pvParameters) {
     watchdog_enable(WATCHDOG_BUILT_IN_TIMEOUT_MS, true); 
     #endif
 
+    if (watchdog_queue == NULL) {
+        logln_error("Watchdog queue creation failed");
+        while(1); // hang here - watchdog will cause reboot 
+    }
+
     // Initialize the watchdog GPIO and set it high
     gpio_init(WDI_PIN);
     gpio_set_dir(WDI_PIN, GPIO_OUT);
