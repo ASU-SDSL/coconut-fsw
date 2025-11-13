@@ -118,6 +118,7 @@ typedef struct __attribute__((__packed__)) {
     uint8_t command_stack_percent;
     uint8_t steve_stack_percent;
     uint8_t watchdog_stack_percent;
+    uint8_t telemetry_stack_percent;
 
 } system_info_telemetry_t;
 

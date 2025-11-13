@@ -17,6 +17,7 @@
 #include "command.h"
 #include "steve.h"
 #include "main.h"
+#include "watchdog.h"
 #include "FreeRTOSConfig.h"
 
 TaskHandle_t xTelemetryTaskHandler;
