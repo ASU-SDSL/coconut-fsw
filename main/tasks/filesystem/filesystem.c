@@ -5,9 +5,6 @@
 #include "filesystem.h"
 #include "watchdog.h"
 
-// return value protection 
-static SemaphoreHandle_t fs_return_mutex = NULL;
-
 FATFS fs;
 
 void fs_log(const char *str, ...) {
@@ -488,16 +485,9 @@ void filesystem_task(void* unused_arg) {
         watchdog_freeze(); // force reboot if we can't set up the queue
     }
 
-    // create mutex for returning values 
-    fs_return_mutex = xSemaphoreCreateMutex();
-    if (fs_return_mutex == NULL) {
-        logln_error("radio_last_received_time_mutex creation failed");
-    }
-
     // start inf loop
     filesystem_queue_operations_t received_operation;
     while(1) {
-        printf("Stack High Watermark (words): %u\n", uxTaskGetStackHighWaterMark(NULL)); 
         // wait until an operation is in queue
         xQueueReceive(filesystem_queue, &received_operation, EMPTY_QUEUE_WAIT_TIME);
         // parse and execute operation
