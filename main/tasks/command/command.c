@@ -73,7 +73,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
         xSemaphoreGive(commandCountMutex);
     }
 
-    logln_info("Received command with APID: %hu", header.apid);
+    logln_info("Received command with APID: %hu of size %d", header.apid, payload_size);
     
     // Used for the ack struct
     uint8_t command_status = 1; // 1 for success/true, 0 for failure/false
@@ -113,6 +113,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (payload_size < sizeof(file_ls_t)) break;
             file_ls_t* ls_args = (file_ls_t*)payload_buf;
             if (!is_admin(ls_args->admin_token)) break;
+            fs_log("Listing directory: %s", ls_args->path);
             list_dir(ls_args->path);
             break;
         case FILE_MKDIR:
@@ -158,6 +159,9 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (payload_size < sizeof(add_user_t)) break;
             add_user_t* add_user_args = (add_user_t*)payload_buf;
             if (!is_admin(add_user_args->admin_token)) break;
+
+            logln_info("Adding user: %s", add_user_args->new_user_name);
+
             res = (uint8_t) add_user(add_user_args->new_user_name, add_user_args->new_user_token);
 
             return_data = (uint8_t *) pvPortMalloc(sizeof(uint8_t)); 
@@ -169,7 +173,8 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (payload_size < sizeof(delete_user_t)) break;
             delete_user_t* delete_user_args = (delete_user_t*)payload_buf;
             if (!is_admin(delete_user_args->admin_token)) break;
-            if (mkfs_args->confirm != 1) break;
+            if (delete_user_args->confirm != 1) break;
+            logln_info("Deleting user: %s", delete_user_args->user_name);
             res = (uint8_t) delete_user(delete_user_args->user_name);
 
             return_data = (uint8_t *) pvPortMalloc(sizeof(uint8_t)); 
@@ -202,8 +207,8 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if(!is_admin(radio_config_args->admin_token)) break;
             logln_info("Attempting to switch to %d with power %d", radio_config_args->selected_radio, radio_config_args->updated_power);
             // queue module update if arg isn't 2 
-            if(radio_config_args->selected_radio == 1) radio_set_module(ENABLE_RFM98); 
-            else if(radio_config_args->selected_radio == 0) radio_set_module(ENABLE_SX1268); 
+            if(radio_config_args->selected_radio == 0) radio_set_module(ENABLE_RFM98); 
+            else if(radio_config_args->selected_radio == 1) radio_set_module(ENABLE_SX1268); 
 
             // queue power update if arg isn't 0
             if(radio_config_args->updated_power != 0) radio_set_transmit_power(radio_config_args->updated_power); 
@@ -225,7 +230,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
 
             logln_info("Changing radio mode to %d", radio_set_mode_args->radio_mode); 
             // bypass radio queue 
-            xTaskNotify(xRadioTaskHandler, radio_set_mode_args->radio_mode, eSetValueWithOverwrite);
+            xTaskNotifyIndexed(1, xRadioTaskHandler, radio_set_mode_args->radio_mode, eSetValueWithOverwrite);
 
             break;
             
@@ -297,6 +302,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     get_most_recent_logged_error(last_error, MAX_ERROR_LOG_STR_SIZE);
     strncpy(ack->last_logged_error, last_error, sizeof(ack->last_logged_error)); // Copy only first 24 chars (or however many the ack struct says)
 
+    logln_info("Sending ACK for APID: %d", header.apid);
     send_telemetry(ACK, (char*) ack, ack_size); // Send ack
 
     vPortFree(ack);
