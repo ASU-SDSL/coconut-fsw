@@ -5,6 +5,8 @@
 #include "log.h"
 #include <stdlib.h>
 #include "hardware/watchdog.h"
+#include "timing.h"
+// #include "semphr.h"
 
 #define WDI_PIN 21 // from FCR schematic
 
@@ -13,9 +15,12 @@
 #define WATCHDOG_CONNECTED_TASKS 2
 #define WATCHDOG_CHECK_DELAY_MS 500
 
-static QueueHandle_t watchdog_queue;
+// static QueueHandle_t watchdog_queue;
+// static SemaphoreHandle_t heartbeats_mutex = NULL;
 #if WATCHDOG_CONNECTED_TASKS > 0 
-static bool heartbeats[WATCHDOG_CONNECTED_TASKS]; 
+// I'm purposely not using a mutex for this array as I don't care about stale values 
+// and I don't want blocking on a mutex in the tasks sending heartbeats
+static volatile bool heartbeats[WATCHDOG_CONNECTED_TASKS]; 
 #endif 
 
 #define WATCHDOG_USE_BUILT_IN 1
@@ -35,7 +40,7 @@ void watchdog_freeze() {
 void watchdog_task(void *pvParameters) {
 
     // set up watchdog queue
-    watchdog_queue = xQueueCreate(WATCHDOG_MAX_QUEUE_ITEMS, sizeof(uint8_t));
+    // watchdog_queue = xQueueCreate(WATCHDOG_MAX_QUEUE_ITEMS, sizeof(uint8_t));
 
     // update last check 
     last_check = to_ms_since_boot(get_absolute_time()); 
@@ -43,11 +48,6 @@ void watchdog_task(void *pvParameters) {
     #if WATCHDOG_USE_BUILT_IN
     watchdog_enable(WATCHDOG_BUILT_IN_TIMEOUT_MS, true); 
     #endif
-
-    if (watchdog_queue == NULL) {
-        logln_error("Watchdog queue creation failed");
-        while(1); // hang here - watchdog will cause reboot 
-    }
 
     // Initialize the watchdog GPIO and set it high
     gpio_init(WDI_PIN);
@@ -65,13 +65,7 @@ void watchdog_task(void *pvParameters) {
         }
 
         #if WATCHDOG_CONNECTED_TASKS > 0
-        // receive intertask heartbeats from queue
-        uint8_t heartbeat_index; 
-        while(xQueueReceive(watchdog_queue, &heartbeat_index, 0) == pdPASS){
-            heartbeats[heartbeat_index] = true; 
-        }
-
-        if(abs((long long)(to_ms_since_boot(get_absolute_time()) - last_check)) > WATCHDOG_INTERTASK_CHECK_PERIOD_MS){
+        if(time_between(to_ms_since_boot(get_absolute_time()), last_check) > WATCHDOG_INTERTASK_CHECK_PERIOD_MS){
             // check heartbeats 
             for(size_t i = 0; i < WATCHDOG_CONNECTED_TASKS; i++){
                 // if a heartbeat hasn't toggled since last check 
@@ -97,10 +91,8 @@ void watchdog_task(void *pvParameters) {
 
 }
 
+#if WATCHDOG_CONNECTED_TASKS > 0
 void watchdog_intertask_kick(uint8_t id){
-    while(!watchdog_queue)
-    {
-        vTaskDelay(WATCHDOG_CHECK_DELAY_MS / portTICK_PERIOD_MS); 
-    }
-    xQueueSendToBack(watchdog_queue, &id, portMAX_DELAY); 
+    heartbeats[id] = true;
 }
+#endif 
