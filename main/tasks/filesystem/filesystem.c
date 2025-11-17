@@ -3,6 +3,7 @@
 
 #include "log.h"
 #include "filesystem.h"
+#include "watchdog.h"
 
 FATFS fs;
 
@@ -455,6 +456,7 @@ void _test() {
 
     // ls
     _flist("/");
+
 }
 
 void filesystem_task(void* unused_arg) {
@@ -481,7 +483,8 @@ void filesystem_task(void* unused_arg) {
     filesystem_queue = xQueueCreate(FILESYSTEM_QUEUE_LENGTH, sizeof(filesystem_queue_operations_t));
     if(filesystem_queue == NULL) {
         // TODO: Find a better solution to handling queue creation failure
-        vTaskDelete(NULL);
+        //vTaskDelete(NULL);
+        watchdog_freeze(); // force reboot if we can't set up the queue
     }
 
     // start inf loop
