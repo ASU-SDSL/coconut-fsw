@@ -27,12 +27,14 @@ void system_info(){
     system_info_telemetry_t sys_info;
 
     //get heap memory
+    taskENTER_CRITICAL();
     size_t free_heap_memory = xPortGetFreeHeapSize();
     size_t min_heap_memory = xPortGetMinimumEverFreeHeapSize();
-
+    
     //heap percent used
     size_t used_heap =  configTOTAL_HEAP_SIZE - free_heap_memory;
     sys_info.heap_percent = (used_heap * 100) / configTOTAL_HEAP_SIZE;
+    taskEXIT_CRITICAL();
 
     //get task hanlder for each task 
     UBaseType_t radio_stack = uxTaskGetStackHighWaterMark(xRadioTaskHandler);
