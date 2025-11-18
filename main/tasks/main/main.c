@@ -127,6 +127,7 @@ int main() {
     while(true){};
 }
 
+#if defined(DEBUG) && !defined(SIMULATOR)
 void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
     // breakpoint to debug, should be able to see pcTaskName in the debugger
     __asm__("BKPT #0");
@@ -136,3 +137,4 @@ void vApplicationMallocFailedHook( void ) {
     // see call history in debugger?
     __asm__("BKPT #0");
 }
+#endif 
