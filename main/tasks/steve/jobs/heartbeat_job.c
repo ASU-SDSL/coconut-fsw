@@ -30,29 +30,29 @@ void heartbeat_telemetry_job(void* unused) {
     if(!bootcountset){
         //check if bootcount file exist
         if (file_exists("boot.bin")){
-            if(read_file("boot.bin", (char*)&bootcount, sizeof(bootcount)) > 0){
-                bootcount++;
-                //write to file
-                write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
-                bootcountset = true;
-            }
-            else{
-                //if bootcount file exists but read failed, set bootcount to 0
-                delete_file("boot.bin");
-                logln_error("Failed to read bootcount file, setting bootcount to 0");
-                bootcount = 0;
-                write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
-                bootcountset = true;
-            }
+                if(read_file("boot.bin", (char*)&bootcount, sizeof(bootcount)) > 0){
+                    bootcount++;
+                    //write to file
+                    write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
+                    bootcountset = true;
+                }
+                else{
+                    //if bootcount file exists but read failed, set bootcount to 0
+                    delete_file("boot.bin");
+                    logln_error("Failed to read bootcount file, setting bootcount to 0");
+                    bootcount = 0;
+                    write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
+                    bootcountset = true;
+                }
+        }
+        else{
+            //set bootcount to 0 if no file exist 
+            bootcount = 0;
+            //write to file
+            write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
+            bootcountset = true;
+        }
     }
-    else{
-        //set bootcount to 0 if no file exist 
-        bootcount = 0;
-        //write to file
-        write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
-        bootcountset = true;
-    }
-}
         
     // logln_info("%s", get_current_task_name());
 

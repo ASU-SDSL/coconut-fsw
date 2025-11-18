@@ -2,6 +2,7 @@
 #include "onewire_library.h"
 #include "log.h"
 #include <stdio.h>
+#include "timing.h"
 
 // code used from pico-examples:
 // https://github.com/raspberrypi/pico-examples/tree/master/pio/onewire 
@@ -26,6 +27,7 @@
 #define OW_SEARCH_ROM       0xF0
 
 #define DS18B20_TIMEOUT_MS 1000
+#define DS18B20_SHORT_TIMEOUT_MS 100
 
 // pio block config variables 
 PIO ds_pio = pio0; 
@@ -67,7 +69,10 @@ uint8_t ds18b20_start_conversion(){
 
 int16_t ds18b20_read_temp(uint64_t romcode){
     // busy wait until conversion is done
-    while(ow_read(&ds_ow) == 0);
+    uint32_t start_time = to_ms_since_boot(get_absolute_time());
+    while(ow_read(&ds_ow) == 0 && to_ms_since_boot(get_absolute_time()) - start_time < DS18B20_SHORT_TIMEOUT_MS){
+        vTaskDelay(pdMS_TO_TICKS(10));
+    } 
 
     // read the result 
     ow_reset(&ds_ow); 

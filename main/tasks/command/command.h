@@ -103,8 +103,8 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char new_user_name[MAX_USERNAME_LEN + 1];
     uint8_t new_user_token[TOKEN_LENGTH];
+    char new_user_name[MAX_USERNAME_LEN + 1];
 } add_user_t;
 
 typedef struct __attribute__((__packed__)) {
