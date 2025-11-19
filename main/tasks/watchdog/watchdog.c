@@ -55,6 +55,9 @@ void watchdog_task(void *pvParameters) {
 
         // See if reset signal was received
         if (ulTaskNotifyTake(pdTRUE, 0) > 0) {
+            #if defined(DEBUG) && !defined(SIMULATOR)
+            __asm__("BKPT #0"); // break if debugging 
+            #endif
             // Freeze watchdog toggling to cause a reset
             while(1) {}
         }

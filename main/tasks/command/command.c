@@ -20,6 +20,7 @@
 #include "antenna_deploy_job.h"
 #include "watchdog.h"
 #include "hb_tlm_log.h"
+#include "file_downlink.h"
 
 
 
@@ -212,7 +213,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             int status = hb_tlm_playback(playback_hb_payload);
             if (status != 0) command_status = 0;
             break;
-        
+            
         case RADIO_CONFIG: 
             if(payload_size < sizeof(radio_config_t)) break; 
             radio_config_t* radio_config_args = (radio_config_t*)payload_buf; 
@@ -270,6 +271,26 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             job->arg_data = args; 
             logln_info("RTC job created"); 
             break;
+            
+        case APID_INITIALIZE_FILE_DOWNLINK:
+            // This payload is just a string
+            if (strnlen(payload_buf, MAX_PATH_SIZE + 1) > MAX_PATH_SIZE + 1) break; // Verify it looks like a string (+ \0) and isn't too long
+            logln_info("Initializing file downlink for file: %s!", payload_buf);
+            logln_info("Checking file: %d", file_exists((char*)payload_buf));
+            command_status = initialize_file_downlink(payload_buf, payload_size);
+            break;
+        case APID_FILE_DOWNLINK_ACK:
+            logln_info("ACK RECEIVED");
+            // It's ok if it is smaller, the string will be different sizes
+            if (payload_size > sizeof(file_downlink_queue_command_ack_data_t)) break;
+            file_downlink_queue_command_ack_data_t* ack_args = (file_downlink_queue_command_ack_data_t*)payload_buf;
+            file_downlink_ack_command(ack_args->transaction_id, ack_args->sequence_number);
+            break;
+        case APID_FILE_DOWNLINK_CHANGE_PACKET_SIZE:
+            if (payload_size < sizeof(file_downlink_queue_command_change_packet_size_data_t)) break;
+            file_downlink_queue_command_change_packet_size_data_t* change_packet_size_args = (file_downlink_queue_command_change_packet_size_data_t*)payload_buf;
+            change_max_packet_size(change_packet_size_args->new_packet_size);
+            break;
         
         case AX25_ON_OFF:
             // check auth token 
@@ -316,7 +337,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     strncpy(ack->last_logged_error, last_error, sizeof(ack->last_logged_error)); // Copy only first 24 chars (or however many the ack struct says)
 
     logln_info("Sending ACK for APID: %d", header.apid);
-    send_telemetry(ACK, (char*) ack, ack_size); // Send ack
+    send_telemetry(ACK_APID, (char*) ack, ack_size); // Send ack
 
     vPortFree(ack);
 }
@@ -422,5 +443,14 @@ void command_task(void* unused_arg) {
             // Free payload buffer
             vPortFree(payload_buf);
         }
+        // from dylan's merge idk why this was added 
+        // // Read payload - @todo NEEDS TIMEOUT
+        // for (int i = 0; i < payload_size; i++) {
+        //     xQueueReceive(command_byte_queue, &payload_buf[i], portMAX_DELAY);
+        // }
+        // // Parse packet payload
+        // parse_command_packet(header, payload_buf, payload_size);
+        // // Free payload buffer
+        // vPortFree(payload_buf);
     }
 }
