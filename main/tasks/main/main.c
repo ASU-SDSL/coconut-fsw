@@ -7,7 +7,7 @@
 #include <FreeRTOS.h>
 #include <task.h>
 #include <queue.h>
-
+#include "timing.h"
 
 #include "gse.h"
 #include "command.h"
@@ -16,6 +16,12 @@
 #include "steve.h"
 #include "filesystem.h"
 #include "watchdog.h"
+#include "file_downlink.h"
+#include "i2c.h"
+#include <stdio.h>
+
+// for initial timing setup only 
+#include "rtc_ds3231.h"
 
 #ifndef SIMULATOR
 #include "radio.h"
@@ -43,6 +49,25 @@ int main() {
     timer_hw->dbgpause = 0;
 #endif
 
+    // set up mutexes 
+    epoch_time_mutex = xSemaphoreCreateMutex(); 
+    if(epoch_time_mutex == NULL){
+        printf("Epoch time mutex creation failed"); 
+    }
+
+    // initialize epoch clock 
+    // i2c instance
+    i2c_inst_t *i2c = i2c1;
+    config_i2c1(); // initialize i2c1
+    // temps 
+    uint8_t year, month, date, hour, minute, second;
+    if(!rtc_get_year(i2c, &year) && !rtc_get_month(i2c, &month) && 
+            !rtc_get_date(i2c, &date) && !rtc_get_hour(i2c, &hour) && 
+            !rtc_get_minute(i2c, &minute) && !rtc_get_second(i2c, &second)){
+        update_epoch_time(year, month, date, hour, minute, second); 
+    } else {
+        printf("Epoch time initialization failed"); 
+    }
 
     gse_task_status = xTaskCreate(gse_task, 
                                         "GSE", 
@@ -78,7 +103,7 @@ int main() {
                                          512, 
                                          NULL, 
                                          1,
-                                         NULL);
+                                         &xRadioTaskHandler);
 #endif
 
 
@@ -95,6 +120,13 @@ int main() {
                                         NULL,
                                         1,
                                         &xWatchdogTaskHandler);
+
+    BaseType_t file_downlink_task_status = xTaskCreate(file_downlink_task,
+                                        "FILEDOWNLINK",
+                                        1024,
+                                        NULL,
+                                        1,
+                                        NULL);
                                         
     // Start the FreeRTOS scheduler
     vTaskStartScheduler();
@@ -105,10 +137,15 @@ int main() {
 
 void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
     // breakpoint to debug, should be able to see pcTaskName in the debugger
+    #if defined(DEBUG) && !defined(SIMULATOR)
     __asm__("BKPT #0");
+    #endif
 }  
 
 void vApplicationMallocFailedHook( void ) {
+    #if defined(DEBUG) && !defined(SIMULATOR)
     // see call history in debugger?
     __asm__("BKPT #0");
+    #endif
 }
+ 

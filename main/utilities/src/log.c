@@ -45,16 +45,19 @@ void _log(bool is_error, const char *str, ...) {
     va_end(args);
 
     if (is_error) {
+        if (packet->str == NULL) {
+            return; // This happens sometimes in the simulator at least
+        }
         write_error_log(packet->str); // Write to the log
     }
 
 //#ifdef SIMULATOR
     // write to stdout
     //write(1, packet->str, strsize);
-    //send_telemetry(LOG, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
+    //send_telemetry(LOG_APID, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
 //#else
     // send to telemetry task
-    send_telemetry(LOG, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
+    send_telemetry(LOG_APID, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
 //#endif
 
     vPortFree(packet);
@@ -66,7 +69,8 @@ void _write_log(const char *bytes, size_t size) {
     log_telemetry_t packet;
     memcpy(packet.str, bytes, size);
     packet.size = size;
-    send_telemetry(LOG, (char*)&packet, sizeof(log_telemetry_t) + size);
+    send_telemetry(LOG_APID, (char*)&packet, sizeof(log_telemetry_t) + size);
+    send_telemetry(FS_LOG_APID, (char*)&packet, sizeof(log_telemetry_t) + size);
 }
 
 void write_error_log(char *str) {

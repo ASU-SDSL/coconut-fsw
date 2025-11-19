@@ -20,6 +20,7 @@
 #include "antenna_deploy_job.h"
 #include "watchdog.h"
 #include "hb_tlm_log.h"
+#include "file_downlink.h"
 
 
 
@@ -73,19 +74,36 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
         xSemaphoreGive(commandCountMutex);
     }
 
-    logln_info("Received command with APID: %hu", header.apid);
+    logln_info("Received command with APID: %hu of size %d", header.apid, payload_size);
     
     // Used for the ack struct
     uint8_t command_status = 1; // 1 for success/true, 0 for failure/false
     // Data may or may not be returned, this data should be allocated and freed if needed depending on the packet
     uint8_t *return_data = NULL;
     int return_data_len = 0;
+    uint8_t res = 0; 
+
+    // needs to mark that we got something to be able to transmit a response
+    radio_flag_valid_packet(); 
 
     switch (header.apid) {
         case UPLOAD_USER_DATA:
-            if (payload_size < sizeof(upload_user_data_t)) break;
+            if (payload_size < sizeof(upload_user_data_t)){
+                logln_error("Payload size too small for UPLOAD_USER_DATA: %d", payload_size);
+                break;
+            }
             upload_user_data_t* upload_user_data_args = (upload_user_data_t*)payload_buf;
-            if (upload_user_data_args->data_len > (payload_size - sizeof(upload_user_data_t))) break;
+            if (upload_user_data_args->data_len > (payload_size - sizeof(upload_user_data_t))){
+                logln_error("Data length too large for UPLOAD_USER_DATA: %d", upload_user_data_args->data_len);
+                break;
+            }
+
+            char* data = pvPortMalloc(upload_user_data_args->data_len + 1);
+            memcpy(data, upload_user_data_args->data, upload_user_data_args->data_len);
+            data[upload_user_data_args->data_len] = '\0'; // null terminate for logging
+            logln_info("Received data: %s", data); 
+            vPortFree(data);
+
             upload_user_data(upload_user_data_args->user_token, upload_user_data_args->data, upload_user_data_args->data_len);
             break;
         case CHANGE_HEARTBEAT_TELEM_RATE:
@@ -109,6 +127,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (payload_size < sizeof(file_ls_t)) break;
             file_ls_t* ls_args = (file_ls_t*)payload_buf;
             if (!is_admin(ls_args->admin_token)) break;
+            fs_log("Listing directory: %s", ls_args->path);
             list_dir(ls_args->path);
             break;
         case FILE_MKDIR:
@@ -135,6 +154,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (!is_admin(append_args->admin_token)) break;
             if (append_args->data_len > (payload_size - sizeof(file_append_t))) break;
             write_file(append_args->path, append_args->data, append_args->data_len, true);
+            // no feedback for this one, use cat or something  
             break;
         case FILE_TOUCH:
             if (payload_size < sizeof(file_touch_t)) break;
@@ -153,14 +173,28 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (payload_size < sizeof(add_user_t)) break;
             add_user_t* add_user_args = (add_user_t*)payload_buf;
             if (!is_admin(add_user_args->admin_token)) break;
-            add_user(add_user_args->new_user_name, add_user_args->new_user_token);
+
+            logln_info("Adding user: %s", add_user_args->new_user_name);
+
+            res = (uint8_t) add_user(add_user_args->new_user_name, add_user_args->new_user_token);
+
+            return_data = (uint8_t *) pvPortMalloc(sizeof(uint8_t)); 
+            memcpy(return_data, &res, sizeof(uint8_t)); 
+            return_data_len = 1;
+
             break;
         case DELETE_USER:
             if (payload_size < sizeof(delete_user_t)) break;
             delete_user_t* delete_user_args = (delete_user_t*)payload_buf;
             if (!is_admin(delete_user_args->admin_token)) break;
-            if (mkfs_args->confirm != 1) break;
-            delete_user(delete_user_args->user_name);
+            if (delete_user_args->confirm != 1) break;
+            logln_info("Deleting user: %s", delete_user_args->user_name);
+            res = (uint8_t) delete_user(delete_user_args->user_name);
+
+            return_data = (uint8_t *) pvPortMalloc(sizeof(uint8_t)); 
+            memcpy(return_data, &res, sizeof(uint8_t)); 
+            return_data_len = 1;
+
             break;
 
         case MCU_POWER_CYCLE:
@@ -179,7 +213,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             int status = hb_tlm_playback(playback_hb_payload);
             if (status != 0) command_status = 0;
             break;
-        
+            
         case RADIO_CONFIG: 
             if(payload_size < sizeof(radio_config_t)) break; 
             radio_config_t* radio_config_args = (radio_config_t*)payload_buf; 
@@ -187,8 +221,8 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if(!is_admin(radio_config_args->admin_token)) break;
             logln_info("Attempting to switch to %d with power %d", radio_config_args->selected_radio, radio_config_args->updated_power);
             // queue module update if arg isn't 2 
-            if(radio_config_args->selected_radio == 1) radio_set_module(ENABLE_RFM98); 
-            else if(radio_config_args->selected_radio == 0) radio_set_module(ENABLE_SX1268); 
+            if(radio_config_args->selected_radio == 0) radio_set_module(ENABLE_RFM98); 
+            else if(radio_config_args->selected_radio == 1) radio_set_module(ENABLE_SX1268); 
 
             // queue power update if arg isn't 0
             if(radio_config_args->updated_power != 0) radio_set_transmit_power(radio_config_args->updated_power); 
@@ -199,10 +233,21 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             radio_stat_t* radio_stat_args = (radio_stat_t*)payload_buf; 
             if(!is_admin(radio_stat_args->admin_token)) break;
 
-            logln("Queuing stat response"); 
+            logln_info("Queuing stat response"); 
             radio_queue_stat_response(); 
             break;
 
+        case RADIO_SET_MODE: 
+            if (payload_size < sizeof(radio_set_mode_t)) break;
+            radio_set_mode_t* radio_set_mode_args = (radio_set_mode_t*)payload_buf; 
+            if(!is_admin(radio_set_mode_args->admin_token)) break; 
+
+            logln_info("Changing radio mode to %d", radio_set_mode_args->radio_mode); 
+            // bypass radio queue 
+            xTaskNotifyIndexed(1, xRadioTaskHandler, radio_set_mode_args->radio_mode, eSetValueWithOverwrite);
+
+            break;
+            
         case ANTENNA_DEPLOY:
             // Schedule deployment in STEVE for right now
             schedule_delayed_job_ms("DEPLOY_ANTENNA", &deploy_antenna_job, 10); 
@@ -221,10 +266,30 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             // logln_info("args[0]: %d payload_buf: %d len: %d", (((uint8_t*)args)[0]), *payload_buf, payload_size); 
 
             const char* job_name = "SET_RTC";
-            schedule_delayed_job_ms(job_name, &set_rtc_job, 10); 
+            schedule_delayed_job_ms(job_name, &set_rtc_job, 100); 
             steve_job_t* job = find_steve_job(job_name); 
             job->arg_data = args; 
             logln_info("RTC job created"); 
+            break;
+            
+        case APID_INITIALIZE_FILE_DOWNLINK:
+            // This payload is just a string
+            if (strnlen(payload_buf, MAX_PATH_SIZE + 1) > MAX_PATH_SIZE + 1) break; // Verify it looks like a string (+ \0) and isn't too long
+            logln_info("Initializing file downlink for file: %s!", payload_buf);
+            logln_info("Checking file: %d", file_exists((char*)payload_buf));
+            command_status = initialize_file_downlink(payload_buf, payload_size);
+            break;
+        case APID_FILE_DOWNLINK_ACK:
+            logln_info("ACK RECEIVED");
+            // It's ok if it is smaller, the string will be different sizes
+            if (payload_size > sizeof(file_downlink_queue_command_ack_data_t)) break;
+            file_downlink_queue_command_ack_data_t* ack_args = (file_downlink_queue_command_ack_data_t*)payload_buf;
+            file_downlink_ack_command(ack_args->transaction_id, ack_args->sequence_number);
+            break;
+        case APID_FILE_DOWNLINK_CHANGE_PACKET_SIZE:
+            if (payload_size < sizeof(file_downlink_queue_command_change_packet_size_data_t)) break;
+            file_downlink_queue_command_change_packet_size_data_t* change_packet_size_args = (file_downlink_queue_command_change_packet_size_data_t*)payload_buf;
+            change_max_packet_size(change_packet_size_args->new_packet_size);
             break;
         
         case AX25_ON_OFF:
@@ -271,7 +336,8 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
     get_most_recent_logged_error(last_error, MAX_ERROR_LOG_STR_SIZE);
     strncpy(ack->last_logged_error, last_error, sizeof(ack->last_logged_error)); // Copy only first 24 chars (or however many the ack struct says)
 
-    send_telemetry(ACK, (char*) ack, ack_size); // Send ack
+    logln_info("Sending ACK for APID: %d", header.apid);
+    send_telemetry(ACK_APID, (char*) ack, ack_size); // Send ack
 
     vPortFree(ack);
 }
@@ -377,5 +443,14 @@ void command_task(void* unused_arg) {
             // Free payload buffer
             vPortFree(payload_buf);
         }
+        // from dylan's merge idk why this was added 
+        // // Read payload - @todo NEEDS TIMEOUT
+        // for (int i = 0; i < payload_size; i++) {
+        //     xQueueReceive(command_byte_queue, &payload_buf[i], portMAX_DELAY);
+        // }
+        // // Parse packet payload
+        // parse_command_packet(header, payload_buf, payload_size);
+        // // Free payload buffer
+        // vPortFree(payload_buf);
     }
 }

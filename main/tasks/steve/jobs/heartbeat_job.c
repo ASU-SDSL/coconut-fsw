@@ -30,29 +30,29 @@ void heartbeat_telemetry_job(void* unused) {
     if(!bootcountset){
         //check if bootcount file exist
         if (file_exists("boot.bin")){
-            if(read_file("boot.bin", (char*)&bootcount, sizeof(bootcount)) > 0){
-                bootcount++;
-                //write to file
-                write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
-                bootcountset = true;
-            }
-            else{
-                //if bootcount file exists but read failed, set bootcount to 0
-                delete_file("boot.bin");
-                logln_error("Failed to read bootcount file, setting bootcount to 0");
-                bootcount = 0;
-                write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
-                bootcountset = true;
-            }
+                if(read_file("boot.bin", (char*)&bootcount, sizeof(bootcount)) > 0){
+                    bootcount++;
+                    //write to file
+                    write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
+                    bootcountset = true;
+                }
+                else{
+                    //if bootcount file exists but read failed, set bootcount to 0
+                    delete_file("boot.bin");
+                    logln_error("Failed to read bootcount file, setting bootcount to 0");
+                    bootcount = 0;
+                    write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
+                    bootcountset = true;
+                }
+        }
+        else{
+            //set bootcount to 0 if no file exist 
+            bootcount = 0;
+            //write to file
+            write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
+            bootcountset = true;
+        }
     }
-    else{
-        //set bootcount to 0 if no file exist 
-        bootcount = 0;
-        //write to file
-        write_file("boot.bin", (char*)&bootcount, sizeof(bootcount), false);
-        bootcountset = true;
-    }
-}
         
     // logln_info("%s", get_current_task_name());
 
@@ -116,6 +116,12 @@ void heartbeat_telemetry_job(void* unused) {
     float rtcTemp = 5500;
     if(!rtc_get_temp(i2c, &rtcTemp)) payload.rtcTemp = rtcTemp;
 
+    // use timestamp to update absolute time (check for failure first)
+    if(payload.year != UINT8_MAX && payload.month != UINT8_MAX && 
+        payload.date != UINT8_MAX && payload.hour != UINT8_MAX && 
+        payload.minute != UINT8_MAX && payload.second != UINT8_MAX) {
+        update_epoch_time(payload.year, payload.month, payload.date, payload.hour, payload.minute, payload.second); 
+    }
 
     // ina0 data
     config(i2c, INA0_ADDR); 
@@ -228,7 +234,7 @@ void heartbeat_telemetry_job(void* unused) {
     payload.boot_count = bootcount;
     
     // Send it
-    send_telemetry(HEARTBEAT, (char*)&payload, sizeof(payload));
+    send_telemetry(HEARTBEAT_APID, (char*)&payload, sizeof(payload));
     log_heartbeat_tlm(payload);
 
     iteration_counter += 1;

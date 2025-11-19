@@ -41,9 +41,14 @@ typedef enum command_apid {
     MCU_POWER_CYCLE = 14,
     PLAYBACK_HEARTBEAT_PACKETS = 15,
     FSW_ACK = 16,
+    APID_INITIALIZE_FILE_DOWNLINK = 17,
+    APID_FILE_DOWNLINK_ACK = 18,
+    APID_FILE_DOWNLINK_CHANGE_PACKET_SIZE = 19,
 
     // 01 - radio
     RADIO_CONFIG = 101,
+    RADIO_ECHO = 102, // not used
+    RADIO_SET_MODE = 103,
     RADIO_STAT = 104, 
     ANTENNA_DEPLOY = 105,
     AX25_ON_OFF = 106,
@@ -98,8 +103,8 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
-    char new_user_name[MAX_USERNAME_LEN + 1];
     uint8_t new_user_token[TOKEN_LENGTH];
+    char new_user_name[MAX_USERNAME_LEN + 1];
 } add_user_t;
 
 typedef struct __attribute__((__packed__)) {
@@ -110,7 +115,7 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     uint8_t user_token[TOKEN_LENGTH];
-    uint16_t data_len;
+    uint8_t data_len;
     uint8_t data[];
 } upload_user_data_t;
 
@@ -124,6 +129,17 @@ typedef struct __attribute__((__packed__)) {
     uint16_t every_x_packet; ///< Used to adjust for less resolution but cover more time
     uint16_t go_back_x_packets; ///< Used to start the playback from a certain point in the past
 } playback_hb_tlm_payload_t;
+
+// Note: Initialize file downlink command only has a string as its payload
+
+typedef struct __attribute__((__packed__)) {
+    uint8_t transaction_id; // Specific ID to ensure ground and satellite continue to transfer the same file
+    uint16_t sequence_number; // Specifically for the file downlink protocol, NOT the same as CCSDS space packet
+} file_downlink_ack_payload_t;
+
+typedef struct __attribute__((__packed__)) {
+    uint8_t new_packet_size;
+} file_downlink_change_packet_size_payload_t;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t admin_token[TOKEN_LENGTH];
@@ -144,6 +160,11 @@ typedef struct __attribute__((__packed__)) {
     uint8_t minute;
     uint8_t second;
 } set_rtc_time_t; 
+
+typedef struct __attribute__((__packed__)) {
+    uint8_t admin_token[TOKEN_LENGTH];
+    uint8_t radio_mode; 
+} radio_set_mode_t; 
 
 typedef struct __attribute__((__packed__)) { 
     uint8_t admin_token[TOKEN_LENGTH];

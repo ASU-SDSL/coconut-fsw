@@ -1,9 +1,35 @@
 #include <string.h>
+#include <stdarg.h>
 
 #include "log.h"
 #include "filesystem.h"
+#include "watchdog.h"
 
 FATFS fs;
+
+void fs_log(const char *str, ...) {
+    // alloc telemetry packet
+    log_telemetry_t *packet = pvPortMalloc(sizeof(log_telemetry_t) + MAX_LOG_STR_SIZE + 1);
+
+    // copy str to packet
+    va_list args;
+    va_start(args, str);
+    size_t strsize = vsnprintf(packet->str, MAX_LOG_STR_SIZE, str, args);
+    // size_t strsize = vprintf(args, str);
+    packet->size = strsize;
+    va_end(args);
+
+#ifdef SIMULATOR
+    // write to stdout
+    //write(1, packet->str, strsize);
+    send_telemetry(LOG_APID, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
+#else
+    // send to telemetry task
+    send_telemetry(FS_LOG_APID, (char*)packet, sizeof(log_telemetry_t) + strsize + 1);
+#endif
+
+    vPortFree(packet);
+}
 
 /* USER FUNCTIONS */
 void make_filesystem() {
@@ -20,7 +46,15 @@ void make_filesystem() {
 // the caller is responsible for allocating memory for this buffer and freeing the memory
 // returns -1 on failure
 int32_t read_file(const char* file_name, char* result_buffer, size_t size) {
+    return read_file_offset(file_name, result_buffer, size, 0); // read from the beginning of the file
+}
+
+// Returns FILE_DOES_NOT_EXIST on file does not exist and FILE_READ_TIMEOUT on file task notification timeout
+int read_file_offset(const char* file_name, char* result_buffer, size_t size, uint32_t offset) {
     if ((strnlen(file_name, MAX_PATH_SIZE) + 1) > MAX_PATH_SIZE) return 0;
+    // See if path exists
+    if (!file_exists(file_name)) return FILE_DOES_NOT_EXIST;
+
     filesystem_queue_operations_t new_file_operation;
     new_file_operation.operation_type = READ;
     strncpy(new_file_operation.file_operation.read_op.file_name, file_name, MAX_PATH_SIZE);
@@ -31,6 +65,7 @@ int32_t read_file(const char* file_name, char* result_buffer, size_t size) {
     new_file_operation.file_operation.read_op.size = size;
     new_file_operation.file_operation.read_op.out_size = &out_size;
     new_file_operation.file_operation.read_op.calling_task = xTaskGetCurrentTaskHandle();
+    new_file_operation.file_operation.read_op.offset = offset;
 
     while(filesystem_queue == NULL) {
         vTaskDelay(NULL_QUEUE_WAIT_TIME / portTICK_PERIOD_MS);
@@ -40,8 +75,8 @@ int32_t read_file(const char* file_name, char* result_buffer, size_t size) {
     // Wait for notification that file read is finished
     uint32_t notification_retval = ulTaskNotifyTake(pdTRUE, NOTIFICATION_WAIT_TIME);
     if (notification_retval != 1) {
-        logln_info("Timed out waiting for file read on %s task", get_current_task_name());
-        return -1;
+        logln_error("Timed out waiting for file read on %s task", get_current_task_name());
+        return FILE_READ_TIMEOUT;
     }
 
     // Return size
@@ -106,7 +141,7 @@ void make_dir(const char* directory_name) {
 
 // creates an empty file
 void touch(const char* file_name) {
-    write_file(file_name, "", 0, 0);
+    write_file(file_name, "", 0, 0);    
 }
 
 // prints file contents to logln
@@ -114,7 +149,9 @@ void cat(const char* file_name) {
     char* result_buffer = pvPortMalloc(CAT_SIZE_LIMIT);
     size_t read_size = read_file(file_name, result_buffer, CAT_SIZE_LIMIT);
     if (read_size <= 0) return;
-    _write_log(result_buffer, read_size);
+    // _write_log(result_buffer, read_size);
+    logln_info("Contents of %s:\n%s", file_name, result_buffer);
+    fs_log("Contents of %s:\n%s", file_name, result_buffer);
     vPortFree(result_buffer);
 }
 
@@ -240,6 +277,7 @@ void _mkfs() {
     vPortFree(buf);
     if (fr != FR_OK) {
         logln_error("Failed to make filesystem (%d)", fr);
+        fs_log("Failed make fs (%d)", fr);
         return;
     }
     
@@ -248,8 +286,11 @@ void _mkfs() {
     fr = f_mount(&fs, "0:", 1);
     if (fr != FR_OK) {
         logln_error("Failed to mount filesystem (%d)", fr);
+        fs_log("Failed mount fs (%d)", fr);
         return;
     }
+
+    fs_log("mkfs success"); 
 }
 
 int32_t _fwrite(const char* file_name, const uint8_t *data, size_t size, bool append_flag) {
@@ -285,7 +326,7 @@ int32_t _fwrite(const char* file_name, const uint8_t *data, size_t size, bool ap
     return bytes_written;
 }
 
-int32_t _fread(const char *file_name, char *result_buffer, size_t size) { 
+int32_t _fread(const char *file_name, char *result_buffer, size_t size, uint32_t offset) { 
     // this function takes in a buffer where the result will be placed
     // the caller of this function is responsible for allocating the space for this buffer
     FRESULT fr;
@@ -296,7 +337,17 @@ int32_t _fread(const char *file_name, char *result_buffer, size_t size) {
     if (fr != FR_OK) {
         logln_error("Could not open file before read: %s (%d)\n", file_name, fr);
         return -1;
-    }    
+    }
+
+    // If there is an offset, increment file pointer
+    if (offset > 0) {
+        // Try to incremenet the file pointer to the offset
+        fr = f_lseek(&fil, offset);
+        if (fr != FR_OK) {
+            logln_error("Could not seek to file offset: %s (%d)\n", file_name, fr);
+            return -1;
+        }
+    }
 
     // read from file
     int32_t bytes_read = -1;
@@ -321,6 +372,9 @@ void _fdelete(const char *file_name) {
     fr = f_unlink(file_name);
     if (fr != FR_OK) {
         logln_error("Could not remove file: %s (%d)\n", file_name, fr);
+        fs_log("rm file %s failed (%d)\n", file_name, fr);
+    } else {
+        fs_log("File removed"); 
     }
 }
 
@@ -349,8 +403,8 @@ void _flist(const char *dir_name) {
             return;
         }
 
-        logln("%s\n", dir);
-        logln("\t%c%c%c%c\t%10d\t%s/%s",
+        fs_log("%s\n", dir);
+        fs_log("\t%c%c%c%c\t%10d\t%s/%s",
             ((fno.fattrib & AM_DIR) ? 'D' : '-'),
             ((fno.fattrib & AM_RDO) ? 'R' : '-'),
             ((fno.fattrib & AM_SYS) ? 'S' : '-'),
@@ -365,6 +419,9 @@ void _fmkdir(const char *dir_name) {
     fr = f_mkdir(dir_name);
     if (fr != FR_OK) {
         logln_error("Failed to make directory %s during mkdir (%d)\n", dir_name, fr);
+        fs_log("Failed to make directory %s during mkdir (%d)\n", dir_name, fr);
+    } else {
+        fs_log("mkdir %s success\n", dir_name);
     }
 }
 
@@ -406,7 +463,7 @@ void _test() {
 
     // read file
     char outbuf[0x10];
-    size_t bytes_read = _fread(test_filepath, outbuf, sizeof(outbuf));
+    size_t bytes_read = _fread(test_filepath, outbuf, sizeof(outbuf), 0);
     logln_info("Read %d bytes from %s: %s\n", bytes_read, test_filepath, outbuf);
 
     // ls
@@ -418,6 +475,7 @@ void _test() {
 
     // ls
     _flist("/");
+
 }
 
 void filesystem_task(void* unused_arg) {
@@ -434,17 +492,18 @@ void filesystem_task(void* unused_arg) {
     }
     
     // mount disk
-    FATFS fs;
-    fr = f_mount(&fs, "0:", 1);
-    if (fr != FR_OK) {
-        logln_warn("Failed to mount filesystem, you probably need to run make_filesystem (mkfs)!", fr);
-    }
+    // FATFS fs;
+    // fr = f_mount(&fs, "0:", 1);
+    // if (fr != FR_OK) {
+    //     logln_warn("Failed to mount filesystem, you probably need to run make_filesystem (mkfs)!", fr);
+    // }
 
     // init queue
     filesystem_queue = xQueueCreate(FILESYSTEM_QUEUE_LENGTH, sizeof(filesystem_queue_operations_t));
     if(filesystem_queue == NULL) {
         // TODO: Find a better solution to handling queue creation failure
-        vTaskDelete(NULL);
+        //vTaskDelete(NULL);
+        watchdog_freeze(); // force reboot if we can't set up the queue
     }
 
     // start inf loop
@@ -460,14 +519,15 @@ void filesystem_task(void* unused_arg) {
             }
             case READ: {
                 read_operation_t read_op = received_operation.file_operation.read_op;
-                size_t read_size = _fread(read_op.file_name, read_op.read_buffer, read_op.size);
+                size_t read_size = _fread(read_op.file_name, read_op.read_buffer, read_op.size, read_op.offset);
                 *read_op.out_size = read_size;
                 xTaskNotifyGive(read_op.calling_task);
                 break;
             }
             case WRITE: {
                 write_operation_t write_op = received_operation.file_operation.write_op;
-                _fwrite(write_op.file_name, write_op.data, write_op.size, write_op.append_flag);
+                int32_t res = _fwrite(write_op.file_name, write_op.data, write_op.size, write_op.append_flag);
+                logln_info("Write res: %d\n", res);
                 break;
             }
             case LIST_DIRECTORY: {
