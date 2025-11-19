@@ -274,7 +274,9 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             
         case APID_INITIALIZE_FILE_DOWNLINK:
             // This payload is just a string
-            if (strlen(payload_buf) > MAX_PATH_SIZE + 1) break; // Verify it looks like a string (+ \0) and isn't too long
+            if (strnlen(payload_buf, MAX_PATH_SIZE + 1) > MAX_PATH_SIZE + 1) break; // Verify it looks like a string (+ \0) and isn't too long
+            logln_info("Initializing file downlink for file: %s!", payload_buf);
+            logln_info("Checking file: %d", file_exists((char*)payload_buf));
             command_status = initialize_file_downlink(payload_buf, payload_size);
             break;
         case APID_FILE_DOWNLINK_ACK:

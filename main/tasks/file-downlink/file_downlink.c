@@ -130,7 +130,7 @@ void initialize_file_transfer(current_file_downlink_data_t *current_file_data_st
         len = MAX_PATH_SIZE - 1;
     }
 
-    strncpy(current_file_data_struct->file_path, file_path, len);
+    strncpy(current_file_data_struct->file_path, file_path, len+1); // +1 to copy the null terminator
     current_file_data_struct->file_path[MAX_PATH_SIZE - 1] = '\0'; // Make sure there is a null-terminator
     current_file_data_struct->transaction_id = *transaction_id;
 
