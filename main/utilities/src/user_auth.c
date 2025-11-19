@@ -29,6 +29,10 @@ int32_t add_user(const char *user_name, const uint8_t* user_token) {
     // Create user dir
     char user_dir[USER_PATH_SIZE + 1];
     get_user_dir_path(user_name, user_dir, sizeof(user_dir));
+    if(dir_exists(user_dir)){
+        logln_info("User \"%s\" already exists!", user_name);
+        return 0; // we don't need to do anything
+    } 
     make_dir(user_dir);
     if (!dir_exists(user_dir)) {
         logln_error("Failed to create user dir for \"%s\", make sure \"%s\" is a directory!", user_name, USERS_DIR);

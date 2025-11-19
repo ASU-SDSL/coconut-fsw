@@ -88,9 +88,22 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
 
     switch (header.apid) {
         case UPLOAD_USER_DATA:
-            if (payload_size < sizeof(upload_user_data_t)) break;
+            if (payload_size < sizeof(upload_user_data_t)){
+                logln_error("Payload size too small for UPLOAD_USER_DATA: %d", payload_size);
+                break;
+            }
             upload_user_data_t* upload_user_data_args = (upload_user_data_t*)payload_buf;
-            if (upload_user_data_args->data_len > (payload_size - sizeof(upload_user_data_t))) break;
+            if (upload_user_data_args->data_len > (payload_size - sizeof(upload_user_data_t))){
+                logln_error("Data length too large for UPLOAD_USER_DATA: %d", upload_user_data_args->data_len);
+                break;
+            }
+
+            char* data = pvPortMalloc(upload_user_data_args->data_len + 1);
+            memcpy(data, upload_user_data_args->data, upload_user_data_args->data_len);
+            data[upload_user_data_args->data_len] = '\0'; // null terminate for logging
+            logln_info("Received data: %s", data); 
+            vPortFree(data);
+
             upload_user_data(upload_user_data_args->user_token, upload_user_data_args->data, upload_user_data_args->data_len);
             break;
         case CHANGE_HEARTBEAT_TELEM_RATE:
