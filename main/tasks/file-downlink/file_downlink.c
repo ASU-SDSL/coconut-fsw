@@ -102,7 +102,7 @@ int send_n_packet(current_file_downlink_data_t *current_file_data, uint32_t pack
     downlink_packet.transaction_id = transaction_id;
     downlink_packet.sequence_number = current_file_data->current_sending_packet_index; // packet index is incremented in the state machine loop
     // Make sure we don't send more data from the buffer than we need to
-    size_t buffer_empty_space = sizeof(downlink_packet.data) - bytes_read + 1; // + 1 for some weird indexing
+    size_t buffer_empty_space = sizeof(downlink_packet.data) - bytes_read; // + 1; // + 1 for some weird indexing
 
     int return_code = 0; // Success
     downlink_packet.eof = false;
@@ -110,6 +110,11 @@ int send_n_packet(current_file_downlink_data_t *current_file_data, uint32_t pack
         return_code = SEND_N_PACKET_EOF;
         downlink_packet.eof = true;
     }
+
+    char buf[256];
+    memcpy(buf, downlink_packet.data, bytes_read);
+    buf[bytes_read] = '\0';
+    logln_info("Sending data: %s (%d)", buf, sizeof(file_downlink_telemetry_t) - buffer_empty_space);
 
     send_telemetry(FILE_DOWNLINK_APID, (char*) &downlink_packet, sizeof(file_downlink_telemetry_t) - buffer_empty_space);
 
