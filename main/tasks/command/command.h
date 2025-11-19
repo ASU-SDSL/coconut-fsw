@@ -116,7 +116,7 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     uint8_t user_token[TOKEN_LENGTH];
-    uint16_t data_len;
+    uint8_t data_len;
     uint8_t data[];
 } upload_user_data_t;
 

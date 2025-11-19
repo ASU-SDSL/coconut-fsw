@@ -142,7 +142,9 @@ void cat(const char* file_name) {
     char* result_buffer = pvPortMalloc(CAT_SIZE_LIMIT);
     size_t read_size = read_file(file_name, result_buffer, CAT_SIZE_LIMIT);
     if (read_size <= 0) return;
-    _write_log(result_buffer, read_size);
+    // _write_log(result_buffer, read_size);
+    logln_info("Contents of %s:\n%s", file_name, result_buffer);
+    fs_log("Contents of %s:\n%s", file_name, result_buffer);
     vPortFree(result_buffer);
 }
 
