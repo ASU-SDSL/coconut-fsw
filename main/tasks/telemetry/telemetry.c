@@ -13,6 +13,54 @@
 #include "telemetry.h"
 #include "spacepacket.h"
 #include "log.h"
+#include "heartbeat_job.h"
+#include "command.h"
+#include "steve.h"
+#include "main.h"
+#include "watchdog.h"
+#include "FreeRTOSConfig.h"
+
+TaskHandle_t xTelemetryTaskHandler;
+
+
+void system_info(){
+    system_info_telemetry_t sys_info;
+
+    //get heap memory
+    taskENTER_CRITICAL();
+    size_t free_heap_memory = xPortGetFreeHeapSize();
+    size_t min_heap_memory = xPortGetMinimumEverFreeHeapSize();
+    
+    //heap percent used
+    size_t used_heap =  configTOTAL_HEAP_SIZE - free_heap_memory;
+    sys_info.heap_percent = (used_heap * 100) / configTOTAL_HEAP_SIZE;
+    taskEXIT_CRITICAL();
+
+    //get task hanlder for each task 
+    taskENTER_CRITICAL();
+    UBaseType_t radio_stack = uxTaskGetStackHighWaterMark(xRadioTaskHandler);
+    UBaseType_t command_stack = uxTaskGetStackHighWaterMark(xCommandTaskHandler);
+    UBaseType_t filesystem_stack = uxTaskGetStackHighWaterMark(xFilesystemTaskHandler);
+    UBaseType_t gse_stack = uxTaskGetStackHighWaterMark(xGSETaskHandler);
+    UBaseType_t steve_stack = uxTaskGetStackHighWaterMark(xSteveTaskHandler);
+    UBaseType_t watchdog_stack = uxTaskGetStackHighWaterMark(xWatchdogTaskHandler);
+    UBaseType_t telemetry_stack = uxTaskGetStackHighWaterMark(xTelemetryTaskHandler);
+
+    //get percent for each task
+    sys_info.radio_stack_percent = ((RADIO_STACK_TOTAL - radio_stack)*100)/RADIO_STACK_TOTAL;
+    sys_info.command_stack_percent = ((COMMAND_STACK_TOTAL - command_stack)*100)/COMMAND_STACK_TOTAL;
+    sys_info.filesystem_stack_percent = ((FILESYSTEM_STACK_TOTAL - filesystem_stack)*100)/FILESYSTEM_STACK_TOTAL;
+    sys_info.gse_stack_percent = ((GSE_STACK_TOTAL - gse_stack)*100)/GSE_STACK_TOTAL;
+    sys_info.steve_stack_percent = ((STEVE_STACK_TOTAL - steve_stack)*100)/STEVE_STACK_TOTAL;
+    sys_info.telemetry_stack_percent = ((TELEMETRY_STACK_TOTAL - telemetry_stack)*100)/TELEMETRY_STACK_TOTAL;
+    sys_info.watchdog_stack_percent = ((WATCHDOG_STACK_TOTAL - watchdog_stack)*100)/WATCHDOG_STACK_TOTAL;
+    taskEXIT_CRITICAL();
+    
+    //Send telemetry
+    send_telemetry(SYS_INFO, (char*)&sys_info, sizeof(sys_info));
+
+}
+
 
 void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t payload_size) {
     // Build transmission buffer struct
@@ -26,6 +74,7 @@ void send_telemetry(telemetry_apid_t apid, const char* payload_buffer, size_t pa
         xQueueSendToBack(telemetry_queue, &telemetry, portMAX_DELAY);
     }
 }
+
 
 void telemetry_task(void* unused_arg) {
     // Initialize telemetry context
