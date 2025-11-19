@@ -37,6 +37,7 @@ void system_info(){
     taskEXIT_CRITICAL();
 
     //get task hanlder for each task 
+    taskENTER_CRITICAL();
     UBaseType_t radio_stack = uxTaskGetStackHighWaterMark(xRadioTaskHandler);
     UBaseType_t command_stack = uxTaskGetStackHighWaterMark(xCommandTaskHandler);
     UBaseType_t filesystem_stack = uxTaskGetStackHighWaterMark(xFilesystemTaskHandler);
@@ -53,7 +54,7 @@ void system_info(){
     sys_info.steve_stack_percent = ((STEVE_STACK_TOTAL - steve_stack)*100)/STEVE_STACK_TOTAL;
     sys_info.telemetry_stack_percent = ((TELEMETRY_STACK_TOTAL - telemetry_stack)*100)/TELEMETRY_STACK_TOTAL;
     sys_info.watchdog_stack_percent = ((WATCHDOG_STACK_TOTAL - watchdog_stack)*100)/WATCHDOG_STACK_TOTAL;
-
+    taskEXIT_CRITICAL();
     
     //Send telemetry
     send_telemetry(SYS_INFO, (char*)&sys_info, sizeof(sys_info));
