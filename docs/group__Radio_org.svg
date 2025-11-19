@@ -11,7 +11,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="group__LoRa.html" target="_top" xlink:title="Macros to set LoRa Radio Configuration.">
+<g id="a_Node000002"><a xlink:href="group__LoRa.html" target="_top" xlink:title="Macros to set LoRa Radio Configuration see https://iaru.amsat&#45;uk.org/finished.php.">
 <polygon fill="white" stroke="#666666" points="141,-19 89,-19 89,0 141,0 141,-19"/>
 <text text-anchor="middle" x="115" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Macros</text>
 </a>

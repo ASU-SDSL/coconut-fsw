@@ -91,6 +91,7 @@ $(function(){ initResizable(false); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
@@ -123,6 +124,19 @@ Data Structures</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Radio operation to be added to the radio_queue.  <a href="structradio__queue__operations.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ab7b99a4368675dda6633ee63e37b733e" id="r_ab7b99a4368675dda6633ee63e37b733e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7b99a4368675dda6633ee63e37b733e">RADIO_NO_MODE</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:ab7b99a4368675dda6633ee63e37b733e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b87a941351bc7fa05c6d40f147839c5" id="r_a9b87a941351bc7fa05c6d40f147839c5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b87a941351bc7fa05c6d40f147839c5">RADIO_SAFE_MODE</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a9b87a941351bc7fa05c6d40f147839c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2022319d89a5fffddee7564040afdc6d" id="r_a2022319d89a5fffddee7564040afdc6d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2022319d89a5fffddee7564040afdc6d">RADIO_FAST_MODE</a>&#160;&#160;&#160;2</td></tr>
+<tr class="separator:a2022319d89a5fffddee7564040afdc6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a891d2fdf9a7c91d9bd083284238d9fc4" id="r_a891d2fdf9a7c91d9bd083284238d9fc4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a891d2fdf9a7c91d9bd083284238d9fc4">RADIO_FAST_MODE_MAX_DURATION_MS</a>&#160;&#160;&#160;(1000 * 60 * 30)</td></tr>
+<tr class="separator:a891d2fdf9a7c91d9bd083284238d9fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af14e2c7e561b6695bafdac4cff060863" id="r_af14e2c7e561b6695bafdac4cff060863"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af14e2c7e561b6695bafdac4cff060863">RADIO_STATE_FILE_NAME</a>&#160;&#160;&#160;&quot;radio.bin&quot;</td></tr>
+<tr class="separator:af14e2c7e561b6695bafdac4cff060863"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:ace0b4fef871cb7679e839891a34882dd" id="r_ace0b4fef871cb7679e839891a34882dd"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="simulator_2tasks_2radio_2radio_8h.html#a4dc2c5c36fcf9d34a191545cc8968b83">radio_operation_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace0b4fef871cb7679e839891a34882dd">radio_operation_type_t</a></td></tr>
@@ -151,6 +165,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga59a92112128a733a637390e350d2d16b" id="r_ga59a92112128a733a637390e350d2d16b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Radio.html#ga59a92112128a733a637390e350d2d16b">radio_task</a> (void *unused_arg)</td></tr>
 <tr class="memdesc:ga59a92112128a733a637390e350d2d16b"><td class="mdescLeft">&#160;</td><td class="mdescRight">C Linkage for radio task function (cpp version is <a class="el" href="group__Radio.html#gaa62d7d3a4530934e87199d4741b365d1" title="The implementation of the radio task function (Linked to C by radio_task())">radio_task_cpp()</a>)  <br /></td></tr>
 <tr class="separator:ga59a92112128a733a637390e350d2d16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga11abd7a01d0c8cbbc256e93bb0ed75e4" id="r_ga11abd7a01d0c8cbbc256e93bb0ed75e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Radio.html#ga11abd7a01d0c8cbbc256e93bb0ed75e4">set_radio_last_received_time</a> (uint64_t new_time)</td></tr>
+<tr class="memdesc:ga11abd7a01d0c8cbbc256e93bb0ed75e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the radio last received time with mutex protection.  <br /></td></tr>
+<tr class="separator:ga11abd7a01d0c8cbbc256e93bb0ed75e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3b310022c5395a420f9a4d65a3950d60" id="r_ga3b310022c5395a420f9a4d65a3950d60"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Radio.html#ga3b310022c5395a420f9a4d65a3950d60">get_radio_last_received_time</a> ()</td></tr>
+<tr class="memdesc:ga3b310022c5395a420f9a4d65a3950d60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the radio last received time with mutex protection.  <br /></td></tr>
+<tr class="separator:ga3b310022c5395a420f9a4d65a3950d60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf0ecc74e51dbb7c5bdb5d2bfc4a7a0b2" id="r_gaf0ecc74e51dbb7c5bdb5d2bfc4a7a0b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Radio.html#gaf0ecc74e51dbb7c5bdb5d2bfc4a7a0b2">radio_queue_message</a> (char *buffer, size_t size)</td></tr>
 <tr class="memdesc:gaf0ecc74e51dbb7c5bdb5d2bfc4a7a0b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a message to the radio queue to be transmitted.  <br /></td></tr>
 <tr class="separator:gaf0ecc74e51dbb7c5bdb5d2bfc4a7a0b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,6 +183,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gaededabcbfc8060b1d374369c6b67df4b" id="r_gaededabcbfc8060b1d374369c6b67df4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Radio.html#gaededabcbfc8060b1d374369c6b67df4b">radio_queue_stat_response</a> ()</td></tr>
 <tr class="memdesc:gaededabcbfc8060b1d374369c6b67df4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a stat response operation to the radio queue Stats Response Operation sends a packet of RSSI, SNR, and Frequency Error.  <br /></td></tr>
 <tr class="separator:gaededabcbfc8060b1d374369c6b67df4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab07abab2aa8445fac369336979e4713" id="r_aab07abab2aa8445fac369336979e4713"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab07abab2aa8445fac369336979e4713">radio_queue_lora_mode_change</a> (uint8_t new_mode)</td></tr>
+<tr class="memdesc:aab07abab2aa8445fac369336979e4713"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queues a change in the LoRa settings.  <br /></td></tr>
+<tr class="separator:aab07abab2aa8445fac369336979e4713"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae0cf1b14647d5b91ce8706a14d792e76" id="r_gae0cf1b14647d5b91ce8706a14d792e76"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Radio.html#gae0cf1b14647d5b91ce8706a14d792e76">radio_which</a> ()</td></tr>
 <tr class="memdesc:gae0cf1b14647d5b91ce8706a14d792e76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns which radio is currently set to be used.  <br /></td></tr>
 <tr class="separator:gae0cf1b14647d5b91ce8706a14d792e76"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,6 +195,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gaad94e22af3ec5d65defed81b0efee8d6" id="r_gaad94e22af3ec5d65defed81b0efee8d6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Radio.html#gaad94e22af3ec5d65defed81b0efee8d6">radio_get_SX_state</a> ()</td></tr>
 <tr class="memdesc:gaad94e22af3ec5d65defed81b0efee8d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last recorded state from a function called on the SX1268 radio.  <br /></td></tr>
 <tr class="separator:gaad94e22af3ec5d65defed81b0efee8d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga47dcdbe7db19355ea68f9d44c1be2706" id="r_ga47dcdbe7db19355ea68f9d44c1be2706"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Radio.html#ga47dcdbe7db19355ea68f9d44c1be2706">radio_flag_valid_packet</a> ()</td></tr>
+<tr class="memdesc:ga47dcdbe7db19355ea68f9d44c1be2706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signals to the radio task that a valid packet has been received, resetting deadman's timer.  <br /></td></tr>
+<tr class="separator:ga47dcdbe7db19355ea68f9d44c1be2706"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad6a879966c96e3220276583110fde2eb" id="r_gad6a879966c96e3220276583110fde2eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Radio.html#gad6a879966c96e3220276583110fde2eb">init_radio</a> ()</td></tr>
 <tr class="memdesc:gad6a879966c96e3220276583110fde2eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes necessary peripherals/settings for the radio task.  <br /></td></tr>
 <tr class="separator:gad6a879966c96e3220276583110fde2eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,11 +209,85 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a2e938a65229ef4e546cbe644fd8bebf5" id="r_a2e938a65229ef4e546cbe644fd8bebf5"><td class="memItemLeft" align="right" valign="top">QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e938a65229ef4e546cbe644fd8bebf5">radio_queue</a></td></tr>
 <tr class="separator:a2e938a65229ef4e546cbe644fd8bebf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gade5b7fd9731b19d98cdcb929e6e33fe6" id="r_gade5b7fd9731b19d98cdcb929e6e33fe6"><td class="memItemLeft" align="right" valign="top">TaskHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Radio.html#gade5b7fd9731b19d98cdcb929e6e33fe6">xRadioTaskHandler</a></td></tr>
+<tr class="memdesc:gade5b7fd9731b19d98cdcb929e6e33fe6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timestamp of last radio packet received.  <br /></td></tr>
+<tr class="separator:gade5b7fd9731b19d98cdcb929e6e33fe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Handles radio communication. </p>
 <dl class="section date"><dt>Date</dt><dd>2025-04-22 </dd></dl>
-</div><h2 class="groupheader">Typedef Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a2022319d89a5fffddee7564040afdc6d" name="a2022319d89a5fffddee7564040afdc6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2022319d89a5fffddee7564040afdc6d">&#9670;&#160;</a></span>RADIO_FAST_MODE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define RADIO_FAST_MODE&#160;&#160;&#160;2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a891d2fdf9a7c91d9bd083284238d9fc4" name="a891d2fdf9a7c91d9bd083284238d9fc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a891d2fdf9a7c91d9bd083284238d9fc4">&#9670;&#160;</a></span>RADIO_FAST_MODE_MAX_DURATION_MS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define RADIO_FAST_MODE_MAX_DURATION_MS&#160;&#160;&#160;(1000 * 60 * 30)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab7b99a4368675dda6633ee63e37b733e" name="ab7b99a4368675dda6633ee63e37b733e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7b99a4368675dda6633ee63e37b733e">&#9670;&#160;</a></span>RADIO_NO_MODE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define RADIO_NO_MODE&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9b87a941351bc7fa05c6d40f147839c5" name="a9b87a941351bc7fa05c6d40f147839c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b87a941351bc7fa05c6d40f147839c5">&#9670;&#160;</a></span>RADIO_SAFE_MODE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define RADIO_SAFE_MODE&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af14e2c7e561b6695bafdac4cff060863" name="af14e2c7e561b6695bafdac4cff060863"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af14e2c7e561b6695bafdac4cff060863">&#9670;&#160;</a></span>RADIO_STATE_FILE_NAME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define RADIO_STATE_FILE_NAME&#160;&#160;&#160;&quot;radio.bin&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
 <a id="ace0b4fef871cb7679e839891a34882dd" name="ace0b4fef871cb7679e839891a34882dd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ace0b4fef871cb7679e839891a34882dd">&#9670;&#160;</a></span>radio_operation_type_t</h2>
 
@@ -241,6 +341,32 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a4dc2c5c36fcf9d34a191545cc8968b83af9c0a9f1c31555e3b05a9a6706ad750c" name="a4dc2c5c36fcf9d34a191545cc8968b83af9c0a9f1c31555e3b05a9a6706ad750c"></a>ENABLE_SX1268&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a4dc2c5c36fcf9d34a191545cc8968b83a80446df5c2d4dc5cd3c22116e1188a8a" name="a4dc2c5c36fcf9d34a191545cc8968b83a80446df5c2d4dc5cd3c22116e1188a8a"></a>RETURN_STATS&#160;</td><td class="fielddoc"></td></tr>
 </table>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="aab07abab2aa8445fac369336979e4713" name="aab07abab2aa8445fac369336979e4713"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab07abab2aa8445fac369336979e4713">&#9670;&#160;</a></span>radio_queue_lora_mode_change()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void radio_queue_lora_mode_change </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>new_mode</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Queues a change in the LoRa settings. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">new_mode</td><td>RADIO_FAST_MODE or RADIO_SAFE_MODE </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

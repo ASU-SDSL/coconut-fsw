@@ -1,7 +1,29 @@
 <map id="telemetry.h" name="telemetry.h">
-<area shape="rect" id="Node000001" title="Functions for packaging and queuing telemetry packets for sending." alt="" coords="60,5,156,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,101,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,33,73,69,68,66,97,29"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="125,79,200,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="119,29,148,66,143,69,115,33"/>
+<area shape="rect" id="Node000001" title="Functions for packaging and queuing telemetry packets for sending." alt="" coords="459,5,555,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,225,101,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="484,33,91,222,88,217,482,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="859,225,933,251"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="528,28,865,216,862,221,526,33"/>
+<area shape="rect" id="Node000004" href="$file__downlink_8h.html" title=" " alt="" coords="447,79,567,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="509,31,509,65,504,65,504,31"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="472,107,103,224,101,219,470,102"/>
+<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="539,102,853,218,851,223,537,107"/>
+<area shape="rect" id="Node000005" href="$filesystem_8h.html" title="Handles file system operations and management." alt="" coords="455,152,558,177"/>
+<area shape="poly" id="edge6_Node000004_Node000005" title=" " alt="" coords="509,104,509,138,504,138,504,104"/>
+<area shape="poly" id="edge7_Node000005_Node000002" title=" " alt="" coords="455,176,116,228,115,222,455,171"/>
+<area shape="poly" id="edge8_Node000005_Node000003" title=" " alt="" coords="559,171,845,222,845,228,558,177"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="771,225,834,251"/>
+<area shape="poly" id="edge9_Node000005_Node000006" title=" " alt="" coords="557,175,759,223,757,228,556,180"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="125,225,168,251"/>
+<area shape="poly" id="edge10_Node000005_Node000007" title=" " alt="" coords="456,176,334,195,182,228,181,223,333,190,455,170"/>
+<area shape="rect" id="Node000008" href="$filesystem__errors_8h.html" title=" " alt="" coords="192,225,339,251"/>
+<area shape="poly" id="edge11_Node000005_Node000008" title=" " alt="" coords="469,180,319,224,317,219,467,175"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="363,225,445,251"/>
+<area shape="poly" id="edge12_Node000005_Node000009" title=" " alt="" coords="492,180,434,219,431,215,489,175"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="469,225,544,251"/>
+<area shape="poly" id="edge13_Node000005_Node000010" title=" " alt="" coords="509,178,509,212,504,212,504,178"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="569,225,639,251"/>
+<area shape="poly" id="edge14_Node000005_Node000011" title=" " alt="" coords="524,175,578,215,575,219,521,180"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="664,225,747,251"/>
+<area shape="poly" id="edge15_Node000005_Node000012" title=" " alt="" coords="539,175,661,218,659,223,538,180"/>
 </map>

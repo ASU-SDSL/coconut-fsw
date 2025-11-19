@@ -271,7 +271,7 @@ Creating Device Drivers</h2>
 <div class="line">    ...</div>
 <div class="line">    ${MAIN_DIRECTORY}/drivers/src/your_new_sensor.c</div>
 <div class="line">)</div>
-<div class="ttc" id="amain_8c_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> main.c:40</div></div>
+<div class="ttc" id="amain_8c_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> main.c:46</div></div>
 </div><!-- fragment --><p>Then the header file can be used in an <code>#include</code> anywhere throughout the FSW.</p>
 <h2><a class="anchor" id="creating-telemetry-points"></a>
 Creating Telemetry Points</h2>
@@ -284,8 +284,8 @@ Creating Telemetry Points</h2>
 <div class="line">    ...</div>
 <div class="line">    uint8_t new_sensor_value;</div>
 <div class="line">} <a class="code hl_variable" href="telemetry_8h.html#a4b5fd07584ec6ff00b93f4ce4141a20a">heartbeat_telemetry_t</a>;</div>
-<div class="ttc" id="acommand_8h_html_ad09246453a4dabd919c7541484046a87"><div class="ttname"><a href="command_8h.html#ad09246453a4dabd919c7541484046a87">__attribute__</a></div><div class="ttdeci">struct __attribute__((__packed__))</div><div class="ttdoc">Heartbeat packet definition.</div><div class="ttdef"><b>Definition</b> command.h:57</div></div>
-<div class="ttc" id="atelemetry_8h_html_a4b5fd07584ec6ff00b93f4ce4141a20a"><div class="ttname"><a href="telemetry_8h.html#a4b5fd07584ec6ff00b93f4ce4141a20a">heartbeat_telemetry_t</a></div><div class="ttdeci">heartbeat_telemetry_t</div><div class="ttdef"><b>Definition</b> telemetry.h:101</div></div>
+<div class="ttc" id="acommand_8h_html_ad09246453a4dabd919c7541484046a87"><div class="ttname"><a href="command_8h.html#ad09246453a4dabd919c7541484046a87">__attribute__</a></div><div class="ttdeci">struct __attribute__((__packed__))</div><div class="ttdoc">Heartbeat packet definition.</div><div class="ttdef"><b>Definition</b> command.h:62</div></div>
+<div class="ttc" id="atelemetry_8h_html_a4b5fd07584ec6ff00b93f4ce4141a20a"><div class="ttname"><a href="telemetry_8h.html#a4b5fd07584ec6ff00b93f4ce4141a20a">heartbeat_telemetry_t</a></div><div class="ttdeci">heartbeat_telemetry_t</div><div class="ttdef"><b>Definition</b> telemetry.h:103</div></div>
 </div><!-- fragment --><p>Then the value of that for each beacon packet will be found/measured/calculated in the <code><a class="el" href="heartbeat__job_8c.html">main/tasks/steve/jobs/heartbeat_job.c</a></code> <code><a class="el" href="heartbeat__job_8c.html#a5a39a53ceb61fec283d89fcb0032a24b" title="Collects sensor information and transmits it as a heartbeat packet.">heartbeat_telemetry_job()</a></code> function. Any invalid values or telemetry points that might return errors in their acquirement are set to max values (ex. if there is an error finding a uint8_t value, the value will be 0xff), this is to not confuse invalid values with real measurements as most telemetry values will not reach their max values. This function will also show how to utilize the telemetry task API to transmit telemetry packets and can be copied for new packets.</p>
 <h2><a class="anchor" id="creating-new-steve-jobs"></a>
 Creating New STEVE Jobs</h2>

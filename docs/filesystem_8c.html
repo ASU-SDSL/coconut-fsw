@@ -96,20 +96,26 @@ $(function(){ initResizable(false); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;string.h&gt;</code><br />
+<code>#include &lt;stdarg.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="log_8h_source.html">log.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="filesystem_8h_source.html">filesystem.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="watchdog_8h_source.html">watchdog.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for filesystem.c:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="filesystem_8c__incl.svg" width="100%" height="492"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="filesystem_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a927cf61c34acf12c6d2e91abb0894b0b" id="r_a927cf61c34acf12c6d2e91abb0894b0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a927cf61c34acf12c6d2e91abb0894b0b">fs_log</a> (const char *str,...)</td></tr>
+<tr class="separator:a927cf61c34acf12c6d2e91abb0894b0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a799eadaaf9ccd6162d5fa3fd15a0c3a1" id="r_a799eadaaf9ccd6162d5fa3fd15a0c3a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a799eadaaf9ccd6162d5fa3fd15a0c3a1">make_filesystem</a> ()</td></tr>
 <tr class="separator:a799eadaaf9ccd6162d5fa3fd15a0c3a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab92b1f0beb3be903677f3293d0430b62" id="r_ab92b1f0beb3be903677f3293d0430b62"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab92b1f0beb3be903677f3293d0430b62">read_file</a> (const char *file_name, char *result_buffer, size_t size)</td></tr>
 <tr class="separator:ab92b1f0beb3be903677f3293d0430b62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0599d66eddc7fdf656fca874aa5f1d1" id="r_ae0599d66eddc7fdf656fca874aa5f1d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae0599d66eddc7fdf656fca874aa5f1d1">read_file_offset</a> (const char *file_name, char *result_buffer, size_t size, uint32_t offset)</td></tr>
+<tr class="separator:ae0599d66eddc7fdf656fca874aa5f1d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e5a51c709e9d6229c1974435475292a" id="r_a8e5a51c709e9d6229c1974435475292a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e5a51c709e9d6229c1974435475292a">write_file</a> (const char *file_name, char *data, size_t size, bool append_flag)</td></tr>
 <tr class="separator:a8e5a51c709e9d6229c1974435475292a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a550849e6b02b5ca20d32bdacb2ddd19b" id="r_a550849e6b02b5ca20d32bdacb2ddd19b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a550849e6b02b5ca20d32bdacb2ddd19b">list_dir</a> (const char *directory_name)</td></tr>
@@ -136,8 +142,8 @@ Functions</h2></td></tr>
 <tr class="separator:a7ea79e37cd85f3400dd530c48032329e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20490ef1d54401f12085f7a9bfbb2c13" id="r_a20490ef1d54401f12085f7a9bfbb2c13"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20490ef1d54401f12085f7a9bfbb2c13">_fwrite</a> (const char *file_name, const uint8_t *data, size_t size, bool append_flag)</td></tr>
 <tr class="separator:a20490ef1d54401f12085f7a9bfbb2c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4f728372ea55ba4c14531514e913814" id="r_ab4f728372ea55ba4c14531514e913814"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4f728372ea55ba4c14531514e913814">_fread</a> (const char *file_name, char *result_buffer, size_t size)</td></tr>
-<tr class="separator:ab4f728372ea55ba4c14531514e913814"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cea9cb52704704e58a15402d699fe6b" id="r_a7cea9cb52704704e58a15402d699fe6b"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7cea9cb52704704e58a15402d699fe6b">_fread</a> (const char *file_name, char *result_buffer, size_t size, uint32_t offset)</td></tr>
+<tr class="separator:a7cea9cb52704704e58a15402d699fe6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65a8bfbf26326e7b6dfd677f9b4ad626" id="r_a65a8bfbf26326e7b6dfd677f9b4ad626"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65a8bfbf26326e7b6dfd677f9b4ad626">_fdelete</a> (const char *file_name)</td></tr>
 <tr class="separator:a65a8bfbf26326e7b6dfd677f9b4ad626"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a242db63f134c45189c12dc9e46c6b90d" id="r_a242db63f134c45189c12dc9e46c6b90d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a242db63f134c45189c12dc9e46c6b90d">_flist</a> (const char *dir_name)</td></tr>
@@ -175,6 +181,11 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="filesystem_8c_a65a8bfbf26326e7b6dfd677f9b4ad626_cgraph.svg" width="367" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -234,6 +245,11 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="filesystem_8c_a242db63f134c45189c12dc9e46c6b90d_cgraph.svg" width="346" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -251,11 +267,16 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="filesystem_8c_a0332aeda2c19ddb31aa4307d37007f98_cgraph.svg" width="364" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
-<a id="ab4f728372ea55ba4c14531514e913814" name="ab4f728372ea55ba4c14531514e913814"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4f728372ea55ba4c14531514e913814">&#9670;&#160;</a></span>_fread()</h2>
+<a id="a7cea9cb52704704e58a15402d699fe6b" name="a7cea9cb52704704e58a15402d699fe6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cea9cb52704704e58a15402d699fe6b">&#9670;&#160;</a></span>_fread()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -273,7 +294,12 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>size</em></span>&#160;)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>size</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>offset</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -346,6 +372,11 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="filesystem_8c_a7ea79e37cd85f3400dd530c48032329e_cgraph.svg" width="355" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -366,7 +397,7 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="filesystem_8c_a15938da01f25c7666c9393f725994af7_cgraph.svg" width="176" height="190"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="filesystem_8c_a15938da01f25c7666c9393f725994af7_cgraph.svg" width="470" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -388,7 +419,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="filesystem_8c_aedf13aa9daded9085cdb13bc1560947b_cgraph.svg" width="384" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="filesystem_8c_aedf13aa9daded9085cdb13bc1560947b_cgraph.svg" width="100%" height="364"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -471,7 +502,33 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="filesystem_8c_a73f4c05620eb3111fa320fe7fa6c5609_cgraph.svg" width="247" height="443"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="filesystem_8c_a73f4c05620eb3111fa320fe7fa6c5609_cgraph.svg" width="599" height="480"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a927cf61c34acf12c6d2e91abb0894b0b" name="a927cf61c34acf12c6d2e91abb0894b0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a927cf61c34acf12c6d2e91abb0894b0b">&#9670;&#160;</a></span>fs_log()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fs_log </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>str</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>...</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="filesystem_8c_a927cf61c34acf12c6d2e91abb0894b0b_cgraph.svg" width="244" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -605,7 +662,43 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="filesystem_8c_ab92b1f0beb3be903677f3293d0430b62_cgraph.svg" width="287" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="filesystem_8c_ab92b1f0beb3be903677f3293d0430b62_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ae0599d66eddc7fdf656fca874aa5f1d1" name="ae0599d66eddc7fdf656fca874aa5f1d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0599d66eddc7fdf656fca874aa5f1d1">&#9670;&#160;</a></span>read_file_offset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int read_file_offset </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>file_name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>result_buffer</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>size</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>offset</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="filesystem_8c_ae0599d66eddc7fdf656fca874aa5f1d1_cgraph.svg" width="587" height="62"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

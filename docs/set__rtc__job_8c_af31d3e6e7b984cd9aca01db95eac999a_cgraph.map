@@ -1,7 +1,17 @@
 <map id="set_rtc_job" name="set_rtc_job">
-<area shape="rect" id="Node000001" title="Set the real time clock to the given time." alt="" coords="5,5,99,31"/>
-<area shape="rect" id="Node000002" href="$rtc__ds3231_8c.html#a2c6c198dcdf9a137429432320e626cd0" title="Set the RTC&#39;s date and time, assumes 24h input." alt="" coords="147,5,249,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,15,133,15,133,21,99,21"/>
-<area shape="rect" id="Node000003" href="$i2c_8c.html#a73f9c3581b5d48d5db9c6c445034a970" title="Write [reg] and [buf] to i2c device, [reg] is just inserted before [buf]." alt="" coords="297,5,456,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="250,15,284,15,284,21,250,21"/>
+<area shape="rect" id="Node000001" title="Set the real time clock to the given time." alt="" coords="5,104,99,129"/>
+<area shape="rect" id="Node000002" href="$rtc__ds3231_8c.html#a2c6c198dcdf9a137429432320e626cd0" title="Set the RTC&#39;s date and time, assumes 24h input." alt="" coords="202,5,305,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="64,102,98,71,145,40,187,25,189,30,148,44,102,75,67,106"/>
+<area shape="rect" id="Node000004" href="$group__Radio.html#ga11abd7a01d0c8cbbc256e93bb0ed75e4" title="Set the radio last received time with mutex protection." alt="" coords="147,55,360,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="98,101,146,89,180,81,181,86,147,94,99,107"/>
+<area shape="rect" id="Node000005" href="$timing_8c.html#a0fcff89befd0e9d8e5284516631a96b1" title=" " alt="" coords="204,104,303,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="99,114,190,114,190,119,99,119"/>
+<area shape="rect" id="Node000007" href="$timing_8c.html#a9cc70b1713a886a2f9f70bfe71d98a9d" title=" " alt="" coords="178,153,329,179"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="100,126,147,138,186,148,185,153,146,143,98,131"/>
+<area shape="rect" id="Node000008" href="$filesystem_8c.html#a8e5a51c709e9d6229c1974435475292a" title=" " alt="" coords="212,203,295,228"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="68,128,102,158,148,188,199,205,197,210,146,192,99,162,64,132"/>
+<area shape="rect" id="Node000003" href="$i2c_8c.html#a73f9c3581b5d48d5db9c6c445034a970" title="Write [reg] and [buf] to i2c device, [reg] is just inserted before [buf]." alt="" coords="408,5,567,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="305,15,394,15,394,21,305,21"/>
+<area shape="rect" id="Node000006" href="$timing_8c.html#a8a218128fb890d92682a233464ee5cdb" title=" " alt="" coords="424,104,551,129"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="303,114,410,114,410,119,303,119"/>
 </map>

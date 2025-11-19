@@ -158,11 +158,17 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#a752e1275ef50e500a1d812783710b140a4e0c5abfdc2cc7637e3d093fea69a741">PLAYBACK_HEARTBEAT_PACKETS</a> = 15
 , <br />
 &#160;&#160;<a class="el" href="#a752e1275ef50e500a1d812783710b140a6cd4c319bd653c192cd0efcd2da1a94c">FSW_ACK</a> = 16
-, <a class="el" href="#a752e1275ef50e500a1d812783710b140a7a443378ce03444b1ab7e65da5acec15">RADIO_CONFIG</a> = 101
-, <a class="el" href="#a752e1275ef50e500a1d812783710b140a2736d8e44e3a2528bedade5091f89eb8">RADIO_STAT</a> = 104
-, <a class="el" href="#a752e1275ef50e500a1d812783710b140a5372596d40a501567c2bde4412444824">ANTENNA_DEPLOY</a> = 105
+, <a class="el" href="#a752e1275ef50e500a1d812783710b140afa6424d905a5b6b0494d1f9b0c3f5286">APID_INITIALIZE_FILE_DOWNLINK</a> = 17
+, <a class="el" href="#a752e1275ef50e500a1d812783710b140acb0b6450eb0de855fcba1160024856f4">APID_FILE_DOWNLINK_ACK</a> = 18
+, <a class="el" href="#a752e1275ef50e500a1d812783710b140a581fb2b1b0a8315ad84a4f137e7bf4a3">APID_FILE_DOWNLINK_CHANGE_PACKET_SIZE</a> = 19
 , <br />
-&#160;&#160;<a class="el" href="#a752e1275ef50e500a1d812783710b140ad2502a3ef8d4d190cf89b086de5ac653">AX25_ON_OFF</a> = 106
+&#160;&#160;<a class="el" href="#a752e1275ef50e500a1d812783710b140a7a443378ce03444b1ab7e65da5acec15">RADIO_CONFIG</a> = 101
+, <a class="el" href="#a752e1275ef50e500a1d812783710b140ad40a7ea992e8a087d8c4d213890317c3">RADIO_ECHO</a> = 102
+, <a class="el" href="#a752e1275ef50e500a1d812783710b140ac695b9a1c5c17715ddc27ece87dd934c">RADIO_SET_MODE</a> = 103
+, <a class="el" href="#a752e1275ef50e500a1d812783710b140a2736d8e44e3a2528bedade5091f89eb8">RADIO_STAT</a> = 104
+, <br />
+&#160;&#160;<a class="el" href="#a752e1275ef50e500a1d812783710b140a5372596d40a501567c2bde4412444824">ANTENNA_DEPLOY</a> = 105
+, <a class="el" href="#a752e1275ef50e500a1d812783710b140ad2502a3ef8d4d190cf89b086de5ac653">AX25_ON_OFF</a> = 106
 , <a class="el" href="#a752e1275ef50e500a1d812783710b140a13ff77d32e793a056b56f5a6e883c256">SET_RTC_TIME</a> = 201
 <br />
  }</td></tr>
@@ -215,12 +221,18 @@ Variables</h2></td></tr>
 <tr class="separator:ae40e90f49e7d778858a632fcdae9d5bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41ee92e61c814eb430d7af86d1f06dd9" id="r_a41ee92e61c814eb430d7af86d1f06dd9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41ee92e61c814eb430d7af86d1f06dd9">playback_hb_tlm_payload_t</a></td></tr>
 <tr class="separator:a41ee92e61c814eb430d7af86d1f06dd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bf81077af13913d869b06a3b5c37dfa" id="r_a7bf81077af13913d869b06a3b5c37dfa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7bf81077af13913d869b06a3b5c37dfa">file_downlink_ack_payload_t</a></td></tr>
+<tr class="separator:a7bf81077af13913d869b06a3b5c37dfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f2d870d01263d8cde33b966c28ca5b5" id="r_a6f2d870d01263d8cde33b966c28ca5b5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f2d870d01263d8cde33b966c28ca5b5">file_downlink_change_packet_size_payload_t</a></td></tr>
+<tr class="separator:a6f2d870d01263d8cde33b966c28ca5b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a401c803ee510b6f22385858a8588a54f" id="r_a401c803ee510b6f22385858a8588a54f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a401c803ee510b6f22385858a8588a54f">radio_config_t</a></td></tr>
 <tr class="separator:a401c803ee510b6f22385858a8588a54f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a845e890461f31d7e14cca83634c79db6" id="r_a845e890461f31d7e14cca83634c79db6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a845e890461f31d7e14cca83634c79db6">radio_stat_t</a></td></tr>
 <tr class="separator:a845e890461f31d7e14cca83634c79db6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b09ded88bd37b33c97d6f0f946aa4d6" id="r_a2b09ded88bd37b33c97d6f0f946aa4d6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b09ded88bd37b33c97d6f0f946aa4d6">set_rtc_time_t</a></td></tr>
 <tr class="separator:a2b09ded88bd37b33c97d6f0f946aa4d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c9384dea86cf98ce317f4be0510ba67" id="r_a1c9384dea86cf98ce317f4be0510ba67"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1c9384dea86cf98ce317f4be0510ba67">radio_set_mode_t</a></td></tr>
+<tr class="separator:a1c9384dea86cf98ce317f4be0510ba67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e8df6a96dd917466ae77279dd263b77" id="r_a3e8df6a96dd917466ae77279dd263b77"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3e8df6a96dd917466ae77279dd263b77">ax25_on_off_t</a></td></tr>
 <tr class="separator:a3e8df6a96dd917466ae77279dd263b77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe66b5c2f4a7fc180016809cd5e97704" id="r_abe66b5c2f4a7fc180016809cd5e97704"><td class="memItemLeft" align="right" valign="top">QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe66b5c2f4a7fc180016809cd5e97704">command_byte_queue</a></td></tr>
@@ -335,7 +347,12 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a752e1275ef50e500a1d812783710b140afe3951fa1b5ef2aacc50f5a092cad742" name="a752e1275ef50e500a1d812783710b140afe3951fa1b5ef2aacc50f5a092cad742"></a>MCU_POWER_CYCLE&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a752e1275ef50e500a1d812783710b140a4e0c5abfdc2cc7637e3d093fea69a741" name="a752e1275ef50e500a1d812783710b140a4e0c5abfdc2cc7637e3d093fea69a741"></a>PLAYBACK_HEARTBEAT_PACKETS&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a752e1275ef50e500a1d812783710b140a6cd4c319bd653c192cd0efcd2da1a94c" name="a752e1275ef50e500a1d812783710b140a6cd4c319bd653c192cd0efcd2da1a94c"></a>FSW_ACK&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a752e1275ef50e500a1d812783710b140afa6424d905a5b6b0494d1f9b0c3f5286" name="a752e1275ef50e500a1d812783710b140afa6424d905a5b6b0494d1f9b0c3f5286"></a>APID_INITIALIZE_FILE_DOWNLINK&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a752e1275ef50e500a1d812783710b140acb0b6450eb0de855fcba1160024856f4" name="a752e1275ef50e500a1d812783710b140acb0b6450eb0de855fcba1160024856f4"></a>APID_FILE_DOWNLINK_ACK&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a752e1275ef50e500a1d812783710b140a581fb2b1b0a8315ad84a4f137e7bf4a3" name="a752e1275ef50e500a1d812783710b140a581fb2b1b0a8315ad84a4f137e7bf4a3"></a>APID_FILE_DOWNLINK_CHANGE_PACKET_SIZE&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a752e1275ef50e500a1d812783710b140a7a443378ce03444b1ab7e65da5acec15" name="a752e1275ef50e500a1d812783710b140a7a443378ce03444b1ab7e65da5acec15"></a>RADIO_CONFIG&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a752e1275ef50e500a1d812783710b140ad40a7ea992e8a087d8c4d213890317c3" name="a752e1275ef50e500a1d812783710b140ad40a7ea992e8a087d8c4d213890317c3"></a>RADIO_ECHO&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a752e1275ef50e500a1d812783710b140ac695b9a1c5c17715ddc27ece87dd934c" name="a752e1275ef50e500a1d812783710b140ac695b9a1c5c17715ddc27ece87dd934c"></a>RADIO_SET_MODE&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a752e1275ef50e500a1d812783710b140a2736d8e44e3a2528bedade5091f89eb8" name="a752e1275ef50e500a1d812783710b140a2736d8e44e3a2528bedade5091f89eb8"></a>RADIO_STAT&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a752e1275ef50e500a1d812783710b140a5372596d40a501567c2bde4412444824" name="a752e1275ef50e500a1d812783710b140a5372596d40a501567c2bde4412444824"></a>ANTENNA_DEPLOY&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a752e1275ef50e500a1d812783710b140ad2502a3ef8d4d190cf89b086de5ac653" name="a752e1275ef50e500a1d812783710b140ad2502a3ef8d4d190cf89b086de5ac653"></a>AX25_ON_OFF&#160;</td><td class="fielddoc"></td></tr>
@@ -604,6 +621,34 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a7bf81077af13913d869b06a3b5c37dfa" name="a7bf81077af13913d869b06a3b5c37dfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bf81077af13913d869b06a3b5c37dfa">&#9670;&#160;</a></span>file_downlink_ack_payload_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">file_downlink_ack_payload_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6f2d870d01263d8cde33b966c28ca5b5" name="a6f2d870d01263d8cde33b966c28ca5b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f2d870d01263d8cde33b966c28ca5b5">&#9670;&#160;</a></span>file_downlink_change_packet_size_payload_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">file_downlink_change_packet_size_payload_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a67f2e8a035ce9d14e678656fbec23628" name="a67f2e8a035ce9d14e678656fbec23628"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a67f2e8a035ce9d14e678656fbec23628">&#9670;&#160;</a></span>file_ls_t</h2>
 
@@ -696,6 +741,20 @@ Here is the call graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">radio_config_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1c9384dea86cf98ce317f4be0510ba67" name="a1c9384dea86cf98ce317f4be0510ba67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c9384dea86cf98ce317f4be0510ba67">&#9670;&#160;</a></span>radio_set_mode_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">radio_set_mode_t</td>
         </tr>
       </table>
 </div><div class="memdoc">

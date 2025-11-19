@@ -1,34 +1,56 @@
 <map id="radio_task" name="radio_task">
-<area shape="rect" id="Node000001" title="C Linkage for radio task function (cpp version is radio_task_cpp())" alt="" coords="5,276,96,302"/>
-<area shape="rect" id="Node000002" href="$group__Radio.html#gaa62d7d3a4530934e87199d4741b365d1" title="The implementation of the radio task function (Linked to C by radio_task())" alt="" coords="144,276,264,302"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,286,130,286,130,292,96,292"/>
-<area shape="rect" id="Node000003" href="$group__Radio.html#gad6a879966c96e3220276583110fde2eb" title="Initializes necessary peripherals/settings for the radio task." alt="" coords="363,150,446,175"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="218,274,259,241,311,204,359,178,362,183,313,208,262,245,221,278"/>
-<area shape="rect" id="Node000004" href="$group__Radio.html#gae7b8fc4ccc09bb7acd7b803ecad3caca" title=" " alt="" coords="779,23,964,48"/>
-<area shape="poly" id="edge12_Node000002_Node000004" title=" " alt="" coords="205,275,216,237,236,185,267,131,287,106,310,85,368,51,432,27,498,12,565,5,631,3,693,5,797,18,796,23,693,11,631,8,566,10,499,18,433,32,371,56,314,90,291,110,271,134,240,188,221,239,211,277"/>
-<area shape="rect" id="Node000005" href="$group__Radio.html#ga9cc461d365bd6aa5037aa79b50a4ab70" title=" " alt="" coords="788,226,955,251"/>
-<area shape="poly" id="edge13_Node000002_Node000005" title=" " alt="" coords="265,298,354,312,469,322,597,322,661,316,723,305,785,283,837,256,840,261,787,288,725,310,662,321,597,327,469,327,354,317,264,303"/>
-<area shape="rect" id="Node000006" href="$group__Radio.html#gabb38d1447d7bbd825a1514d39e9889f3" title="Handle hardware switches between radios." alt="" coords="775,74,967,99"/>
-<area shape="poly" id="edge14_Node000002_Node000006" title=" " alt="" coords="208,275,221,245,242,206,272,167,311,135,368,106,430,85,494,71,558,63,621,60,680,61,782,69,782,74,680,66,621,65,558,68,495,76,431,90,370,111,313,139,276,170,247,209,226,247,213,277"/>
-<area shape="rect" id="Node000007" href="$group__Radio.html#ga69267b1b554b36d584cbc4322534266f" title=" " alt="" coords="772,175,971,200"/>
-<area shape="poly" id="edge15_Node000002_Node000007" title=" " alt="" coords="264,284,373,277,497,264,665,233,806,201,807,206,666,238,498,269,373,282,264,289"/>
-<area shape="rect" id="Node000008" href="$group__Radio.html#ga39fef0e9987217c6be69bcc9ca1af791" title=" " alt="" coords="586,175,683,200"/>
-<area shape="poly" id="edge16_Node000002_Node000008" title=" " alt="" coords="258,274,571,199,573,205,260,279"/>
-<area shape="rect" id="Node000009" href="$command_8c.html#ac090b79f5dfeeaa73978dc9df75fe1a0" title=" " alt="" coords="312,378,497,403"/>
-<area shape="poly" id="edge17_Node000002_Node000009" title=" " alt="" coords="224,300,264,327,313,356,349,371,346,375,311,361,261,332,221,304"/>
-<area shape="rect" id="Node000011" href="$telemetry_8c.html#a6dbf6c6cfd75451e5642ca0b64bf7f5a" title=" " alt="" coords="343,427,467,452"/>
-<area shape="poly" id="edge19_Node000002_Node000011" title=" " alt="" coords="215,300,252,356,280,387,313,413,331,422,328,427,311,418,277,391,248,359,210,303"/>
-<area shape="rect" id="Node000012" href="$group__Radio.html#ga74c252dc0de25701a447a67c039e9804" title=" " alt="" coords="335,476,474,502"/>
-<area shape="poly" id="edge20_Node000002_Node000012" title=" " alt="" coords="212,301,224,334,245,378,275,424,314,463,324,469,321,474,310,467,271,427,240,380,219,336,207,303"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="433,147,484,125,545,104,667,71,781,48,782,53,669,77,546,109,486,130,435,152"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="436,173,487,192,546,209,664,227,774,234,774,239,664,232,545,214,485,197,434,178"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="446,153,779,98,780,104,447,158"/>
-<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="446,157,570,154,724,160,798,170,797,175,724,165,570,160,446,163"/>
-<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="446,164,572,178,572,183,446,169"/>
-<area shape="poly" id="edge8_Node000008_Node000004" title=" " alt="" coords="644,173,694,117,730,86,771,59,789,50,791,55,773,63,734,90,698,121,648,176"/>
-<area shape="poly" id="edge9_Node000008_Node000005" title=" " alt="" coords="684,195,798,220,797,225,683,200"/>
-<area shape="poly" id="edge10_Node000008_Node000006" title=" " alt="" coords="665,172,827,102,829,107,667,177"/>
-<area shape="poly" id="edge11_Node000008_Node000007" title=" " alt="" coords="683,185,759,185,759,190,683,190"/>
-<area shape="rect" id="Node000010" href="$command_8c.html#a4f5fb387e54e9f86c0201fff500341a7" title=" " alt="" coords="545,378,724,403"/>
-<area shape="poly" id="edge18_Node000009_Node000010" title=" " alt="" coords="498,388,532,388,532,393,498,393"/>
+<area shape="rect" id="Node000001" title="C Linkage for radio task function (cpp version is radio_task_cpp())" alt="" coords="5,452,96,477"/>
+<area shape="rect" id="Node000002" href="$group__Radio.html#gaa62d7d3a4530934e87199d4741b365d1" title="The implementation of the radio task function (Linked to C by radio_task())" alt="" coords="144,452,264,477"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,462,130,462,130,467,96,467"/>
+<area shape="rect" id="Node000003" href="$group__Radio.html#ga3b310022c5395a420f9a4d65a3950d60" title="Get the radio last received time with mutex protection." alt="" coords="545,5,760,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="204,451,211,400,229,324,243,281,261,239,283,198,310,162,336,135,366,112,431,75,499,49,561,31,563,36,501,54,434,80,369,117,340,139,314,165,287,201,265,241,248,283,234,325,217,401,209,452"/>
+<area shape="rect" id="Node000004" href="$group__Radio.html#gad6a879966c96e3220276583110fde2eb" title="Initializes necessary peripherals/settings for the radio task." alt="" coords="363,255,446,280"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="214,450,255,402,310,343,374,287,378,291,314,347,259,405,218,454"/>
+<area shape="rect" id="Node000008" href="$group__Radio.html#gae7b8fc4ccc09bb7acd7b803ecad3caca" title=" " alt="" coords="560,55,745,80"/>
+<area shape="poly" id="edge20_Node000002_Node000008" title=" " alt="" coords="206,451,218,412,239,357,270,296,310,240,366,187,416,153,472,127,544,97,586,81,588,86,546,102,475,132,419,158,369,191,314,244,274,299,244,359,223,414,211,452"/>
+<area shape="rect" id="Node000009" href="$group__Radio.html#ga9cc461d365bd6aa5037aa79b50a4ab70" title=" " alt="" coords="569,353,736,379"/>
+<area shape="poly" id="edge21_Node000002_Node000009" title=" " alt="" coords="229,449,267,432,311,415,374,400,438,387,555,371,556,377,439,393,375,405,313,421,269,437,231,454"/>
+<area shape="rect" id="Node000010" href="$group__Radio.html#gabb38d1447d7bbd825a1514d39e9889f3" title="Handle hardware switches between radios." alt="" coords="557,403,749,428"/>
+<area shape="poly" id="edge22_Node000002_Node000010" title=" " alt="" coords="264,451,312,443,543,420,543,425,312,449,265,456"/>
+<area shape="rect" id="Node000011" href="$group__Radio.html#ga69267b1b554b36d584cbc4322534266f" title=" " alt="" coords="553,452,752,477"/>
+<area shape="poly" id="edge23_Node000002_Node000011" title=" " alt="" coords="264,462,539,462,539,467,264,467"/>
+<area shape="rect" id="Node000018" href="$command_8c.html#ac090b79f5dfeeaa73978dc9df75fe1a0" title=" " alt="" coords="312,604,497,629"/>
+<area shape="poly" id="edge24_Node000002_Node000018" title=" " alt="" coords="216,476,254,527,282,557,313,582,341,597,338,601,311,587,278,561,250,531,211,479"/>
+<area shape="rect" id="Node000020" href="$telemetry_8c.html#a6dbf6c6cfd75451e5642ca0b64bf7f5a" title=" " alt="" coords="343,653,467,679"/>
+<area shape="poly" id="edge26_Node000002_Node000020" title=" " alt="" coords="212,477,224,510,245,554,275,601,293,622,314,640,331,650,329,655,310,644,289,625,270,604,240,557,219,512,207,479"/>
+<area shape="rect" id="Node000021" href="$group__Radio.html#ga74c252dc0de25701a447a67c039e9804" title=" " alt="" coords="335,703,474,728"/>
+<area shape="poly" id="edge27_Node000002_Node000021" title=" " alt="" coords="210,477,220,519,238,576,269,637,290,665,314,689,325,697,321,701,310,693,286,669,265,640,234,578,214,520,205,478"/>
+<area shape="rect" id="Node000022" href="$timing_8c.html#a194bf95f7b8c4bde3816deac81a9fb20" title=" " alt="" coords="595,553,710,579"/>
+<area shape="poly" id="edge28_Node000002_Node000022" title=" " alt="" coords="220,475,260,508,285,524,313,537,382,556,454,565,522,569,581,568,581,574,522,574,453,571,381,561,311,542,283,529,257,512,217,480"/>
+<area shape="rect" id="Node000023" href="$timing_8c.html#ab12969269737f49ad7d6b46da54da52e" title=" " alt="" coords="345,503,465,528"/>
+<area shape="poly" id="edge29_Node000002_Node000023" title=" " alt="" coords="256,475,341,497,340,502,255,480"/>
+<area shape="poly" id="edge7_Node000004_Node000003" title=" " alt="" coords="408,253,423,211,451,153,491,92,516,64,544,40,552,35,555,39,547,44,519,68,495,95,455,156,428,213,413,255"/>
+<area shape="rect" id="Node000005" href="$filesystem_8c.html#a07610d3a6787ca02aa3d340759bcb8c9" title=" " alt="" coords="983,131,1071,156"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="446,264,472,258,496,245,507,233,513,221,518,193,523,166,531,153,544,141,597,114,655,98,715,91,775,90,833,95,887,103,975,124,974,129,886,109,833,100,775,95,716,96,656,103,599,119,547,146,535,156,528,168,523,194,518,222,511,236,499,249,474,263,447,269"/>
+<area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="415,253,495,160,517,126,527,112,544,97,572,82,575,87,547,102,531,116,521,129,499,164,420,256"/>
+<area shape="poly" id="edge9_Node000004_Node000009" title=" " alt="" coords="428,278,480,308,546,338,574,347,573,352,544,343,478,313,425,283"/>
+<area shape="poly" id="edge10_Node000004_Node000010" title=" " alt="" coords="419,279,470,332,506,362,547,388,565,396,563,401,544,392,503,366,467,336,415,282"/>
+<area shape="poly" id="edge11_Node000004_Node000011" title=" " alt="" coords="415,279,433,311,462,354,501,399,547,437,561,445,558,449,544,442,497,403,458,358,429,314,410,281"/>
+<area shape="rect" id="Node000012" href="$filesystem_8c.html#ab92b1f0beb3be903677f3293d0430b62" title=" " alt="" coords="613,205,692,231"/>
+<area shape="poly" id="edge12_Node000004_Node000012" title=" " alt="" coords="446,257,599,226,600,231,447,262"/>
+<area shape="rect" id="Node000014" href="$group__Radio.html#ga11abd7a01d0c8cbbc256e93bb0ed75e4" title="Set the radio last received time with mutex protection." alt="" coords="546,156,759,181"/>
+<area shape="poly" id="edge16_Node000004_Node000014" title=" " alt="" coords="425,252,478,221,544,190,569,182,570,187,546,195,480,226,427,257"/>
+<area shape="rect" id="Node000015" href="$timing_8c.html#a0fcff89befd0e9d8e5284516631a96b1" title=" " alt="" coords="603,304,702,329"/>
+<area shape="poly" id="edge17_Node000004_Node000015" title=" " alt="" coords="447,273,590,302,589,307,446,278"/>
+<area shape="rect" id="Node000017" href="$filesystem_8c.html#a8e5a51c709e9d6229c1974435475292a" title=" " alt="" coords="611,255,694,280"/>
+<area shape="poly" id="edge19_Node000004_Node000017" title=" " alt="" coords="447,265,598,265,598,270,447,270"/>
+<area shape="rect" id="Node000006" href="$filesystem_8c.html#aa109ff29a72d1beadda58bb3a54185b6" title=" " alt="" coords="1119,131,1165,156"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1071,141,1105,141,1105,146,1071,146"/>
+<area shape="rect" id="Node000007" href="$utilities_2src_2log_8c.html#a4b048be24c6c7f622a6bc6c6bf8ac435" title=" " alt="" coords="1213,156,1388,181"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1166,144,1208,151,1207,156,1165,150"/>
+<area shape="rect" id="Node000013" href="$filesystem_8c.html#ae0599d66eddc7fdf656fca874aa5f1d1" title=" " alt="" coords="810,181,933,207"/>
+<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="692,211,796,200,797,205,692,216"/>
+<area shape="poly" id="edge14_Node000013_Node000005" title=" " alt="" coords="910,179,973,158,975,163,912,184"/>
+<area shape="poly" id="edge15_Node000013_Node000007" title=" " alt="" coords="933,188,1200,172,1200,177,933,193"/>
+<area shape="rect" id="Node000016" href="$timing_8c.html#a8a218128fb890d92682a233464ee5cdb" title=" " alt="" coords="808,403,935,428"/>
+<area shape="poly" id="edge18_Node000015_Node000016" title=" " alt="" coords="703,321,761,338,807,364,846,392,843,396,804,368,759,343,701,326"/>
+<area shape="rect" id="Node000019" href="$command_8c.html#a4f5fb387e54e9f86c0201fff500341a7" title=" " alt="" coords="563,604,742,629"/>
+<area shape="poly" id="edge25_Node000018_Node000019" title=" " alt="" coords="497,614,549,614,549,619,497,619"/>
+<area shape="poly" id="edge30_Node000023_Node000016" title=" " alt="" coords="465,517,527,519,602,516,682,506,759,486,805,463,844,435,847,440,808,468,761,491,683,511,602,521,527,524,465,523"/>
+<area shape="poly" id="edge31_Node000023_Node000022" title=" " alt="" coords="465,525,582,549,581,554,464,530"/>
 </map>

@@ -7,5 +7,6 @@ var searchData=
   ['command_5fbyte_5fqueue_4',['command_byte_queue',['../command_8h.html#abe66b5c2f4a7fc180016809cd5e97704',1,'command.h']]],
   ['command_5fenabled_5',['command_enabled',['../command_8c.html#a7ec70c46910534a193439e8dd4d32916',1,'command.c']]],
   ['commandcountmutex_6',['commandCountMutex',['../command_8c.html#a8495264463ce0d650a8cb637d34bcbf7',1,'command.c']]],
-  ['cur_5faddr_7',['cur_addr',['../mram_8c.html#ab51f535fd86cebf151444040e00e3c4e',1,'mram.c']]]
+  ['cur_5faddr_7',['cur_addr',['../mram_8c.html#ab51f535fd86cebf151444040e00e3c4e',1,'mram.c']]],
+  ['current_5fsending_5fpacket_5findex_8',['current_sending_packet_index',['../structcurrent__file__downlink__data.html#abe8ec5b5a8f75b5d5c23103bcd97ad14',1,'current_file_downlink_data']]]
 ];

@@ -100,10 +100,11 @@ $(function(){ initResizable(false); });
 <code>#include &quot;<a class="el" href="onewire__library_8h_source.html">onewire_library.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="log_8h_source.html">log.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="stdio_8h_source.html">stdio.h</a>&gt;</code><br />
+<code>#include &quot;<a class="el" href="timing_8h_source.html">timing.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ds18b20.c:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="ds18b20_8c__incl.svg" width="100%" height="492"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="ds18b20_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -132,6 +133,8 @@ Macros</h2></td></tr>
 <tr class="separator:aec59de92144356c5eee4cdaa806c2bb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa812fa3fa9648eca54a8d4c190ec7e01" id="r_aa812fa3fa9648eca54a8d4c190ec7e01"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa812fa3fa9648eca54a8d4c190ec7e01">DS18B20_TIMEOUT_MS</a>&#160;&#160;&#160;1000</td></tr>
 <tr class="separator:aa812fa3fa9648eca54a8d4c190ec7e01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a140db8c079afd1f8132ba2a54bda2125" id="r_a140db8c079afd1f8132ba2a54bda2125"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a140db8c079afd1f8132ba2a54bda2125">DS18B20_SHORT_TIMEOUT_MS</a>&#160;&#160;&#160;100</td></tr>
+<tr class="separator:a140db8c079afd1f8132ba2a54bda2125"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d4cbd354934c5bbcb3f18a9d67d117b" id="r_a2d4cbd354934c5bbcb3f18a9d67d117b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d4cbd354934c5bbcb3f18a9d67d117b">ONEWIRE_PROGRAM_ADD_FAIL</a>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:a2d4cbd354934c5bbcb3f18a9d67d117b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b1533cb63d9e900805c4dbd16c909f1" id="r_a9b1533cb63d9e900805c4dbd16c909f1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b1533cb63d9e900805c4dbd16c909f1">ONEWIRE_DRIVER_INIT_FAIL</a>&#160;&#160;&#160;2</td></tr>
@@ -233,6 +236,20 @@ Variables</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">#define DS18B20_RECALL_EE&#160;&#160;&#160;0xb8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a140db8c079afd1f8132ba2a54bda2125" name="a140db8c079afd1f8132ba2a54bda2125"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a140db8c079afd1f8132ba2a54bda2125">&#9670;&#160;</a></span>DS18B20_SHORT_TIMEOUT_MS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DS18B20_SHORT_TIMEOUT_MS&#160;&#160;&#160;100</td>
         </tr>
       </table>
 </div><div class="memdoc">

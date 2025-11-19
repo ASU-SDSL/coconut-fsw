@@ -91,20 +91,24 @@ $(function(){ initResizable(false); });
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">timing.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;FreeRTOS.h&quot;</code><br />
+<code>#include &lt;stdint.h&gt;</code><br />
+<code>#include &quot;semphr.h&quot;</code><br />
+<code>#include &quot;pico/time.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for timing.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="timing_8h__incl.svg" width="106" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="timing_8h__incl.svg" width="430" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="timing_8h__dep__incl.svg" width="302" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="timing_8h__dep__incl.svg" width="100%" height="382"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="timing_8h_source.html">Go to the source code of this file.</a></p>
@@ -132,6 +136,23 @@ Functions</h2></td></tr>
 <tr class="separator:a2e16fa594324372d8eba45c312ac67de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cef17ffb0e9db503a077191e1a4b013" id="r_a7cef17ffb0e9db503a077191e1a4b013"><td class="memItemLeft" align="right" valign="top">TickType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7cef17ffb0e9db503a077191e1a4b013">get_uptime</a> ()</td></tr>
 <tr class="separator:a7cef17ffb0e9db503a077191e1a4b013"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7c104decdc26173277d5083f7b7a32c" id="r_ad7c104decdc26173277d5083f7b7a32c"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad7c104decdc26173277d5083f7b7a32c">tick_uptime_in_ms</a> ()</td></tr>
+<tr class="separator:ad7c104decdc26173277d5083f7b7a32c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa854d4d5485460a4be5fd9ed4c9815db" id="r_aa854d4d5485460a4be5fd9ed4c9815db"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa854d4d5485460a4be5fd9ed4c9815db">time_between</a> (uint32_t before, uint32_t after)</td></tr>
+<tr class="separator:aa854d4d5485460a4be5fd9ed4c9815db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a218128fb890d92682a233464ee5cdb" id="r_a8a218128fb890d92682a233464ee5cdb"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a218128fb890d92682a233464ee5cdb">get_epoch_time</a> ()</td></tr>
+<tr class="separator:a8a218128fb890d92682a233464ee5cdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cc70b1713a886a2f9f70bfe71d98a9d" id="r_a9cc70b1713a886a2f9f70bfe71d98a9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9cc70b1713a886a2f9f70bfe71d98a9d">update_epoch_time</a> (uint8_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second)</td></tr>
+<tr class="separator:a9cc70b1713a886a2f9f70bfe71d98a9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab12969269737f49ad7d6b46da54da52e" id="r_ab12969269737f49ad7d6b46da54da52e"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab12969269737f49ad7d6b46da54da52e">time_since_ms</a> (uint64_t past_time)</td></tr>
+<tr class="separator:ab12969269737f49ad7d6b46da54da52e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fcff89befd0e9d8e5284516631a96b1" id="r_a0fcff89befd0e9d8e5284516631a96b1"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fcff89befd0e9d8e5284516631a96b1">timing_now</a> ()</td></tr>
+<tr class="separator:a0fcff89befd0e9d8e5284516631a96b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a43310d1061f2682a1fb00998a869e464" id="r_a43310d1061f2682a1fb00998a869e464"><td class="memItemLeft" align="right" valign="top">SemaphoreHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43310d1061f2682a1fb00998a869e464">epoch_time_mutex</a></td></tr>
+<tr class="separator:a43310d1061f2682a1fb00998a869e464"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a3c012d71e8f72e2fc97d7c4ab9dd640b" name="a3c012d71e8f72e2fc97d7c4ab9dd640b"></a>
@@ -163,6 +184,23 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a8a218128fb890d92682a233464ee5cdb" name="a8a218128fb890d92682a233464ee5cdb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a218128fb890d92682a233464ee5cdb">&#9670;&#160;</a></span>get_epoch_time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t get_epoch_time </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a7cef17ffb0e9db503a077191e1a4b013" name="a7cef17ffb0e9db503a077191e1a4b013"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7cef17ffb0e9db503a077191e1a4b013">&#9670;&#160;</a></span>get_uptime()</h2>
 
@@ -265,6 +303,28 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ad7c104decdc26173277d5083f7b7a32c" name="ad7c104decdc26173277d5083f7b7a32c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7c104decdc26173277d5083f7b7a32c">&#9670;&#160;</a></span>tick_uptime_in_ms()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long tick_uptime_in_ms </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="timing_8h_ad7c104decdc26173277d5083f7b7a32c_cgraph.svg" width="304" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="ae9b62052c2d50ef141de6f5036ee49ec" name="ae9b62052c2d50ef141de6f5036ee49ec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae9b62052c2d50ef141de6f5036ee49ec">&#9670;&#160;</a></span>ticks_to_ms()</h2>
 
@@ -278,6 +338,135 @@ Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa854d4d5485460a4be5fd9ed4c9815db" name="aa854d4d5485460a4be5fd9ed4c9815db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa854d4d5485460a4be5fd9ed4c9815db">&#9670;&#160;</a></span>time_between()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t time_between </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>before</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>after</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab12969269737f49ad7d6b46da54da52e" name="ab12969269737f49ad7d6b46da54da52e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab12969269737f49ad7d6b46da54da52e">&#9670;&#160;</a></span>time_since_ms()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t time_since_ms </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t</td>          <td class="paramname"><span class="paramname"><em>past_time</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="timing_8h_ab12969269737f49ad7d6b46da54da52e_cgraph.svg" width="306" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a0fcff89befd0e9d8e5284516631a96b1" name="a0fcff89befd0e9d8e5284516631a96b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fcff89befd0e9d8e5284516631a96b1">&#9670;&#160;</a></span>timing_now()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t timing_now </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="timing_8h_a0fcff89befd0e9d8e5284516631a96b1_cgraph.svg" width="284" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a9cc70b1713a886a2f9f70bfe71d98a9d" name="a9cc70b1713a886a2f9f70bfe71d98a9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cc70b1713a886a2f9f70bfe71d98a9d">&#9670;&#160;</a></span>update_epoch_time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void update_epoch_time </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>year</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>month</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>date</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>hour</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>minute</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>second</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a43310d1061f2682a1fb00998a869e464" name="a43310d1061f2682a1fb00998a869e464"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43310d1061f2682a1fb00998a869e464">&#9670;&#160;</a></span>epoch_time_mutex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SemaphoreHandle_t epoch_time_mutex</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel extern">extern</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
