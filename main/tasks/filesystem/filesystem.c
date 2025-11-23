@@ -487,7 +487,7 @@ void filesystem_task(void* unused_arg) {
     logln_info("Mounting filesystem...\n");
     FRESULT fr = f_mount(&fs, "0:", 1);
     if (fr != FR_OK) {
-        logln_error("Failed to mount filesystem (%d), attempting to rebuilt filesystem", fr);
+        logln_info("Failed to mount filesystem (%d), attempting to rebuilt filesystem", fr);
         _mkfs(); 
     }
     
