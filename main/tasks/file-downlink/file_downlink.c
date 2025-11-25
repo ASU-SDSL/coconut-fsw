@@ -114,7 +114,7 @@ int send_n_packet(current_file_downlink_data_t *current_file_data, uint32_t pack
     char buf[256];
     memcpy(buf, downlink_packet.data, bytes_read);
     buf[bytes_read] = '\0';
-    logln_info("Sending data: %s (%d)", buf, sizeof(file_downlink_telemetry_t) - buffer_empty_space);
+    logln_info("Sending data: %s (%d) (%d)", sizeof(file_downlink_telemetry_t) - buffer_empty_space);
 
     send_telemetry(FILE_DOWNLINK_APID, (char*) &downlink_packet, sizeof(file_downlink_telemetry_t) - buffer_empty_space);
 
