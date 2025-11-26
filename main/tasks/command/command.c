@@ -444,9 +444,11 @@ void command_task(void* unused_arg) {
                 logln_error("Failed to allocate payload buf of size 0x%x!", payload_size);
                 continue;
             }
+            logln_info("Payload size: %d", payload_size);
             // Read payload
             for (int i = 0; i < payload_size; i++) {
                 xQueueReceive(command_byte_queue, &payload_buf[i], portMAX_DELAY);
+                // logln_info("Received payload byte 0x%hhx (%d)", payload_buf[i], i);
             }
             // Parse packet payload
             parse_command_packet(header, payload_buf, payload_size);
