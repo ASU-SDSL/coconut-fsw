@@ -110,6 +110,7 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (payload_size < sizeof(change_heartbeat_telem_rate_t)) break;
             change_heartbeat_telem_rate_t* heartbeat_tr_args = (change_heartbeat_telem_rate_t*)payload_buf;
             if (!is_admin(heartbeat_tr_args->admin_token)) break;
+            logln_info("Changing heartbeat telemetry rate to %lu ms", heartbeat_tr_args->ms);
             edit_steve_job_recur_time(HEARTBEAT_JOB_NAME, heartbeat_tr_args->ms);
             break;
         case REQUEST_DOWNLINK_GROUNDNODE_DATA:
@@ -277,6 +278,15 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             if (strnlen(payload_buf, MAX_PATH_SIZE + 1) > MAX_PATH_SIZE + 1) break; // Verify it looks like a string (+ \0) and isn't too long
             logln_info("Initializing file downlink for file: %s!", payload_buf);
             logln_info("Checking file: %d", file_exists((char*)payload_buf));
+            if(file_exists((char*)payload_buf) == false){
+                logln_error("File does not exist, cannot downlink");
+                command_status = 0; 
+                break; 
+            }
+            // report file size
+            FILINFO fno; 
+            stat((char*)payload_buf, &fno); 
+            logln_info("File size %u bytes", fno.fsize);
             command_status = initialize_file_downlink(payload_buf, payload_size);
             break;
         case APID_FILE_DOWNLINK_ACK:
@@ -434,9 +444,11 @@ void command_task(void* unused_arg) {
                 logln_error("Failed to allocate payload buf of size 0x%x!", payload_size);
                 continue;
             }
+            logln_info("Payload size: %d", payload_size);
             // Read payload
             for (int i = 0; i < payload_size; i++) {
                 xQueueReceive(command_byte_queue, &payload_buf[i], portMAX_DELAY);
+                // logln_info("Received payload byte 0x%hhx (%d)", payload_buf[i], i);
             }
             // Parse packet payload
             parse_command_packet(header, payload_buf, payload_size);

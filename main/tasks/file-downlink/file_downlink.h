@@ -26,7 +26,7 @@
 #define ACK_WINDOW_TIMEOUT 5000 // ms to wait for an ack before resending the window
 #define ACK_TRANSFER_TIMEOUT 600000 // ms to wait since the last received ack to cancel the transfer
 
-#define MAX_DOWNLINK_PACKET_SIZE 200 // size of each data-portion packet in the file downlink protocol until the last packet - this can be commanded to be smaller
+#define MAX_DOWNLINK_PACKET_SIZE 128 // size of each data-portion packet in the file downlink protocol until the last packet - this can be commanded to be smaller
 
 QueueHandle_t file_downlink_queue;
 
