@@ -76,8 +76,8 @@
 #define RADIO_MAX_QUEUE_ITEMS 64
 
 #define RADIO_RF_SWITCH_PIN 12
-#define RADIO_SX_POWER_PIN 7
-#define RADIO_RFM_POWER_PIN 14
+#define RADIO_SX_POWER_PIN 14
+#define RADIO_RFM_POWER_PIN 7
 
 // Sets radio switch gpio level to select a radio 
 #define RADIO_RF_SWITCH_RFM 1

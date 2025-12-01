@@ -276,7 +276,7 @@ void _mkfs() {
     fr = f_mkfs("", NULL, buf, 0x400);
     vPortFree(buf);
     if (fr != FR_OK) {
-        logln_error("Failed to make filesystem (%d)", fr);
+        logln_info("Failed to make filesystem (%d)", fr);
         fs_log("Failed make fs (%d)", fr);
         return;
     }
@@ -285,7 +285,7 @@ void _mkfs() {
     logln_info("Mounting filesystem...\n");
     fr = f_mount(&fs, "0:", 1);
     if (fr != FR_OK) {
-        logln_error("Failed to mount filesystem (%d)", fr);
+        logln_info("Failed to mount filesystem (%d)", fr);
         fs_log("Failed mount fs (%d)", fr);
         return;
     }
