@@ -252,7 +252,7 @@ void steve_task(void* unused_arg) {
 
     // queue antenna deployment 
     #if REMOVE_BEFORE_FLIGHT
-    schedule_delayed_job_mins("DEPLOY_ANTENNA", &deploy_antenna_job, 45);
+    schedule_delayed_job_mins("DEPLOY_ANTENNA", &deploy_antenna_job, 120);
     #endif 
 
     // set up PIO block for onewire 
