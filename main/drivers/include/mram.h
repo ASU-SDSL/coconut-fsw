@@ -51,3 +51,4 @@ int read_bytes(const uint32_t addr, uint8_t* buf, const uint32_t nbytes);
  */
 void mram_testing();
 
+void mram_more_testing();

@@ -101,6 +101,128 @@ int read_bytes(uint32_t addr, uint8_t* buf, const uint32_t nbytes) {
     return nbytes;
 }
 
+uint8_t mram_read_status_register(){
+    gpio_put(CS, 0); 
+
+    uint8_t cmd = RDSR; 
+
+    spi_write_blocking(SPI_BUS, &cmd, 1); 
+    uint8_t buf; 
+    spi_read_blocking(SPI_BUS, 0, &buf, 1);
+
+    gpio_put(CS, 1); 
+
+    return buf; 
+}
+
+void mram_write_status_register(uint8_t data){
+    gpio_put(CS, 0); 
+    uint8_t cmd[2] = {WRSR, data}; 
+    spi_write_blocking(SPI_BUS, cmd, 2); 
+    gpio_put(CS, 1); 
+}
+
+#define RDC1 0x35
+#define RDC2 0x3F
+#define RDC3 0x44
+#define RDC4 0x45
+#define RDCX 0x46
+#define WRCX 0x87
+
+void mram_write_config_registers(uint8_t* buf){
+    gpio_put(CS, 0); 
+
+    uint8_t cmd[5] = {WRCX, buf[0], buf[1], buf[2], buf[3]}; 
+
+    spi_write_blocking(SPI_BUS, cmd, 5); 
+
+    gpio_put(CS, 1); 
+
+}
+
+void mram_read_config_registers(uint8_t* buf){
+    gpio_put(CS, 0); 
+
+    uint8_t cmd = RDCX; 
+
+    spi_write_blocking(SPI_BUS, &cmd, 1); 
+
+    spi_read_blocking(SPI_BUS, 0, buf, 4);
+
+    gpio_put(CS, 1); 
+
+} 
+
+void mram_more_testing(){
+    initialize_mram();
+
+    uint8_t counter = 0;
+    while(true) {
+        // device id
+        gpio_put(CS, 0); 
+        uint8_t data_out[1] = {0x9F};
+        uint8_t data_in[4] = {0, 0, 0, 0};
+        spi_write_blocking(SPI_BUS, data_out, 1); 
+        spi_read_blocking(SPI_BUS, 0, data_in, 4); 
+
+        gpio_put(CS, 1);
+
+        printf("Device ID: ");
+        for(int i = 0; i < 4; i++){
+            printf("%d ", data_in[i]);
+        }
+        printf("\n"); 
+
+        uint8_t status_reg = mram_read_status_register();
+        printf("Status register: %x\n", status_reg); 
+
+        uint8_t config_regs[4] = {0,0,0,0};
+        mram_read_config_registers(config_regs);
+        printf("Config registers: ");
+        for(int i = 0; i < 4; i++){
+            printf("%x ", config_regs[i]);
+        }
+        printf("\n");
+
+        // uint8_t new_config_regs[4] = {0xFA, 0x8F, 0xFF, 0xBC};
+        // mram_write_config_registers(new_config_regs);
+
+        // write to status register
+        mram_write_status_register(0x00); 
+
+        // read / write 
+        uint8_t my_buf[8] = {1, 9, 8, 4, 0, 33, 22, 1};
+        for(int i = 0; i < 8; i++){
+            my_buf[i] = counter;
+        }
+        write_bytes(100, my_buf, 8);
+        
+        
+        //vTaskDelay(500);
+
+        uint8_t output[8] = {0,0,0,0,0,0,0,0};
+        read_bytes(100, output, 8);
+
+        printf("Writing: ");
+        for (int i = 0; i < 8; i++)
+        {
+            printf("%d ", my_buf[i]);
+        }
+        printf("\n");
+
+        printf("Reading: ");
+        for (int i = 0; i < 8; i++)
+        {
+            printf("%d ", output[i]);
+        }
+        printf("\n");
+        printf("\n");
+        vTaskDelay(100);
+
+        counter++;
+    }
+}
+
 void mram_testing() {
     initialize_mram();
 

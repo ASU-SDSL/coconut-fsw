@@ -478,8 +478,13 @@ void _test() {
 
 }
 
+#include "mram.h"
+
 void filesystem_task(void* unused_arg) {
-    
+    while(1){
+        mram_more_testing(); 
+    }
+    _mkfs(); 
 #ifdef SIMULATOR
     _mkfs();
 #endif
