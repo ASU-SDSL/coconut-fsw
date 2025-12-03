@@ -251,9 +251,9 @@ void steve_task(void* unused_arg) {
     schedule_delayed_job_ms("Buzzer beep", &buzzer_beep_job, 10);
 
     // queue antenna deployment 
-    // #if REMOVE_BEFORE_FLIGHT
+    #if REMOVE_BEFORE_FLIGHT
     schedule_delayed_job_mins("DEPLOY_ANTENNA", &deploy_antenna_job, 120);
-    // #endif 
+    #endif 
 
     // set up PIO block for onewire 
     onewire_init(); 
