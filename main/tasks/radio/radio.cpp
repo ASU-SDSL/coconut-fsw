@@ -710,7 +710,7 @@ void radio_task_cpp(){
                     // should wait for contact
                     last_received_time_copy = get_radio_last_received_time();
                     logln_info("Last received time: %llu (%llx)\n", last_received_time_copy, last_received_time_copy);
-                    if(last_received_time_copy != 0 && time_since_ms(last_received_time_copy) > RADIO_NO_CONTACT_DEADMAN_MS){
+                    if(last_received_time_copy == 0 || time_since_ms(last_received_time_copy) > RADIO_NO_CONTACT_DEADMAN_MS){
                         // free buffer 
                         vPortFree(rec.data_buffer);
                         break;
