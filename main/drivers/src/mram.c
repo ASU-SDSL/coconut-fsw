@@ -116,6 +116,10 @@ uint8_t mram_read_status_register(){
 }
 
 void mram_write_status_register(uint8_t data){
+    send_simple_command(WREN);
+
+    sleep_us(1); 
+
     gpio_put(CS, 0); 
     uint8_t cmd[2] = {WRSR, data}; 
     spi_write_blocking(SPI_BUS, cmd, 2); 
@@ -130,6 +134,10 @@ void mram_write_status_register(uint8_t data){
 #define WRCX 0x87
 
 void mram_write_config_registers(uint8_t* buf){
+    send_simple_command(WREN);
+
+    sleep_us(1); 
+
     gpio_put(CS, 0); 
 
     uint8_t cmd[5] = {WRCX, buf[0], buf[1], buf[2], buf[3]}; 
@@ -184,8 +192,8 @@ void mram_more_testing(){
         }
         printf("\n");
 
-        // uint8_t new_config_regs[4] = {0xFA, 0x8F, 0xFF, 0xBC};
-        // mram_write_config_registers(new_config_regs);
+        uint8_t new_config_regs[4] = {0xFB, 0xAF, 0xFF, 0xBF};
+        mram_write_config_registers(new_config_regs);
 
         // write to status register
         mram_write_status_register(0x00); 
