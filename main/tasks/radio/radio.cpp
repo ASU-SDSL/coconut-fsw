@@ -76,8 +76,8 @@
 #define RADIO_MAX_QUEUE_ITEMS 64
 
 #define RADIO_RF_SWITCH_PIN 12
-#define RADIO_SX_POWER_PIN 7
-#define RADIO_RFM_POWER_PIN 14
+#define RADIO_SX_POWER_PIN 14
+#define RADIO_RFM_POWER_PIN 7
 
 // Sets radio switch gpio level to select a radio 
 #define RADIO_RF_SWITCH_RFM 1
@@ -710,7 +710,7 @@ void radio_task_cpp(){
                     // should wait for contact
                     last_received_time_copy = get_radio_last_received_time();
                     logln_info("Last received time: %llu (%llx)\n", last_received_time_copy, last_received_time_copy);
-                    if(last_received_time_copy != 0 && time_since_ms(last_received_time_copy) > RADIO_NO_CONTACT_DEADMAN_MS){
+                    if(last_received_time_copy == 0 || time_since_ms(last_received_time_copy) > RADIO_NO_CONTACT_DEADMAN_MS){
                         // free buffer 
                         vPortFree(rec.data_buffer);
                         break;

@@ -11,6 +11,7 @@
 #include "queue.h"
 #include "task.h"
 #include "ff.h"
+#include "filesystem_errors.h"
 
 #include <semphr.h>
 
@@ -54,6 +55,7 @@ typedef struct {
     size_t size;
     int32_t *out_size;
     TaskHandle_t calling_task;
+    uint32_t offset; // Offset from the beginning of the file to read from
 } read_operation_t;
 
 typedef struct {
@@ -122,6 +124,7 @@ QueueHandle_t filesystem_queue;
 /* User Functions */
 void make_filesystem();
 int32_t read_file(const char *file_name, char *result_buffer, size_t size);
+int read_file_offset(const char* file_name, char* result_buffer, size_t size, uint32_t offset);
 void write_file(const char *file_name, char *data, size_t size, bool append_flag);
 void list_dir(const char *directory_name);
 void delete_file(const char *file_name);
@@ -136,7 +139,7 @@ bool file_exists(const char* file_name);
 
 /* Internal Functions */
 void _mkfs();
-int32_t _fread(const char *file_name, char *result_buffer, size_t size);
+int32_t _fread(const char *file_name, char *result_buffer, size_t size, uint32_t offset);
 int32_t _fwrite(const char *file_name, const uint8_t *data, size_t size, bool append_flag);
 void _fdelete(const char *file_name);
 void _flist(const char *dir_name);

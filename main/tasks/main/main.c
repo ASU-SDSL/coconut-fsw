@@ -16,6 +16,7 @@
 #include "steve.h"
 #include "filesystem.h"
 #include "watchdog.h"
+#include "file_downlink.h"
 #include "i2c.h"
 #include <stdio.h>
 
@@ -120,6 +121,13 @@ int main() {
                                         NULL,
                                         1,
                                         &xWatchdogTaskHandler);
+
+    BaseType_t file_downlink_task_status = xTaskCreate(file_downlink_task,
+                                        "FILEDOWNLINK",
+                                        1024,
+                                        NULL,
+                                        1,
+                                        NULL);
                                         
     // Start the FreeRTOS scheduler
     vTaskStartScheduler();
