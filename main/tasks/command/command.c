@@ -23,7 +23,7 @@
 #include "file_downlink.h"
 
 
-
+TaskHandle_t xCommandTaskHandler;
 
 void receive_command_byte_from_isr(char ch) {
     // ONLY USE FROM INTERRUPTS, CREATE NEW METHOD FOR QUEUEING CMD BYTES FROM TASKS
@@ -197,7 +197,12 @@ void parse_command_packet(spacepacket_header_t header, uint8_t* payload_buf, uin
             return_data_len = 1;
 
             break;
-
+        case SYS_INFO:
+            if(payload_size < sizeof(sys_info_t)) break;
+            sys_info_t* sys_info_args = (sys_info_t*)payload_buf; 
+            if (!is_admin(sys_info_args->admin_token)) break;
+            system_info();
+            break;
         case MCU_POWER_CYCLE:
             if(payload_size < sizeof(mcu_power_cycle_t)) break;
             mcu_power_cycle_t* mcu_power_cycle_args = (mcu_power_cycle_t*)payload_buf; 

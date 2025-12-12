@@ -19,6 +19,8 @@
 
 #include "steve.h"
 
+TaskHandle_t xSteveTaskHandler;
+
 /* 
     S.T.E.V.E.
     Scheduler Task for Executing Vital Events

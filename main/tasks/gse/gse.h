@@ -8,6 +8,8 @@
 #define GSE_CHECK_DELAY_MS 500
 #define UART_QUEUE_CHECK_TIME portMAX_DELAY
 
+extern TaskHandle_t xGSETaskHandler;
+
 typedef struct telemetry_queue_transmission {
     uint16_t apid;
     char* payload_buffer;

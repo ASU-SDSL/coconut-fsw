@@ -71,36 +71,37 @@ int main() {
 
     gse_task_status = xTaskCreate(gse_task, 
                                         "GSE", 
-                                        256, 
+                                        GSE_STACK_TOTAL, 
                                         NULL,
                                         1,
-                                        NULL);
+                                        &xGSETaskHandler);
          
     scheduler_task_status = xTaskCreate(steve_task, 
                                         "STEVE", 
-                                        512, 
+                                        STEVE_STACK_TOTAL, 
                                         NULL, 
                                         1,
-                                        NULL);
+                                        &xSteveTaskHandler);
 
     command_task_status = xTaskCreate(command_task,
                                         "COMMAND",
-                                        1024,
+                                        COMMAND_STACK_TOTAL,
                                         NULL,
                                         1,
-                                        NULL);
+                                        &xCommandTaskHandler);
     
     telemetry_task_status = xTaskCreate(telemetry_task,
                                         "TELEMETRY",
-                                        1024,
+                                        TELEMETRY_STACK_TOTAL,
                                         NULL,
                                         1,
-                                        NULL);
+                                        &xTelemetryTaskHandler);
+
 
 #ifndef SIMULATOR
     radio_task_status = xTaskCreate(radio_task, 
                                          "RADIO", 
-                                         512, 
+                                         RADIO_STACK_TOTAL, 
                                          NULL, 
                                          1,
                                          &xRadioTaskHandler);
@@ -109,10 +110,10 @@ int main() {
 
     filesystem_task_status = xTaskCreate(filesystem_task,
                                         "FILESYSTEM",
-                                        1024,
+                                        FILESYSTEM_STACK_TOTAL,
                                         NULL,
                                         1,
-                                        NULL);
+                                        &xFilesystemTaskHandler);
 
     watchdog_task_status = xTaskCreate(watchdog_task,
                                         "WATCHDOG",
