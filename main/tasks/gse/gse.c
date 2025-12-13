@@ -10,6 +10,7 @@
 #include "ina219.h"
 #include "log.h"
 #include "gse.h"
+#include "ds18b20.h"
 
 void gse_queue_message(char* buffer, size_t size) {
     // write to picosdk usb uart interface
@@ -19,6 +20,15 @@ void gse_queue_message(char* buffer, size_t size) {
 void gse_task(void *pvParameters) {
     // Initialize USB UART
     stdio_init_all();
+
+    // temp
+    stdio_init_all();
+    onewire_init();
+    
+    while(1){
+        ds18b20_scan(); 
+        sleep_ms(1000); 
+    }
 
     // Start listening for USB UART bytes
     while (true) {
