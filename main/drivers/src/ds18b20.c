@@ -170,9 +170,9 @@ void ds18b20_test(){
     vTaskDelay(pdMS_TO_TICKS(750)); // wait for conversion (avoid blocking delay) 
 
     // read values 
-    int16_t u100 = ds18b20_read_temp(DS18B_ROMCODE_U100); 
-    int16_t u102 = ds18b20_read_temp(DS18B_ROMCODE_U102); 
-    int16_t u104 = ds18b20_read_temp(DS18B_ROMCODE_U104); 
+    int16_t u100 = ds18b20_read_temp(DS18B_ROMCODE_EPS); 
+    int16_t u102 = ds18b20_read_temp(DS18B_ROMCODE_XM); 
+    int16_t u104 = ds18b20_read_temp(DS18B_ROMCODE_XP); 
 
     logln_info("Read Temps u100: %d u102: %d u104: %d (C * 16)", u100, u102, u104); 
 
