@@ -19,6 +19,7 @@
 #include "file_downlink.h"
 #include "i2c.h"
 #include <stdio.h>
+#include "ds18b20.h"
 
 // for initial timing setup only 
 #include "rtc_ds3231.h"
@@ -48,6 +49,14 @@ int main() {
 #if defined(DEBUG) && !defined(SIMULATOR)
     timer_hw->dbgpause = 0;
 #endif
+
+    // temp
+    stdio_init_all();
+    onewire_init();
+    while(1){
+        ds18b20_scan(); 
+        sleep_ms(1000); 
+    }
 
     // set up mutexes 
     epoch_time_mutex = xSemaphoreCreateMutex(); 

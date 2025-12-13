@@ -88,17 +88,13 @@ int16_t ds18b20_read_temp(uint64_t romcode){
 }
 
 void ds18b20_scan(){
-    PIO pio = pio0;
-    uint gpio = 15;
 
-    OW ow;
-    uint offset;
     // add the program to the PIO shared address space
-    if (pio_can_add_program (pio, &onewire_program)) {
-        offset = pio_add_program (pio, &onewire_program);
+    if (pio_can_add_program (ds_pio, &onewire_program)) {
+        ds_offset = pio_add_program (ds_pio, &onewire_program);
 
         // claim a state machine and initialise a driver instance
-        if (ow_init (&ow, pio, offset, gpio)) {
+        if (ow_init (&ds_ow, ds_pio, ds_offset, ds_gpio)) {
 
             while(1){
                 puts("Blink!\n"); 
@@ -108,7 +104,7 @@ void ds18b20_scan(){
                 
                 int maxdevs = 10;
                 uint64_t romcode[maxdevs];
-                int num_devs = ow_romsearch (&ow, romcode, maxdevs, OW_SEARCH_ROM);
+                int num_devs = ow_romsearch (&ds_ow, romcode, maxdevs, OW_SEARCH_ROM);
 
                 printf("Found %d devices\n", num_devs);      
                 for (int i = 0; i < num_devs; i += 1) {
@@ -119,23 +115,23 @@ void ds18b20_scan(){
                 while (num_devs > 0) {
                     // start temperature conversion in parallel on all devices
                     // (see ds18b20 datasheet)
-                    ow_reset (&ow);
-                    ow_send (&ow, OW_SKIP_ROM);
-                    ow_send (&ow, DS18B20_CONVERT_T);
+                    ow_reset (&ds_ow);
+                    ow_send (&ds_ow, OW_SKIP_ROM);
+                    ow_send (&ds_ow, DS18B20_CONVERT_T);
 
                     // wait for the conversions to finish
-                    while (ow_read(&ow) == 0);
+                    while (ow_read(&ds_ow) == 0);
 
                     // read the result from each device
                     for (int i = 0; i < num_devs; i += 1) {
-                        ow_reset (&ow);
-                        ow_send (&ow, OW_MATCH_ROM);
+                        ow_reset (&ds_ow);
+                        ow_send (&ds_ow, OW_MATCH_ROM);
                         for (int b = 0; b < 64; b += 8) {
-                            ow_send (&ow, romcode[i] >> b);
+                            ow_send (&ds_ow, romcode[i] >> b);
                         }
-                        ow_send (&ow, DS18B20_READ_SCRATCHPAD);
+                        ow_send (&ds_ow, DS18B20_READ_SCRATCHPAD);
                         int16_t temp = 0;
-                        temp = ow_read (&ow) | (ow_read (&ow) << 8);
+                        temp = ow_read (&ds_ow) | (ow_read (&ds_ow) << 8);
                         printf ("\t%d: %f", i, temp / 16.0);
                     }
                     putchar ('\n');
