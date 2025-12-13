@@ -68,6 +68,9 @@ uint8_t ds18b20_start_conversion(){
 }
 
 int16_t ds18b20_read_temp(uint64_t romcode){
+    if(romcode == 0){
+        return INT16_MAX;
+    }
     // busy wait until conversion is done
     uint32_t start_time = to_ms_since_boot(get_absolute_time());
     while(ow_read(&ds_ow) == 0 && to_ms_since_boot(get_absolute_time()) - start_time < DS18B20_SHORT_TIMEOUT_MS){
