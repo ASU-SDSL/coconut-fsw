@@ -35,6 +35,13 @@ ENDIF()
 # Include the Pico SDK
 IF (NOT ${DESKTOP_BUILD})
     include(pico_sdk_import.cmake) # - uses environment variable PICO_SDK_PATH
+
+    # This specifies where the build will look for board files
+    set(PICO_BOARD_HEADER_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/lib/custom_boards)
+
+    # This sets the board to 'coconut_fcr_board.h' within that directory defined by the line above 
+    set(PICO_BOARD coconut_fcr_board)
+
     pico_sdk_init() # Initialise the Pico SDK
 ENDIF()
 

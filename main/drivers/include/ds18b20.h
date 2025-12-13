@@ -13,9 +13,14 @@
 // eps one wire romcodes 
 // addresss for pio library 
 // (reversed of what was found bit bang)        // bit banged addresses
-#define DS18B_ROMCODE_U100 0xCF00000FD8AF0A28   // 28 0A AF D8 0F 00 00 CF
-#define DS18B_ROMCODE_U102 0x2600000FD8AF1C28   // 28 1C AF D8 0F 00 00 26
-#define DS18B_ROMCODE_U104 0x6C00000FD8AF1128   // 28 11 AF D8 0F 00 00 6C
+// stored little endian in memory 
+#define DS18B_ROMCODE_EPS 0xCF00000FD8AF0A28   // 28 0A AF D8 0F 00 00 CF
+#define DS18B_ROMCODE_XM 0x2600000FD8AF1C28   // 28 1C AF D8 0F 00 00 26
+#define DS18B_ROMCODE_XP 0x6C00000FD8AF1128   // 28 11 AF D8 0F 00 00 6C
+#define DS18B_ROMCODE_YM 0x0000000000000000  
+#define DS18B_ROMCODE_YP 0x0000000000000000
+#define DS18B_ROMCODE_ZM 0x0000000000000000  
+#define DS18B_ROMCODE_ZP 0x0000000000000000   
 
 /**
  * @brief Initializes the PIO block to be a OneWire bus 

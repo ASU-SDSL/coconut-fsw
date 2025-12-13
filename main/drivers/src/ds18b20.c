@@ -87,73 +87,50 @@ int16_t ds18b20_read_temp(uint64_t romcode){
     return temp; 
 }
 
+
 void ds18b20_scan(){
-    PIO pio = pio0;
-    uint gpio = 15;
 
-    OW ow;
-    uint offset;
-    // add the program to the PIO shared address space
-    if (pio_can_add_program (pio, &onewire_program)) {
-        offset = pio_add_program (pio, &onewire_program);
+    while(1){
+        puts("Blink!\n"); 
+        // led_on = !led_on; 
+        // gpio_put(LED_PIN, led_on); 
+        // find and display 64-bit device addresses
+        
+        int maxdevs = 10;
+        uint64_t romcode[maxdevs];
+        int num_devs = ow_romsearch (&ds_ow, romcode, maxdevs, OW_SEARCH_ROM);
 
-        // claim a state machine and initialise a driver instance
-        if (ow_init (&ow, pio, offset, gpio)) {
-
-            while(1){
-                puts("Blink!\n"); 
-                // led_on = !led_on; 
-                // gpio_put(LED_PIN, led_on); 
-                // find and display 64-bit device addresses
-                
-                int maxdevs = 10;
-                uint64_t romcode[maxdevs];
-                int num_devs = ow_romsearch (&ow, romcode, maxdevs, OW_SEARCH_ROM);
-
-                printf("Found %d devices\n", num_devs);      
-                for (int i = 0; i < num_devs; i += 1) {
-                    printf("\t%d: 0x%lx\n", i, romcode[i]);
-                }
-                putchar ('\n');
-
-                while (num_devs > 0) {
-                    // start temperature conversion in parallel on all devices
-                    // (see ds18b20 datasheet)
-                    ow_reset (&ow);
-                    ow_send (&ow, OW_SKIP_ROM);
-                    ow_send (&ow, DS18B20_CONVERT_T);
-
-                    // wait for the conversions to finish
-                    while (ow_read(&ow) == 0);
-
-                    // read the result from each device
-                    for (int i = 0; i < num_devs; i += 1) {
-                        ow_reset (&ow);
-                        ow_send (&ow, OW_MATCH_ROM);
-                        for (int b = 0; b < 64; b += 8) {
-                            ow_send (&ow, romcode[i] >> b);
-                        }
-                        ow_send (&ow, DS18B20_READ_SCRATCHPAD);
-                        int16_t temp = 0;
-                        temp = ow_read (&ow) | (ow_read (&ow) << 8);
-                        printf ("\t%d: %f", i, temp / 16.0);
-                    }
-                    putchar ('\n');
-                }
-                vTaskDelay(pdMS_TO_TICKS(1000)); 
-            }
-            
-        } else {
-            while(1){
-                puts ("could not initialise the driver");
-                vTaskDelay(pdMS_TO_TICKS(1000)); 
-            }
+        printf("Found %d devices\n", num_devs);      
+        for (int i = 0; i < num_devs; i += 1) {
+            printf("\t%d: 0x%lx\n", i, romcode[i]);
         }
-    } else {
-        while(1){
-            puts ("could not add the program");
-            vTaskDelay(pdMS_TO_TICKS(1000)); 
+        putchar ('\n');
+
+        while (num_devs > 0) {
+            // start temperature conversion in parallel on all devices
+            // (see ds18b20 datasheet)
+            ow_reset (&ds_ow);
+            ow_send (&ds_ow, OW_SKIP_ROM);
+            ow_send (&ds_ow, DS18B20_CONVERT_T);
+
+            // wait for the conversions to finish
+            while (ow_read(&ds_ow) == 0);
+
+            // read the result from each device
+            for (int i = 0; i < num_devs; i += 1) {
+                ow_reset (&ds_ow);
+                ow_send (&ds_ow, OW_MATCH_ROM);
+                for (int b = 0; b < 64; b += 8) {
+                    ow_send (&ds_ow, romcode[i] >> b);
+                }
+                ow_send (&ds_ow, DS18B20_READ_SCRATCHPAD);
+                int16_t temp = 0;
+                temp = ow_read (&ds_ow) | (ow_read (&ds_ow) << 8);
+                printf ("\t(%llX) %d: %f", romcode[i], i, temp / 16.0);
+            }
+            putchar ('\n');
         }
+        vTaskDelay(pdMS_TO_TICKS(1000)); 
     }
 }
 
@@ -170,9 +147,9 @@ void ds18b20_test(){
     vTaskDelay(pdMS_TO_TICKS(750)); // wait for conversion (avoid blocking delay) 
 
     // read values 
-    int16_t u100 = ds18b20_read_temp(DS18B_ROMCODE_U100); 
-    int16_t u102 = ds18b20_read_temp(DS18B_ROMCODE_U102); 
-    int16_t u104 = ds18b20_read_temp(DS18B_ROMCODE_U104); 
+    int16_t u100 = ds18b20_read_temp(DS18B_ROMCODE_EPS); 
+    int16_t u102 = ds18b20_read_temp(DS18B_ROMCODE_XM); 
+    int16_t u104 = ds18b20_read_temp(DS18B_ROMCODE_XP); 
 
     logln_info("Read Temps u100: %d u102: %d u104: %d (C * 16)", u100, u102, u104); 
 

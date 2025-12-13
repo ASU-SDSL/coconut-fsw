@@ -216,13 +216,21 @@ void heartbeat_telemetry_job(void* unused) {
     else payload.vega_ant_status = UINT8_MAX;
 
     if(ds18b20_conversion_res == 0){
-        payload.temp_u100 = ds18b20_read_temp(DS18B_ROMCODE_U100); 
-        payload.temp_u102 = ds18b20_read_temp(DS18B_ROMCODE_U102); 
-        payload.temp_u104 = ds18b20_read_temp(DS18B_ROMCODE_U104); 
+        payload.temp_eps = ds18b20_read_temp(DS18B_ROMCODE_EPS); 
+        payload.temp_Xm = ds18b20_read_temp(DS18B_ROMCODE_XM); 
+        payload.temp_Xp = ds18b20_read_temp(DS18B_ROMCODE_XP);
+        payload.temp_Ym = ds18b20_read_temp(DS18B_ROMCODE_YM);
+        payload.temp_Yp = ds18b20_read_temp(DS18B_ROMCODE_YP);
+        payload.temp_Zm = ds18b20_read_temp(DS18B_ROMCODE_ZM);
+        payload.temp_Zp = ds18b20_read_temp(DS18B_ROMCODE_ZP); 
     } else {
-        payload.temp_u100 = INT16_MAX; 
-        payload.temp_u102 = INT16_MAX; 
-        payload.temp_u104 = INT16_MAX; 
+        payload.temp_eps = INT16_MAX; 
+        payload.temp_Xm = INT16_MAX; 
+        payload.temp_Xp = INT16_MAX; 
+        payload.temp_Ym = INT16_MAX;
+        payload.temp_Yp = INT16_MAX;
+        payload.temp_Zm = INT16_MAX;
+        payload.temp_Zp = INT16_MAX;
         logln_error("DS18B20 Temp conversion failed"); 
     }
 
