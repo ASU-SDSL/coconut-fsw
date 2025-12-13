@@ -30,10 +30,10 @@
 #define DS18B20_SHORT_TIMEOUT_MS 100
 
 // pio block config variables 
-PIO ds_pio = pio0; 
-uint ds_gpio = 25;  
-OW ds_ow; 
-uint ds_offset; 
+static PIO ds_pio = pio0; 
+static uint ds_gpio = 25;  
+static OW ds_ow; 
+static uint ds_offset; 
 
 #define ONEWIRE_PROGRAM_ADD_FAIL    1
 #define ONEWIRE_DRIVER_INIT_FAIL    2
@@ -155,6 +155,14 @@ void ds18b20_scan(){
             vTaskDelay(pdMS_TO_TICKS(1000)); 
         }
     }
+}
+
+// assumes ow has been initialised
+int ds18b20_discover(uint64_t* addr_buf, int maxdevs){
+    int num_devs = ow_romsearch (&ds_ow, addr_buf, maxdevs, OW_SEARCH_ROM);
+
+    logln_info("Found %d devices\n", num_devs);
+    return num_devs; 
 }
 
 void ds18b20_test(){

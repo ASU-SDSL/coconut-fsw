@@ -91,9 +91,15 @@ typedef struct __attribute__((__packed__)) {
     int16_t mag_z;
     int16_t mag_temp;
     uint8_t vega_ant_status;
-    int16_t temp_u100;
-    int16_t temp_u102;
-    int16_t temp_u104; 
+   
+    int16_t temp_eps;
+    int16_t temp_Xm;
+    int16_t temp_Xp;
+    int16_t temp_Ym;
+    int16_t temp_Yp;
+    int16_t temp_Zm;
+    int16_t temp_Zp;
+
     int16_t rfm_state;
     int16_t sx_state; 
     

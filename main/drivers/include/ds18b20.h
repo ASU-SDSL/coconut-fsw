@@ -61,3 +61,12 @@ void ds18b20_test();
  * 
  */
 void ds18b20_scan(); 
+
+/**
+ * @brief Discovers and records onewire addresses on the bus 
+ * 
+ * @param addr_buf Buffer to record to 
+ * @param maxdevs Max devices to discover
+ * @return int Number of devices discovered or -1 on error
+ */
+int ds18b20_discover(uint64_t* addr_buf, int maxdevs);

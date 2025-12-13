@@ -23,6 +23,11 @@
 static uint32_t bootcount;
 static bool bootcountset;
 
+// holding onewire temp sensor romcodes 
+#define DS18B20_MAX_DEVS 7
+static uint8_t ds18b20_num_devs = 0;
+static uint64_t ds18b20_addrs[DS18B20_MAX_DEVS] = {0,0,0,0,0,0,0};
+
 void heartbeat_telemetry_job(void* unused) {
     // Create heartbeat struct
     heartbeat_telemetry_t payload;
@@ -75,8 +80,21 @@ void heartbeat_telemetry_job(void* unused) {
     // i2c instance
     i2c_inst_t *i2c = i2c1;
 
-    // start pio conversion 
-    uint8_t ds18b20_conversion_res = ds18b20_start_conversion(); 
+    // check if we have a onewire address list
+    uint8_t ds18b20_conversion_res = 1;
+    if(ds18b20_addrs[0] == 0){
+        ds18b20_num_devs = ds18b20_discover(ds18b20_addrs, DS18B20_MAX_DEVS);
+        if(ds18b20_num_devs == 0){
+            logln_error("No DS18B20 devices found"); 
+        } else {
+            // start pio conversion 
+            ds18b20_conversion_res = ds18b20_start_conversion();
+        }
+    } else {
+        // start pio conversion 
+        ds18b20_conversion_res = ds18b20_start_conversion(); 
+    }
+
 
     // MAX17048 data
     float max17048Voltage;
@@ -215,16 +233,22 @@ void heartbeat_telemetry_job(void* unused) {
     if(!vega_ant_status(i2c, &vega_ant_buf)) payload.vega_ant_status = vega_ant_buf;
     else payload.vega_ant_status = UINT8_MAX;
 
+    int16_t temp_buf[DS18B20_MAX_DEVS] = {INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX};
     if(ds18b20_conversion_res == 0){
-        payload.temp_u100 = ds18b20_read_temp(DS18B_ROMCODE_U100); 
-        payload.temp_u102 = ds18b20_read_temp(DS18B_ROMCODE_U102); 
-        payload.temp_u104 = ds18b20_read_temp(DS18B_ROMCODE_U104); 
-    } else {
-        payload.temp_u100 = INT16_MAX; 
-        payload.temp_u102 = INT16_MAX; 
-        payload.temp_u104 = INT16_MAX; 
+        // read temps
+        for(int i = 0; i < ds18b20_num_devs; i++){
+            temp_buf[i] = ds18b20_read_temp(ds18b20_addrs[i]);
+        }
+    } else { 
         logln_error("DS18B20 Temp conversion failed"); 
     }
+    payload.temp_eps = temp_buf[0];
+    payload.temp_Xm = temp_buf[1];
+    payload.temp_Xp = temp_buf[2];
+    payload.temp_Ym = temp_buf[3];
+    payload.temp_Yp = temp_buf[4];
+    payload.temp_Zm = temp_buf[5];
+    payload.temp_Zp = temp_buf[6];
 
     // radio status reporting
     payload.which_radio = radio_which(); 
