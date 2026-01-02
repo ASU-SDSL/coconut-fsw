@@ -12,7 +12,7 @@
 #define BUZZER_FREQ_HZ 1000
 #define BUZZER_POWER 0.9 //Basically this is the duty cycle which also corresponds to amount of power
 #define BUZZER_BEEP_DELAY_MS 500
-#define BUZZER_BEEP_COUNT 3
+#define BUZZER_BEEP_COUNT 4
 
 void buzzer_beep_job(void* unused) {
   //Initialize pwm stuff

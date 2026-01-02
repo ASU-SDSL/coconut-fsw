@@ -20,13 +20,14 @@ void set_rtc_job(void* args){
         update_epoch_time(time[0], time[1], time[2], time[3], time[4], time[5]);
 
         // redo some of radio_flag_valid_packet as this commend will mess up the real time clock 
-        uint64_t new_time = timing_now();
-        set_radio_last_received_time(new_time);  
+        // don't do that so that we can use this to turn off the radio
+        // uint64_t new_time = timing_now();
+        // set_radio_last_received_time(new_time);  
 
-        logln_info("Updating last received time to %llu", new_time);
-        char buffer[sizeof(uint64_t)]; 
-        memcpy(buffer, &new_time, sizeof(uint64_t)); 
-        write_file(RADIO_STATE_FILE_NAME, buffer, sizeof(uint64_t), false); 
+        // logln_info("Updating last received time to %llu", new_time);
+        // char buffer[sizeof(uint64_t)]; 
+        // memcpy(buffer, &new_time, sizeof(uint64_t)); 
+        // write_file(RADIO_STATE_FILE_NAME, buffer, sizeof(uint64_t), false); 
     }
 
     vPortFree(args); 
