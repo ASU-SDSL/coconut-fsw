@@ -43,7 +43,7 @@ var searchData=
   ['gpio_5firq_5fcallback_5ft_40',['gpio_irq_callback_t',['../classPiPicoHal.html#a8fcdfeff45cc2030530bf00c6ae1e0a3',1,'PiPicoHal']]],
   ['gpio_5fout_41',['GPIO_OUT',['../gpio_8h.html#aa0d5e0e1b44c5015f31a44079fd2d9e6',1,'gpio.h']]],
   ['gse_42',['GSE',['../md_docs_2docs_2tasks_2gse.html',1,'']]],
-  ['gse_20c_20tt_43',['Note: These functions should &lt;em&gt;&lt;strong&gt;NEVER&lt;/strong&gt;&lt;/em&gt; be run outside of &lt;tt&gt;gse.c&lt;/tt&gt;',['../md_docs_2docs_2tasks_2gse.html#note-these-functions-should-never-be-run-outside-of-gsec',1,'']]],
+  ['gse_20c_43',['Note: These functions should &lt;em&gt;&lt;b&gt;NEVER&lt;/b&gt;&lt;/em&gt; be run outside of &lt;span class=&quot;tt&quot;&gt;gse.c&lt;/span&gt;',['../md_docs_2docs_2tasks_2gse.html#note-these-functions-should-never-be-run-outside-of-gsec',1,'']]],
   ['gse_2ec_44',['gse.c',['../gse_8c.html',1,'']]],
   ['gse_2eh_45',['gse.h',['../gse_8h.html',1,'']]],
   ['gse_2emd_46',['gse.md',['../gse_8md.html',1,'']]],

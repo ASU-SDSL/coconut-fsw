@@ -218,7 +218,7 @@
 <!-- Node13 -->
 <g id="Node000013" class="node">
 <title>Node13</title>
-<g id="a_Node000013"><a xlink:href="usb__uart_8h.html" target="_top" xlink:title="Serial Communication Driver (USB/UART)">
+<g id="a_Node000013"><a xlink:href="usb__uart_8h.html" target="_top" xlink:title="Serial Communication Driver (USB/UART).">
 <polygon fill="white" stroke="#666666" points="856,-74 788,-74 788,-55 856,-55 856,-74"/>
 <text text-anchor="middle" x="822" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">usb_uart.h</text>
 </a>

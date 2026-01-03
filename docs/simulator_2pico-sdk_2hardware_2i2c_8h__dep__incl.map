@@ -1,48 +1,48 @@
 <map id="i2c.h" name="i2c.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="551,5,604,31"/>
-<area shape="rect" id="Node000002" href="$drivers_2include_2i2c_8h.html" title="Drivers for i2c peripheral devices." alt="" coords="352,79,405,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="538,36,407,83,405,78,537,31"/>
-<area shape="rect" id="Node000003" href="$mag__lis3mdltr_8h.html" title="Magnetometer Driver (LIS3MDLTR)" alt="" coords="365,152,491,177"/>
-<area shape="poly" id="edge16_Node000001_Node000003" title=" " alt="" coords="557,42,442,154,438,150,554,39"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="552,5,605,31"/>
+<area shape="rect" id="Node000002" href="$drivers_2include_2i2c_8h.html" title="Drivers for i2c peripheral devices." alt="" coords="353,79,407,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="540,36,408,83,406,78,538,31"/>
+<area shape="rect" id="Node000003" href="$mag__lis3mdltr_8h.html" title="Magnetometer Driver (LIS3MDLTR)." alt="" coords="365,152,493,177"/>
+<area shape="poly" id="edge16_Node000001_Node000003" title=" " alt="" coords="559,42,443,154,439,150,555,39"/>
 <area shape="rect" id="Node000008" href="$vega__ant_8h.html" title="Vega Antenna Board Driver." alt="" coords="119,152,214,177"/>
-<area shape="poly" id="edge27_Node000001_Node000008" title=" " alt="" coords="538,29,447,50,341,81,255,119,188,154,186,149,253,114,339,76,445,44,537,24"/>
-<area shape="rect" id="Node000011" href="$ina219_8h.html" title="INA219 Driver." alt="" coords="591,79,670,104"/>
-<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="596,40,624,77,620,80,592,43"/>
-<area shape="rect" id="Node000014" href="$rtc__ds3231_8c.html" title=" " alt="" coords="799,152,903,177"/>
-<area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="612,35,830,150,828,154,610,40"/>
-<area shape="rect" id="Node000015" href="$rtc__ds3231_8h.html" title="DS3231 Real Time Clock Driver." alt="" coords="887,79,993,104"/>
-<area shape="poly" id="edge18_Node000001_Node000015" title=" " alt="" coords="618,25,887,77,886,82,617,30"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="397,114,422,150,418,153,392,117"/>
+<area shape="poly" id="edge27_Node000001_Node000008" title=" " alt="" coords="539,29,448,50,342,81,256,119,188,154,186,149,253,114,340,76,447,44,538,24"/>
+<area shape="rect" id="Node000011" href="$ina219_8h.html" title="INA219 Driver." alt="" coords="593,79,671,104"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="598,40,625,77,621,80,593,43"/>
+<area shape="rect" id="Node000014" href="$rtc__ds3231_8c.html" title=" " alt="" coords="800,152,904,177"/>
+<area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="614,35,832,150,829,154,611,40"/>
+<area shape="rect" id="Node000015" href="$rtc__ds3231_8h.html" title="DS3231 Real Time Clock Driver." alt="" coords="889,79,994,104"/>
+<area shape="poly" id="edge18_Node000001_Node000015" title=" " alt="" coords="619,25,889,77,888,82,618,30"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="398,114,424,150,419,153,394,117"/>
 <area shape="rect" id="Node000007" href="$drivers_2include_2max17048_8h.html" title="MAX17048 Driver." alt="" coords="238,152,341,177"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="355,115,306,154,302,150,352,110"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="340,109,202,154,200,149,338,103"/>
-<area shape="rect" id="Node000004" href="$heartbeat__job_8c.html" title=" " alt="" coords="500,225,623,251"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="463,181,541,223,538,227,460,186"/>
-<area shape="rect" id="Node000005" href="$mag__lis3mdltr_8c.html" title=" " alt="" coords="349,225,475,251"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="425,191,417,226,412,225,420,190"/>
-<area shape="rect" id="Node000006" href="$steve_8c.html" title=" " alt="" coords="647,225,716,251"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="483,179,647,224,646,230,481,184"/>
-<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="228,175,500,224,500,229,227,180"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="356,115,306,154,303,150,353,110"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="341,108,202,154,200,149,339,103"/>
+<area shape="rect" id="Node000004" href="$heartbeat__job_8c.html" title=" " alt="" coords="501,225,624,251"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="464,181,542,223,540,227,461,186"/>
+<area shape="rect" id="Node000005" href="$mag__lis3mdltr_8c.html" title=" " alt="" coords="350,225,477,251"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="426,191,419,226,413,225,421,190"/>
+<area shape="rect" id="Node000006" href="$steve_8c.html" title=" " alt="" coords="648,225,717,251"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="484,179,648,224,647,230,483,184"/>
+<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="228,175,502,224,501,229,227,180"/>
 <area shape="rect" id="Node000009" href="$antenna__deploy__job_8c.html" title=" " alt="" coords="123,225,287,251"/>
 <area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="182,188,201,224,197,226,177,191"/>
 <area shape="rect" id="Node000010" href="$vega__ant_8c.html" title=" " alt="" coords="5,225,99,251"/>
 <area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="138,187,72,227,69,223,135,182"/>
-<area shape="poly" id="edge13_Node000011_Node000004" title=" " alt="" coords="628,118,620,148,608,179,591,205,574,227,570,224,587,202,603,176,615,146,623,117"/>
-<area shape="poly" id="edge15_Node000011_Node000006" title=" " alt="" coords="642,116,680,224,675,226,637,118"/>
-<area shape="rect" id="Node000012" href="$gse_8c.html" title=" " alt="" coords="719,152,775,177"/>
-<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="662,109,729,149,726,154,659,113"/>
-<area shape="rect" id="Node000013" href="$ina219_8c.html" title=" " alt="" coords="516,152,593,177"/>
-<area shape="poly" id="edge14_Node000011_Node000013" title=" " alt="" coords="610,115,569,154,565,150,607,111"/>
-<area shape="poly" id="edge20_Node000015_Node000004" title=" " alt="" coords="942,119,935,150,928,166,916,180,623,229,622,224,913,175,923,163,930,149,937,118"/>
-<area shape="poly" id="edge19_Node000015_Node000012" title=" " alt="" coords="897,111,776,155,774,150,895,106"/>
-<area shape="poly" id="edge22_Node000015_Node000014" title=" " alt="" coords="917,115,867,154,864,150,913,110"/>
-<area shape="rect" id="Node000016" href="$main_8c.html" title=" " alt="" coords="977,152,1044,177"/>
-<area shape="poly" id="edge21_Node000015_Node000016" title=" " alt="" coords="963,112,1001,150,997,154,959,116"/>
-<area shape="rect" id="Node000017" href="$set__rtc__job_8c.html" title=" " alt="" coords="1029,225,1133,251"/>
-<area shape="poly" id="edge23_Node000015_Node000017" title=" " alt="" coords="994,107,1028,125,1058,150,1070,169,1077,189,1083,224,1078,225,1072,191,1065,171,1054,154,1025,129,992,112"/>
-<area shape="rect" id="Node000018" href="$set__rtc__job_8h.html" title=" " alt="" coords="1119,152,1225,177"/>
-<area shape="poly" id="edge24_Node000015_Node000018" title=" " alt="" coords="991,105,1135,149,1134,154,989,110"/>
-<area shape="poly" id="edge26_Node000018_Node000017" title=" " alt="" coords="1148,188,1098,227,1095,223,1145,184"/>
-<area shape="rect" id="Node000019" href="$command_8c.html" title=" " alt="" coords="1157,225,1256,251"/>
-<area shape="poly" id="edge25_Node000018_Node000019" title=" " alt="" coords="1186,189,1203,224,1199,226,1181,191"/>
+<area shape="poly" id="edge13_Node000011_Node000004" title=" " alt="" coords="630,118,621,148,609,179,592,205,575,227,571,224,588,202,604,176,616,146,624,117"/>
+<area shape="poly" id="edge15_Node000011_Node000006" title=" " alt="" coords="643,116,681,224,676,226,638,118"/>
+<area shape="rect" id="Node000012" href="$gse_8c.html" title=" " alt="" coords="720,152,776,177"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="664,109,730,149,728,154,661,113"/>
+<area shape="rect" id="Node000013" href="$ina219_8c.html" title=" " alt="" coords="517,152,595,177"/>
+<area shape="poly" id="edge14_Node000011_Node000013" title=" " alt="" coords="612,115,570,154,567,150,608,111"/>
+<area shape="poly" id="edge20_Node000015_Node000004" title=" " alt="" coords="943,119,936,150,929,166,917,180,624,229,624,224,915,175,924,163,931,149,938,118"/>
+<area shape="poly" id="edge19_Node000015_Node000012" title=" " alt="" coords="898,111,777,155,776,150,896,106"/>
+<area shape="poly" id="edge22_Node000015_Node000014" title=" " alt="" coords="918,115,868,154,865,150,915,110"/>
+<area shape="rect" id="Node000016" href="$main_8c.html" title=" " alt="" coords="979,152,1045,177"/>
+<area shape="poly" id="edge21_Node000015_Node000016" title=" " alt="" coords="965,112,1002,150,999,154,961,116"/>
+<area shape="rect" id="Node000017" href="$set__rtc__job_8c.html" title=" " alt="" coords="1031,225,1135,251"/>
+<area shape="poly" id="edge23_Node000015_Node000017" title=" " alt="" coords="995,107,1030,125,1059,150,1071,169,1078,189,1085,224,1079,225,1073,191,1066,171,1055,154,1027,129,993,112"/>
+<area shape="rect" id="Node000018" href="$set__rtc__job_8h.html" title=" " alt="" coords="1121,152,1226,177"/>
+<area shape="poly" id="edge24_Node000015_Node000018" title=" " alt="" coords="992,105,1137,149,1135,154,991,110"/>
+<area shape="poly" id="edge26_Node000018_Node000017" title=" " alt="" coords="1149,188,1099,227,1096,223,1146,184"/>
+<area shape="rect" id="Node000019" href="$command_8c.html" title=" " alt="" coords="1159,225,1257,251"/>
+<area shape="poly" id="edge25_Node000018_Node000019" title=" " alt="" coords="1187,189,1205,224,1200,226,1183,191"/>
 </map>

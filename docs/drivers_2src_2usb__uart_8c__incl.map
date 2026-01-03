@@ -4,7 +4,7 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,33,76,74,74,69,147,28"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="105,79,231,104"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="171,31,171,65,165,65,165,31"/>
-<area shape="rect" id="Node000004" href="$usb__uart_8h.html" title="Serial Communication Driver (USB/UART)" alt="" coords="256,79,347,104"/>
+<area shape="rect" id="Node000004" href="$usb__uart_8h.html" title="Serial Communication Driver (USB/UART)." alt="" coords="256,79,347,104"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="191,28,269,70,266,74,188,33"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="167,152,241,177"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="287,106,233,146,230,141,284,102"/>
