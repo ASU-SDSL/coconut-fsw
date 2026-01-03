@@ -20,9 +20,9 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="mag__lis3mdltr_8h.html" target="_top" xlink:title="Magnetometer Driver (LIS3MDLTR)">
-<polygon fill="white" stroke="#666666" points="197,-74 102,-74 102,-55 197,-55 197,-74"/>
-<text text-anchor="middle" x="149.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">mag_lis3mdltr.h</text>
+<g id="a_Node000002"><a xlink:href="mag__lis3mdltr_8h.html" target="_top" xlink:title="Magnetometer Driver (LIS3MDLTR).">
+<polygon fill="white" stroke="#666666" points="196.5,-74 100.5,-74 100.5,-55 196.5,-55 196.5,-74"/>
+<text text-anchor="middle" x="148.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">mag_lis3mdltr.h</text>
 </a>
 </g>
 </g>
@@ -30,8 +30,8 @@
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M231.77,-105.5C211.71,-95.75 184.82,-82.68 167.33,-74.17"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="230.46,-108.76 240.99,-109.98 233.52,-102.46 230.46,-108.76"/>
+<path fill="none" stroke="#63b8ff" d="M231.8,-105.63C211.53,-95.87 184.23,-82.71 166.49,-74.17"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="230.3,-108.8 240.83,-109.98 233.34,-102.49 230.3,-108.8"/>
 </a>
 </g>
 </g>
@@ -84,8 +84,8 @@
 <g id="edge2_Node000002_Node000003" class="edge">
 <title>Node2&#45;&gt;Node3</title>
 <g id="a_edge2_Node000002_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M170.75,-49.42C185.26,-39.81 204.04,-27.37 216.41,-19.17"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="168.76,-46.54 162.35,-54.98 172.62,-52.38 168.76,-46.54"/>
+<path fill="none" stroke="#63b8ff" d="M170.01,-49.42C184.71,-39.81 203.72,-27.37 216.25,-19.17"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="167.97,-46.58 161.51,-54.98 171.8,-52.44 167.97,-46.58"/>
 </a>
 </g>
 </g>
@@ -102,8 +102,8 @@
 <g id="edge3_Node000002_Node000004" class="edge">
 <title>Node2&#45;&gt;Node4</title>
 <g id="a_edge3_Node000002_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M124.23,-50.37C105.49,-40.63 80.48,-27.64 64.19,-19.17"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="122.62,-53.48 133.11,-54.98 125.85,-47.27 122.62,-53.48"/>
+<path fill="none" stroke="#63b8ff" d="M123.22,-50.23C104.7,-40.51 80.08,-27.6 64.02,-19.17"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="121.79,-53.44 132.27,-54.98 125.04,-47.24 121.79,-53.44"/>
 </a>
 </g>
 </g>
@@ -120,8 +120,8 @@
 <g id="edge4_Node000002_Node000005" class="edge">
 <title>Node2&#45;&gt;Node5</title>
 <g id="a_edge4_Node000002_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M145.95,-44.66C144.3,-35.93 142.42,-25.99 141.12,-19.09"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="142.56,-45.57 147.85,-54.75 149.43,-44.27 142.56,-45.57"/>
+<path fill="none" stroke="#63b8ff" d="M145.3,-44.66C143.82,-35.93 142.13,-25.99 140.96,-19.09"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="141.89,-45.48 147.01,-54.75 148.79,-44.3 141.89,-45.48"/>
 </a>
 </g>
 </g>

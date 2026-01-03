@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['write_5foperation_5ft_0',['write_operation_t',['../structwrite__operation__t.html',1,'']]]
+  ['telemetry_5fqueue_5ftransmission_0',['telemetry_queue_transmission',['../structtelemetry__queue__transmission.html',1,'']]]
 ];

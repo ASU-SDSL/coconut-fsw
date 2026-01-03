@@ -1,5 +1,5 @@
 <map id="steve_context" name="steve_context">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,96,109,123"/>
-<area shape="rect" id="Node000002" href="$structsteve__job.html" title=" " alt="" coords="18,5,96,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="60,48,60,95,54,95,54,48"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,101,120,127"/>
+<area shape="rect" id="Node000002" href="$structsteve__job.html" title=" " alt="" coords="20,5,105,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="65,45,65,101,60,101,60,45"/>
 </map>

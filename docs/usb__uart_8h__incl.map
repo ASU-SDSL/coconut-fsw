@@ -1,5 +1,5 @@
 <map id="usb_uart.h" name="usb_uart.h">
-<area shape="rect" id="Node000001" title="Serial Communication Driver (USB/UART)" alt="" coords="95,5,185,31"/>
+<area shape="rect" id="Node000001" title="Serial Communication Driver (USB/UART)." alt="" coords="95,5,185,31"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,79,80,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,33,71,72,68,68,123,29"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="105,79,175,104"/>

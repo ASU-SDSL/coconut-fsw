@@ -22,8 +22,8 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Magnetometer Driver (LIS3MDLTR)">
-<polygon fill="#999999" stroke="#666666" points="205.5,-74 110.5,-74 110.5,-55 205.5,-55 205.5,-74"/>
+<g id="a_Node000001"><a xlink:title="Magnetometer Driver (LIS3MDLTR).">
+<polygon fill="#999999" stroke="#666666" points="206,-74 110,-74 110,-55 206,-55 206,-74"/>
 <text text-anchor="middle" x="158" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">mag_lis3mdltr.h</text>
 </a>
 </g>

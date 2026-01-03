@@ -1,0 +1,4 @@
+<map id="Pinouts" name="Pinouts">
+<area shape="rect" id="Node000002" href="$group__LoRa.html" title="Macros to set LoRa Radio Configuration see https://iaru.amsat&#45;uk.org/finished.php." alt="" coords="124,5,193,31"/>
+<area shape="rect" id="Node000001" title="Radio pinouts for PCB." alt="" coords="5,5,76,31"/>
+</map>

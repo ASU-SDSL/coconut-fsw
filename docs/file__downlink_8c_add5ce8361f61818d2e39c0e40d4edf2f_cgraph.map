@@ -1,0 +1,7 @@
+<map id="initialize_file_transfer" name="initialize_file_transfer">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,169,31"/>
+<area shape="rect" id="Node000002" href="$timing_8c.html#a93ea9223224ba909811375fceada6a08" title=" " alt="" coords="217,5,363,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,15,204,15,204,21,169,21"/>
+<area shape="rect" id="Node000003" href="$timing_8c.html#afc667ef1e53f787d5e61e758dc1bd7b2" title=" " alt="" coords="411,5,511,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="363,15,397,15,397,21,363,21"/>
+</map>

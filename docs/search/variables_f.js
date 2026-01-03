@@ -1,7 +1,19 @@
 var searchData=
 [
-  ['scale_0',['SCALE',['../mag__lis3mdltr_8c.html#a7cd8e75533b14533e56082339b9fa2cc',1,'mag_lis3mdltr.c']]],
-  ['set_5frtc_5ftime_5ft_1',['set_rtc_time_t',['../command_8h.html#a2b09ded88bd37b33c97d6f0f946aa4d6',1,'command.h']]],
-  ['size_2',['size',['../structread__operation__t.html#a854352f53b148adc24983a58a1866d66',1,'read_operation_t::size'],['../structwrite__operation__t.html#a854352f53b148adc24983a58a1866d66',1,'write_operation_t::size'],['../structfuzzer__input.html#a854352f53b148adc24983a58a1866d66',1,'fuzzer_input::size']]],
-  ['stat_5fop_3',['stat_op',['../unionfile__operation__union__t.html#a34ad747e5c288b5c082ad7967b75dd14',1,'file_operation_union_t']]]
+  ['radio_0',['radio',['../group__Radio.html#ga48fdefc7cf5f3d66ceac656b35d15f3f',1,'radio.cpp']]],
+  ['radio_5fconfig_5ft_1',['radio_config_t',['../command_8h.html#a401c803ee510b6f22385858a8588a54f',1,'command.h']]],
+  ['radio_5fqueue_2',['radio_queue',['../tasks_2radio_2radio_8h.html#a2e938a65229ef4e546cbe644fd8bebf5',1,'radio.h']]],
+  ['radio_5fset_5fmode_5ft_3',['radio_set_mode_t',['../command_8h.html#a1c9384dea86cf98ce317f4be0510ba67',1,'command.h']]],
+  ['radio_5fstat_5ft_4',['radio_stat_t',['../command_8h.html#a845e890461f31d7e14cca83634c79db6',1,'command.h']]],
+  ['radio_5fstat_5ftelemetry_5ft_5',['radio_stat_telemetry_t',['../telemetry_8h.html#a3bd7f7239303d358f7259d4bf14b9079',1,'telemetry.h']]],
+  ['radio_5fstate_5frfm_6',['radio_state_RFM',['../group__Radio.html#ga141b36d7f950f7c35813f55ede290296',1,'radio.cpp']]],
+  ['radio_5fstate_5fsx_7',['radio_state_SX',['../group__Radio.html#ga52d298b959f7ad0d9f74235d114d43ef',1,'radio.cpp']]],
+  ['radiorfm_8',['radioRFM',['../group__Radio.html#ga905d5c5a7400feebad5524a02389bd3d',1,'radio.cpp']]],
+  ['radiosx_9',['radioSX',['../group__Radio.html#gae5f98a9d8555e8c771663b85f4f825fb',1,'radio.cpp']]],
+  ['reached_5feof_10',['reached_eof',['../structcurrent__file__downlink__data.html#a99966a27ef7fe22202a0edcfaef93c8b',1,'current_file_downlink_data']]],
+  ['read_5fbuffer_11',['read_buffer',['../structread__operation__t.html#ae228740b473b0d4f7b90e76587a06ec2',1,'read_operation_t']]],
+  ['read_5fdir_5fop_12',['read_dir_op',['../unionfile__operation__union__t.html#a7a9e94586e9be6418daa28d98d159b33',1,'file_operation_union_t']]],
+  ['read_5fop_13',['read_op',['../unionfile__operation__union__t.html#a458d18f4a8cf37ee44fadb9bb753aefd',1,'file_operation_union_t']]],
+  ['recur_5ftime_14',['recur_time',['../structsteve__job.html#aa5fedcd7bc69cb0da4f19aa961528fd8',1,'steve_job']]],
+  ['retval_5fout_15',['retval_out',['../structopen__directory__operation__t.html#a97c8938687bef6f6d8071d533b6c501c',1,'open_directory_operation_t::retval_out'],['../structread__directory__operation__t.html#a97c8938687bef6f6d8071d533b6c501c',1,'read_directory_operation_t::retval_out'],['../structstat__operation__t.html#a97c8938687bef6f6d8071d533b6c501c',1,'stat_operation_t::retval_out']]]
 ];

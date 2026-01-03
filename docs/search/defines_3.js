@@ -10,9 +10,10 @@ var searchData=
   ['ds18b20_5fread_5fpower_5fsupply_7',['DS18B20_READ_POWER_SUPPLY',['../ds18b20_8c.html#ae59180f65cc0d4cc736362e4c1584a51',1,'ds18b20.c']]],
   ['ds18b20_5fread_5fscratchpad_8',['DS18B20_READ_SCRATCHPAD',['../ds18b20_8c.html#a7c5504d07914ba640f58888cd09e6591',1,'ds18b20.c']]],
   ['ds18b20_5frecall_5fee_9',['DS18B20_RECALL_EE',['../ds18b20_8c.html#afc8a0633a6ef529eb554951a76e8e0ef',1,'ds18b20.c']]],
-  ['ds18b20_5ftimeout_5fms_10',['DS18B20_TIMEOUT_MS',['../ds18b20_8c.html#aa812fa3fa9648eca54a8d4c190ec7e01',1,'ds18b20.c']]],
-  ['ds18b20_5fwrite_5fscratchpad_11',['DS18B20_WRITE_SCRATCHPAD',['../ds18b20_8c.html#a0fe43cfc8bf6312ce78d1a065e427f6b',1,'ds18b20.c']]],
-  ['ds18b_5fromcode_5fu100_12',['DS18B_ROMCODE_U100',['../ds18b20_8h.html#ae7ade73278da5f29684fd682ec3ed6bb',1,'ds18b20.h']]],
-  ['ds18b_5fromcode_5fu102_13',['DS18B_ROMCODE_U102',['../ds18b20_8h.html#abcfdbafbb600fe84572233fd179f43a0',1,'ds18b20.h']]],
-  ['ds18b_5fromcode_5fu104_14',['DS18B_ROMCODE_U104',['../ds18b20_8h.html#af67342a212ebdbb5a036694e4c0fe195',1,'ds18b20.h']]]
+  ['ds18b20_5fshort_5ftimeout_5fms_10',['DS18B20_SHORT_TIMEOUT_MS',['../ds18b20_8c.html#a140db8c079afd1f8132ba2a54bda2125',1,'ds18b20.c']]],
+  ['ds18b20_5ftimeout_5fms_11',['DS18B20_TIMEOUT_MS',['../ds18b20_8c.html#aa812fa3fa9648eca54a8d4c190ec7e01',1,'ds18b20.c']]],
+  ['ds18b20_5fwrite_5fscratchpad_12',['DS18B20_WRITE_SCRATCHPAD',['../ds18b20_8c.html#a0fe43cfc8bf6312ce78d1a065e427f6b',1,'ds18b20.c']]],
+  ['ds18b_5fromcode_5fu100_13',['DS18B_ROMCODE_U100',['../ds18b20_8h.html#ae7ade73278da5f29684fd682ec3ed6bb',1,'ds18b20.h']]],
+  ['ds18b_5fromcode_5fu102_14',['DS18B_ROMCODE_U102',['../ds18b20_8h.html#abcfdbafbb600fe84572233fd179f43a0',1,'ds18b20.h']]],
+  ['ds18b_5fromcode_5fu104_15',['DS18B_ROMCODE_U104',['../ds18b20_8h.html#af67342a212ebdbb5a036694e4c0fe195',1,'ds18b20.h']]]
 ];

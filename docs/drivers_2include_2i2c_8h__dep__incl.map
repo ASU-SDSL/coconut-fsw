@@ -1,17 +1,17 @@
 <map id="i2c.h" name="i2c.h">
 <area shape="rect" id="Node000001" title="Drivers for i2c peripheral devices." alt="" coords="323,5,377,31"/>
-<area shape="rect" id="Node000002" href="$mag__lis3mdltr_8h.html" title="Magnetometer Driver (LIS3MDLTR)" alt="" coords="141,79,268,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="316,39,230,81,227,76,313,34"/>
+<area shape="rect" id="Node000002" href="$mag__lis3mdltr_8h.html" title="Magnetometer Driver (LIS3MDLTR)." alt="" coords="139,79,267,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="316,39,228,81,226,76,313,34"/>
 <area shape="rect" id="Node000006" href="$drivers_2include_2max17048_8h.html" title="MAX17048 Driver." alt="" coords="299,79,401,104"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="353,44,353,79,347,79,347,44"/>
 <area shape="rect" id="Node000007" href="$vega__ant_8h.html" title="Vega Antenna Board Driver." alt="" coords="428,79,523,104"/>
 <area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="383,35,456,76,454,81,381,40"/>
 <area shape="rect" id="Node000003" href="$heartbeat__job_8c.html" title=" " alt="" coords="250,152,373,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="234,109,295,150,292,154,232,114"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="233,109,295,150,292,154,231,114"/>
 <area shape="rect" id="Node000004" href="$mag__lis3mdltr_8c.html" title=" " alt="" coords="5,152,132,177"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="172,113,92,154,90,149,170,108"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="171,113,92,154,89,149,168,108"/>
 <area shape="rect" id="Node000005" href="$steve_8c.html" title=" " alt="" coords="157,152,226,177"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="203,118,196,152,191,151,197,117"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="202,118,196,152,191,151,196,117"/>
 <area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="437,112,339,154,337,149,435,107"/>
 <area shape="rect" id="Node000008" href="$antenna__deploy__job_8c.html" title=" " alt="" coords="397,152,561,177"/>
 <area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="479,118,481,152,476,152,474,118"/>
